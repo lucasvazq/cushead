@@ -6,7 +6,7 @@ This simple script improve your SEO and UX.
 It add lang attribute to the html element and search and replace '$head$' string with personalized head elements.
 
 Git repository:
-    https://github.com/mrsantos321/customhead
+    https://github.com/mrsantos321/cushead
 '''
 
 
@@ -28,10 +28,10 @@ if sys.version_info[0] < 3:
 def parameters():
 
     parser = argparse.ArgumentParser(
-        usage='customhead.py -file PATH/TO/FILE [--exclude-html, ..]',
+        usage='cushead.py -file PATH/TO/FILE [--exclude-html, ..]',
         description='This simple script improve your SEO and UX. ' + 
             'It add lang attribute to the <html> element and search and replace \'$head$\' string with personalized head elements. ' +
-            'Git repository: https://github.com/mrsantos321/customhead .')
+            'Git repository: https://github.com/mrsantos321/cushead .')
 
     parser._action_groups.pop()
     helpers = parser.add_argument_group('help')
@@ -62,9 +62,9 @@ def parameters():
     parser = parser.parse_args()
 
     if not (parser.presset or parser.file):
-        raise Exception('Miss -file argument. Can do \'makeseo.py -h\' for help.')
+        raise Exception('Miss -file argument. Can do \'cushead.py -h\' for help.')
     if parser.presset and parser.file:
-        raise Exception('Cant use -presset and -file arguments together. Can do \'makeseo.py -h\' for help.')
+        raise Exception('Cant use -presset and -file arguments together. Can do \'cushead.py -h\' for help.')
     if parser.file:
         if not path.isfile(parser.file):
             raise Exception('Argument passed by -file (' + str(parser.file) + ') can\'t be found.')
@@ -122,9 +122,10 @@ def make_presset(file):
 
 def get_values(file):
 
+    name = file
     file = path.join(getcwd(), file)
 
-    loader = machinery.SourceFileLoader('customhead', file)
+    loader = machinery.SourceFileLoader(name, file)
     mod = types.ModuleType(loader.name)
     loader.exec_module(mod)
 
@@ -314,7 +315,7 @@ def add_author(dictionary, temp):
     return temp
 
 
-def customhead():
+def cushead():
 
     args = parameters()
 
@@ -394,4 +395,4 @@ def customhead():
 
     print('\nDone')
 
-customhead()
+cushead()
