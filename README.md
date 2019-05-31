@@ -5,7 +5,7 @@ It add lang attribute to the html element and search and replace '$head$' string
 
 ### Usage
 
-##### Fast view of the argument list
+#### Fast view of the argument list
 
 customhead.py -h
 ```
@@ -24,10 +24,11 @@ optional arguments:
   --exclude-author     Exclude author.
 ```
 
-##### 1 - Find the main file
+#### 1 - Find the main file
 
 This is the file that want to edit. It need to have a <html> element for add the lang attribute, and a '$head$' string that be replaced for the custom elements. Example:
-  
+
+_(my_index.html)_
 ```
 <html> 
   <head>
@@ -36,13 +37,15 @@ This is the file that want to edit. It need to have a <html> element for add the
   </head>
 </html>
 ```
-(my_index.html)
+
 
 If there isnt the html element, cant add the lang attribute. Sameway, if there isnt the '$head$' string, cant add the custom head elements.
 
-##### 2 - Define personalized values
+#### 2 - Define personalized values
 
 Create a file with this inside:
+
+_(customhead.txt)_
 ```
 values = {
 
@@ -83,19 +86,19 @@ values = {
     
 }
 ```
-(customhead.txt)
 
 Look, there are a dictionary called values, they are used for pass values to script.
 Please, dont change the dictionary 'values' name. Feel free to add comments like python inside the dict.
 In values there are a key called 'path', this reffered to the path where are the file that you want to edit the html and head.
 If some keys are omited, the elements reffered to them are ommited too.
 
-##### 3 - Execute the script
+#### 3 - Execute the script
 
 makeseo.py -file customhead.txt --exclude-twitter
 
-##### 4 - Results
+#### 4 - Results
 
+_(my_index.html)_
 ```
 <html lang="en_US">
     <head>
@@ -121,4 +124,3 @@ makeseo.py -file customhead.txt --exclude-twitter
     </head>
 </html>
 ```
-(my_index.html)
