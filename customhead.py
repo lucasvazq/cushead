@@ -40,7 +40,7 @@ def parameters():
 
     helpers.add_argument('-presset', metavar=('FILENAME'), dest='presset', help='Generate example file with pressets.')
 
-    required.add_argument('-file', metavar=('PATH TO FILE'), dest='file', help='Path to file where want to add the custom head elements.')
+    required.add_argument('-file', metavar=('FILEPATH'), dest='file', help='Path to file that want to edit.')
 
     optional.add_argument('--exclude-comment', dest='comment', action='store_false', help='Exclude \'Custom head elements\' comment.')
     optional.add_argument('--exclude-html', dest='html', action='store_false', help='Exclude html lang attribute.')
