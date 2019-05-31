@@ -7,15 +7,14 @@ This simple script improves your SEO and the UX. It adds lang attribute to the <
 
 argparse:
 
-```
-pip3 install argparse
-```
+`pip3 install argparse`
 
 ### Usage:
 
 #### Fast view of the argument list
 
-customhead.py -h
+`python3 customhead.py -h`
+
 ```
 help:
   -presset FILENAME    Generate example file with pressets.
@@ -97,11 +96,11 @@ values = {
 ```
 
 Look, there is a dictionary called values, they are used to pass values to the script. Please, don't change the dictionary 'values' name. Feel free to add comments like python inside the dict. In values there is a key called 'path', this referred to the path where is the file that you want to edit. If some keys are omitted, the elements referred to them are omitted too.
-File like this can be generated with doing _customhead -presset customhead.txt_
+File like this can be generated with doing `python3 customhead.py -presset customhead.txt`
 
 #### 3 - Execute the script
 
-python3 customhead.py -file customhead.txt --exclude-twitter
+`python3 customhead.py -file customhead.txt --exclude-twitter`
 
 #### 4 - Results
 
