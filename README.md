@@ -1,19 +1,17 @@
-# customhead.py
+# cushead.py
 ###### _Python 3_
 
 This simple script improves your SEO and the UX. It adds lang attribute to the <html> element and search and replace '$head$' string with personalized head elements.
-  
-### Requirements:
 
-argparse:
+### Install:
 
-`pip3 install argparse`
+`pip3 install cushead`
 
 ### Usage:
 
 #### Fast view of the argument list
 
-`python3 customhead.py -h`
+`python3 cushead.py -h`
 
 ```
 help:
@@ -53,7 +51,7 @@ If there isn't the <html> element, cant add the lang attribute. Same way, if the
 
 Create a file with this inside:
 
-_(customhead.txt)_
+_(cushead.txt)_
 ```
 values = {
 
@@ -96,11 +94,11 @@ values = {
 ```
 
 Look, there is a dictionary called values, they are used to pass values to the script. Please, don't change the dictionary 'values' name. Feel free to add comments like python inside the dict. In values there is a key called 'path', this referred to the path where is the file that you want to edit. If some keys are omitted, the elements referred to them are omitted too.
-File like this can be generated with doing `python3 customhead.py -presset customhead.txt`
+File like this can be generated with doing `python3 cushead.py -presset cushead.txt`
 
 #### 3 - Execute the script
 
-`python3 customhead.py -file customhead.txt --exclude-twitter`
+`python3 cushead.py -file cushead.txt --exclude-twitter`
 
 #### 4 - Results
 
