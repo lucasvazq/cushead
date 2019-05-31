@@ -8,9 +8,11 @@ This simple script improves your SEO and the UX. It adds lang attribute to the <
 
 customhead.py -h
 ```
+help:
+  -presset FILENAME    Generate example file with pressets.
+
 required arguments:
-  -file PATH TO FILE   Path to file where want to add the custom head
-                       elements.
+  -file FILEPATH       Path to file that want to edit.
 
 optional arguments:
   --exclude-comment    Exclude 'Custom head elements' comment.
@@ -86,6 +88,7 @@ values = {
 ```
 
 Look, there is a dictionary called values, they are used to pass values to the script. Please, don't change the dictionary 'values' name. Feel free to add comments like python inside the dict. In values there is a key called 'path', this referred to the path where is the file that you want to edit. If some keys are omitted, the elements referred to them are omitted too.
+File like this can be generated with doing _customhead -presset customhead.txt_
 
 #### 3 - Execute the script
 
