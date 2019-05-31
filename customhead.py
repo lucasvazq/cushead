@@ -9,8 +9,12 @@ Git repository:
     https://github.com/mrsantos321/customhead
 '''
 
+
 import json
 import sys
+import types
+from configparser import ConfigParser
+from importlib import machinery
 from os import fdopen, getcwd, path, remove
 from shutil import move
 from tempfile import mkstemp
@@ -26,15 +30,19 @@ def parameters():
     parser = argparse.ArgumentParser(
         usage='customhead.py -file PATH/TO/FILE [--exclude-html, ..]',
         description='This simple script improve your SEO and UX. ' + 
-            'It add lang attribute to the html element and search and replace \'$head$\' string with personalized head elements. ' +
+            'It add lang attribute to the <html> element and search and replace \'$head$\' string with personalized head elements. ' +
             'Git repository: https://github.com/mrsantos321/customhead .')
 
     parser._action_groups.pop()
+    helpers = parser.add_argument_group('help')
     required = parser.add_argument_group('required arguments')
     optional = parser.add_argument_group('optional arguments')
 
-    required.add_argument('-file', metavar=('PATH TO FILE'), dest='file', required=True, help='Path to file where want to add the custom head elements.')
+    helpers.add_argument('-presset', metavar=('FILENAME'), dest='presset', help='Generate example file with pressets.')
 
+    required.add_argument('-file', metavar=('PATH TO FILE'), dest='file', help='Path to file where want to add the custom head elements.')
+
+    optional.add_argument('--exclude-comment', dest='comment', action='store_false', help='Exclude \'Custom head elements\' comment.')
     optional.add_argument('--exclude-html', dest='html', action='store_false', help='Exclude html lang attribute.')
     optional.add_argument('--exclude-special', dest='special', action='store_false', help='Exclude special head elements.')
     optional.add_argument('--exclude-basic', dest='basic', action='store_false', help='Exclude basic SEO elements.')
@@ -42,6 +50,7 @@ def parameters():
     optional.add_argument('--exclude-facebook', dest='facebook', action='store_false', help='Exclude facebook.')
     optional.add_argument('--exclude-twitter', dest='twitter', action='store_false', help='Exclude twitter.')
     optional.add_argument('--exclude-author', dest='author', action='store_false', help='Exclude author.')
+    parser.set_defaults(comment=True)
     parser.set_defaults(html=True)
     parser.set_defaults(special=True)
     parser.set_defaults(basic=True)
@@ -52,23 +61,70 @@ def parameters():
 
     parser = parser.parse_args()
 
-    if not parser.file:
-        raise Exception('Miss -file argument.')
-    if not path.isfile(parser.file):
-        raise Exception('Argument passed by -file (' + str(parser.file) + ') cant be found.')
+    if not (parser.presset or parser.file):
+        raise Exception('Miss -file argument. Can do \'makeseo.py -h\' for help.')
+    if parser.presset and parser.file:
+        raise Exception('Cant use -presset and -file arguments together. Can do \'makeseo.py -h\' for help.')
+    if parser.file:
+        if not path.isfile(parser.file):
+            raise Exception('Argument passed by -file (' + str(parser.file) + ') can\'t be found.')
 
     return parser
 
 
-def makedict(file):
+def make_presset(file):
+
+    file = path.join(getcwd(), file)
+    f = open(file, 'w+')
+    values = '''values = {
+
+    # File path
+    'path':             './index.html',
+
+    # Basic SEO
+    'title':            'Microsoft',
+    'icon':             '/favicon.png',
+    'preview':          '/preview.png', # Big image preview
+    'description':      'Technology Solutions',
+    'subject':          'Home Page',
+    'keywords':         'Microsoft, Windows',
+
+    # Opengraph
+    'og:type':          'website', # http://ogp.me/#types
+
+    # Facebook
+    'fb:pages':         {'12345', '67890'}, # (Str) Facebook Pages ID separated by commas
+    'fb:app_id':        '12345', # (Str) Facebook App ID
+
+    # Twitter
+    'tw:card':          'summary', # https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary.html
+    'tw:domain':        'www.microsoft.com',
+    'tw:page':          '@Microsoft', # Commerce Twitter account
+    'tw:creator':       '@BillGates', # This page editor
+    'tw:googleplay':    '12345', # Google Play app id
+    'tw:ipad':          '12345', # iPad app id
+    'tw:iphone':        '12345', # iPhone app id
+
+    # Other
+    'content-type':     'text/html; charset=utf-8',
+    'viewport':         {'width': 'device-width', 'initial-scale': '1'},
+    'locale':           'en_US',
+
+    # Website author
+    'author':           'Lucas Vazquez'
+    
+}'''
+
+    f.write(values)
+    f.close()
+    print('\nPRESSET:\n' +
+        values + '\n')
+
+def get_values(file):
 
     file = path.join(getcwd(), file)
 
-    from configparser import ConfigParser
-
-    import types
-    import importlib.machinery
-    loader = importlib.machinery.SourceFileLoader('customhead', file)
+    loader = machinery.SourceFileLoader('customhead', file)
     mod = types.ModuleType(loader.name)
     loader.exec_module(mod)
 
@@ -262,66 +318,80 @@ def customhead():
 
     args = parameters()
 
-    dictionary = makedict(args.file)
+    if args.presset:
+        
+        make_presset(args.presset)
 
-    if not len(dictionary['path']):
-        raise Exception('Miss \'path\' element on -file ' + args.file + ' and its required.')
+        print('PATH: ' + args.presset)
+        print('FULLPATH: ' + path.join(getcwd(), args.presset))
 
-    temp = []
-    if args.special:
-        temp = add_special(dictionary, temp)
-    if args.basic:
-        temp = add_basic(dictionary, temp)
-    if args.opengraph:
-        temp = add_opengraph(dictionary, temp)
-    if args.facebook:
-        temp = add_facebook(dictionary, temp)
-    if args.twitter:
-        temp = add_twitter(dictionary, temp)
-    if args.author:
-        temp = add_author(dictionary, temp)
-
-    # Read contents from file as a single string
-    file_handle = open(dictionary['path'], 'r')
-    file_string = file_handle.read()
-    file_handle.close()
-
-    print(file_string)
-
-    # Generate idented dom
-    space = file_string.split('$head$')
-    if '$head$' in file_string:
-        space = space[0].split('\n')
-        space = space[len(space) - 1]
-        concat = '<!-- Autogenerated SEO elements -->\n'
-        for x in temp:
-            concat += space + x + '\n'
-        concat = concat[0:-1]
-
-    # Add lang attribute to <html>
-    if len(dictionary['locale']):
-        if not '<html>' in file_string:
-            print('Miss <html>, cant add lang attribute')
-        else:
-            file_string = file_string.replace('<html>', '<html lang="' + dictionary['locale'] + '">')
-            print('\nHTML:\n' +
-                '<html lang="' + dictionary['locale'] + '">')
-
-    # Add custom head elements
-    if not '$head$' in file_string:
-        print('Miss $head$, cant add custom elements')
     else:
-        file_string = file_string.replace('$head$', concat)
-        print('\nHEAD:\n' +
-            concat)
 
-    # Write contents to file.
-    # Using mode 'w' truncates the file.
-    file_handle = open(dictionary['path'], 'w')
-    file_handle.write(file_string)
-    file_handle.close()
+        dictionary = get_values(args.file)
 
-    print('PATH: ' + dictionary['path'])
-    print('Done')
+        if not len(dictionary['path']):
+            raise Exception('Miss \'path\' element on -file ' + args.file + ' and its required.')
+
+        temp = []
+        if args.special:
+            temp = add_special(dictionary, temp)
+        if args.basic:
+            temp = add_basic(dictionary, temp)
+        if args.opengraph:
+            temp = add_opengraph(dictionary, temp)
+        if args.facebook:
+            temp = add_facebook(dictionary, temp)
+        if args.twitter:
+            temp = add_twitter(dictionary, temp)
+        if args.author:
+            temp = add_author(dictionary, temp)
+
+        success = False
+
+        # Read contents from file as a single string
+        file_handle = open(dictionary['path'], 'r')
+        file_string = file_handle.read()
+        file_handle.close()
+
+        # Generate idented dom
+        space = file_string.split('$head$')
+        if '$head$' in file_string:
+            space = space[0].split('\n')
+            space = space[len(space) - 1]
+            if args.comment:
+                concat = '<!-- Custom head elements -->\n'
+            else:
+                concat = ''
+            for x in temp:
+                concat += space + x + '\n'
+            concat = concat[0:-1]
+
+        # Add lang attribute to <html>
+        if len(dictionary['locale']):
+            if not '<html>' in file_string:
+                print('Miss <html>, cant add lang attribute')
+            else:
+                file_string = file_string.replace('<html>', '<html lang="' + dictionary['locale'] + '">')
+                print('\nHTML:\n' +
+                    '<html lang="' + dictionary['locale'] + '">')
+
+        # Add custom head elements
+        if not '$head$' in file_string:
+            print('Miss $head$, cant add custom elements')
+        else:
+            file_string = file_string.replace('$head$', concat)
+            print('\nHEAD:\n' +
+                concat)
+
+        # Write contents to file.
+        # Using mode 'w' truncates the file.
+        file_handle = open(dictionary['path'], 'w')
+        file_handle.write(file_string)
+        file_handle.close()
+
+        print('\nPATH: ' + dictionary['path'])
+        print('FULLPATH: ' + path.join(getcwd(), dictionary['path']))
+
+    print('\nDone')
 
 customhead()
