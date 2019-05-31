@@ -5,7 +5,7 @@ It add lang attribute to the html element and search and replace '$head$' string
 
 ### Usage
 
-##### 0 - Fast view of the argument list
+##### Fast view of the argument list
 
 customhead.py -h
 ```
@@ -121,3 +121,4 @@ makeseo.py -file customhead.txt --exclude-twitter
     </head>
 </html>
 ```
+(my_index.html)
