@@ -25,7 +25,6 @@ from tempfile import mkstemp
 import argparse
 
 
-
 def parameters():
 
     parser = argparse.ArgumentParser(
