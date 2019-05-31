@@ -1,5 +1,5 @@
 # customhead.py
-_Python 3_
+###### _Python 3_
 
 This simple script improves your SEO and the UX. It adds lang attribute to the <html> element and search and replace '$head$' string with personalized head elements.
   
