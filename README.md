@@ -11,7 +11,7 @@ This simple script improves your SEO and the UX. It adds lang attribute to the <
 
 #### Fast view of the argument list
 
-`python3 cushead.py -h`
+`cushead.py -h`
 
 ```
 help:
@@ -98,7 +98,7 @@ File like this can be generated with doing `python3 cushead.py -presset cushead.
 
 #### 3 - Execute the script
 
-`python3 cushead.py -file cushead.txt --exclude-twitter`
+`cushead.py -file cushead.txt --exclude-twitter`
 
 #### 4 - Results
 
