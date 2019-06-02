@@ -1,3 +1,9 @@
  + Google website proprietary
  + x-ua-compatible
  + manifiest
+ + robots
+ + head index, html index, body index
+ + change raise for print
+ + add options
+ + join op, fb and tw
+ + move preview from seo to social medias
