@@ -7,3 +7,4 @@
  + add options
  + join op, fb and tw
  + move preview from seo to social medias
+ + add more twitter content
