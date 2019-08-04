@@ -76,20 +76,20 @@ values = {
 
     # SOCIAL MEDIA
 
-    # General
+    # - General
     'preview':          '/static/preview.png', # Big image preview
 
-    # Opengraph
+    # - Opengraph
     # og:title, og:description, og:image, og:image:secure_url and og:locale obtained
     # from BASIC SEO and BASIC CONFIG sections.
     'og:url':            'www.microsoft.com',
     'og:type':          'website', # http://ogp.me/#types
     'og:image:type':    'image/png', # image/jpeg, image/gif or image/png
 
-    # Facebook
+    # - Facebook
     'fb:app_id':        '12345', # (Str) Facebook App ID
 
-    # Twitter
+    # - Twitter
     # Only support twitter:card = summary
     # twitter:title, twitter:description, twitter:image and twitter:image:alt
     # obtained from BASIC SEO and General - SOCIAL MEDIA sections.
