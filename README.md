@@ -38,10 +38,10 @@ This is the file that wants to edit. It needs to have the <html> element for add
 _(my_index.html)_
 ```
 <html> 
-  <head>
-    $head$
-    ...
-  </head>
+    <head>
+        $head$
+        ...
+    </head>
 </html>
 ```
 
@@ -55,39 +55,48 @@ _(cushead.txt)_
 ```
 values = {
 
-    # Required, path to main file
+    # FILE PATH
     'path':             './my_index.html',
 
-    # Basic SEO
-    'title':            'Microsoft',
-    'icon':             '/favicon.png',
-    'preview':          '/preview.png', # Big image preview
-    'description':      'Technology Solutions',
-    'subject':          'Home Page',
-    'keywords':         'Microsoft, Windows',
-
-    # Opengraph
-    'og:type':          'website', # http://ogp.me/#types
-
-    # Facebook
-    'fb:pages':         {'12345', '67890'}, # (Str) Facebook Pages ID separated by commas
-    'fb:app_id':        '12345', # (Str) Facebook App ID
-
-    # Twitter
-    'tw:card':          'summary', # https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary.html
-    'tw:domain':        'www.microsoft.com',
-    'tw:page':          '@Microsoft', # Commerce Twitter account
-    'tw:creator':       '@BillGates', # This page editor
-    'tw:googleplay':    '12345', # Google Play app id
-    'tw:ipad':          '12345', # iPad app id
-    'tw:iphone':        '12345', # iPhone app id
-
-    # Other
+    # BASIC CONFIG
     'content-type':     'text/html; charset=utf-8',
+    'X-UA-Compatible':  'ie=edge',
+    'robots':           'index, follow',
+    'manifest':         '/manifest.json',
+    'msapp-config':     '/browserconfig.xml',
     'viewport':         {'width': 'device-width', 'initial-scale': '1'},
     'locale':           'en_US',
 
-    # Website author
+    # BASIC SEO
+    'title':            'Microsoft',
+    'description':      'Technology Solutions',
+    'icon':             '/static/favicon.png',
+    'subject':          'Home Page',
+    'keywords':         'Microsoft, Windows',
+
+    # SOCIAL MEDIA
+
+    # General
+    'preview':          '/static/preview.png', # Big image preview
+
+    # Opengraph
+    # og:title, og:description, og:image, og:image:secure_url and og:locale obtained
+    # from BASIC SEO and BASIC CONFIG sections.
+    'og:url':            'www.microsoft.com',
+    'og:type':          'website', # http://ogp.me/#types
+    'og:image:type':    'image/png', # image/jpeg, image/gif or image/png
+
+    # Facebook
+    'fb:app_id':        '12345', # (Str) Facebook App ID
+
+    # Twitter
+    # Only support twitter:card = summary
+    # twitter:title, twitter:description, twitter:image and twitter:image:alt
+    # obtained from BASIC SEO and General - SOCIAL MEDIA sections.
+    'tw:site':          '@Microsoft', # Commerce Twitter account
+    'tw:creator:id':    '123456', # Page editor ID
+    
+    # AUTHOR
     'author':           'Lucas Vazquez'
     
 }
@@ -108,21 +117,27 @@ _(my_index.html)_
     <head>
         <!-- Custom head elements -->
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="robots" content="index, follow" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="Content-Language" content="en_US" />
         <title>Microsoft</title>
-        <link rel="shortcut icon" href="/favicon.png" />
         <meta name="description" content="Technology Solutions" />
+        <link rel="shortcut icon" href="/static/favicon.png" />
         <meta name="subject" content="Home Page" />
         <meta name="keywords" content="Microsoft, Windows" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="www.microsoft.com" />
         <meta property="og:site_name" content="Microsoft" />
         <meta property="og:title" content="Microsoft" />
-        <meta property="og:image" content="/preview.png" />
-        <meta property="og:image:secure_url" content="/preview.png" />
         <meta property="og:description" content="Technology Solutions" />
-        <meta property="fb:pages" content="67890, 12345" />
+        <meta property="og:image" content="/static/preview.png" />
+        <meta property="og:image:secure_url" content="/static/preview.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="og:image:alt" content="Microsoft - Technology Solutions" />
         <meta porperty="fb:app_id" content="12345" />
         <meta name="author" content="Lucas Vazquez" />
     </head>
