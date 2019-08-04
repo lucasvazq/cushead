@@ -36,7 +36,7 @@ optional arguments:
 This is the file that wants to edit. It needs to have the <html> element for add the lang attribute, and a '$head$' string that be replaced for the custom elements. Example:
 
 _(my_index.html)_
-```
+```html
 <html> 
     <head>
         $head$
@@ -52,7 +52,7 @@ If there isn't the <html> element, cant add the lang attribute. Same way, if the
 Create a file with this inside:
 
 _(cushead.txt)_
-```
+```python
 values = {
 
     # FILE PATH
@@ -112,7 +112,7 @@ File like this can be generated with doing `python3 cushead.py -presset cushead.
 #### 4 - Results
 
 _(my_index.html)_
-```
+```html
 <html lang="en_US">
     <head>
         <!-- Custom head elements -->
