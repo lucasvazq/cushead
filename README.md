@@ -90,7 +90,7 @@ values = {
     'fb:app_id':        '12345', # (Str) Facebook App ID
 
     # - Twitter
-    # Only support twitter:card = summary
+    # This script uses twitter:card = summary
     # twitter:title, twitter:description, twitter:image and twitter:image:alt
     # obtained from BASIC SEO and General - SOCIAL MEDIA sections.
     'tw:site':          '@Microsoft', # Commerce Twitter account
