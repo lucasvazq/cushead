@@ -6,7 +6,7 @@ This simple script improve your SEO and UX.
 It add lang attribute to the html element and search and replace '$head$' string with personalized head elements.
 
 Git repository:
-    https://github.com/lucasvazq/
+    https://github.com/lucasvazq/cushead.py
 '''
 
 import sys
