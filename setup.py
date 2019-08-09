@@ -10,7 +10,7 @@ setuptools.setup(
     description="Improves your SEO and the UX generating custom head elements.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/lucasvazq/cushead",
+    url="https://github.com/lucasvazq/cushead.py",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
