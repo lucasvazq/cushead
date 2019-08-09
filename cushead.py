@@ -105,7 +105,7 @@ def make_presset(file):
     # Opengraph
     # og:title, og:description, og:image, og:image:secure_url and og:locale obtained
     # from BASIC SEO and BASIC CONFIG sections.
-    'og:url':            'www.microsoft.com',
+    'og:url':           'www.microsoft.com',
     'og:type':          'website', # http://ogp.me/#types
     'og:image:type':    'image/png', # image/jpeg, image/gif or image/png
 
