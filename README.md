@@ -12,17 +12,26 @@ elements.
 [Install](#install)
 
 [Usage with example](#usage-with-example)
-- [-h](#-h)
-- [1 - Find the main file](#1---find-the-main-file)
-- [2 - Define personalized values](#2---define-personalized-values)
-  - [3 - Execute the script](#3---execute-the-script)
-- [4 - View results](#4---view-results)
-- [5 - Testing](#5---testing)
+
+ - [-h](#-h)
+
+ - [1 - Find the main file](#1---find-the-main-file)
+
+ - [2 - Define personalized values](#2---define-personalized-values)
+
+ - [3 - Execute the script](#3---execute-the-script)
+
+ - [4 - View results](#4---view-results)
+
+ - [5 - Testing](#5---testing)
 
 [Other tools](#other-tools)
-- [Icons tool generator](#icons-tool-generator)
-- [Sitemap](#sitemap)
-- [Another concepts](#another-concepts)
+
+ - [Icons tool generator](#icons-tool-generator)
+
+ - [Sitemap](#sitemap)
+
+ - [Another concepts](#another-concepts)
 
 [License](#license)
 
@@ -36,7 +45,7 @@ elements.
 
 `cushead.py -h`
 
-```
+```txt
 usage: cushead.py -file PATH/TO/FILE [Options]. Do cushead.py -h for help
 
 This simple script improves your SEO and UX. It adds lang attribute to the
@@ -247,11 +256,17 @@ These concepts compose a good practice to improve SEO and UX
  -  Server Side Rendering
 
  -  Javascript and css minified and purged with short variables names
+
  -  Responsive Design
+
  -  Mobile call and Whatsapp sms for mobiles websites
+
  -  Google my Business integration
+
  -  gzip and bzip2 compression
+
  -  Content Delivery Network
+
  -  HTTP caching in Client Side
 
 ## License

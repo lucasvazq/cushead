@@ -1,4 +1,4 @@
-1) Change the version in [setup.py](./setup.py)
+1) Change the version in ['setup.py'](./setup.py)
 
 2) Commit git:
 
