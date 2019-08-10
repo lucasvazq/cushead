@@ -1,6 +1,8 @@
 # cushead.py
 _Python 3_
 
+![Drag Racing](logo.png)
+
 [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
 
 This simple script improves your SEO and UX. It adds lang attribute to the 
