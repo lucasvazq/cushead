@@ -13,17 +13,17 @@ elements.
 
 [Usage with example](#usage-with-example)
 
- - [-h](#-h)
+- [-h](#-h)
 
- - [1 - Find the main file](#1---find-the-main-file)
+- [1 Find the main file](#1---find-the-main-file)
 
- - [2 - Define personalized values](#2---define-personalized-values)
+- [2 Define personalized values](#2---define-personalized-values)
 
- - [3 - Execute the script](#3---execute-the-script)
+- [3 Execute the script](#3---execute-the-script)
 
- - [4 - View results](#4---view-results)
+- [4 View results](#4---view-results)
 
- - [5 - Testing](#5---testing)
+- [5 Testing](#5---testing)
 
 [Other tools](#other-tools)
 
@@ -245,6 +245,10 @@ A good practice is to add sitemap.xml to your site, linking it in robots.txt
 
 These concepts compose a good practice to improve SEO and UX
 
+ - AVER
+ - ABER
+ -  ABER
+
  - Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
 
  -  Use rel profile attribute for refer to author or website owner
@@ -259,15 +263,14 @@ These concepts compose a good practice to improve SEO and UX
 
  -  Responsive Design
 
- -  Mobile call and Whatsapp sms for mobiles websites
+ - Mobile call and Whatsapp sms for mobiles websites
 
- -  Google my Business integration
+ - Google my Business integration
 
- -  gzip and bzip2 compression
+ - gzip and bzip2 compression
 
- -  Content Delivery Network
-
- -  HTTP caching in Client Side
+ - Content Delivery Network
+ - HTTP caching in Client Side
 
 ## License
 
