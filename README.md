@@ -37,16 +37,20 @@ elements.
 `cushead.py -h`
 
 ```
-help:
+usage: cushead.py -file PATH/TO/FILE [Options]. Do cushead.py -h for help
+
+This simple script improves your SEO and UX. It adds lang attribute to the
+<html> element and search and replace '$head$' string with personalized head
+elements. Git repository: https://github.com/lucasvazq/cushead.py
+
+Required:
+  -file FILEPATH        Path to file that want to edit.
   -preset FILENAME     Generate example file with presets.
 
-required arguments:
-  -file FILEPATH        Path to file that want to edit.
-
-optional arguments:
+Options:
   --exclude-comment     Exclude 'Custom head elements' comment.
   --exclude-html        Exclude html lang attribute.
-  --exclude-special     Exclude basic head config elements.
+  --exclude-config      Exclude basic head config elements.
   --exclude-basic       Exclude basic SEO elements.
   --exclude-opengraph   Exclude opengraph.
   --exclude-facebook    Exclude facebook.
@@ -64,10 +68,10 @@ elements. Example:
 _(my_index.html)_
 ```html
 <html> 
-    <head>
-        $head$
-        ...
-    </head>
+  <head>
+    $head$
+    ...
+  </head>
 </html>
 ```
 

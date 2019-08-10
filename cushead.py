@@ -23,8 +23,8 @@ def parameters():
         description=
             "This simple script improves your SEO and UX. It adds lang attribute to the " + 
             "<html> element and search and replace '$head$' string with personalized " + 
-            "head elements." +
-            "Git repository: https://github.com/mrsantos321/cushead.py")
+            "head elements. " +
+            "Git repository: https://github.com/lucasvazq/cushead.py")
     parser._action_groups.pop()
     required = parser.add_argument_group('Required')
     optional = parser.add_argument_group('Options')
