@@ -8,7 +8,7 @@ if sys.version_info[0] < 3:
 
 import types
 from importlib import machinery
-from os import fdopen, getcwd
+from os import getcwd
 from os.path import isfile, join
 
 import argparse

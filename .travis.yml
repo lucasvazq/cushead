@@ -5,6 +5,7 @@ notifications:
   email: false
 cache: pip
 install:
+  - pip install argparse
   - python setup.py install
 script:
   - python3 -m coverage run ./cushead.py -file ./test/cushead.txt

@@ -1,0 +1,9 @@
+[run]
+branch = True
+source = ./
+omit =
+    setup.py
+    build/*
+    dist/*
+[html]
+directory = coverage_html_report

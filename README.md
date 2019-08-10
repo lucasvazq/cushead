@@ -1,5 +1,5 @@
 # cushead.py
-###### _Python 3_
+_Python 3_
 
 [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
 
