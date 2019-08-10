@@ -26,11 +26,11 @@ elements.
 
 [License](#license)
 
-### Install
+# Install
 
 `pip3 install cushead.py`
 
-### Usage with example
+# Usage with example
 
 #### -h
 
@@ -151,38 +151,38 @@ You can generate full example preset file like this using:
 _(my_index.html)_
 ```html
 <html lang="en_US">
-	<head>
-		<!-- Custom head elements -->
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<meta name="robots" content="index, follow" />
-		<link rel="manifest" href="/manifest.json" />
-		<meta name="msapplication-config" content="/browserconfig.xml" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta http-equiv="Content-Language" content="en_US" />
-		<meta name="theme-color" content="#FFFFFF" />
-		<meta name="msapplication-TileColor" content="#FFFFFF" />
-		<title>Microsoft</title>
-		<meta name="description" content="Technology Solutions" />
-		<link rel="shortcut icon" href="/static/favicon.png" type="image/x-icon" />
-		<link rel="mask-icon" href="/maskicon.svg" color="#FFFFFF" />
-		<link rel="fluid-icon" href="/fluidicon.png" title="Microsoft" />
-		<meta name="subject" content="Home Page" />
-		<meta name="keywords" content="Microsoft, Windows" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="www.microsoft.com" />
-		<meta property="og:site_name" content="Microsoft" />
-		<meta property="og:title" content="Microsoft" />
-		<meta property="og:description" content="Technology Solutions" />
-		<meta property="og:image" content="/static/preview.png" />
-		<meta property="og:image:secure_url" content="/static/preview.png" />
-		<meta property="og:image:type" content="image/png" />
-		<meta name="og:image:alt" content="Microsoft - Technology Solutions" />
-		<meta porperty="fb:app_id" content="12345" />
-		<link rel="search" type="application/opensearchdescription+xml"title="Microsoft" href="/opensearch.xml" />
-		<meta name="author" content="Lucas Vazquez" />
-	</head>
+  <head>
+    <!-- Custom head elements -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="robots" content="index, follow" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Language" content="en_US" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <title>Microsoft</title>
+    <meta name="description" content="Technology Solutions" />
+    <link rel="shortcut icon" href="/static/favicon.png" type="image/x-icon" />
+    <link rel="mask-icon" href="/maskicon.svg" color="#FFFFFF" />
+    <link rel="fluid-icon" href="/fluidicon.png" title="Microsoft" />
+    <meta name="subject" content="Home Page" />
+    <meta name="keywords" content="Microsoft, Windows" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="www.microsoft.com" />
+    <meta property="og:site_name" content="Microsoft" />
+    <meta property="og:title" content="Microsoft" />
+    <meta property="og:description" content="Technology Solutions" />
+    <meta property="og:image" content="/static/preview.png" />
+    <meta property="og:image:secure_url" content="/static/preview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta name="og:image:alt" content="Microsoft - Technology Solutions" />
+    <meta porperty="fb:app_id" content="12345" />
+    <link rel="search" type="application/opensearchdescription+xml"title="Microsoft" href="/opensearch.xml" />
+    <meta name="author" content="Lucas Vazquez" />
+  </head>
 </html>
 ```
 
@@ -191,7 +191,7 @@ _(my_index.html)_
 [Facebook Debugger](https://developers.facebook.com/tools/debug/)
 [Twitter Card validator](https://cards-dev.twitter.com/validator)
 
-### Other tools
+# Other tools
 
 #### Icons tool generator
 
@@ -244,7 +244,7 @@ These concepts compose a good practice to improve SEO and UX
 - Content Delivery Network
 - HTTP caching in Client Side
 
-### License
+# License
 
 **cushead.py** © 2019 Lucas Vazquez. Released under the [MIT] License.
 
