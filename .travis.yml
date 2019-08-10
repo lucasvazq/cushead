@@ -9,3 +9,4 @@ install:
   - python setup.py install
 script:
   - python3 -m coverage run ./cushead.py -file ./test/cushead.txt
+  - codecov --token=6c5354d8-7b78-4212-88a1-bf0df669e075
