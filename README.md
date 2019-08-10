@@ -13,6 +13,10 @@ elements.
 
 [Usage with example](#usage-with-example)
 
+[QUE](#usage-with-example)
+
+- [QUE2](#usage-with-example)
+
 - [-h](#-h)
 
 - [1 Find the main file](#1---find-the-main-file)
