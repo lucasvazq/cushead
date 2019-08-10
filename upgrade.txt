@@ -1,5 +1,0 @@
-1) Change setup.py version
-2) Run:
-twine upload --skip-existing dist/*
-3) Upgrade package in machine:
-pip install cushead --upgrade

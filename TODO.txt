@@ -1,5 +1,0 @@
-https://aaronparecki.com/2011/07/11/3/how-to-let-google-power-opensearch-on-your-website
-https://codegena.com/add-google-chrome-omnibox-search-support-for-your-site/
-
-fluid-icon https://www.humanlevel.com/articulos/desarrollo-web/como-crear-iconos-para-navegadores-iphone-ipad-android-windows-8-y-mac.html
-mask-icon https://developer.yoast.com/safari-pinned-tab-icon-mask-icon/ (SVG)

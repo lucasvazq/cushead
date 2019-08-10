@@ -1,20 +1,23 @@
 import setuptools
-with open("README.md", "r") as fh:
+with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(
     name='cushead',  
-    version='2.2.0',
+    version='2.3.0',
     scripts=['cushead.py'],
-    author="Lucas Vazquez",
-    author_email="lucas5zvazquez@gmail.com",
-    description="Improves your SEO and the UX generating custom head elements.",
+    author='Lucas Vazquez',
+    author_email='lucas5zvazquez@gmail.com',
+    description=
+        "This simple script improve your SEO and UX. " + 
+        "It add lang attribute to the html element and search and replace " + 
+        "'$head$' string with personalized head elements.",
     long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/lucasvazq/cushead.py",
+    long_description_content_type='text/markdown',
+    url='https://github.com/lucasvazq/cushead.py',
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
     ],
 )
