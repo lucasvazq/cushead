@@ -252,4 +252,4 @@ These concepts compose a good practice to improve SEO and UX
 
 **cushead.py** © 2019 Lucas Vazquez. Released under the [MIT] License.
 
-[MIT]: http://mit-license.org/
+[mit]: http://mit-license.org/

@@ -19,8 +19,8 @@ def parameters():
     parser = argparse.ArgumentParser(
         usage="cushead.py -file PATH/TO/FILE [Options]. Do cushead.py -h for help",
         description=
-            "This simple script improves your SEO and UX. It adds lang attribute to the " + 
-            "<html> element and search and replace '$head$' string with personalized " + 
+            "This simple script improves your SEO and UX. It adds lang attribute to the " +
+            "<html> element and search and replace '$head$' string with personalized " +
             "head elements. " +
             "Git repository: https://github.com/lucasvazq/cushead.py")
     parser._action_groups.pop()
@@ -31,7 +31,7 @@ def parameters():
     required.add_argument('-file', metavar=('FILEPATH'), dest='file',
         help="Path to file that want to edit.")
     required.add_argument('-preset', metavar=('FILENAME'), dest='preset',
-        help="Generate example file with presets.")
+        help="Generate example file with presets.") 
 
     # Optional arguments
     optional.add_argument(
@@ -139,10 +139,10 @@ def make_preset(file):
     # OPENSEARCH
     # OpenSearch title pretend to be the same as title from BASIC SEO.
     'opensearch':       '/opensearch.xml',
-    
+
     # AUTHOR
     'author':           'Lucas Vazquez'
-    
+
 }'''
 
     f.write(values)
@@ -224,7 +224,7 @@ def add_basic_seo(dictionary, temp):
     # icon
     if 'icon' in dictionary:
         if len(dictionary['icon']):
-            temp.append('<link rel="shortcut icon" href="' + dictionary['icon'] + 
+            temp.append('<link rel="shortcut icon" href="' + dictionary['icon'] +
             '" type="image/x-icon" />')
     # mask-icon
     if 'mask-icon' in dictionary:
@@ -253,7 +253,7 @@ def add_basic_seo(dictionary, temp):
         if len(dictionary['keywords']):
             temp.append('<meta name="keywords" content="' + dictionary['keywords'] +
                 '" />')
-            
+
     return temp
 
 
@@ -327,7 +327,7 @@ def add_opengraph(dictionary, temp):
             connector = ''
         text = title + connector + description
         temp.append('<meta name="og:image:alt" content="' + text + '" />')
-    
+
     return temp
 
 

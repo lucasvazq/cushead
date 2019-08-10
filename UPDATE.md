@@ -12,4 +12,4 @@
 
     `pip install cushead.py --upgrade`
 
-[setup.py]: ./setup.py
+[setuppy]: ./setup.py
