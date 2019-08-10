@@ -246,8 +246,11 @@ A good practice is to add sitemap.xml to your site, linking it in robots.txt
 These concepts compose a good practice to improve SEO and UX
 
  - AVER
- - ABER
+- ABER
  -  ABER
+ -ABER
+-ABER
+ - YQUE
 
  - Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
 
