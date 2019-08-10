@@ -6,7 +6,7 @@ notifications:
 cache: pip
 install:
   - pip install argparse
-  - apt install python3-pip
+  - sudo apt install python3-pip
   - python setup.py install
 script:
   - python3 -m coverage run ./cushead.py -file ./test/cushead.txt
