@@ -1,13 +1,13 @@
 # cushead.py
 ###### _Python 3_
 
-[![Build Status](https://travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
+[![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
 
 This simple script improves your SEO and UX. It adds lang attribute to the 
 <html> element and search and replace '$head$' string with personalized head 
 elements.
 
-# MENU
+## MENU
 
 [Install](#install)
 
@@ -15,7 +15,7 @@ elements.
 - [-h](#-h)
 - [1 - Find the main file](#1---find-the-main-file)
 - [2 - Define personalized values](#2---define-personalized-values)
-- [3 - Execute the script](#3---execute-the-script)
+  - [3 - Execute the script](#3---execute-the-script)
 - [4 - View results](#4---view-results)
 - [5 - Testing](#5---testing)
 
@@ -26,13 +26,13 @@ elements.
 
 [License](#license)
 
-# Install
+## Install
 
 `pip3 install cushead.py`
 
-# Usage with example
+## Usage with example
 
-#### -h
+### -h
 
 `cushead.py -h`
 
@@ -59,7 +59,7 @@ Options:
   --exclude-author      Exclude author.
 ```
 
-#### 1 - Find the main file
+### 1 - Find the main file
 
 This is the file that wants to edit. It needs to have the <html> element for 
 add the lang attribute, and a '$head$' string that be replaced for the custom 
@@ -78,7 +78,7 @@ _(my_index.html)_
 If there isn't the <html> element, cant add the lang attribute. Same way, if 
 there isn't the '$head$' string, cant adds the custom head elements.
 
-#### 2 - Define personalized values
+### 2 - Define personalized values
 
 Create a file with this inside:
 
@@ -146,11 +146,11 @@ In values there is a key called 'path', this referred to the path where is the f
 You can generate full example preset file like this using:
 `python3 cushead.py -preset cushead.txt`
 
-#### 3 - Execute the script
+### 3 - Execute the script
 
 `cushead.py -file cushead.txt --exclude-twitter`
 
-#### 4 - View results
+### 4 - View results
 
 _(my_index.html)_
 ```html
@@ -184,20 +184,20 @@ _(my_index.html)_
     <meta property="og:image:type" content="image/png" />
     <meta name="og:image:alt" content="Microsoft - Technology Solutions" />
     <meta porperty="fb:app_id" content="12345" />
-    <link rel="search" type="application/opensearchdescription+xml"title="Microsoft" href="/opensearch.xml" />
+    <link rel="search" type="application/opensearchdescription+xml" title="Microsoft" href="/opensearch.xml" />
     <meta name="author" content="Lucas Vazquez" />
   </head>
 </html>
 ```
 
-#### 5 - Testing
+### 5 - Testing
 
 [Facebook Debugger](https://developers.facebook.com/tools/debug/)
 [Twitter Card validator](https://cards-dev.twitter.com/validator)
 
-# Other tools
+## Other tools
 
-#### Icons tool generator
+### Icons tool generator
 
 [https://www.favicon-generator.org/](https://www.favicon-generator.org/)
 
@@ -226,13 +226,13 @@ Mixing it, you will need to ignore the next lines:
 17  <meta name="theme-color" content="#ffffff">
 ```
 
-#### Sitemap
+### Sitemap
 
 A good practice is to add sitemap.xml to your site, linking it in robots.txt
 [Sitemap generator](https://www.xml-sitemaps.com/)
 [Test your sitemap with google](https://search.google.com/search-console/not-verified?original_url=/search-console/sitemaps)
 
-#### Other concepts
+### Other concepts
 
 These concepts compose a good practice to improve SEO and UX
 - Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
@@ -248,7 +248,7 @@ These concepts compose a good practice to improve SEO and UX
 - Content Delivery Network
 - HTTP caching in Client Side
 
-# License
+## License
 
 **cushead.py** © 2019 Lucas Vazquez. Released under the [MIT] License.
 
