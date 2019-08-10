@@ -1,9 +1,11 @@
-# cushead.py
-_Python 3_
-
-![Drag Racing](logo.png)
+<p align="center">
+  <img src="./logo.png">
+</p>
 
 [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
+
+# cushead.py
+_Python 3_
 
 This simple script improves your SEO and UX. It adds lang attribute to the 
 <html> element and search and replace '$head$' string with personalized head 

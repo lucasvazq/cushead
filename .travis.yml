@@ -6,6 +6,7 @@ notifications:
 cache: pip
 install:
   - pip install argparse
+  - pip install codecov
   - python setup.py install
   - python3 -m pip install coverage
 script:
