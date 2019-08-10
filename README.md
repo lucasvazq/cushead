@@ -201,7 +201,7 @@ _(my_index.html)_
 
 [https://www.favicon-generator.org/](https://www.favicon-generator.org/)
 
-```
+```txt
 Steps:
   Add image
   Turn on:
@@ -235,18 +235,18 @@ A good practice is to add sitemap.xml to your site, linking it in robots.txt
 ### Other concepts
 
 These concepts compose a good practice to improve SEO and UX
--   Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
-  - Use rel profile attribute for refer to author or website owner
-  -   Accelerated Mobiles Pages
-- Progressive Web Apps
-- Server Side Rendering
-- Javascript and css minified and purged with short variables names
-- Responsive Design
-- Mobile call and Whatsapp sms for mobiles websites
-- Google my Business integration
-- gzip and bzip2 compression
-- Content Delivery Network
-- HTTP caching in Client Side
+-  Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
+-  Use rel profile attribute for refer to author or website owner
+-  Accelerated Mobiles Pages
+-  Progressive Web Apps
+-  Server Side Rendering
+-  Javascript and css minified and purged with short variables names
+-  Responsive Design
+-  Mobile call and Whatsapp sms for mobiles websites
+-  Google my Business integration
+-  gzip and bzip2 compression
+-  Content Delivery Network
+-  HTTP caching in Client Side
 
 ## License
 
