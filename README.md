@@ -12,19 +12,18 @@ elements.
 [Install](#install)
 
 [Usage with example](#usage-with-example)
- - [QUE2](#usage-with-example)
 
-- [-h](#-h)
+1) [-h](#-h)
 
-- [1 Find the main file](#1---find-the-main-file)
+2) [1 Find the main file](#1---find-the-main-file)
 
-- [2 Define personalized values](#2---define-personalized-values)
+3) [2 Define personalized values](#2---define-personalized-values)
 
-- [3 Execute the script](#3---execute-the-script)
+4) [3 Execute the script](#3---execute-the-script)
 
-- [4 View results](#4---view-results)
+5) [4 View results](#4---view-results)
 
-- [5 Testing](#5---testing)
++ [5 Testing](#5---testing)
 
 [Other tools](#other-tools)
 
