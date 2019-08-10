@@ -6,8 +6,8 @@ notifications:
 cache: pip
 install:
   - pip install argparse
-  - sudo apt install python3-pip
   - python setup.py install
+  - python3 -m pip install coverage
 script:
   - python3 -m coverage run ./cushead.py -file ./test/cushead.txt
   - codecov --token=6c5354d8-7b78-4212-88a1-bf0df669e075
