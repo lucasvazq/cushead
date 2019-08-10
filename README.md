@@ -13,8 +13,6 @@ elements.
 
 [Usage with example](#usage-with-example)
 
-[QUE](#usage-with-example)
-
 - [QUE2](#usage-with-example)
 
 - [-h](#-h)
