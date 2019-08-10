@@ -6,13 +6,11 @@ import sys
 if sys.version_info[0] < 3:
     raise Exception("Python 3 or a more recent version is required.")
 
-import json
 import types
-from configparser import ConfigParser
 from importlib import machinery
-from os import fdopen, getcwd, path, remove
+from os import fdopen, getcwd
+from os.path import isfile, join 
 from shutil import move
-from tempfile import mkstemp
 
 import argparse
 
@@ -80,7 +78,7 @@ def parameters():
         raise Exception("Can't use -preset and -file arguments together. " +
             "Do \'cushead.py -h' for help.")
     if parser.file:
-        if not path.isfile(parser.file):
+        if not isfile(parser.file):
             raise Exception("Argument passed by -file (" + str(parser.file) + ") can't " +
                 "be found.")
 
@@ -89,7 +87,7 @@ def parameters():
 
 def make_preset(file):
 
-    file = path.join(getcwd(), file)
+    file = join(getcwd(), file)
     f = open(file, 'w+')
     values = '''values = {
 
@@ -156,7 +154,7 @@ def make_preset(file):
 def get_values(file):
 
     name = file
-    file = path.join(getcwd(), file)
+    file = join(getcwd(), file)
 
     loader = machinery.SourceFileLoader(name, file)
     mod = types.ModuleType(loader.name)
@@ -260,9 +258,6 @@ def add_basic_seo(dictionary, temp):
 
 
 def add_opengraph(dictionary, temp):
-
-    '''Special'''
-
     # og:locale
     if 'locale' in dictionary:
         if len(dictionary['locale']):
@@ -278,9 +273,6 @@ def add_opengraph(dictionary, temp):
         if len(dictionary['og:url']):
             temp.append('<meta property="og:url" content="' + dictionary['og:url'] +
                 '" />')
-
-    '''General'''
-
     # og:site_name
     if 'title' in dictionary:
         if len(dictionary['title']):
@@ -350,13 +342,7 @@ def add_facebook(dictionary, temp):
 
 
 def add_twitter(dictionary, temp):
-
-    '''Required'''
-
     temp.append('<meta name="twitter:card" content="summary">')
-
-    '''General'''
-
     # twitter:site
     if 'tw:site' in dictionary:
         if len(dictionary['tw:site']):
@@ -439,20 +425,15 @@ def main():
     args = parameters()
 
     if args.preset:
-        
         make_preset(args.preset)
-
         print('PATH: ' + args.preset)
-        print('FULLPATH: ' + path.join(getcwd(), args.preset))
+        print('FULLPATH: ' + join(getcwd(), args.preset))
 
     else:
-
         dictionary = get_values(args.file)
-
         if not len(dictionary['path']):
             raise Exception('Miss \'path\' element on -file ' + args.file + ' and its ' +
                 'required.')
-
         temp = []
         if args.basic_config:
             temp = add_basic_config(dictionary, temp)
@@ -468,8 +449,6 @@ def main():
             temp = add_opensearch(dictionary, temp)
         if args.author:
             temp = add_author(dictionary, temp)
-
-        success = False
 
         # Read contents from file as a single string
         file_handle = open(dictionary['path'], 'r')
@@ -513,7 +492,7 @@ def main():
         file_handle.close()
 
         print('\nPATH: ' + dictionary['path'])
-        print('FULLPATH: ' + path.join(getcwd(), dictionary['path']))
+        print('FULLPATH: ' + join(getcwd(), dictionary['path']))
 
     print('\nDone')
 

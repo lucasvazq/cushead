@@ -235,9 +235,9 @@ A good practice is to add sitemap.xml to your site, linking it in robots.txt
 ### Other concepts
 
 These concepts compose a good practice to improve SEO and UX
-- Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
-- Use rel profile attribute for refer to author or website owner
-- Accelerated Mobiles Pages
+-   Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
+  - Use rel profile attribute for refer to author or website owner
+  -   Accelerated Mobiles Pages
 - Progressive Web Apps
 - Server Side Rendering
 - Javascript and css minified and purged with short variables names
