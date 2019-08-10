@@ -235,11 +235,17 @@ A good practice is to add sitemap.xml to your site, linking it in robots.txt
 ### Other concepts
 
 These concepts compose a good practice to improve SEO and UX
- -  Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
+
+ - Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
+
  -  Use rel profile attribute for refer to author or website owner
+
  -  Accelerated Mobiles Pages
+
  -  Progressive Web Apps
+
  -  Server Side Rendering
+
  -  Javascript and css minified and purged with short variables names
  -  Responsive Design
  -  Mobile call and Whatsapp sms for mobiles websites
@@ -250,6 +256,4 @@ These concepts compose a good practice to improve SEO and UX
 
 ## License
 
-**cushead.py** © 2019 Lucas Vazquez. Released under the [MIT] License.
-
-[mit]: http://mit-license.org/
+**cushead.py** © 2019 Lucas Vazquez. Released under the [MIT](http://mit-license.org/) License.
