@@ -12,8 +12,7 @@ elements.
 [Install](#install)
 
 [Usage with example](#usage-with-example)
-
-- [QUE2](#usage-with-example)
+ - [QUE2](#usage-with-example)
 
 - [-h](#-h)
 
