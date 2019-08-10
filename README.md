@@ -253,9 +253,7 @@ These concepts compose a good practice to improve SEO and UX
  - YQUE
 
  - Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
-
- -  Use rel profile attribute for refer to author or website owner
-
+ - Use rel profile attribute for refer to author or website owner
  -  Accelerated Mobiles Pages
 
  -  Progressive Web Apps
