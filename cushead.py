@@ -9,8 +9,7 @@ if sys.version_info[0] < 3:
 import types
 from importlib import machinery
 from os import fdopen, getcwd
-from os.path import isfile, join 
-from shutil import move
+from os.path import isfile, join
 
 import argparse
 
@@ -31,7 +30,7 @@ def parameters():
     required.add_argument('-file', metavar=('FILEPATH'), dest='file',
         help="Path to file that want to edit.")
     required.add_argument('-preset', metavar=('FILENAME'), dest='preset',
-        help="Generate example file with presets.") 
+        help="Generate example file with presets.")
 
     # Optional arguments
     optional.add_argument(

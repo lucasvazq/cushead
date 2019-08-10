@@ -1,4 +1,4 @@
-1) Change the version in [setup.py]
+1) Change the version in [setup.py](./setup.py)
 
 2) Commit git:
 
@@ -11,5 +11,3 @@
 4) Upgrade package in machine:
 
     `pip install cushead.py --upgrade`
-
-[setuppy]: ./setup.py

@@ -2,14 +2,14 @@ import setuptools
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(
-    name='cushead',  
+    name='cushead',
     version='2.3.0',
     scripts=['cushead.py'],
     author='Lucas Vazquez',
     author_email='lucas5zvazquez@gmail.com',
     description=
-        "This simple script improve your SEO and UX. " + 
-        "It add lang attribute to the html element and search and replace " + 
+        "This simple script improve your SEO and UX. " +
+        "It add lang attribute to the html element and search and replace " +
         "'$head$' string with personalized head elements.",
     long_description=long_description,
     long_description_content_type='text/markdown',
