@@ -13,25 +13,25 @@ elements.
 
 [Usage with example](#usage-with-example)
 
-1) [-h](#-h)
+1) [Command -h](#command--h)
 
-2) [1 Find the main file](#1---find-the-main-file)
+2) [The main file](#the-main-file)
 
-3) [2 Define personalized values](#2---define-personalized-values)
+3) [Define personalized values](#define-personalized-values)
 
-4) [3 Execute the script](#3---execute-the-script)
+4) [Execute the script](#execute-the-script)
 
-5) [4 View results](#4---view-results)
+5) [View results](#view-results)
 
-+ [5 Testing](#5---testing)
+6) [Testing](#testing)
 
 [Other tools](#other-tools)
 
- - [Icons tool generator](#icons-tool-generator)
+1) [Icons tool generator](#icons-tool-generator)
 
- - [Sitemap](#sitemap)
+2) [Sitemap](#sitemap)
 
- - [Another concepts](#another-concepts)
+3) [Other concepts](#other-concepts)
 
 [License](#license)
 
@@ -41,7 +41,7 @@ elements.
 
 ## Usage with example
 
-### -h
+### Command -h
 
 `cushead.py -h`
 
@@ -68,7 +68,7 @@ Options:
   --exclude-author      Exclude author.
 ```
 
-### 1 - Find the main file
+### The main file
 
 This is the file that wants to edit. It needs to have the <html> element for 
 add the lang attribute, and a '$head$' string that be replaced for the custom 
@@ -87,7 +87,7 @@ _(my_index.html)_
 If there isn't the <html> element, cant add the lang attribute. Same way, if 
 there isn't the '$head$' string, cant adds the custom head elements.
 
-### 2 - Define personalized values
+### Define personalized values
 
 Create a file with this inside:
 
@@ -155,11 +155,11 @@ In values there is a key called 'path', this referred to the path where is the f
 You can generate full example preset file like this using:
 `python3 cushead.py -preset cushead.txt`
 
-### 3 - Execute the script
+### Execute the script
 
 `cushead.py -file cushead.txt --exclude-twitter`
 
-### 4 - View results
+### View results
 
 _(my_index.html)_
 ```html
@@ -199,7 +199,7 @@ _(my_index.html)_
 </html>
 ```
 
-### 5 - Testing
+### Testing
 
 [Facebook Debugger](https://developers.facebook.com/tools/debug/)
 [Twitter Card validator](https://cards-dev.twitter.com/validator)
@@ -245,33 +245,18 @@ A good practice is to add sitemap.xml to your site, linking it in robots.txt
 
 These concepts compose a good practice to improve SEO and UX
 
- - AVER
-- ABER
- -  ABER
- -ABER
--ABER
- - YQUE
-
- - Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
- - Use rel profile attribute for refer to author or website owner
- -  Accelerated Mobiles Pages
-
- -  Progressive Web Apps
-
- -  Server Side Rendering
-
- -  Javascript and css minified and purged with short variables names
-
- -  Responsive Design
-
- - Mobile call and Whatsapp sms for mobiles websites
-
- - Google my Business integration
-
- - gzip and bzip2 compression
-
- - Content Delivery Network
- - HTTP caching in Client Side
+1) Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
+2) Use rel profile attribute for refer to author or website owner
+3) Accelerated Mobiles Pages
+4) Progressive Web Apps
+5) Server Side Rendering
+6) Javascript and css minified and purged with short variables names
+7) Responsive Design
+8) Mobile call and Whatsapp sms for mobiles websites
+9) Google my Business integration
+10) gzip and bzip2 compression
+11) Content Delivery Network
+12) HTTP caching in Client Side
 
 ## License
 

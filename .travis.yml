@@ -7,4 +7,4 @@ cache: pip
 install:
   - python setup.py install
 script:
-  - echo "no scripts"
+  - python3 -m coverage run ./cushead.py -file ./test/cushead.txt

@@ -3,7 +3,7 @@ with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(
     name='cushead.py',
-    version='2.3.0',
+    version='2.3.1',
     scripts=['cushead.py'],
     author='Lucas Vazquez',
     author_email='lucas5zvazquez@gmail.com',

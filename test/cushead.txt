@@ -1,0 +1,55 @@
+values = {
+
+    # FILE PATH
+    'path':             './test/index.html',
+
+    # BASIC CONFIG
+    'content-type':     'text/html; charset=utf-8',
+    'X-UA-Compatible':  'ie=edge',
+    'robots':           'index, follow',
+    'manifest':         '/manifest.json',
+    'msapp-config':     '/browserconfig.xml',
+    'viewport':         {'width': 'device-width', 'initial-scale': '1'},
+    'locale':           'en_US',
+    'color':            '#FFFFFF',
+
+    # BASIC SEO
+    # Mask icon color obtained from BASIC CONFIG.
+    'title':            'Microsoft',
+    'description':      'Technology Solutions',
+    'icon':             '/static/favicon.png',
+    'mask-icon':        '/maskicon.svg', # svg file type
+    'fluid-icon':       '/fluidicon.png', # 512x512 png file type.
+    'subject':          'Home Page',
+    'keywords':         'Microsoft, Windows',
+
+    # SOCIAL MEDIA
+
+    # General
+    'preview':          '/static/preview.png', # Big image preview
+
+    # Opengraph
+    # og:title, og:description, og:image, og:image:secure_url and og:locale
+    # obtained from BASIC SEO and BASIC CONFIG.
+    'og:url':           'www.microsoft.com',
+    'og:type':          'website', # http://ogp.me/#types
+    'og:image:type':    'image/png', # image/jpeg, image/gif or image/png
+
+    # Facebook
+    'fb:app_id':        '12345', # (Str) Facebook App ID
+
+    # Twitter
+    # Only support twitter:card = summary
+    # twitter:title, twitter:description, twitter:image and twitter:image:alt
+    # obtained from BASIC SEO and General - SOCIAL MEDIA.
+    'tw:site':          '@Microsoft', # Commerce Twitter account
+    'tw:creator:id':    '123456', # Page editor ID
+
+    # OPENSEARCH
+    # OpenSearch title pretend to be the same as title from BASIC SEO.
+    'opensearch':       '/opensearch.xml',
+
+    # AUTHOR
+    'author':           'Lucas Vazquez'
+
+}

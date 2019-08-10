@@ -341,7 +341,7 @@ def add_facebook(dictionary, temp):
 
 
 def add_twitter(dictionary, temp):
-    temp.append('<meta name="twitter:card" content="summary">')
+    temp.append('<meta name="twitter:card" content="summary" />')
     # twitter:site
     if 'tw:site' in dictionary:
         if len(dictionary['tw:site']):
