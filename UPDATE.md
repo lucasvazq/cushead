@@ -4,10 +4,14 @@
 
     `git add . && git commit -m 'new version' && git push origin master`
 
-3) Update to Twine
+3) Create new package
+
+    `python3 setup.py sdist`
+
+4) Upload to PYPI using twine
 
     `twine upload --skip-existing dist/*`
 
-4) Upgrade package in machine:
+5) Upgrade package in machine:
 
     `pip install cushead.py --upgrade`

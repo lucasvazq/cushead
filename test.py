@@ -120,6 +120,12 @@ class TestApp(unittest.TestCase):
     def test_17(self):
         main(['-file', './test/miss_description/test.txt'])
 
+    # void icon
+    # Success
+    @classmethod
+    def test_18(self):
+        main(['-file', './test/void_icon/test.txt'])
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestApp))
