@@ -1,4 +1,4 @@
-1) Change the version in ['_version.py'](./_version.py)
+1) Change the version in ['version.py'](./version.py)
 
 2) Edit version in logo.xcf and logo.png
 

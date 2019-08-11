@@ -27,8 +27,8 @@ Try running:
 
 from os import name as os_name
 
-from _info import get_version
 from cushead import main
+from version import get_version
 
 
 if os_name == 'nt':

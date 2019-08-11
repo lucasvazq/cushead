@@ -1,8 +1,8 @@
 README.md
 __main__.py
-_info.py
 cushead.py
 setup.py
+version.py
 cushead.py.egg-info/PKG-INFO
 cushead.py.egg-info/SOURCES.txt
 cushead.py.egg-info/dependency_links.txt

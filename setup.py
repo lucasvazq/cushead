@@ -30,14 +30,14 @@ version of Python that is >=3.5 and <4.
 
 import setuptools
 
-from _info import get_version
+from version import get_version
 
 
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(
     name='cushead.py',
-    scripts=['__main__.py', '_info.py', 'cushead.py'],
+    scripts=['__main__.py', 'version.py', 'cushead.py'],
     version=get_version(),
     url='https://github.com/lucasvazq/cushead.py',
     project_urls={
