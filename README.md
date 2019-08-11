@@ -204,6 +204,7 @@ _(my_index.html)_
 ### Testing
 
 [Facebook Debugger](https://developers.facebook.com/tools/debug/)
+
 [Twitter Card validator](https://cards-dev.twitter.com/validator)
 
 ## Other tools
@@ -236,7 +237,9 @@ Mixing it, you will need to ignore the next lines:
 ### Sitemap
 
 A good practice is to add sitemap.xml to your site, linking it in robots.txt
+
 [Sitemap generator](https://www.xml-sitemaps.com/)
+
 [Test your sitemap with google](https://search.google.com/search-console/not-verified?original_url=/search-console/sitemaps)
 
 ### Other concepts
