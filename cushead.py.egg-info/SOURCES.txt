@@ -1,5 +1,6 @@
 README.md
 __main__.py
+_info.py
 cushead.py
 setup.py
 cushead.py.egg-info/PKG-INFO

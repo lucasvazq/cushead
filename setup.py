@@ -37,7 +37,7 @@ with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(
     name='cushead.py',
-    scripts=['__main__.py', '_version.py', 'cushead.py'],
+    scripts=['__main__.py', '_info.py', 'cushead.py'],
     version=get_version(),
     url='https://github.com/lucasvazq/cushead.py',
     project_urls={
