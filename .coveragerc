@@ -4,8 +4,8 @@ source = ./
 omit =
     setup.py
     test/*
-    build/*
     dist/*
+    cushead.py.egg-info/*
     __init__.py
 [report]
 exclude_lines =
