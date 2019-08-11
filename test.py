@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from __main__ import main
+from cushead import main
 
 
 class TestApp(unittest.TestCase):
