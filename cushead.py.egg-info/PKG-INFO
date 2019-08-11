@@ -52,7 +52,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
         
         ## Install
         
-        `python3 -m pip install cushead`
+        `python3 -m pip install cushead.py`
         
         ## Usage with example
         
