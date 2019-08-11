@@ -42,7 +42,7 @@ This simple script improves your SEO and UX. It adds lang attribute to the <html
 
 ## Install
 
-`python3 -m pip install cushead`
+`python3 -m pip install cushead.py`
 
 ## Usage with example
 

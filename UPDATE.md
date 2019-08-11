@@ -14,4 +14,4 @@
 
 5) Upgrade package in machine:
 
-    `pip install cushead.py --upgrade`
+    `python3 -m pip install cushead.py --upgrade`
