@@ -11,4 +11,4 @@ install:
   - python3 -m pip install coverage
 script:
   - python3 -m coverage run ./test.py
-  - codecov --token=6c5354d8-7b78-4212-88a1-bf0df669e075
+  - codecov

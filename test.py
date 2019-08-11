@@ -71,7 +71,7 @@ class TestApp(unittest.TestCase):
     # file passed with -file are void
     # Exception
     def test_11(self):
-        main(['-file', './test/void_preset/test.txt'])
+        main(['-file', './test/miss_value_preset/test.txt'])
 
     # missing some key-value pairs
     # color, title, preview, description
@@ -89,6 +89,11 @@ class TestApp(unittest.TestCase):
     # Success
     def test_14(self):
         main(['-file', './test/void_except_path/test.txt'])
+
+    # void all values
+    # Exception
+    def test_15(self):
+        main(['-file', './test/void_preset/test.txt'])
 
 def suite():
     suite = unittest.TestSuite()
