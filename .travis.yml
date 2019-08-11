@@ -11,5 +11,4 @@ install:
   - python3 -m pip install coverage
 script:
   - python3 -m coverage run ./test.py
-after_succes:
   - codecov
