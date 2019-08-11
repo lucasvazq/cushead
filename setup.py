@@ -34,7 +34,7 @@ with open('README.md', 'r') as fh:
 setuptools.setup(
     name='cushead.py',
     scripts=['cushead.py'],
-    version='2.3.2',
+    version='2.3.3',
     url='https://github.com/lucasvazq/cushead.py',
     project_urls={
         'Documentation': 'https://docs.djangoproject.com/',
