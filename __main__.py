@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from cushead import main
 
+# Check Python version compatibility
 CURRENT_PYTHON = sys.version_info[:2]
 MIN_PYTHON = (3, 5)
 MAX_PYTHON = (4, 0)
@@ -12,7 +12,55 @@ if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON > MAX_PYTHON:
 else:
     err = False
 if err:
-    raise Exception("Python >=3.5 and <4 is required.")
+    sys.stderr.write("""
+==========================
+Unsupported Python version
+==========================
+This version of cushead.py requires Python >=3.5 and <4, but you're trying to
+run it with Python {}.{}.
+Try running:
+    $ python3 cushead.py
+""".format(
+        *(CURRENT_PYTHON))
+    )
+    sys.exit(1)
+
+import os
+
+from cushead import main
+
+# Obtain __version__
+exec(open('./_version.py').read())
+
+if os.name == 'nt':
+    COLOR = ''
+    RESET = ''
+else:
+    COLOR = '\033[1;34m'
+    RESET = '\033[0;0m'
+print('''{}
+   ____  _   _  ____   _   _  _____     _     ____     ____ __   __
+  / ___|| | | |/ ___| | | | || ____|   / \   |  _ \   |  _ \\\ \ / /
+ | |    | | | |\___ \ | |_| ||  _|    / _ \  | | | |  | |_) |\ V / 
+ | |___ | |_| | ___) ||  _  || |___  / ___ \ | |_| |_ |  __/  | |  
+  \____| \___/ |____/ |_| |_||_____|/_/   \_\|____/(_)|_|     |_|  
+                             _       _
+                             _/     /
+                            /    __/
+         UX / SEO         _/  __/           v {}
+                         / __/
+                        / /
+                       /'
+                       
+Author: Lucas Vazquez
+Mail: lucas5zvazquez@gmail.com
+Page: https://github.com/lucasvazq
+License: MIT
+Source: https://github.com/lucasvazq/cushead.py
+
+For help run: python3 cushead.py -h
+{}
+'''.format(COLOR, __version__, RESET))
 
 if __name__ == '__main__':
     main(sys.argv[1:])

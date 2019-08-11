@@ -429,8 +429,6 @@ def add_author(dictionary, temp):
 
 def main(args):
 
-    print('cushead.py -v 2.4.4')
-
     args = parse_args(args)
 
     if args.preset:

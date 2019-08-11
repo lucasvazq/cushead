@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cushead.py
-Version: 2.4.4
+Version: 2.4.5
 Summary: This simple script improve your SEO and UX. It add lang attribute to the html element and search and replace '$head$' string with personalized head elements.
 Home-page: https://github.com/lucasvazq/cushead.py
 Author: Lucas Vazquez

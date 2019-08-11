@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import setuptools
 import sys
 
 CURRENT_PYTHON = sys.version_info[:2]
@@ -29,12 +28,17 @@ version of Python that is >=3.5 and <4.
     )
     sys.exit(1)
 
+import setuptools
+
+# obtain __version__
+exec(open('./_version.py').read())
+
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(
     name='cushead.py',
     scripts=['__main__.py'],
-    version='2.4.4',
+    version=__version__,
     url='https://github.com/lucasvazq/cushead.py',
     project_urls={
         'Documentation': 'https://github.com/lucasvazq/cushead.py/blob/master/README.md',
