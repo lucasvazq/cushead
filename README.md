@@ -3,6 +3,7 @@
 </p>
 
 [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce412113e4144c9f9739a99a0d0b77f5)](https://app.codacy.com/app/lucasvazq/cushead.py?utm_source=github.com&utm_medium=referral&utm_content=lucasvazq/cushead.py&utm_campaign=Badge_Grade_Dashboard)
 
 # cushead.py
 _Python 3_

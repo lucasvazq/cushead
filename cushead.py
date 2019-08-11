@@ -14,7 +14,7 @@ from os.path import isfile, join
 import argparse
 
 
-def parameters():
+def parse_args(args):
     parser = argparse.ArgumentParser(
         usage="cushead.py -file PATH/TO/FILE [Options]. Do cushead.py -h for help",
         description=
@@ -70,7 +70,7 @@ def parameters():
     parser.set_defaults(opensearch=True)
     parser.set_defaults(author=True)
 
-    parser = parser.parse_args()
+    parser = parser.parse_args(args)
     if not (parser.preset or parser.file):
         raise Exception("Miss -file argument. Do 'cushead.py -h' for help.")
     if parser.preset and parser.file:
@@ -82,7 +82,6 @@ def parameters():
                 "be found.")
 
     return parser
-
 
 def make_preset(file):
 
@@ -419,9 +418,11 @@ def add_author(dictionary, temp):
     return temp
 
 
-def main():
+def main(args):
 
-    args = parameters()
+    print(args)
+
+    args = parse_args(args)
 
     if args.preset:
         make_preset(args.preset)
@@ -460,7 +461,7 @@ def main():
             space = space[0].split('\n')
             space = space[len(space) - 1]
             if args.comment:
-                concat = '<!-- Custom head elements -->\n'
+                concat = space + '<!-- Custom head elements -->\n'
             else:
                 concat = ''
             for x in temp:
@@ -493,7 +494,8 @@ def main():
         print('\nPATH: ' + dictionary['path'])
         print('FULLPATH: ' + join(getcwd(), dictionary['path']))
 
-    print('\nDone')
+    return True
 
 
-main()
+if __name__ == "__main__":
+    main(sys.argv[1:])
