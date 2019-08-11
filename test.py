@@ -126,6 +126,18 @@ class TestApp(unittest.TestCase):
     def test_18(self):
         main(['-file', './test/void_icon/test.txt'])
 
+    # miss only preview
+    # Success
+    @classmethod
+    def test_19(self):
+        main(['-file', './test/miss_preview/test.txt'])
+
+    # void preview
+    # Success
+    @classmethod
+    def test_20(self):
+        main(['-file', './test/void_preview/test.txt'])
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestApp))
