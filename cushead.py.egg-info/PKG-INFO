@@ -20,9 +20,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
         # cushead.py
         _Python 3_
         
-        This simple script improves your SEO and UX. It adds lang attribute to the 
-        <html> element and search and replace '$head$' string with personalized head 
-        elements.
+        This simple script improves your SEO and UX. It adds lang attribute to the <html> element and search and replace '$head$' string with personalized head elements.
         
         ## MENU
         
@@ -87,9 +85,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
         
         ### The main file
         
-        This is the file that wants to edit. It needs to have the <html> element for 
-        add the lang attribute, and a '$head$' string that be replaced for the custom 
-        elements. Example:
+        This is the file that wants to edit. It needs to have the <html> element for add the lang attribute, and a '$head$' string that be replaced for the custom elements. Example:
         
         _(my_index.html)_
         ```html
@@ -101,8 +97,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
         </html>
         ```
         
-        If there isn't the <html> element, cant add the lang attribute. Same way, if 
-        there isn't the '$head$' string, cant adds the custom head elements.
+        If there isn't the <html> element, cant add the lang attribute. Same way, if there isn't the '$head$' string, cant adds the custom head elements.
         
         ### Define personalized values
         
@@ -237,13 +232,9 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
             'Maintain Image Dimensions (don't resize to be square)'
           Click on 'Create favicon'
         
-        After refresh, click on 'Download the generated favicon' for download zip file
-        that has a big amount of icons and other files.
-        Use the downloaded browserconfig.xml for complementing your own 
-        browserconfig.xml file. Same for manifest.json
-        Getting back to the website, copy the html text inside the box, and paste in
-        your head section of your website and close the opened tags adding ' /' (with 
-        the space) at the end, before '>'. This's an excellent complement to cushead.py
+        After refresh, click on 'Download the generated favicon' for download zip file that has a big amount of icons and other files.
+        Use the downloaded browserconfig.xml for complementing your own  browserconfig.xml file. Same for manifest.json
+        Getting back to the website, copy the html text inside the box, and paste in your head section of your website and close the opened tags adding ' /' (with the space) at the end, before '>'. This's an excellent complement to cushead.py
         Mixing it, you will need to ignore the next lines:
             ...
         14  <link rel="manifest" href="/manifest.json">

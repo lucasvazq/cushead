@@ -114,6 +114,12 @@ class TestApp(unittest.TestCase):
     def test_16(self):
         main(['-file', './test/miss_title/test.txt'])
 
+    # miss only description
+    # Success
+    @classmethod
+    def test_17(self):
+        main(['-file', './test/miss_description/test.txt'])
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestApp))

@@ -7,9 +7,7 @@ import sys
 CURRENT_PYTHON = sys.version_info[:2]
 MIN_PYTHON = (3, 5)
 MAX_PYTHON = (4, 0)
-if CURRENT_PYTHON < MIN_PYTHON:
-    err = True
-elif CURRENT_PYTHON > MAX_PYTHON:
+if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON > MAX_PYTHON:
     err = True
 else:
     err = False
