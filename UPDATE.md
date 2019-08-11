@@ -1,4 +1,4 @@
-1) Change the version in ['setup.py'](./setup.py)
+1) Change the version in ['setup.py'](./setup.py) and ['cushead.py'](./cushead.py)
 
 2) Edit version in logo.xcf and logo.png
 
