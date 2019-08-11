@@ -151,7 +151,12 @@ class TestApp(unittest.TestCase):
     def test_22(self):
         main(['-file', './test/miss_preview_void_icon/test.txt'])
 
-    
+    # void preview and miss icon
+    # Success
+    @classmethod
+    def test_23(self):
+        main(['-file', './test/void_preview_miss_icon/test.txt'])
+
 
 def suite():
     suite = unittest.TestSuite()
