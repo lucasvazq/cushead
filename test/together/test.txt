@@ -1,7 +1,7 @@
 values = {
 
     # FILE PATH
-    'path':             './test/void/index.html',
+    'path':             './test/together/index.html',
 
     # BASIC CONFIG
     'content-type':     'text/html; charset=utf-8',

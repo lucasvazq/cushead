@@ -311,12 +311,18 @@ def add_opengraph(dictionary, temp):
             dictionary['og:image:type'] + '" />')
     # og:image:alt
     if 'title' or 'description' in dictionary:
-        if len(dictionary['title']):
-            title = dictionary['title']
+        if 'title' in dictionary:
+            if len(dictionary['title']):
+                title = dictionary['title']
+            else:
+                title = ''
         else:
             title = ''
-        if len(dictionary['description']):
-            description = dictionary['description']
+        if 'description' in dictionary:
+            if len(dictionary['description']):
+                description = dictionary['description']
+            else:
+                description = ''
         else:
             description = ''
         if 'title' and 'description' in dictionary:
@@ -371,12 +377,18 @@ def add_twitter(dictionary, temp):
                     '" />')
     # twitter:image:alt
     if 'title' or 'description' in dictionary:
-        if len(dictionary['title']):
-            title = dictionary['title']
+        if 'title' in dictionary:
+            if len(dictionary['title']):
+                title = dictionary['title']
+            else:
+                title = ''
         else:
             title = ''
-        if len(dictionary['description']):
-            description = dictionary['description']
+        if 'description' in dictionary:
+            if len(dictionary['description']):
+                description = dictionary['description']
+            else:
+                description = ''
         else:
             description = ''
         if 'title' and 'description' in dictionary:
@@ -431,9 +443,13 @@ def main(args):
 
     else:
         dictionary = get_values(args.file)
-        if not len(dictionary['path']):
+        if not 'path' in dictionary:
             raise Exception('Miss \'path\' element on -file ' + args.file + ' and its ' +
                 'required.')
+        else:
+            if not len(dictionary['path']):
+                raise Exception('Miss \'path\' element on -file ' + args.file + ' and its ' +
+                    'required.')
         temp = []
         if args.basic_config:
             temp = add_basic_config(dictionary, temp)
@@ -469,14 +485,15 @@ def main(args):
             concat = concat[0:-1]
 
         # Add lang attribute to <html>
-        if len(dictionary['locale']):
-            if not '<html>' in file_string:
-                print('Miss <html>, cant add lang attribute')
-            else:
-                file_string = file_string.replace('<html>', '<html lang="' +
-                    dictionary['locale'] + '">')
-                print('\nHTML:\n' +
-                    '<html lang="' + dictionary['locale'] + '">')
+        if 'locale' in dictionary:
+            if len(dictionary['locale']):
+                if not '<html>' in file_string:
+                    print('Miss <html>, cant add lang attribute')
+                else:
+                    file_string = file_string.replace('<html>', '<html lang="' +
+                        dictionary['locale'] + '">')
+                    print('\nHTML:\n' +
+                        '<html lang="' + dictionary['locale'] + '">')
 
         # Add custom head elements
         if not '$head$' in file_string:
