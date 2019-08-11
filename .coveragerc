@@ -2,11 +2,12 @@
 branch = True
 source = ./
 omit =
-    setup.py
-    test/*
-    dist/*
     cushead.py.egg-info/*
+    dist/*
+    test/*
     __init__.py
+    __main__.py
+    setup.py
     
 [report]
 exclude_lines =
