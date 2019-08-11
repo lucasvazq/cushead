@@ -4,7 +4,6 @@
 import unittest
 from cushead import main
 
-# Total errors: 7
 
 class TestApp(unittest.TestCase):
     # no arguments

@@ -25,14 +25,29 @@ Try running:
     )
     sys.exit(1)
 
-import os
+from importlib import machinery
+from os import name as os_name
+from os import getcwd
+from os.path import join
+import types
 
 from cushead import main
 
-# Obtain __version__
-exec(open('./_version.py').read())
 
-if os.name == 'nt':
+# Obtain version
+def get_version(file):
+
+    name = file
+    file = join(getcwd(), file)
+
+    loader = machinery.SourceFileLoader(name, file)
+    mod = types.ModuleType(loader.name)
+    loader.exec_module(mod)
+
+    return mod.__version__
+
+
+if os_name == 'nt':
     COLOR = ''
     RESET = ''
 else:
@@ -60,7 +75,8 @@ Source: https://github.com/lucasvazq/cushead.py
 
 For help run: python3 cushead.py -h
 {}
-'''.format(COLOR, __version__, RESET))
+'''.format(COLOR, get_version('./_version.py'), RESET))
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import types
 from importlib import machinery
 from os import getcwd
 from os.path import isfile, join
+import types
 
 import argparse
 
