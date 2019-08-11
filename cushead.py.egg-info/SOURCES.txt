@@ -1,6 +1,7 @@
 README.md
 __main__.py
 _version.py
+cushead.py
 setup.py
 cushead.py.egg-info/PKG-INFO
 cushead.py.egg-info/SOURCES.txt
