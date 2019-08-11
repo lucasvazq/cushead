@@ -4,6 +4,7 @@
 import unittest
 from cushead import main
 
+# Total errors: 7
 
 class TestApp(unittest.TestCase):
     # no arguments
@@ -137,6 +138,20 @@ class TestApp(unittest.TestCase):
     @classmethod
     def test_20(self):
         main(['-file', './test/void_preview/test.txt'])
+
+    # miss only icon
+    # Success
+    @classmethod
+    def test_21(self):
+        main(['-file', './test/miss_icon/test.txt'])
+
+    # miss only preview and void icon
+    # Success
+    @classmethod
+    def test_22(self):
+        main(['-file', './test/miss_preview_void_icon/test.txt'])
+
+    
 
 def suite():
     suite = unittest.TestSuite()

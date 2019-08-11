@@ -295,12 +295,11 @@ def add_opengraph(dictionary, temp):
                         '" />')
                     temp.append('<meta property="og:image:secure_url" content="' +
                         dictionary['icon'] + '" />')
-        elif 'icon' in dictionary:
-            if len(dictionary['icon']):
-                temp.append('<meta property="og:image" content="' + dictionary['icon'] +
-                    '" />')
-                temp.append('<meta property="og:image:secure_url" content="' +
-                    dictionary['icon'] + '" />')
+        if len(dictionary['icon']):
+            temp.append('<meta property="og:image" content="' + dictionary['icon'] +
+                '" />')
+            temp.append('<meta property="og:image:secure_url" content="' +
+                dictionary['icon'] + '" />')
     # og:image:type
     if 'og:image:type' in dictionary:
         temp.append('<meta property="og:image:type" content="' +
@@ -368,10 +367,9 @@ def add_twitter(dictionary, temp):
                 if len(dictionary['icon']):
                     temp.append('<meta name="twitter:image" content="' + dictionary['icon'] +
                         '" />')
-        elif 'icon' in dictionary:
-            if len(dictionary['icon']):
-                temp.append('<meta name="twitter:image" content="' + dictionary['icon'] +
-                    '" />')
+        if len(dictionary['icon']):
+            temp.append('<meta name="twitter:image" content="' + dictionary['icon'] +
+                '" />')
     # twitter:image:alt
     if 'title' in dictionary or 'description' in dictionary:
         if 'title' in dictionary:
