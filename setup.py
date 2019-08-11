@@ -37,8 +37,8 @@ setuptools.setup(
     version='2.4.3',
     url='https://github.com/lucasvazq/cushead.py',
     project_urls={
-        'Documentation': 'https://docs.djangoproject.com/',
-        'Source': 'https://github.com/django/django',
+        'Documentation': 'https://github.com/lucasvazq/cushead.py/blob/master/README.md',
+        'Source': 'https://github.com/lucasvazq/cushead.py'
     },
     python_requires='>=3.5, <4',
     packages=setuptools.find_packages(),
