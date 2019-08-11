@@ -28,25 +28,9 @@ version of Python that is >=3.5 and <4.
     )
     sys.exit(1)
 
-from importlib import machinery
-from os import getcwd
-from os.path import join
-import types
-
 import setuptools
 
-
-# Obtain version
-def get_version(file):
-
-    name = file
-    file = join(getcwd(), file)
-
-    loader = machinery.SourceFileLoader(name, file)
-    mod = types.ModuleType(loader.name)
-    loader.exec_module(mod)
-
-    return mod.__version__
+from _info import get_version
 
 
 with open('README.md', 'r') as fh:
@@ -54,7 +38,7 @@ with open('README.md', 'r') as fh:
 setuptools.setup(
     name='cushead.py',
     scripts=['__main__.py', '_version.py', 'cushead.py'],
-    version=get_version('./_version.py'),
+    version=get_version(),
     url='https://github.com/lucasvazq/cushead.py',
     project_urls={
         'Documentation': 'https://github.com/lucasvazq/cushead.py/blob/master/README.md',
