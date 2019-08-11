@@ -1,5 +1,5 @@
 README.md
-cushead.py
+__main__.py
 setup.py
 cushead.py.egg-info/PKG-INFO
 cushead.py.egg-info/SOURCES.txt

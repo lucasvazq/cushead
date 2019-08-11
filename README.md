@@ -48,7 +48,7 @@ This simple script improves your SEO and UX. It adds lang attribute to the <html
 
 ### Command -h
 
-`cushead.py -h`
+`python3 cushead.py -h`
 
 ```txt
 usage: cushead.py -file PATH/TO/FILE [Options]. Do cushead.py -h for help
@@ -159,7 +159,7 @@ You can generate full example preset file like this using:
 
 ### Execute the script
 
-`cushead.py -file cushead.txt --exclude-twitter`
+`python3 cushead.py -file cushead.txt --exclude-twitter`
 
 ### View results
 

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cushead.py
-Version: 2.3.2
+Version: 2.4.0
 Summary: This simple script improve your SEO and UX. It add lang attribute to the html element and search and replace '$head$' string with personalized head elements.
 Home-page: https://github.com/lucasvazq/cushead.py
 Author: Lucas Vazquez
@@ -58,7 +58,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
         
         ### Command -h
         
-        `cushead.py -h`
+        `python3 cushead.py -h`
         
         ```txt
         usage: cushead.py -file PATH/TO/FILE [Options]. Do cushead.py -h for help
@@ -169,7 +169,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
         
         ### Execute the script
         
-        `cushead.py -file cushead.txt --exclude-twitter`
+        `python3 cushead.py -file cushead.txt --exclude-twitter`
         
         ### View results
         
