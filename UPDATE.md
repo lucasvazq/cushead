@@ -1,21 +1,23 @@
 1) Change the version in ['setup.py'](./setup.py)
 
-2) Create new package
+2) Edit version in logo.xcf and logo.png
+
+3) Build the new package
 
     `python3 setup.py sdist`
 
-3) Commit git:
+4) Add to git:
 
     `git add . && git commit -m 'new version' && git push origin master`
 
-4) Upload to PYPI using twine
+5) Upload to PYPI using twine
 
     `twine upload --skip-existing dist/*`
 
-5) Upgrade package in machine:
+6) Upgrade package in machine:
 
     `python3 -m pip install cushead.py --upgrade`
 
-6) Test
+7) Test
 
     `python3 cushead.py -h`
