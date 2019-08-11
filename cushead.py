@@ -3,7 +3,7 @@
 
 import sys
 
-if sys.version_info[0] < 3:
+if sys.version_info[0] < 3: # pragma: no cover
     raise Exception("Python 3 or a more recent version is required.")
 
 import types
@@ -310,7 +310,7 @@ def add_opengraph(dictionary, temp):
         temp.append('<meta property="og:image:type" content="' +
             dictionary['og:image:type'] + '" />')
     # og:image:alt
-    if 'title' or 'description' in dictionary:
+    if 'title' in dictionary or 'description' in dictionary:
         if 'title' in dictionary:
             if len(dictionary['title']):
                 title = dictionary['title']
@@ -376,7 +376,7 @@ def add_twitter(dictionary, temp):
                 temp.append('<meta name="twitter:image" content="' + dictionary['icon'] +
                     '" />')
     # twitter:image:alt
-    if 'title' or 'description' in dictionary:
+    if 'title' in dictionary or 'description' in dictionary:
         if 'title' in dictionary:
             if len(dictionary['title']):
                 title = dictionary['title']
@@ -444,12 +444,12 @@ def main(args):
     else:
         dictionary = get_values(args.file)
         if not 'path' in dictionary:
-            raise Exception('Miss \'path\' element on -file ' + args.file + ' and its ' +
-                'required.')
+            raise Exception("Miss 'path' element on -file " + args.file + " and its " +
+                "required.")
         else:
             if not len(dictionary['path']):
-                raise Exception('Miss \'path\' element on -file ' + args.file + ' and its ' +
-                    'required.')
+                raise Exception("Miss 'path' element on -file " + args.file + " and its " +
+                    "required.")
         temp = []
         if args.basic_config:
             temp = add_basic_config(dictionary, temp)
@@ -477,7 +477,7 @@ def main(args):
             space = space[0].split('\n')
             space = space[len(space) - 1]
             if args.comment:
-                concat = space + '<!-- Custom head elements -->\n'
+                concat = space + "<!-- Custom head elements -->\n"
             else:
                 concat = ''
             for x in temp:
@@ -488,7 +488,7 @@ def main(args):
         if 'locale' in dictionary:
             if len(dictionary['locale']):
                 if not '<html>' in file_string:
-                    print('Miss <html>, cant add lang attribute')
+                    print("Miss <html>, cant add lang attribute")
                 else:
                     file_string = file_string.replace('<html>', '<html lang="' +
                         dictionary['locale'] + '">')
@@ -497,7 +497,7 @@ def main(args):
 
         # Add custom head elements
         if not '$head$' in file_string:
-            print('Miss $head$, cant add custom elements')
+            print("Miss $head$, cant add custom elements")
         else:
             file_string = file_string.replace('$head$', concat)
             print('\nHEAD:\n' +
@@ -514,5 +514,5 @@ def main(args):
     return True
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main(sys.argv[1:])
