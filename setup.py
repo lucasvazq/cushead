@@ -5,20 +5,29 @@ import setuptools
 import sys
 
 CURRENT_PYTHON = sys.version_info[:2]
-REQUIRED_PYTHON = (3, 5)
-if CURRENT_PYTHON < REQUIRED_PYTHON:
+MIN_PYTHON = (3, 5)
+MAX_PYTHON = (4, 0)
+if CURRENT_PYTHON < MIN_PYTHON:
+    err = True
+elif CURRENT_PYTHON > MAX_PYTHON:
+    err = True
+else:
+    err = False
+if err:
     sys.stderr.write("""
 ==========================
 Unsupported Python version
 ==========================
-This version of cushead.py requires Python {}.{}, but you're trying to install 
-it on Python {}.{}.
+This version of cushead.py requires Python >=3.5 and <4, but you're trying to
+install it with Python {}.{}.
 Make sure you have pip >= 9.0 and setuptools >= 24.2, then try again:
     $ python -m pip install --upgrade pip setuptools
     $ python3 -m pip install cushead.py
 This will update pip and setuptools, and install the latest version of
-cushead.py which works on your computer.""".format(
-        *(REQUIRED_PYTHON + CURRENT_PYTHON))
+cushead.py, make sure you still trying to install and running it with a
+version of Python that is >=3.5 and <4.
+""".format(
+        *(CURRENT_PYTHON))
     )
     sys.exit(1)
 
@@ -32,7 +41,7 @@ setuptools.setup(
     project_urls={
         'Documentation': 'https://docs.djangoproject.com/',
         'Source': 'https://github.com/django/django',
-    }
+    },
     python_requires='>=3.5, <4',
     packages=setuptools.find_packages(),
     install_requires=['argparse'],
@@ -44,7 +53,9 @@ setuptools.setup(
         "'$head$' string with personalized head elements.",
     long_description=long_description,
     long_description_content_type='text/markdown',
+    license='MIT',
     keywords='SEO, UX, front-end',
+    platforms='any',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -57,6 +68,6 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3 :: Only'
     ]
 )

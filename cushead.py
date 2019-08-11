@@ -3,8 +3,17 @@
 
 import sys
 
-if sys.version_info < (3, 5): # pragma: no cover
-    raise Exception("Python 3.5 or a more recent version is required.")
+CURRENT_PYTHON = sys.version_info[:2]
+MIN_PYTHON = (3, 5)
+MAX_PYTHON = (4, 0)
+if CURRENT_PYTHON < MIN_PYTHON: # pragma: no cover
+    err = True
+elif CURRENT_PYTHON > MAX_PYTHON:
+    err = True
+else:
+    err = False
+if err: 
+    raise Exception("Python >=3.5 and <4 is required.")
 
 import types
 from importlib import machinery

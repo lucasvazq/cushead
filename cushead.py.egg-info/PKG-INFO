@@ -1,11 +1,13 @@
 Metadata-Version: 2.1
 Name: cushead.py
-Version: 2.3.1
+Version: 2.3.2
 Summary: This simple script improve your SEO and UX. It add lang attribute to the html element and search and replace '$head$' string with personalized head elements.
 Home-page: https://github.com/lucasvazq/cushead.py
 Author: Lucas Vazquez
 Author-email: lucas5zvazquez@gmail.com
-License: UNKNOWN
+License: MIT
+Project-URL: Documentation, https://docs.djangoproject.com/
+Project-URL: Source, https://github.com/django/django
 Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
         [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce412113e4144c9f9739a99a0d0b77f5)](https://app.codacy.com/app/lucasvazq/cushead.py?utm_source=github.com&utm_medium=referral&utm_content=lucasvazq/cushead.py&utm_campaign=Badge_Grade_Dashboard)
         [![codecov](https://codecov.io/gh/lucasvazq/cushead.py/branch/master/graph/badge.svg)](https://codecov.io/gh/lucasvazq/cushead.py)
@@ -278,11 +280,18 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg
         **cushead.py** © 2019 Lucas Vazquez. Released under the [MIT](http://mit-license.org/) License.
         
 Keywords: SEO,UX,front-end
-Platform: UNKNOWN
+Platform: any
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Environment :: Console
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
 Requires-Python: >=3.5, <4
 Description-Content-Type: text/markdown
