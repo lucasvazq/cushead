@@ -12,22 +12,22 @@ class TestArgumentsException(unittest.TestCase):
     # No arguments
     @classmethod
     def test_no_arguments(self):
-        Main([])
+        Main([]).run()
 
     # -file and -preset together
     @classmethod
     def test_two_arguments(self):
-        Main(['-file', 'foo/bar', '-preset', 'foo/bar'])
+        Main(['-file', 'foo/bar', '-preset', 'foo/bar']).run()
 
     # The path passed with 'html_file' doesn't exists
     @classmethod
     def test_file_doesnt_exists(self):
-        Main(['-file', 'foo/bar'])
+        Main(['-file', 'foo/bar']).run()
 
     # The path passed with 'html_file' isn't a file
     @classmethod
     def test_file_no_file(self):
-        Main(['-file', './test'])
+        Main(['-file', './test']).run()
 
 
 # Exceptions
@@ -36,57 +36,59 @@ class TestConfigExceptions(unittest.TestCase):
     # Miss 'config' variable in config file
     @classmethod
     def test_miss_config_variable(self):
-        Main(['-file', './test/ConfigExceptions/miss_config_variable/test.txt'])
+        Main(['-file', './test/ConfigExceptions/miss_config_variable/test.txt']).run()
 
     # Void 'icon_png' key value
     @classmethod
     def test_void_icon_png(self):
-        Main(['-file', './test/ConfigExceptions/void_icon_png/test.txt'])
+        Main(['-file', './test/ConfigExceptions/void_icon_png/test.txt']).run()
 
     # Path passed with 'icon_png' doesn't exists
     @classmethod
     def test_icon_png_doesnt_exists(self):
-        Main(['-file', './test/ConfigExceptions/icon_png_doesnt_exists/test.txt'])
+        Main(['-file','./test/ConfigExceptions/icon_png_doesnt_exists/test.txt']
+            ).run()
 
     # Miss 'html_file' key
     @classmethod
     def test_miss_html_file(self):
-        Main(['-file', './test/ConfigExceptions/miss_html_file/test.txt'])
+        Main(['-file', './test/ConfigExceptions/miss_html_file/test.txt']).run()
 
     # Void 'html_file' key value
     @classmethod
     def test_void_html_file(self):
-        Main(['-file', './test/ConfigExceptions/void_html_file/test.txt'])
+        Main(['-file', './test/ConfigExceptions/void_html_file/test.txt']).run()
 
     # The path passed with 'html_file' doesn't exists
     @classmethod
     def test_html_file_doesnt_exists(self):
-        Main(['-file', './test/ConfigExceptions/html_file_doesnt_exists/test.txt'])
+        Main(['-file', './test/ConfigExceptions/html_file_doesnt_exists/test.txt']
+            ).run()
 
     # The path passed with 'html_file' isn't a file
     @classmethod
     def test_html_file_no_file(self):
-        Main(['-file', './test/ConfigExceptions/html_file_no_file/test.txt'])
+        Main(['-file', './test/ConfigExceptions/html_file_no_file/test.txt']).run()
 
     # Miss 'output' key
     @classmethod
     def test_miss_output(self):
-        Main(['-file', './test/ConfigExceptions/miss_output/test.txt'])
+        Main(['-file', './test/ConfigExceptions/miss_output/test.txt']).run()
 
     # The path passed with 'output' doesn't exists
     @classmethod
     def test_output_doesnt_exists(self):
-        Main(['-file', './test/ConfigExceptions/output_doesnt_exists/test.txt'])
+        Main(['-file', './test/ConfigExceptions/output_doesnt_exists/test.txt']).run()
 
     # The path passed with 'outputh' isn't a folder
     @classmethod
     def test_output_no_folder(self):
-        Main(['-file', './test/ConfigExceptions/output_no_folder/test.txt'])
+        Main(['-file', './test/ConfigExceptions/output_no_folder/test.txt']).run()
 
     # Miss 'static_url' key
     @classmethod
     def test_miss_static_url(self):
-        Main(['-file', './test/ConfigExceptions/miss_static_url/test.txt'])
+        Main(['-file', './test/ConfigExceptions/miss_static_url/test.txt']).run()
 
 
 # Success
@@ -95,22 +97,22 @@ class TestSuccess(unittest.TestCase):
     # Complete config
     @classmethod
     def test_complete_config(self):
-        Main(['-file', './test/Success/complete_config/test.txt'])
+        Main(['-file', './test/Success/complete_config/test.txt']).run()
 
     # Void config
     @classmethod
     def test_void_config(self):
-        Main(['-file', './test/Success/void_config/test.txt'])
+        Main(['-file', './test/Success/void_config/test.txt']).run()
 
     # Void *.html file
     @classmethod
     def test_void_html_FILE(self):
-        Main(['-file', './test/Success/void_html_FILE/test.txt'])
+        Main(['-file', './test/Success/void_html_FILE/test.txt']).run()
 
     # -preset
     @classmethod
     def test_preset(self):
-        Main(['-preset', './test/Success/test.txt'])
+        Main(['-preset', './test/Success/test.txt']).run()
 
 
 def suite():
@@ -124,4 +126,4 @@ def suite():
     return suite
 
 
-unittest.TextTestRunner(verbosity=2).run(suite())
+unittest.TextTestRunner(verbosity=3).run(suite())

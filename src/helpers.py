@@ -9,18 +9,21 @@ from textwrap import dedent
 
 class Helpers():
 
-    @staticmethod
-    def _get_values(filename):
+    def __init__(self, args=None):
+        self.args = args
+
+    def _get_values(self, filename):
         filepath = path.join(getcwd(), filename)
         loader = machinery.SourceFileLoader(filename, filepath)
         mod = types.ModuleType(loader.name)
         loader.exec_module(mod)
-        if not 'config' in mod:
+        try:
+            return mod.config
+        except:
             raise Exception(dedent("""\
                 Can't found 'config' variable in ({})
                 FILE PATH: {}""".format(self.args.file,
                     path.join(getcwd(), self.args.file))))
-        return mod.config
 
     @staticmethod
     def _write_file(filepath, content):

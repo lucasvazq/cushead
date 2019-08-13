@@ -15,22 +15,29 @@ Python syntax
 {} config file
 Git: {}
 Documentation: {}
+
+CONFIG VARIABLES:
+
+    html_file (FILE PATH):
+        Required, can't be void, need to exist and referrer to a file
+
+    output (FOLDER PATH):
+        Required, need to exist and referrer to a folder
+
+    static_url (STRING):
+        Required
+
+    icon_png (FILE PATH):
+        If declared, need to exist and referrer to an image file
+        Recomended 310x310 png image
 \"\"\"
 
 # Don't delete or change the name of this variable
 config = {{
 
-    \"\"\"
-    html_file (FILE PATH): Required, can't be void, need to exist and refer a file
-    output (FOLDER PATH): Required, need to exist and refer a folder
-    static_url (STRING): Required
-    icon_png (FILE PATH): If declared, need to exist and refer a image file.
-        Recomended 310x310 png image
-    \"\"\"
-
     # MAIN CONFIG
     'html_file':        './index.html',
-    'output':           './OUTPUT/PATH/', # e.g. for manifest.json
+    'output':           './output/', # e.g. for manifest.json
     'static_url':       '/static/',
 
     # GENERAL CONFIG

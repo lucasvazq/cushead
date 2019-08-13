@@ -3,18 +3,25 @@ Python syntax
 cushead.py config file
 Git: https://github.com/lucasvazq/cushead.py
 Documentation: https://github.com/lucasvazq/cushead.py/blob/master/README.md
+
+CONFIG VARIABLES:
+
+	html_file (FILE PATH):
+		Required, can't be void, need to exist and refer a file
+
+	output (FOLDER PATH):
+		Required, need to exist and refer a folder
+
+	static_url (STRING):
+		Required
+
+	icon_png (FILE PATH):
+		If declared, need to exist and refer a image file
+		Recomended 310x310 png image
 """
 
 # Don't delete or change the name of this variable
 config = {
-
-    """
-    html_file (FILE PATH): Required, can't be void, need to exist and refer a file
-    output (FOLDER PATH): Required, need to exist and refer a folder
-    static_url (STRING): Required
-    icon_png (FILE PATH): If declared, need to exist and refer a image file.
-        Recomended 310x310 png image
-    """
 
     # MAIN CONFIG
     'html_file':        './test/ConfigExceptions/icon_png_doesnt_exists/index.html',

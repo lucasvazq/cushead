@@ -32,12 +32,6 @@ class Arguments():
 
         parser._action_groups.pop()
         options = parser.add_argument_group('Options (one required)')
-        options.add_argument('-file', metavar=('FILEPATH'), dest='file',
-            help=dedent("""\
-                Path to config file.
-                Read a config file that contains configurable values related to SEO and UX.
-                After it, the script edits an html file and generate complementary files like
-                icons, robots.txt, etc."""))
         options.add_argument('-preset', metavar=('FILENAME'), dest='preset',
             help=dedent("""\
                 Name of config file.
@@ -46,11 +40,17 @@ class Arguments():
                 'output' (FOLDER PATH) and 'static_url' (STRING). Also, if 'icon_png'
                 (IMAGE FILE PATH) is declared, this key need to have a value related to a path
                 of an existing image."""))
+        options.add_argument('-file', metavar=('FILEPATH'), dest='file',
+            help=dedent("""\
+                Path to config file.
+                Read a config file that contains configurable values related to SEO and UX.
+                After it, the script edits an html file and generate complementary files like
+                icons, robots.txt, etc."""))
 
         parser = parser.parse_args(args)
         if not (parser.preset or parser.file):
             # test: test_no_arguments
-            raise Exception("Miss -file argument.")
+            raise Exception("Miss arguments. Use -preset or -file")
         if parser.preset and parser.file:
             # test: test_two_arguments
             raise Exception("Can't use -preset and -file arguments together.")

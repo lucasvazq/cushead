@@ -34,6 +34,7 @@ class Main(Arguments, Presets, Head, Helpers):
             if not len(self.config['html_file']):
                 # test: test_void_html_file
                 raise Exception("'html_file' value can't be void.")
+            if not path.exists(self.config['html_file']):
                 # test: test_html_file_doesnt_exists
                 raise Exception(dedent("""\
                     'html_file' ({}) must be referred to a file path that exists.

@@ -4,7 +4,7 @@
 
 # used for setup.py
 __name__ = "cushead.py"
-__version__ = "2.5.2"
+__version__ = "3.0.0"
 __source__ = "https://github.com/lucasvazq/cushead.py"
 __documentation__ = "https://github.com/lucasvazq/cushead.py/blob/master/README.md"
 __python_min_version__ = (3, 5)
@@ -15,8 +15,8 @@ __author_page__ = "https://github.com/lucasvazq"
 __email__ = "lucas5zvazquez@gmail.com"
 __description__ = "CLI that help you to improve the SEO and UX of your websites."
 __license__ = "MIT"
-__keywords__ = ("SEO, UX, front-end, favicon, manifest, robots, " +
-    "browserconfig, sitemap, opensearch")
+__keywords__ = ("SEO, meta-tags, UX, PWA, front-end, favicon, manifest, " +
+    "robots, browserconfig, sitemap, opensearch")
 
 # others
 __copyright__ = """\

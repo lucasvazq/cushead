@@ -101,18 +101,14 @@ class Head(ComplementaryFiles):
         if 'description' in self.config:
             head.append("<meta property='og:description' content='{}' />".format(
                 self.config['description']))
-        # og:image (http) and og:image:secure_url (https)
+        # og:image (http), og:image:secure_url (https) and twitter:image
         if 'preview' in self.config or 'icon' in self.config:
-            if 'preview' in self.config:
-                head.append("<meta property='og:image' content='{}' />".format(
-                    self.config['preview']))
-                head.append("<meta property='og:image:secure_url' content='{}' />".format(
-                    self.config['preview']))
-            else:
-                head.append("<meta property='og:image' content='{}' />".format(
-                    self.config['icon']))
-                head.append("<meta property='og:image:secure_url' content='' />".format(
-                    self.config['icon']))
+            text = "{}{}".format(self.config['static_url'], self.config.get('preview',
+                self.config.get('icon')))
+            head.append("<meta property='og:image' content='{}' />".format(text))
+            head.append("<meta property='og:image:secure_url' content='{}' />".format(
+                text))
+            head.append("<meta name='twitter:image' content='{}' />".format(text))
         # og:image:type
         if 'preview_type' in self.config:
             head.append("<meta property='og:image:type' content='{}' />".format(
@@ -128,7 +124,8 @@ class Head(ComplementaryFiles):
             head.append("<meta name='twitter:image:alt' content='{}' />".format(text))
 
         # TWITTER
-        # twitter:image:alt mixed with op:image:alt in OPENGRAPH section.
+        # twitter:image mixed with op:image and op:image:secure in OPENGRAH section
+        # twitter:image:alt mixed with op:image:alt in OPENGRAPH section
 
         head.append("<meta name='twitter:card' content='summary' />")
         # twitter:site
@@ -143,14 +140,6 @@ class Head(ComplementaryFiles):
         if 'description' in self.config:
             head.append("<meta name='twitter:description' content='{}' />".format(
                 self.config['description']))
-        # twitter:image
-        if 'preview' in self.config or 'icon' in self.config:
-            if 'preview' in self.config:
-                head.append("<meta name='twitter:image' content='{}' />".format(
-                    self.config['preview']))
-            else:
-                head.append("<meta name='twitter:image' content='{}' />".format(
-                    self.config['icon']))
         # tw:creator
         if 'tw:creator:id' in self.config:
             head.append("<meta property='twitter:creator:id' content='{}' />".format(
@@ -176,12 +165,12 @@ class Head(ComplementaryFiles):
         if 'locale' in self.config:
             if len(self.config['locale']):
                 if not '<html>' in file_string:
-                    print("Miss <html>, cant add lang attribute")
+                    print("Miss <html>, cant add lang attribute\n")
                 else:
                     html = "<html lang=\"{}\">".format(self.config['locale'])
                     file_string = file_string.replace('<html>', html)
                     print(("HTML:\n" +
-                        "{}".format(html)))
+                        "{}\n".format(html)))
 
         # Add custom head elements
         space = file_string.split('$head$')
@@ -198,17 +187,20 @@ class Head(ComplementaryFiles):
             head = [element for array in head for element in array]
             space = space[0].split('\n')
             space = space[len(space) - 1]
-            concat = ("<!-- Custom head elements -->\n" + \
+            message = "<!-- Custom head elements -->"
+            concat = ("{}\n".format(message) + \
                 ''.join("{}{}\n".format(space, element) for element in head)) \
                     [0:-1].replace('\'', '"')
             file_string = file_string.replace('$head$', concat)
             sexy = concat.replace(space, '')
-            print(textwrap.dedent("""
-                HEAD:"""))
+            print(textwrap.dedent("""\
+                HEAD:
+                {}""".format(message)))
             for element in head:
                 print(element)
-            print(textwrap.dedent("""
-                NEW FILES"""))
+            if len(new_files):
+                print(textwrap.dedent("""
+                    NEW FILES:"""))
             for element in new_files:
                 print(element)
 

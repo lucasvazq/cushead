@@ -8,14 +8,13 @@ from textwrap import dedent
 
 from resizeimage import resizeimage
 
-from .helpers import Helpers
-
 
 class Values():
 
     def __init__(self):
         self.names = ['icon-sizes', 'windows', 'apple-touch-icon-default',
-            'apple-touch-icon-sizes', 'fluid-icon', 'manifest', 'browserconfig']
+            'apple-touch-icon-sizes', 'fluid-icon', 'browserconfig', 'manifest',
+            'opensearch']
         self.brand = {
             'icon-sizes': {
                 'name_ref': 'icon',
@@ -51,6 +50,13 @@ class Values():
                 'sizes': [512],
                 'title': 'Microsoft'
             },
+            'browserconfig': {
+                'name_ref': 'browserconfig',
+                'name': 'ms-icon',
+                'sizes': [30, 44, 70, 150, 310],
+                'special_sizes': [[310, 150]],
+                'no-head': True
+            },
             'manifest': {
                 'name_ref': 'manifest',
                 'name': 'android-icon',
@@ -59,11 +65,11 @@ class Values():
                 'type': 'image/png',
                 'no-head': True
             },
-            'browserconfig': {
-                'name_ref': 'browserconfig',
-                'name': 'ms-icon',
-                'sizes': [30, 44, 70, 150, 310],
-                'special_sizes': [[310, 150]],
+            'opensearch': {
+                'name_ref': 'opensearch',
+                'name': 'opensearch',
+                'sizes': [16],
+                'verbosity': True,
                 'no-head': True
             }
         }
@@ -111,8 +117,8 @@ class Icons():
 
     def icon(self):
         if 'icon' in self.config:
-            return ("<link rel='shortcut icon' href='{}' type='image/x-icon' />".format(
-                self.config['icon']))
+            return ("<link rel='shortcut icon' href='{}{}' type='image/x-icon' />".format(
+                self.config['static_url'], self.config['icon']))
 
     def mask_icon(self):
         if 'mask-icon' in self.config:
@@ -142,7 +148,8 @@ class Others():
         string += ("<TileColor>{}</TileColor></tile></msapplication></browserconfig>"
             .format(color))
         return [string.replace('\'', '"'), ("<meta name='msapplication-config' " +
-            "content='{}' />".format(self.config['browserconfig']))]
+            "content='{}{}' />".format(self.config['static_url'],
+                self.config['browserconfig']))]
 
     def manifest(self):
         path = self.config['static_url'].replace('/', '\/')
@@ -155,7 +162,7 @@ class Others():
             for size in self.brand['manifest']['sizes']]
         dictionary = {}
         if 'title' in self.config:
-            dictionary['title'] = self.config['title']
+            dictionary['name'] = self.config['title']
             dictionary['short_name'] = self.config['title']
         if 'description' in self.config:
             dictionary['description'] = self.config['description']
@@ -180,30 +187,34 @@ class Others():
             dictionary['related_applications'] = self.config['applications']
         dictionary['icons'] = icons
         return [json.dumps(dictionary).replace('\\\\', '\\'),
-            "<link rel='manifest' href='{}' />".format(self.config['manifest'])]
+            "<link rel='manifest' href='{}{}' />".format(self.config['static_url'],
+                self.config['manifest'])]
 
     def opensearch(self):
-        title = self.config.get('title', '')
-        url = self.config.get('url', '')
         content = ("<?xml version='1.0' encoding='utf-8'?>" +
             "<OpenSearchDescription xmlns:moz='" +
             "http://www.mozilla.org/2006/browser/search/' " +
             "xmlns='http://a9.com/-/spec/opensearch/1.1/'>" +
-            "<ShortName>{0}</ShortName>" +
-            "<Description>Search {0}</Description>" +
+            "<ShortName>{}</ShortName>".format(self.config.get('title', '')) +
+            "<Description>Search {}</Description>".format(self.config.get(
+                'title', '')) +
             "<InputEncoding>UTF-8</InputEncoding>" +
             "<Url method='get' type='text/html' " +
             "template='http://www.google.com/search?q=" +
-            "{{searchTerms}}+site%3A{1}' />" +
-            "</OpenSearchDescription>".format(title, url))
+            "{{searchTerms}}+site%3A{}' />".format(self.config.get('url', '')) +
+            "<Image height='16' width='16' type='image/png'>" +
+            "{}opensearch-16x16.png".format(self.config['static_url']) +
+            "</Image>" +
+            "</OpenSearchDescription>")
         return [content.replace('\'', '"'), ("<link rel='search' " +
-            "type='application/opensearchdescription+xml' title='{}' href='{}' />".format(
-                title, self.config['opensearch']))]
+            "type='application/opensearchdescription+xml' title='{}' href='{}{}' />"
+                .format(self.config.get('title', ''), self.config['static_url'],
+                    self.config['opensearch']))]
 
     def robots(self):
-        string = ("User-agent: *" +
-            "Allow: /" +
-            "\\" +
+        string = ("User-agent: *\n" +
+            "Allow: /\n" +
+            "\n" +
             "Sitemap: {}{}/{}".format(self.config.get('protocol', ''),
                 self.config['url'], self.config['sitemap']))
         return string
@@ -227,7 +238,7 @@ class ComplementaryFiles(Values, Icons, Others):
         Others.__init__(self)
 
     def generate(self):
-        head = []
+        (head, new_files) = ([], [])
         if 'icon_png' in self.config and 'static_url' in self.config:
             if not len(self.config['icon_png']):
                 # test: test_void_icon_png
@@ -238,7 +249,6 @@ class ComplementaryFiles(Values, Icons, Others):
                     'icon_png' key ({}) must be referred to a file path that exists.
                     FILE PATH: {}""".format(self.config['icon_png'],
                         path.join(getcwd(), self.config['icon_png']))))
-            new_files = []
             with open(self.config['icon_png'], 'r+b') as f:
                 with Image.open(f) as image:
                     for name in self.names:

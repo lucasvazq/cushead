@@ -8,35 +8,45 @@
 </p>
 
 # cushead.py
-_Python 3_
 
-This simple script improves your SEO and UX. It adds lang attribute to the <html> element and search and replace '$head$' string with personalized head elements.
+**A CLI that help you to improve the SEO and UX of your websites.**
+
+_meta-tags, favicons, manifest, robots, browserconfig, sitemap, opensearch_
+
+This script edits an html file adding some meta-tags and other stuff for
+improving the SEO and the UX of your website. Also, it generate a lot of useful
+files that are vinculated to that tags or stuff. For example, icons for apple
+devices and manifest.json file. The info and the files generated can be set
+through a config file.
+The script can generate a full default config file running:
+
+`cushead.py -preset example-config.txt`
+
+You can edit that file how you want, and then run the script using:
+
+`cushead.py -file example-config.txt`
+
+## INFO
+
+Python: >=3.5, <4.0
+Version: 3.0.0
+Status: Production/Stable
 
 ## MENU
 
 [Install](#install)
 
-[Usage with example](#usage-with-example)
+[Arguments](#arguments)
 
-1) [Command -h](#command--h)
+1) [-h](#-h)
 
-2) [The main file](#the-main-file)
+2) [-preset](#-preset)
 
-3) [Define personalized values](#define-personalized-values)
+3) [-file](#-file)
 
-4) [Execute the script](#execute-the-script)
+[Testing](#testing)
 
-5) [View results](#view-results)
-
-6) [Testing](#testing)
-
-[Other tools](#other-tools)
-
-1) [Icons tool generator](#icons-tool-generator)
-
-2) [Sitemap](#sitemap)
-
-3) [Other concepts](#other-concepts)
+[Considerations](#considerations)
 
 [License](#license)
 
@@ -44,220 +54,551 @@ This simple script improves your SEO and UX. It adds lang attribute to the <html
 
 `python3 -m pip install cushead.py`
 
-## Usage with example
+## Arguments
 
-### Command -h
+### -h
 
 `python3 cushead.py -h`
 
 ```txt
-usage: cushead.py -file PATH/TO/FILE [Options]. Do cushead.py -h for help
+usage: cushead.py -file FILEPATH
 
-This simple script improves your SEO and UX. It adds lang attribute to the
-<html> element and search and replace '$head$' string with personalized head
-elements. Git repository: https://github.com/lucasvazq/cushead.py
+Options (one required):
+  -preset FILENAME  Name for config file. Generate an example config file. That
+                    file contains a variable named 'config' that can be
+                    customized. It has some required values: 'html_file' (FILE
+                    PATH), 'output' (FOLDER PATH) and 'static_url' (STRING).
+                    Also, if 'icon_png' (IMAGE FILE PATH) is declared, this
+                    key need to have a value related to a path of an existing
+                    image.
+  -file FILEPATH    Path to config file. Read a config file that contains
+                    configurable values related to SEO and UX. After it, the
+                    script edits an html file and generate complementary files
+                    like icons, robots.txt, etc.
 
-Required:
-  -file FILEPATH        Path to file that want to edit.
-  -preset FILENAME     Generate example file with presets.
-
-Options:
-  --exclude-comment     Exclude 'Custom head elements' comment.
-  --exclude-html        Exclude html lang attribute.
-  --exclude-config      Exclude basic head config elements.
-  --exclude-basic       Exclude basic SEO elements.
-  --exclude-opengraph   Exclude opengraph.
-  --exclude-facebook    Exclude facebook.
-  --exclude-twitter     Exclude twitter.
-  --exclude-opensearch  Exclude opensearch.
-  --exclude-author      Exclude author.
+Examples:
+1) Generate config file:
+    cushead.py -preset custom.txt
+2) Execute with using that config file:
+    cushead.py -file custom.txt
 ```
 
-### The main file
+### -preset
 
-This is the file that wants to edit. It needs to have the <html> element for add the lang attribute, and a '$head$' string that be replaced for the custom elements. Example:
+This command generate a full config file in python syntax.
+Example:
 
-_(my_index.html)_
+`cushead.py -preset config.txt`
+
+_(config.txt)_
+```python
+"""
+Python syntax
+cushead.py config file
+Git: https://github.com/lucasvazq/cushead.py
+Documentation: https://github.com/lucasvazq/cushead.py/blob/master/README.md
+
+CONFIG VARIABLES:
+
+  html_file (FILE PATH):
+    Required, can't be void, need to exist and referrer to a file
+
+  output (FOLDER PATH):
+    Required, need to exist and referrer to a folder
+
+  static_url (STRING):
+    Required
+
+  icon_png (FILE PATH):
+    If declared, need to exist and referrer to an image file
+    Recomended 310x310 png image
+"""
+
+# Don't delete or change the name of this variable
+config = {
+
+  # MAIN CONFIG
+  'html_file':        './index.html',
+  'output':           './output/', # e.g. for manifest.json
+  'static_url':       '/static/',
+
+  # GENERAL CONFIG
+  'content-type':     'text/html; charset=utf-8',
+  'X-UA-Compatible':  'ie=edge',
+  'viewport':         {'width': 'device-width', 'initial-scale': '1'},
+  'locale':           'en_US',
+  'type':             'website', # http://ogp.me/#types
+  'color':            '#FFFFFF',
+  'url':              'microsoft.com', # Without "www." and protocol (e.g. "http://")
+  'protocol':         'https://',
+  'robots':           'index, follow',
+  'browserconfig':    'browserconfig.xml',
+  'manifest':         'manifest.json',
+  'opensearch':       'opensearch.xml',
+  'sitemap':          'sitemap.xml',
+
+  # BASIC CONFIG
+  'title':            'Microsoft',
+  'description':      'Technology Solutions',
+  'subject':          'Home Page',
+  'keywords':         'Microsoft, Windows',
+
+  # IMAGES
+  'preview':          'preview.png', # Big image preview
+  'preview_type':     'image/png', # image/jpeg, image/gif or image/png
+  'icon':             'favicon.ico', # *.ico
+  'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 310x310
+  'mask-icon':        'maskicon.svg', # svg file type
+
+  # SOCIAL MEDIA
+  'fb:app_id':        '12345', # Facebook App ID
+  'tw:site':          '@Microsoft', # Twitter account
+  'tw:creator:id':    '123456', # Page editor ID
+
+  # PWA
+  'dir':              'ltr',
+  'start_url':        '/',
+  'orientation':      'landscape',
+  'scope':            '/',
+  'display':          'browser',
+  'platform':        'web',
+  'applications':     [
+    {
+      'platform': 'play',
+      'url':      'https://play.google.com/store/apps/details?id=com.example.app',
+      'id':       'com.example.app'
+    },
+    {
+      'platform': 'itunes',
+      'url':      'https://itunes.apple.com/app/example-app/id123456',
+    }
+  ],
+
+  # AUTHOR
+  'author':           'Lucas Vazquez'
+
+}
+```
+
+#### html_file
+
+Requires for a *.html file path.
+That file needs to contain a literally `<html>` element and a $head$ variable.
+The `<html>`element is used to add the lang attribute.
+The $head$ variable is used to be replaced with custom elements like meta-tags.
+Example struct:
+
+_(index.html)_
 ```html
-<html> 
+<html>
   <head>
     $head$
-    ...
   </head>
 </html>
 ```
 
-If there isn't the <html> element, cant add the lang attribute. Same way, if there isn't the '$head$' string, cant adds the custom head elements.
+#### output
 
-### Define personalized values
+The folder where all generated files are going to be saved.
+It must exist.
 
-Create a file with this inside:
+#### static_url
 
-_(cushead.txt)_
-```python
-values = {
+The URL path of statics files.
 
-    # FILE PATH
-    'path':             './index.html',
+#### icon_png
 
-    # BASIC CONFIG
-    'content-type':     'text/html; charset=utf-8',
-    'X-UA-Compatible':  'ie=edge',
-    'robots':           'index, follow',
-    'manifest':         '/manifest.json',
-    'msapp-config':     '/browserconfig.xml',
-    'viewport':         {'width': 'device-width', 'initial-scale': '1'},
-    'locale':           'en_US',
-    'color':            '#FFFFFF',
+A PNG image file used to generate the icons. 310x310 size recommended.
 
-    # BASIC SEO
-    # Mask icon color obtained from BASIC CONFIG.
-    'title':            'Microsoft',
-    'description':      'Technology Solutions',
-    'icon':             '/static/favicon.png',
-    'mask-icon':        '/maskicon.svg', # svg file type
-    'fluid-icon':       '/fluidicon.png', # 512x512 png file type.
-    'subject':          'Home Page',
-    'keywords':         'Microsoft, Windows',
+### -file
 
-    # SOCIAL MEDIA
+This argument uses a config file to run the script.
+Using the default config file generated with -preset, we run the script with
+-file:
 
-    # General
-    'preview':          '/static/preview.png', # Big image preview
+`cushead.py -file config.txt`
 
-    # Opengraph
-    # og:title, og:description, og:image, og:image:secure_url and og:locale
-    # obtained from BASIC SEO and BASIC CONFIG.
-    'og:url':           'www.microsoft.com',
-    'og:type':          'website', # http://ogp.me/#types
-    'og:image:type':    'image/png', # image/jpeg, image/gif or image/png
+Output:
+```txt
+HTML:
+<html lang="en_US">
 
-    # Facebook
-    'fb:app_id':        '12345', # (Str) Facebook App ID
+HEAD:
+<!-- Custom head elements -->
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<meta http-equiv='X-UA-Compatible' content='ie=edge' />
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<meta http-equiv='Content-Language' content='en_US' />
+<meta name='theme-color' content='#FFFFFF' />
+<meta name='msapplication-TileColor' content='#FFFFFF' />
+<meta name='robots' content='index, follow' />
+<title>Microsoft</title>
+<meta name='application-name' content='Microsoft'>
+<meta name='description' content='Technology Solutions' />
+<meta name='subject' content='Home Page' />
+<meta name='keywords' content='Microsoft, Windows' />
+<link rel='icon' type="image/png" sizes='16x16' href='/static/favicon-16x16.png' />
+<link rel='icon' type="image/png" sizes='24x24' href='/static/favicon-24x24.png' />
+<link rel='icon' type="image/png" sizes='32x32' href='/static/favicon-32x32.png' />
+<link rel='icon' type="image/png" sizes='48x48' href='/static/favicon-48x48.png' />
+<link rel='icon' type="image/png" sizes='57x57' href='/static/favicon-57x57.png' />
+<link rel='icon' type="image/png" sizes='60x60' href='/static/favicon-60x60.png' />
+<link rel='icon' type="image/png" sizes='64x64' href='/static/favicon-64x64.png' />
+<link rel='icon' type="image/png" sizes='70x70' href='/static/favicon-70x70.png' />
+<link rel='icon' type="image/png" sizes='72x72' href='/static/favicon-72x72.png' />
+<link rel='icon' type="image/png" sizes='76x76' href='/static/favicon-76x76.png' />
+<link rel='icon' type="image/png" sizes='96x96' href='/static/favicon-96x96.png' />
+<link rel='icon' type="image/png" sizes='114x114' href='/static/favicon-114x114.png' />
+<link rel='icon' type="image/png" sizes='120x120' href='/static/favicon-120x120.png' />
+<link rel='icon' type="image/png" sizes='128x128' href='/static/favicon-128x128.png' />
+<link rel='icon' type="image/png" sizes='144x144' href='/static/favicon-144x144.png' />
+<link rel='icon' type="image/png" sizes='150x150' href='/static/favicon-150x150.png' />
+<link rel='icon' type="image/png" sizes='152x152' href='/static/favicon-152x152.png' />
+<link rel='icon' type="image/png" sizes='167x167' href='/static/favicon-167x167.png' />
+<link rel='icon' type="image/png" sizes='180x180' href='/static/favicon-180x180.png' />
+<link rel='icon' type="image/png" sizes='192x192' href='/static/favicon-192x192.png' />
+<link rel='icon' type="image/png" sizes='195x195' href='/static/favicon-195x195.png' />
+<link rel='icon' type="image/png" sizes='196x196' href='/static/favicon-196x196.png' />
+<link rel='icon' type="image/png" sizes='228x228' href='/static/favicon-228x228.png' />
+<link rel='icon' type="image/png" sizes='310x310' href='/static/favicon-310x310.png' />
+<meta name='msapplication-TileImage' content='/static/ms-icon-144x144.png' />
+<link rel='apple-touch-icon' href='/static/apple-touch-icon-57x57.png' />
+<link rel='apple-touch-icon' sizes='57x57' href='/static/apple-touch-icon-57x57.png' />
+<link rel='apple-touch-icon' sizes='60x60' href='/static/apple-touch-icon-60x60.png' />
+<link rel='apple-touch-icon' sizes='72x72' href='/static/apple-touch-icon-72x72.png' />
+<link rel='apple-touch-icon' sizes='76x76' href='/static/apple-touch-icon-76x76.png' />
+<link rel='apple-touch-icon' sizes='114x114' href='/static/apple-touch-icon-114x114.png' />
+<link rel='apple-touch-icon' sizes='120x120' href='/static/apple-touch-icon-120x120.png' />
+<link rel='apple-touch-icon' sizes='144x144' href='/static/apple-touch-icon-144x144.png' />
+<link rel='apple-touch-icon' sizes='152x152' href='/static/apple-touch-icon-152x152.png' />
+<link rel='apple-touch-icon' sizes='180x180' href='/static/apple-touch-icon-180x180.png' />
+<link rel='fluid-icon' href='/static/fluidicon-512x512.png' title='Microsoft' />
+<link rel='shortcut icon' href='/static/favicon.ico' type='image/x-icon' />
+<link rel='mask-icon' href='maskicon.svg' color='#FFFFFF' />
+<meta name='msapplication-config' content='/static/browserconfig.xml' />
+<link rel='manifest' href='/static/manifest.json' />
+<link rel='search' type='application/opensearchdescription+xml' title='Microsoft' href='/static/opensearch.xml' />
+<meta porperty='fb:app_id' content='12345' />
+<meta property='og:locale' content='en_US' />
+<meta property='og:url' content='https://microsoft.com' />
+<meta property='og:site_name' content='Microsoft' />
+<meta property='og:title' content='Microsoft' />
+<meta property='og:description' content='Technology Solutions' />
+<meta property='og:image' content='/static/preview.png' />
+<meta property='og:image:secure_url' content='/static/preview.png' />
+<meta name='twitter:image' content='/static/preview.png' />
+<meta property='og:image:type' content='image/png' />
+<meta property='og:image:alt' content='Microsoft - Technology Solutions' />
+<meta name='twitter:image:alt' content='Microsoft - Technology Solutions' />
+<meta name='twitter:card' content='summary' />
+<meta name='twitter:site' content='@Microsoft' />
+<meta name='twitter:title' content='Microsoft' />
+<meta name='twitter:description' content='Technology Solutions' />
+<meta property='twitter:creator:id' content='123456' />
+<meta name='author' content='Lucas Vazquez' />
 
-    # Twitter
-    # Only support twitter:card = summary
-    # twitter:title, twitter:description, twitter:image and twitter:image:alt
-    # obtained from BASIC SEO and General - SOCIAL MEDIA.
-    'tw:site':          '@Microsoft', # Commerce Twitter account
-    'tw:creator:id':    '123456', # Page editor ID
+NEW FILES:
+./output/favicon-16x16.png
+./output/favicon-24x24.png
+./output/favicon-32x32.png
+./output/favicon-48x48.png
+./output/favicon-57x57.png
+./output/favicon-60x60.png
+./output/favicon-64x64.png
+./output/favicon-70x70.png
+./output/favicon-72x72.png
+./output/favicon-76x76.png
+./output/favicon-96x96.png
+./output/favicon-114x114.png
+./output/favicon-120x120.png
+./output/favicon-128x128.png
+./output/favicon-144x144.png
+./output/favicon-150x150.png
+./output/favicon-152x152.png
+./output/favicon-167x167.png
+./output/favicon-180x180.png
+./output/favicon-192x192.png
+./output/favicon-195x195.png
+./output/favicon-196x196.png
+./output/favicon-228x228.png
+./output/favicon-310x310.png
+./output/ms-icon-144x144.png
+./output/apple-touch-icon-57x57.png
+./output/apple-touch-icon-57x57.png
+./output/apple-touch-icon-60x60.png
+./output/apple-touch-icon-72x72.png
+./output/apple-touch-icon-76x76.png
+./output/apple-touch-icon-114x114.png
+./output/apple-touch-icon-120x120.png
+./output/apple-touch-icon-144x144.png
+./output/apple-touch-icon-152x152.png
+./output/apple-touch-icon-180x180.png
+./output/fluidicon-512x512.png
+./output/ms-icon-30x30.png
+./output/ms-icon-44x44.png
+./output/ms-icon-70x70.png
+./output/ms-icon-150x150.png
+./output/ms-icon-310x310.png
+./output/ms-icon-310x150.png
+./output/android-icon-36x36.png
+./output/android-icon-48x48.png
+./output/android-icon-72x72.png
+./output/android-icon-96x96.png
+./output/android-icon-144x144.png
+./output/android-icon-192x192.png
+./output/opensearch-16x16.png
+./output/browserconfig.xml
+./output/manifest.json
+./output/opensearch.xml
+./output/robots.txt
+./output/sitemap.xml
 
-    # OPENSEARCH
-    # OpenSearch title pretend to be the same as title from BASIC SEO.
-    'opensearch':       '/opensearch.xml',
-    
-    # AUTHOR
-    'author':           'Lucas Vazquez'
-    
-}
+HTML FILE: ./index.html
+(full path): /home/lucas/Documents/Projects/Example/./index.html
+OUTPUT FILES: ./output/
+(full path): /home/lucas/Documents/Projects/Example/./output/
 ```
 
-Look, there is a python dictionary called 'values', they are used to pass key-value pair to the script. Please, don't change the dictionary 'values' name. Feel free to add comments like python inside the dictionary.
-In values there is a key called 'path', this referred to the path where is the file that you want to edit. If some keys are omitted, the elements referred to them are omitted too.
-You can generate full example preset file like this using:
-`python3 cushead.py -preset cushead.txt`
+#### Edited html file
 
-### Execute the script
+Supposing we provide the html file declared previously (index.html), the result
+will be:
 
-`python3 cushead.py -file cushead.txt --exclude-twitter`
-
-### View results
-
-_(my_index.html)_
 ```html
 <html lang="en_US">
   <head>
     <!-- Custom head elements -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="robots" content="index, follow" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-config" content="/browserconfig.xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Language" content="en_US" />
     <meta name="theme-color" content="#FFFFFF" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="robots" content="index, follow" />
     <title>Microsoft</title>
+    <meta name="application-name" content="Microsoft">
     <meta name="description" content="Technology Solutions" />
-    <link rel="shortcut icon" href="/static/favicon.png" type="image/x-icon" />
-    <link rel="mask-icon" href="/maskicon.svg" color="#FFFFFF" />
-    <link rel="fluid-icon" href="/fluidicon.png" title="Microsoft" />
     <meta name="subject" content="Home Page" />
     <meta name="keywords" content="Microsoft, Windows" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="24x24" href="/static/favicon-24x24.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/static/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="57x57" href="/static/favicon-57x57.png" />
+    <link rel="icon" type="image/png" sizes="60x60" href="/static/favicon-60x60.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/favicon-64x64.png" />
+    <link rel="icon" type="image/png" sizes="70x70" href="/static/favicon-70x70.png" />
+    <link rel="icon" type="image/png" sizes="72x72" href="/static/favicon-72x72.png" />
+    <link rel="icon" type="image/png" sizes="76x76" href="/static/favicon-76x76.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="114x114" href="/static/favicon-114x114.png" />
+    <link rel="icon" type="image/png" sizes="120x120" href="/static/favicon-120x120.png" />
+    <link rel="icon" type="image/png" sizes="128x128" href="/static/favicon-128x128.png" />
+    <link rel="icon" type="image/png" sizes="144x144" href="/static/favicon-144x144.png" />
+    <link rel="icon" type="image/png" sizes="150x150" href="/static/favicon-150x150.png" />
+    <link rel="icon" type="image/png" sizes="152x152" href="/static/favicon-152x152.png" />
+    <link rel="icon" type="image/png" sizes="167x167" href="/static/favicon-167x167.png" />
+    <link rel="icon" type="image/png" sizes="180x180" href="/static/favicon-180x180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="195x195" href="/static/favicon-195x195.png" />
+    <link rel="icon" type="image/png" sizes="196x196" href="/static/favicon-196x196.png" />
+    <link rel="icon" type="image/png" sizes="228x228" href="/static/favicon-228x228.png" />
+    <link rel="icon" type="image/png" sizes="310x310" href="/static/favicon-310x310.png" />
+    <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png" />
+    <link rel="apple-touch-icon" href="/static/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon-180x180.png" />
+    <link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft" />
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="maskicon.svg" color="#FFFFFF" />
+    <meta name="msapplication-config" content="/static/browserconfig.xml" />
+    <link rel="manifest" href="/static/manifest.json" />
+    <link rel="search" type="application/opensearchdescription+xml" title="Microsoft" href="/static/opensearch.xml" />
+    <meta porperty="fb:app_id" content="12345" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="www.microsoft.com" />
+    <meta property="og:url" content="https://microsoft.com" />
     <meta property="og:site_name" content="Microsoft" />
     <meta property="og:title" content="Microsoft" />
     <meta property="og:description" content="Technology Solutions" />
     <meta property="og:image" content="/static/preview.png" />
     <meta property="og:image:secure_url" content="/static/preview.png" />
+    <meta name="twitter:image" content="/static/preview.png" />
     <meta property="og:image:type" content="image/png" />
-    <meta name="og:image:alt" content="Microsoft - Technology Solutions" />
-    <meta porperty="fb:app_id" content="12345" />
-    <link rel="search" type="application/opensearchdescription+xml" title="Microsoft" href="/opensearch.xml" />
+    <meta property="og:image:alt" content="Microsoft - Technology Solutions" />
+    <meta name="twitter:image:alt" content="Microsoft - Technology Solutions" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@Microsoft" />
+    <meta name="twitter:title" content="Microsoft" />
+    <meta name="twitter:description" content="Technology Solutions" />
+    <meta property="twitter:creator:id" content="123456" />
     <meta name="author" content="Lucas Vazquez" />
   </head>
 </html>
 ```
 
-### Testing
+#### New files
+
+- A big amount of resized icons, coming from 'icon_png' config value.
+
+_(browserconfig.xml)_ BEAUTY VERSION
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square30x30logo src="/static/ms-icon-30x30.png" />
+      <square44x44logo src="/static/ms-icon-44x44.png" />
+      <square70x70logo src="/static/ms-icon-70x70.png" />
+      <square150x150logo src="/static/ms-icon-150x150.png" />
+      <square310x310logo src="/static/ms-icon-310x310.png" />
+      <wide310x150logo src="/static/ms-icon-310x150.png" />
+      <TileColor>#FFFFFF</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>
+```
+
+_(manifest.json)_ BEAUTY VERSION
+```json
+{
+  "name": "Microsoft",
+  "short_name": "Microsoft",
+  "description": "Technology Solutions",
+  "dir": "ltr",
+  "start_url": "/",
+  "orientation": "landscape",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "scope": "/",
+  "display": "browser",
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.example.app",
+      "id": "com.example.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://itunes.apple.com/app/example-app/id123456"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/static/android-icon-36x36",
+      "sizes": "36x36",
+      "type": "image/png",
+      "density": "0.75"
+    },
+    {
+      "src": "/static/android-icon-48x48",
+      "sizes": "48x48",
+      "type": "image/png",
+      "density": "1.0"
+    },
+    {
+      "src": "/static/android-icon-72x72",
+      "sizes": "72x72",
+      "type": "image/png",
+      "density": "1.5"
+    },
+    {
+      "src": "/static/android-icon-96x96",
+      "sizes": "96x96",
+      "type": "image/png",
+      "density": "2.0"
+    },
+    {
+      "src": "/static/android-icon-144x144",
+      "sizes": "144x144",
+      "type": "image/png",
+      "density": "3.0"
+    },
+    {
+      "src": "/static/android-icon-192x192",
+      "sizes": "192x192",
+      "type": "image/png",
+      "density": "4.0"
+    }
+  ]
+}
+```
+
+_(opensearch.xml)_ BEAUTY VERSION
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Microsoft</ShortName>
+  <Description>Search Microsoft</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Url method="get" type="text/html" template="http://www.google.com/search?q={searchTerms}+site%3Amicrosoft.com" />
+  <Image height="16" width="16" type="image/png">/static/opensearch-16x16.png</Image>
+</OpenSearchDescription>
+```
+
+_(robots.txt)_
+```txt
+User-agent: *
+Allow: /
+
+Sitemap: https://microsoft.com/sitemap.xml
+```
+
+_(sitemap.xml)_ BEAUTY VERSION
+```xml
+<?xml version="1.0" encoding="uft-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url>
+    <loc>https://microsoft.com/</loc>
+  </url>
+</urlset>
+```
+
+## Testing
+
+### Files
+
+[manifest.json](https://manifest-validator.appspot.com/)
+
+[robots.txt](https://sitechecker.pro/es/robots-tester/)
+
+[sitemap.xml](https://www.xml-sitemaps.com/validate-xml-sitemap.html)
+
+### Headers
+
+[Favicons](https://realfavicongenerator.net/favicon_checker)
+
+[Meta-tags](https://www.heymeta.com/)
 
 [Facebook Debugger](https://developers.facebook.com/tools/debug/)
 
 [Twitter Card validator](https://cards-dev.twitter.com/validator)
 
-## Other tools
+## Considerations
 
-### Icons tool generator
-
-[https://www.favicon-generator.org/](https://www.favicon-generator.org/)
-
-```txt
-Steps:
-  Add image
-  Turn on:
-    'Generate icons for Web, Android, Microsoft, and iOS (iPhone and iPad) Apps'
-  Turn off:
-    'Generate only 16x16 favicon.ico'
-    'Maintain Image Dimensions (don't resize to be square)'
-  Click on 'Create favicon'
-
-After refresh, click on 'Download the generated favicon' for download zip file that has a big amount of icons and other files.
-Use the downloaded browserconfig.xml for complementing your own  browserconfig.xml file. Same for manifest.json
-Getting back to the website, copy the html text inside the box, and paste in your head section of your website and close the opened tags adding ' /' (with the space) at the end, before '>'. This's an excellent complement to cushead.py
-Mixing it, you will need to ignore the next lines:
-    ...
-14  <link rel="manifest" href="/manifest.json">
-15  <meta name="msapplication-TileColor" content="#ffffff">
-    ...
-17  <meta name="theme-color" content="#ffffff">
-```
-
-### Sitemap
-
-A good practice is to add sitemap.xml to your site, linking it in robots.txt
-
-[Sitemap generator](https://www.xml-sitemaps.com/)
-
-[Test your sitemap with google](https://search.google.com/search-console/not-verified?original_url=/search-console/sitemaps)
-
-### Other concepts
-
-These concepts compose a good practice to improve SEO and UX
+Here is a list of concepts that comprise good practices to improve SEO and UX:
 
 1) Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
-2) Use rel profile attribute for refer to author or website owner
-3) Accelerated Mobiles Pages
-4) Progressive Web Apps
-5) Server Side Rendering
-6) Javascript and css minified and purged with short variables names
-7) Responsive Design
-8) Mobile call and Whatsapp sms for mobiles websites
-9) Google my Business integration
-10) gzip and bzip2 compression
-11) Content Delivery Network
-12) HTTP caching in Client Side
+2) rel profile attribute for referring to author or website owner
+3) Maskable icons
+4) Accelerated Mobiles Pages
+5) Progressive Web Apps
+6) Screenshots in manifest for PWA
+7) Add PWA to App stores (like the Play Store of Google)
+8) Javascript and css minified and purged with short variables names
+9) Responsive Design
+10) Mobile call and Whatsapp sms for mobiles websites
+11) Google my Business integration
+12) gzip and bzip2 compression
+13) Server Side Rendering
+14) HTTP caching in Client Side
+15) Content Delivery Network
 
 ## License
 
