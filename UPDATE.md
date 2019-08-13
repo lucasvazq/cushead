@@ -1,6 +1,6 @@
 # Steps for upgrade the package
 
-## 1 - Change the version in:
+## 1 - Change the version in
 
 ['./_info.py'](./_info.py)
 
@@ -10,7 +10,7 @@
 
 ['./logo.png'](./logo.png)
 
-## 2 - Remove old packages deleting the next folders:
+## 2 - Remove old packages deleting the next folders
 
 ['./cushead.py.egg-info/'](./cushead.py.egg-info/.)
 
@@ -32,7 +32,7 @@
 
     `twine upload --skip-existing dist/*`
 
-## - 7 Upgrade package in machine:
+## - 7 Upgrade package in machine
 
     `python3 -m pip install cushead.py --upgrade`
 
