@@ -113,4 +113,15 @@ class TestSuccess(unittest.TestCase):
         Main(['-preset', './test/Success/test.txt'])
 
 
-unittest.main()
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
+        TestArgumentsException))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
+        TestConfigExceptions))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
+        TestSuccess))
+    return suite
+
+
+unittest.TextTestRunner(verbosity=2).run(suite())

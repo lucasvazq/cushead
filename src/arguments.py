@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from os import path
+from os import getwcd, path
 from textwrap import dedent
 
 import argparse
