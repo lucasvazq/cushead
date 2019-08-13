@@ -7,7 +7,7 @@ from src.main import Main
 
 
 # Exceptions
-class TestArgumentsException(unittest.TestCase):
+class TestArgumentsException(unittest.TestCase):WASA
 
     # No arguments
     @classmethod

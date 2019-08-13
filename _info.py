@@ -3,7 +3,7 @@
 
 
 # Used for setup.py
-__package_name__ = "cushead.py"
+__package_name__ = "cushead.py"WASA
 __package_version__ = "3.0.0"
 __source__ = "https://github.com/lucasvazq/cushead.py"
 __documentation__ = "https://github.com/lucasvazq/cushead.py/blob/master/README.md"
