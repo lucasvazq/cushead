@@ -24,7 +24,7 @@
 
     `find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf`
 
-## 5 - Add to git:
+## 5 - Add to git
 
     `git add . && git commit -m 'new version' && git push origin master`
 
