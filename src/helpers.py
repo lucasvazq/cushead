@@ -3,8 +3,8 @@
 
 import types
 from importlib import machinery
-from textwrap import dedent
 from os import getcwd, path
+from textwrap import dedent
 
 
 class Helpers():

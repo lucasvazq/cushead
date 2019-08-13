@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from os import getcwd
-from os.path import join
+from os import getcwd, path
 import textwrap
 
 from _info import get_info
@@ -99,7 +98,7 @@ class Presets():
         super().__init__()
 
     def _make_preset(self, file):
-        file = join(getcwd(), file)
+        file = path.join(getcwd(), file)
         f = open(file, 'w+')
         f.write(self.presets)
         f.close()
