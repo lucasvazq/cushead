@@ -189,6 +189,7 @@ class Head(ComplementaryFiles):
                 ''.join("{}{}\n".format(space, element) for element in head)) \
                     [0:-1].replace('\'', '"')
             file_string = file_string.replace('$head$', concat)
+            sexy = concat.replace(space, '')
             print(textwrap.dedent("""\
                 HEAD:
                 {}""".format(message)))

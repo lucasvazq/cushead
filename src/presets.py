@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from os import getcwd, path
+import textwrap
 
 from _info import get_info
 
