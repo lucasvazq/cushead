@@ -3,7 +3,7 @@
 
 import sys
 
-from _info import get_info
+from ._info import get_info
 
 
 INFO = get_info()
