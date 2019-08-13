@@ -24,7 +24,8 @@ setuptools.setup(
         'Documentation': INFO['documentation'],
         'Source': INFO['source']
     },
-    python_requires=">={}.{}, <{}.{}".format(*(MIN_PYTHON + MAX_PYTHON)),
+    python_requires=">={}.{}, <{}.{}".format(*(INFO['python_min_version'] +
+        INFO['python_max_version'])),
     packages=setuptools.find_packages(),
     install_requires=INFO['required_packages'],
     author=INFO['author'],

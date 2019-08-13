@@ -71,8 +71,8 @@ class Values():
 
 class Icons():
 
-    def __init__(self, dictionary=None):
-        self.config = dictionary
+    def __init__(self, config=None):
+        self.config = config
 
     def _resize(self, image, size, filename):
         filepath = path.join(self.config['output'], filename)
@@ -123,8 +123,8 @@ class Icons():
 
 class Others():
 
-    def __init__(self, dictionary=None):
-        self.config = dictionary
+    def __init__(self, config=None):
+        self.config = config
 
     def browserconfig(self):
         string = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>" +
@@ -220,8 +220,8 @@ class Others():
 
 class ComplementaryFiles(Values, Icons, Others):
 
-    def __init__(self, dictionary=None):
-        self.config = dictionary
+    def __init__(self, config=None):
+        self.config = config
         Values.__init__(self)
         Icons.__init__(self)
         Others.__init__(self)
