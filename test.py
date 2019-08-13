@@ -147,7 +147,6 @@ def suite():
     for test_class in test_classes:
         suite.addTests(unittest.TestLoader().loadTestsFromTestCase(test_class))
     return suite
-    pass
 
 
 unittest.TextTestRunner(verbosity=3).run(suite())

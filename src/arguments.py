@@ -18,7 +18,8 @@ class Arguments():
         self.args = self.parse_args(args)
         super().__init__()
 
-    def parse_args(self, args):
+    @staticmethod
+    def parse_args(args):
         parser = argparse.ArgumentParser(
             prog=INFO['name'],
             formatter_class=argparse.RawDescriptionHelpFormatter,

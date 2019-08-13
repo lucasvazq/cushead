@@ -3,8 +3,8 @@
 
 
 # Used for setup.py
-__name__ = "cushead.py"
-__version__ = "3.0.0"
+__package_name__ = "cushead.py"
+__package_version__ = "3.0.0"
 __source__ = "https://github.com/lucasvazq/cushead.py"
 __documentation__ = "https://github.com/lucasvazq/cushead.py/blob/master/README.md"
 __python_min_version__ = (3, 5)
@@ -20,15 +20,16 @@ __keywords__ = ("SEO, meta-tags, UX, PWA, front-end, favicon, manifest, " +
 
 # Others
 __copyright__ = """\
-{} © 2019 {}. Released under the MIT License.""".format(__name__, __author__)
+{} © 2019 {}. Released under the MIT License.""".format(__package_name__,
+    __author__)
 __maintainer__ = "Lucas Vazquez"
 
 __status__ = "Production"
 
 def get_info():
     return {
-        'name': __name__,
-        'version': __version__,
+        'name': __package_name__,
+        'version': __package_version__,
         'source': __source__,
         'documentation': __documentation__,
         'python_min_version': __python_min_version__,

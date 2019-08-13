@@ -4,8 +4,6 @@
 from src.support import Support
 Support().install()
 
-import sys
-
 import setuptools
 
 from _info import get_info

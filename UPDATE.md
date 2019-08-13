@@ -2,19 +2,19 @@
 
 ## 1 - Change the version in:
 
-['./_info.py'](./_info.py)
+[_info.py](./_info.py)
 
-['./README.md](./README.md)
+[README.md](./README.md)
 
-['./logo.xcf'](./logo.xcf)
+[logo.xcf](./logo.xcf)
 
-['./logo.png'](./logo.png)
+[logo.png](./logo.png)
 
 ## 2 - Remove old packages deleting the next folders:
 
-['./cushead.py.egg-info/'](./cushead.py.egg-info/.)
+[cushead.py.egg-info/](./cushead.py.egg-info/.)
 
-['./dist/'](./dist/.)
+[dist/](./dist/.)
 
 ## 3 - Build the new package
 
