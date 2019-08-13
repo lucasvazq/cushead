@@ -1,29 +1,41 @@
-1) Change the version in:
+# Steps for upgrade the package
 
-['_info.py'](./_info.py)
+## 1 - Change the version in:
 
-['README.md](./README.md)
+['./_info.py'](./_info.py)
 
-['logo.xcf'](./logo.xcf)
+['./README.md](./README.md)
 
-['logo.png'](./logo.png)
+['./logo.xcf'](./logo.xcf)
 
-2) Build the new package
+['./logo.png'](./logo.png)
 
-    `python3 setup.py sdist`
+## 2 - Remove old packages deleting the next folders:
 
-3) Add to git:
+['./cushead.py.egg-info/'](./cushead.py.egg-info/.)
+
+['./dist/'](./dist/.)
+
+## 3 - Build the new package
+
+    `python3 ./setup.py sdist`
+
+## 4 - Remove all python cache files
+
+    `find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf`
+
+## 5 - Add to git:
 
     `git add . && git commit -m 'new version' && git push origin master`
 
-4) Upload to PYPI using twine
+## 6 - Upload to PYPI using twine
 
     `twine upload --skip-existing dist/*`
 
-5) Upgrade package in machine:
+## - 7 Upgrade package in machine:
 
     `python3 -m pip install cushead.py --upgrade`
 
-6) Test
+## - 8 Test
 
     `python3 cushead.py -h`

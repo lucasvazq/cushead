@@ -139,11 +139,6 @@ class TestSpecialConfigSuccess(unittest.TestCase):
     def test_miss_sitemap(self):
         Main(['-file', './test/SpecialConfigSuccess/miss_sitemap/test.txt']).run()
 
-class TestSpe(unittest.TestCase):
-    # Miss 'icon', 'mask_icon', 'browserconfig', 'manifest' and 'opensearch'
-    @classmethod
-    def test_miss_1(self):
-        Main(['-file', './test/SpecialConfigSuccess/miss_1/test.txt']).run()
 
 def suite():
     suite = unittest.TestSuite()

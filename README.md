@@ -22,10 +22,10 @@
 ## Description
 
 This script edits an html file adding some meta-tags and other stuff for
-improving the SEO and the UX of your website. Also, it generate a lot of useful
-files that are vinculated to that tags or stuff. For example, icons for apple
-devices and manifest.json file. The info and the files generated can be set
-through a config file.
+improving the **SEO** and the **UX** of your website. Also, it generate a lot
+of useful files that are vinculated to that tags or stuff. For example, icons
+for apple devices and manifest.json file. The info and the files generated can
+be set through a config file.
 
 The script can generate a full default config file running:
 
@@ -593,7 +593,8 @@ _(sitemap.xml)_ _BEAUTY VERSION_
 
 ## Considerations
 
-Here is a list of concepts that comprise good practices to improve SEO and UX:
+Here is a list of concepts that comprise good practices to improve **SEO** and
+**UX**:
 
 1) Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
 2) rel profile attribute for referring to author or website owner
