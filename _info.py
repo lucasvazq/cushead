@@ -9,7 +9,7 @@ __source__ = "https://github.com/lucasvazq/cushead.py"
 __documentation__ = "https://github.com/lucasvazq/cushead.py/blob/master/README.md"
 __python_min_version__ = (3, 5)
 __python_max_version__ = (4, 0)
-__required_packages__ = ['argparse', 'resizeimage']
+__required_packages__ = ['argparse', 'python-resize-image']
 __author__ = "Lucas Vazquez"
 __author_page__ = "https://github.com/lucasvazq"
 __email__ = "lucas5zvazquez@gmail.com"
@@ -19,8 +19,8 @@ __keywords__ = ("SEO, UX, front-end, favicon, manifest, robots, " +
     "browserconfig, sitemap, opensearch")
 
 # others
-__copyright__ = ("cushead.py © 2019 Lucas Vazquez. " +
-"Released under the MIT License.")
+__copyright__ = """\
+{} © 2019 {}. Released under the MIT License.""".format(__name__, __author__)
 __maintainer__ = "Lucas Vazquez"
 
 __status__ = "Production"
