@@ -8,8 +8,8 @@ from .complementary_files import ComplementaryFiles
 
 class Head(ComplementaryFiles):
 
-    def __init__(self, dictionary=None):
-        self.config = dictionary
+    def __init__(self, config=None):
+        self.config = config
         ComplementaryFiles.__init__(self)
         super().__init__()
 
