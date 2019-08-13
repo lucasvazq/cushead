@@ -213,8 +213,8 @@ class Others():
 
     def robots(self):
 		sitemap = "Sitemap: {}{}/{}".format(self.config.get('protocol', ''),
-			self.config['url'], self.config['sitemap']) \
-			if 'sitemap' in self.config else ''
+                self.config['url'], self.config['sitemap']) \
+                if 'sitemap' in self.config else ''
         string = ("User-agent: *\n" +
             "Allow: /\n" +
             "\n" +
