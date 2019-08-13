@@ -182,7 +182,7 @@ class Others():
         if 'display' in self.config:
             dictionary['display'] = self.config['display']
         if 'platform' in self.config:
-            dictionary['platform'] = self.config['plataform']
+            dictionary['platform'] = self.config['platform']
         if 'applications' in self.config:
             dictionary['related_applications'] = self.config['applications']
         dictionary['icons'] = icons
