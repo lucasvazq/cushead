@@ -282,6 +282,7 @@ HEAD:
 <link rel='search' type='application/opensearchdescription+xml' title='Microsoft' href='/static/opensearch.xml' />
 <meta porperty='fb:app_id' content='12345' />
 <meta property='og:locale' content='en_US' />
+<meta property='og:type' content='website' />
 <meta property='og:url' content='https://microsoft.com' />
 <meta property='og:site_name' content='Microsoft' />
 <meta property='og:title' content='Microsoft' />
@@ -356,9 +357,9 @@ NEW FILES:
 ./output/sitemap.xml
 
 HTML FILE: ./index.html
-(full path): /home/lucas/Documents/Projects/Example/./index.html
+(full path): /home/user/Documents/Projects/Websites/Example/./index.html
 OUTPUT FILES: ./output/
-(full path): /home/lucas/Documents/Projects/Example/./output/
+(full path): /home/user/Documents/Projects/Websites/Example/./output/
 ```
 
 #### Edited html file
@@ -369,80 +370,81 @@ will be:
 _(index.html)_
 ```html
 <html lang="en_US">
-  <head>
-    <!-- Custom head elements -->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Language" content="en_US" />
-    <meta name="theme-color" content="#FFFFFF" />
-    <meta name="msapplication-TileColor" content="#FFFFFF" />
-    <meta name="robots" content="index, follow" />
-    <title>Microsoft</title>
-    <meta name="application-name" content="Microsoft">
-    <meta name="description" content="Technology Solutions" />
-    <meta name="subject" content="Home Page" />
-    <meta name="keywords" content="Microsoft, Windows" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="24x24" href="/static/favicon-24x24.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/static/favicon-48x48.png" />
-    <link rel="icon" type="image/png" sizes="57x57" href="/static/favicon-57x57.png" />
-    <link rel="icon" type="image/png" sizes="60x60" href="/static/favicon-60x60.png" />
-    <link rel="icon" type="image/png" sizes="64x64" href="/static/favicon-64x64.png" />
-    <link rel="icon" type="image/png" sizes="70x70" href="/static/favicon-70x70.png" />
-    <link rel="icon" type="image/png" sizes="72x72" href="/static/favicon-72x72.png" />
-    <link rel="icon" type="image/png" sizes="76x76" href="/static/favicon-76x76.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="114x114" href="/static/favicon-114x114.png" />
-    <link rel="icon" type="image/png" sizes="120x120" href="/static/favicon-120x120.png" />
-    <link rel="icon" type="image/png" sizes="128x128" href="/static/favicon-128x128.png" />
-    <link rel="icon" type="image/png" sizes="144x144" href="/static/favicon-144x144.png" />
-    <link rel="icon" type="image/png" sizes="150x150" href="/static/favicon-150x150.png" />
-    <link rel="icon" type="image/png" sizes="152x152" href="/static/favicon-152x152.png" />
-    <link rel="icon" type="image/png" sizes="167x167" href="/static/favicon-167x167.png" />
-    <link rel="icon" type="image/png" sizes="180x180" href="/static/favicon-180x180.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192x192.png" />
-    <link rel="icon" type="image/png" sizes="195x195" href="/static/favicon-195x195.png" />
-    <link rel="icon" type="image/png" sizes="196x196" href="/static/favicon-196x196.png" />
-    <link rel="icon" type="image/png" sizes="228x228" href="/static/favicon-228x228.png" />
-    <link rel="icon" type="image/png" sizes="310x310" href="/static/favicon-310x310.png" />
-    <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png" />
-    <link rel="apple-touch-icon" href="/static/apple-touch-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-touch-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-touch-icon-60x60.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-touch-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="/static/apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="/static/apple-touch-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="/static/apple-touch-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-touch-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon-180x180.png" />
-    <link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft" />
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-    <link rel="mask-icon" href="maskicon.svg" color="#FFFFFF" />
-    <meta name="msapplication-config" content="/static/browserconfig.xml" />
-    <link rel="manifest" href="/static/manifest.json" />
-    <link rel="search" type="application/opensearchdescription+xml" title="Microsoft" href="/static/opensearch.xml" />
-    <meta porperty="fb:app_id" content="12345" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:url" content="https://microsoft.com" />
-    <meta property="og:site_name" content="Microsoft" />
-    <meta property="og:title" content="Microsoft" />
-    <meta property="og:description" content="Technology Solutions" />
-    <meta property="og:image" content="/static/preview.png" />
-    <meta property="og:image:secure_url" content="/static/preview.png" />
-    <meta name="twitter:image" content="/static/preview.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:alt" content="Microsoft - Technology Solutions" />
-    <meta name="twitter:image:alt" content="Microsoft - Technology Solutions" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@Microsoft" />
-    <meta name="twitter:title" content="Microsoft" />
-    <meta name="twitter:description" content="Technology Solutions" />
-    <meta property="twitter:creator:id" content="123456" />
-    <meta name="author" content="Lucas Vazquez" />
-  </head>
+	<head>
+		<!-- Custom head elements -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="Content-Language" content="en_US" />
+		<meta name="theme-color" content="#FFFFFF" />
+		<meta name="msapplication-TileColor" content="#FFFFFF" />
+		<meta name="robots" content="index, follow" />
+		<title>Microsoft</title>
+		<meta name="application-name" content="Microsoft">
+		<meta name="description" content="Technology Solutions" />
+		<meta name="subject" content="Home Page" />
+		<meta name="keywords" content="Microsoft, Windows" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
+		<link rel="icon" type="image/png" sizes="24x24" href="/static/favicon-24x24.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="48x48" href="/static/favicon-48x48.png" />
+		<link rel="icon" type="image/png" sizes="57x57" href="/static/favicon-57x57.png" />
+		<link rel="icon" type="image/png" sizes="60x60" href="/static/favicon-60x60.png" />
+		<link rel="icon" type="image/png" sizes="64x64" href="/static/favicon-64x64.png" />
+		<link rel="icon" type="image/png" sizes="70x70" href="/static/favicon-70x70.png" />
+		<link rel="icon" type="image/png" sizes="72x72" href="/static/favicon-72x72.png" />
+		<link rel="icon" type="image/png" sizes="76x76" href="/static/favicon-76x76.png" />
+		<link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96.png" />
+		<link rel="icon" type="image/png" sizes="114x114" href="/static/favicon-114x114.png" />
+		<link rel="icon" type="image/png" sizes="120x120" href="/static/favicon-120x120.png" />
+		<link rel="icon" type="image/png" sizes="128x128" href="/static/favicon-128x128.png" />
+		<link rel="icon" type="image/png" sizes="144x144" href="/static/favicon-144x144.png" />
+		<link rel="icon" type="image/png" sizes="150x150" href="/static/favicon-150x150.png" />
+		<link rel="icon" type="image/png" sizes="152x152" href="/static/favicon-152x152.png" />
+		<link rel="icon" type="image/png" sizes="167x167" href="/static/favicon-167x167.png" />
+		<link rel="icon" type="image/png" sizes="180x180" href="/static/favicon-180x180.png" />
+		<link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192x192.png" />
+		<link rel="icon" type="image/png" sizes="195x195" href="/static/favicon-195x195.png" />
+		<link rel="icon" type="image/png" sizes="196x196" href="/static/favicon-196x196.png" />
+		<link rel="icon" type="image/png" sizes="228x228" href="/static/favicon-228x228.png" />
+		<link rel="icon" type="image/png" sizes="310x310" href="/static/favicon-310x310.png" />
+		<meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png" />
+		<link rel="apple-touch-icon" href="/static/apple-touch-icon-57x57.png" />
+		<link rel="apple-touch-icon" sizes="57x57" href="/static/apple-touch-icon-57x57.png" />
+		<link rel="apple-touch-icon" sizes="60x60" href="/static/apple-touch-icon-60x60.png" />
+		<link rel="apple-touch-icon" sizes="72x72" href="/static/apple-touch-icon-72x72.png" />
+		<link rel="apple-touch-icon" sizes="76x76" href="/static/apple-touch-icon-76x76.png" />
+		<link rel="apple-touch-icon" sizes="114x114" href="/static/apple-touch-icon-114x114.png" />
+		<link rel="apple-touch-icon" sizes="120x120" href="/static/apple-touch-icon-120x120.png" />
+		<link rel="apple-touch-icon" sizes="144x144" href="/static/apple-touch-icon-144x144.png" />
+		<link rel="apple-touch-icon" sizes="152x152" href="/static/apple-touch-icon-152x152.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon-180x180.png" />
+		<link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft" />
+		<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+		<link rel="mask-icon" href="maskicon.svg" color="#FFFFFF" />
+		<meta name="msapplication-config" content="/static/browserconfig.xml" />
+		<link rel="manifest" href="/static/manifest.json" />
+		<link rel="search" type="application/opensearchdescription+xml" title="Microsoft" href="/static/opensearch.xml" />
+		<meta porperty="fb:app_id" content="12345" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://microsoft.com" />
+		<meta property="og:site_name" content="Microsoft" />
+		<meta property="og:title" content="Microsoft" />
+		<meta property="og:description" content="Technology Solutions" />
+		<meta property="og:image" content="/static/preview.png" />
+		<meta property="og:image:secure_url" content="/static/preview.png" />
+		<meta name="twitter:image" content="/static/preview.png" />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:alt" content="Microsoft - Technology Solutions" />
+		<meta name="twitter:image:alt" content="Microsoft - Technology Solutions" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@Microsoft" />
+		<meta name="twitter:title" content="Microsoft" />
+		<meta name="twitter:description" content="Technology Solutions" />
+		<meta property="twitter:creator:id" content="123456" />
+		<meta name="author" content="Lucas Vazquez" />
+	</head>
 </html>
 ```
 
@@ -450,7 +452,7 @@ _(index.html)_
 
 - A big amount of resized icons, coming from 'icon_png' config value.
 
-_(browserconfig.xml)_ BEAUTY VERSION
+_(browserconfig.xml)_ _BEAUTY VERSION_
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <browserconfig>
@@ -468,7 +470,7 @@ _(browserconfig.xml)_ BEAUTY VERSION
 </browserconfig>
 ```
 
-_(manifest.json)_ BEAUTY VERSION
+_(manifest.json)_ _BEAUTY VERSION_
 ```json
 {
   "name": "Microsoft",
@@ -479,8 +481,10 @@ _(manifest.json)_ BEAUTY VERSION
   "orientation": "landscape",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF",
+  "locale": "en_US",
   "scope": "/",
   "display": "browser",
+  "platform": "web",
   "related_applications": [
     {
       "platform": "play",
@@ -533,7 +537,7 @@ _(manifest.json)_ BEAUTY VERSION
 }
 ```
 
-_(opensearch.xml)_ BEAUTY VERSION
+_(opensearch.xml)_ _BEAUTY VERSION_
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <OpenSearchDescription xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns="http://a9.com/-/spec/opensearch/1.1/">
@@ -553,7 +557,7 @@ Allow: /
 Sitemap: https://microsoft.com/sitemap.xml
 ```
 
-_(sitemap.xml)_ BEAUTY VERSION
+_(sitemap.xml)_ _BEAUTY VERSION_
 ```xml
 <?xml version="1.0" encoding="uft-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
