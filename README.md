@@ -13,24 +13,28 @@
 
 **Works with:** _meta-tags, favicons, manifest, robots, browserconfig, sitemap, opensearch_
 
-This script edits an html file adding some meta-tags and other stuff for
-improving the SEO and the UX of your website. Also, it generate a lot of useful
-files that are vinculated to that tags or stuff. For example, icons for apple
-devices and manifest.json file. The info and the files generated can be set
-through a config file.
-The script can generate a full default config file running:
-
-`cushead.py -preset example-config.txt`
-
-You can edit that file how you want, and then run the script using:
-
-`cushead.py -file example-config.txt`
-
 **Python Versions:** _>=3.5, <4.0_
 
 **Package Version**: _3.0.0_
 
 **Status:** _Production/Stable_
+
+## Description
+
+This script edits an html file adding some meta-tags and other stuff for
+improving the SEO and the UX of your website. Also, it generate a lot of useful
+files that are vinculated to that tags or stuff. For example, icons for apple
+devices and manifest.json file. The info and the files generated can be set
+through a config file.
+
+The script can generate a full default config file running:
+
+`cushead.py -preset example-config.txt`
+
+You can edit that file how you want, and then run the script with that settings
+using:
+
+`cushead.py -file example-config.txt`
 
 ## MENU
 
