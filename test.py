@@ -118,13 +118,16 @@ class TestSuccess(unittest.TestCase):
 # Success
 class TestSpecialConfigSuccess(unittest.TestCase):
 
-    # Miss:
-    # 'icon', 'mask_icon', 'title', 'description', 'dir', 'start_url', 'orientation',
-    # 'color', 'locale', 'scope', 'display' 'platform', 'applications',
-    # 'browserconfig', 'manifest' and 'opensearch'
+    # Miss 'icon', 'mask_icon', 'browserconfig', 'manifest' and 'opensearch'
     @classmethod
-    def test_miss(self):
-        Main(['-file', './test/SpecialConfigSuccess/miss/test.txt']).run()
+    def test_miss_1(self):
+        Main(['-file', './test/SpecialConfigSuccess/miss_1/test.txt']).run()
+
+    # Miss 'title', 'description', 'dir', 'start_url', 'orientation', 'color',
+    # 'locale', 'scope', 'display', 'platform' and 'applications'
+    @classmethod
+    def test_miss_2(self):
+        Main(['-file', './test/SpecialConfigSuccess/miss_1/test.txt']).run()
 
     # Miss 'url'
     @classmethod
@@ -136,19 +139,15 @@ class TestSpecialConfigSuccess(unittest.TestCase):
     def test_miss_sitemap(self):
         Main(['-file', './test/SpecialConfigSuccess/miss_sitemap/test.txt']).run()
 
-class TestSpe(unittest.TestCase):
-    @classmethod
-    def test_miss(self):
-        Main(['-file', './test/SpecialConfigSuccess/miss/test.txt'])
 
 def suite():
     suite = unittest.TestSuite()
     test_classes = [TestArgumentsException, TestConfigExceptions, TestSuccess,
         TestSpecialConfigSuccess]
-    test_classes2 = [TestSpe]
     for test_class in test_classes:
         suite.addTests(unittest.TestLoader().loadTestsFromTestCase(test_class))
     return suite
     pass
+
 
 unittest.TextTestRunner(verbosity=3).run(suite())
