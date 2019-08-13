@@ -136,18 +136,18 @@ class TestSpecialConfigSuccess(unittest.TestCase):
     def test_miss_sitemap(self):
         Main(['-file', './test/SpecialConfigSuccess/miss_sitemap/test.txt'])
 
-
+class TestSpe(unittest.TestCase):
+    @classmethod
+    def test_miss(self):
+        Main(['-file', './test/SpecialConfigSuccess/miss/test.txt'])
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        TestArgumentsException))
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        TestConfigExceptions))
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        TestSuccess))
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        TestSpecialConfigSuccess))
+    test_classes = ['TestArgumentsException', 'TestConfigExceptions', 'TestSuccess',
+        'TestSpecialConfigSuccess']
+    test_classes = ['TestSpe']
+    for test_class in test_classes:
+        suite.addTests(unittest.TestLoader().loadTestsFromTestCase(test_class))
     return suite
 
 
