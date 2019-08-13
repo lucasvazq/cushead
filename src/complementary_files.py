@@ -212,13 +212,13 @@ class Others():
                     self.config['opensearch']))]
 
     def robots(self):
-		sitemap = "Sitemap: {}{}/{}".format(self.config.get('protocol', ''),
+        sitemap = "Sitemap: {}{}/{}".format(self.config.get('protocol', ''),
                 self.config['url'], self.config['sitemap']) \
-                if 'sitemap' in self.config else ''
+            if 'sitemap' in self.config else ''
         string = ("User-agent: *\n" +
             "Allow: /\n" +
             "\n" +
-			"{}".format(sitemap)
+			"{}".format(sitemap))
         return string
 
     def sitemap(self):
