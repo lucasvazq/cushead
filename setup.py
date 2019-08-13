@@ -18,7 +18,7 @@ Make sure you have pip >= 9.0 and setuptools >= 24.2, then try again:
     $ python3 -m pip install cushead.py
 This will update pip and setuptools, and install the latest version of
 cushead.py, make sure you still trying to install and running it with a
-version of Python that is >=3.5 and <4.
+supported version of python.
 """.format(*(MIN_PYTHON + MAX_PYTHON + CURRENT_PYTHON))
 if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON >= MAX_PYTHON:
     sys.stderr.write(MESSAGE)
@@ -34,7 +34,7 @@ setuptools.setup(
     version=INFO['version'],
     url=INFO['source'],
     project_urls={
-        'Documentation': INFO['remote_documentation'],
+        'Documentation': INFO['documentation'],
         'Source': INFO['source']
     },
     python_requires=">={}.{}, <{}.{}".format(*(MIN_PYTHON + MAX_PYTHON)),
