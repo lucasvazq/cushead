@@ -13,7 +13,7 @@ from .presets import Presets
 
 class Main(Arguments, Presets, Head, Helpers):
 
-    def __init__(self, args=None):
+    def __init__(self, args):
         super().__init__(args)
 
     def run(self):

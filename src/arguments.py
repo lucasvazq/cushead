@@ -14,7 +14,7 @@ INFO = get_info()
 
 class Arguments():
 
-    def __init__(self, args=None):
+    def __init__(self, args):
         self.args = self.parse_args(args)
         super().__init__()
 

@@ -124,17 +124,17 @@ class TestSpecialConfigSuccess(unittest.TestCase):
     # 'browserconfig', 'manifest' and 'opensearch'
     @classmethod
     def test_miss(self):
-        Main(['-file', './test/SpecialConfigSuccess/miss/test.txt'])
+        Main(['-file', './test/SpecialConfigSuccess/miss/test.txt']).run()
 
     # Miss 'url'
     @classmethod
     def test_miss_url(self):
-        Main(['-file', './test/SpecialConfigSuccess/miss_url/test.txt'])
+        Main(['-file', './test/SpecialConfigSuccess/miss_url/test.txt']).run()
 
     # Miss 'sitemap'
     @classmethod
     def test_miss_sitemap(self):
-        Main(['-file', './test/SpecialConfigSuccess/miss_sitemap/test.txt'])
+        Main(['-file', './test/SpecialConfigSuccess/miss_sitemap/test.txt']).run()
 
 class TestSpe(unittest.TestCase):
     @classmethod
@@ -145,7 +145,7 @@ def suite():
     suite = unittest.TestSuite()
     test_classes = [TestArgumentsException, TestConfigExceptions, TestSuccess,
         TestSpecialConfigSuccess]
-    test_classes = [TestSpe]
+    test_classes2 = [TestSpe]
     for test_class in test_classes:
         suite.addTests(unittest.TestLoader().loadTestsFromTestCase(test_class))
     return suite
