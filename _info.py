@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-# used for setup.py
+# Used for setup.py
 __name__ = "cushead.py"
 __version__ = "3.0.0"
 __source__ = "https://github.com/lucasvazq/cushead.py"
@@ -18,7 +18,7 @@ __license__ = "MIT"
 __keywords__ = ("SEO, meta-tags, UX, PWA, front-end, favicon, manifest, " +
     "robots, browserconfig, sitemap, opensearch")
 
-# others
+# Others
 __copyright__ = """\
 {} © 2019 {}. Released under the MIT License.""".format(__name__, __author__)
 __maintainer__ = "Lucas Vazquez"

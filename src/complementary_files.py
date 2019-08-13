@@ -175,13 +175,13 @@ class Others():
         if 'color' in self.config:
             dictionary['background_color'] = self.config['color']
             dictionary['theme_color'] = self.config['color']
-        if 'lang' in self.config:
-            dictionary['lang'] = self.config['lang']
+        if 'locale' in self.config:
+            dictionary['locale'] = self.config['locale']
         if 'scope' in self.config:
             dictionary['scope'] = self.config['scope']
         if 'display' in self.config:
             dictionary['display'] = self.config['display']
-        if 'plataform' in self.config:
+        if 'platform' in self.config:
             dictionary['platform'] = self.config['plataform']
         if 'applications' in self.config:
             dictionary['related_applications'] = self.config['applications']
@@ -253,18 +253,17 @@ class ComplementaryFiles(Values, Icons, Others):
                 with Image.open(f) as image:
                     for name in self.names:
                         for size in self.brand[name].get('sizes', []):
+                            # Some square icons are added to head
                             filename = "{0}-{1}x{1}.png".format(self.brand[name]['name'], str(size))
                             new_files.append(self._resize(image, [size, size], filename))
                             element = self.general_icons(name, [size, size], filename)
                             if element:
                                 head.append(element)
                         for size in self.brand[name].get('special_sizes', []):
+                            # Non square icons aren't added to head
                             filename = "{}-{}x{}.png".format(self.brand[name]['name'], str(size[0]),
                                 str(size[1]))
                             new_files.append(self._resize(image, size, filename))
-                            element = self.general_icons(name, size, filename)
-                            if element:
-                                head.append(element)
             element = self.icon()
             if element:
                 head.append(element)

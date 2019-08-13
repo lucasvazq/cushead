@@ -65,7 +65,7 @@ class Main(Arguments, Presets, Head, Helpers):
                 # test: test_miss_static_url
                 raise Exception("Miss 'static_url' key and it's required.")
 
-            # write html file
+            # Write html file
             self._write_file(self.config['html_file'], self.head_general())
 
             print(dedent("""
