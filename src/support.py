@@ -55,13 +55,16 @@ Try running:
 
 class Support():
 
-    def check(self, message):
+    @staticmethod
+    def check(message):
         if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON > MAX_PYTHON:
             sys.stderr.write(message)
             sys.exit(1)
 
+    @staticmethod
     def install(self):
         self.check(UNSUPPORTED_INSTALLATION)
 
+    @staticmethod
     def run(self):
         self.check(UNSUPPORTED_RUN)

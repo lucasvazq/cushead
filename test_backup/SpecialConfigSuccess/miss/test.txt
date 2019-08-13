@@ -1,0 +1,60 @@
+"""
+Python syntax
+cushead.py config file
+Git: https://github.com/lucasvazq/cushead.py
+Documentation: https://github.com/lucasvazq/cushead.py/blob/master/README.md
+
+CONFIG VARIABLES:
+
+	html_file (FILE PATH):
+		Required, can't be void, need to exist and refer a file
+
+	output (FOLDER PATH):
+		Required, need to exist and refer a folder
+
+	static_url (STRING):
+		Required
+
+	icon_png (FILE PATH):
+		If declared, need to exist and refer a image file
+		Recomended 310x310 png image
+"""
+
+# Don't delete or change the name of this variable
+config = {
+
+    # MAIN CONFIG
+    'html_file':        './test/SpecialConfigSuccess/miss/index.html',
+    'output':           './test/SpecialConfigSuccess/miss/', # e.g. for manifest.json
+    'static_url':       '/static/',
+
+    # GENERAL CONFIG
+    'content-type':     'text/html; charset=utf-8',
+    'X-UA-Compatible':  'ie=edge',
+    'viewport':         {'width': 'device-width', 'initial-scale': '1'},
+    'type':             'website', # http://ogp.me/#types
+    'url':              'microsoft.com', # Without "www." and protocol (e.g. "http://")
+    'protocol':         'https://',
+    'robots':           'index, follow',
+    'sitemap':          'sitemap.xml',
+
+    # BASIC CONFIG
+    'subject':          'Home Page',
+    'keywords':         'Microsoft, Windows',
+
+    # IMAGES
+    'preview':          'preview.png', # Big image preview
+    'preview_type':     'image/png', # image/jpeg, image/gif or image/png
+    'icon_png':         './test/favicon.png', # FILEPATH PNG IMAGE 310x310
+
+    # SOCIAL MEDIA
+    'fb:app_id':        '12345', # Facebook App ID
+    'tw:site':          '@Microsoft', # Twitter account
+    'tw:creator:id':    '123456', # Page editor ID
+
+    # PWA
+
+    # AUTHOR
+    'author':           'Lucas Vazquez'
+
+}

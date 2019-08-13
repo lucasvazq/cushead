@@ -8,9 +8,7 @@ from .complementary_files import ComplementaryFiles
 
 class Head(ComplementaryFiles):
 
-    def __init__(self, config=None):
-        self.config = config
-        ComplementaryFiles.__init__(self)
+    def __init__(self):
         super().__init__()
 
     def add_general_config(self):
@@ -82,7 +80,7 @@ class Head(ComplementaryFiles):
             head.append("<meta property='og:locale' content='{}' />".format(
                 self.config['locale']))
         # og:type
-        if 'og:type' in self.config:
+        if 'type' in self.config:
             head.append("<meta property='og:type' content='{}' />".format(
                 self.config['type']))
         # og:url, Likes and Shared are stored under this url
@@ -163,14 +161,13 @@ class Head(ComplementaryFiles):
 
         # Add lang attribute to <html>
         if 'locale' in self.config:
-            if len(self.config['locale']):
-                if not '<html>' in file_string:
-                    print("Miss <html>, cant add lang attribute\n")
-                else:
-                    html = "<html lang=\"{}\">".format(self.config['locale'])
-                    file_string = file_string.replace('<html>', html)
-                    print(("HTML:\n" +
-                        "{}\n".format(html)))
+            if not '<html>' in file_string:
+                print("Miss <html>, cant add lang attribute\n")
+            else:
+                html = "<html lang=\"{}\">".format(self.config['locale'])
+                file_string = file_string.replace('<html>', html)
+                print(("HTML:\n" +
+                    "{}\n".format(html)))
 
         # Add custom head elements
         space = file_string.split('$head$')

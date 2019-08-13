@@ -73,12 +73,13 @@ class Values():
                 'no-head': True
             }
         }
+        super().__init__()
 
 
 class Icons():
 
-    def __init__(self, config=None):
-        self.config = config
+    def __init__(self):
+        super().__init__()
 
     def _resize(self, image, size, filename):
         filepath = path.join(self.config['output'], filename)
@@ -129,8 +130,8 @@ class Icons():
 
 class Others():
 
-    def __init__(self, config=None):
-        self.config = config
+    def __init__(self):
+        super().__init__()
 
     def browserconfig(self):
         string = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>" +
@@ -152,7 +153,7 @@ class Others():
                 self.config['browserconfig']))]
 
     def manifest(self):
-        path = self.config['static_url'].replace('/', '\/')
+        path = self.config['static_url']
         icons = [{
             'src': "{0}{1}-{2}x{2}".format(path, self.brand['manifest']['name'],
                 str(size)),
@@ -186,9 +187,8 @@ class Others():
         if 'applications' in self.config:
             dictionary['related_applications'] = self.config['applications']
         dictionary['icons'] = icons
-        return [json.dumps(dictionary).replace('\\\\', '\\'),
-            "<link rel='manifest' href='{}{}' />".format(self.config['static_url'],
-                self.config['manifest'])]
+        return [json.dumps(dictionary), "<link rel='manifest' href='{}{}' />".format(
+            self.config['static_url'], self.config['manifest'])]
 
     def opensearch(self):
         content = ("<?xml version='1.0' encoding='utf-8'?>" +
@@ -231,11 +231,8 @@ class Others():
 
 class ComplementaryFiles(Values, Icons, Others):
 
-    def __init__(self, config=None):
-        self.config = config
-        Values.__init__(self)
-        Icons.__init__(self)
-        Others.__init__(self)
+    def __init__(self):
+        super().__init__()
 
     def generate(self):
         (head, new_files) = ([], [])

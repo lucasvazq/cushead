@@ -9,8 +9,8 @@ from textwrap import dedent
 
 class Helpers():
 
-    def __init__(self, args=None):
-        self.args = args
+    def __init__(self):
+        pass
 
     def _get_values(self, filename):
         filepath = path.join(getcwd(), filename)

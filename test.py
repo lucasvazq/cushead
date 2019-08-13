@@ -115,6 +115,29 @@ class TestSuccess(unittest.TestCase):
         Main(['-preset', './test/Success/test.txt']).run()
 
 
+# Success
+class TestSpecialConfigSuccess(unittest.TestCase):
+
+    # Miss:
+    # 'icon', 'mask_icon', 'title', 'description', 'dir', 'start_url', 'orientation',
+    # 'color', 'locale', 'scope', 'display' 'platform', 'applications',
+    # 'browserconfig', 'manifest' and 'opensearch'
+    @classmethod
+    def test_miss(self):
+        Main(['-file', './test/SpecialConfigSuccess/miss/test.txt'])
+
+    # Miss 'url'
+    @classmethod
+    def test_miss_url(self):
+        Main(['-file', './test/SpecialConfigSuccess/miss_url/test.txt'])
+
+    # Miss 'sitemap'
+    @classmethod
+    def test_miss_sitemap(self):
+        Main(['-file', './test/SpecialConfigSuccess/miss_sitemap/test.txt'])
+
+
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
@@ -123,6 +146,8 @@ def suite():
         TestConfigExceptions))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
         TestSuccess))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
+        TestSpecialConfigSuccess))
     return suite
 
 
