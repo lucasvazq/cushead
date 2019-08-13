@@ -6,18 +6,18 @@ Documentation: https://github.com/lucasvazq/cushead.py/blob/master/README.md
 
 CONFIG VARIABLES:
 
-	html_file (FILE PATH):
-		Required, can't be void, need to exist and refer a file
+    html_file (FILE PATH):
+        Required, can't be void, need to exist and refer a file
 
-	output (FOLDER PATH):
-		Required, need to exist and refer a folder
+    output (FOLDER PATH):
+        Required, need to exist and refer a folder
 
-	static_url (STRING):
-		Required
+    static_url (STRING):
+        Required
 
-	icon_png (FILE PATH):
-		If declared, need to exist and refer a image file
-		Recomended 310x310 png image
+    icon_png (FILE PATH):
+        If declared, need to exist and refer a image file
+        Recomended 310x310 png image
 """
 
 # Don't delete or change the name of this variable
