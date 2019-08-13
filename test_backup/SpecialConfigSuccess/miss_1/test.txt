@@ -24,8 +24,8 @@ CONFIG VARIABLES:
 config = {
 
     # MAIN CONFIG
-    'html_file':        './test/SpecialCOnfigSuccess/miss_1/index.html',
-    'output':           './test/SpecialCOnfigSuccess/miss_1/', # e.g. for manifest.json
+    'html_file':        './test/SpecialConfigSuccess/miss_1/index.html',
+    'output':           './test/SpecialConfigSuccess/miss_1/', # e.g. for manifest.json
     'static_url':       '/static/',
 
     # GENERAL CONFIG

@@ -26,13 +26,11 @@ You can edit that file how you want, and then run the script using:
 
 `cushead.py -file example-config.txt`
 
-**INFO**
+**Python Versions:** _>=3.5, <4.0_
 
-Python: >=3.5, <4.0
+**Package Version**: _3.0.0_
 
-Version: 3.0.0
-
-Status: Production/Stable
+**Status:** _Production/Stable_
 
 ## MENU
 
@@ -450,7 +448,9 @@ _(index.html)_
 
 #### New files
 
-- A big amount of resized icons, coming from 'icon_png' config value.
+48 new icons with different sizes, coming from 'icon_png' config value.
+New files: browserconfig.xml, manifest.json, opensearch.xml, robots.txt and
+sitemap.xml
 
 _(browserconfig.xml)_ _BEAUTY VERSION_
 ```xml
