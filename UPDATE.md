@@ -10,7 +10,7 @@
 
 [logo.png](./logo.png)
 
-## 2 - Remove old packages deleting the next folders:
+## 2 - Remove old packages deleting the follow folders:
 
 [cushead.py.egg-info/](./cushead.py.egg-info/.)
 
