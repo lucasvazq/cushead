@@ -5,7 +5,7 @@
 
 <p align="center">
   <img src="./logo.png">
-</p>wasa
+</p>
 
 # cushead.py
 

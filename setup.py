@@ -6,7 +6,7 @@ Support().install()
 
 import setuptools
 
-from _info import get_infoWASA
+from _info import get_info
 
 
 INFO = get_info()
