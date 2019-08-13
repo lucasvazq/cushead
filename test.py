@@ -2,164 +2,115 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from .src import Main
+
+from src.main import Main
 
 
-class TestApp(unittest.TestCase):
-    # no arguments
-    # Exception
+# Exceptions
+class TestArgumentsException(unittest.TestCase):
+
+    # No arguments
     @classmethod
-    def test_1(self):
+    def test_no_arguments(self):
         Main([])
 
     # -file and -preset together
-    # Exception
     @classmethod
-    def test_2(self):
-        Main(['-file', './test/together/test.txt', '-preset', './test/together/foo.bar'])
+    def test_two_arguments(self):
+        Main(['-file', 'foo/bar', '-preset', 'foo/bar'])
 
-    # argument passed with -file doesn't exists
-    # Exception
+    # The path passed with 'html_file' doesn't exists
     @classmethod
-    def test_3(self):
-        Main(['-file', 'foo.bar'])
+    def test_file_doesnt_exists(self):
+        Main(['-file', 'foo/bar'])
 
-    # correct -file usage
-    # Success
+    # The path passed with 'html_file' isn't a file
     @classmethod
-    def test_4(self):
-        Main(['-file', './test/correct/test.txt'])
+    def test_file_no_file(self):
+        Main(['-file', './test'])
 
-    # void index.html
-    # Success
+
+# Exceptions
+class TestConfigExceptions(unittest.TestCase):
+
+    # Miss 'config' variable in config file
     @classmethod
-    def test_5(self):
-        Main(['-file', './test/void_index/test.txt'])
+    def test_miss_config_variable(self):
+        Main(['-file', './test/ConfigExceptions/miss_config_variable/test.txt'])
 
-    # index.html doesn't exists
-    # Exception
+    # Void 'icon_png' key value
     @classmethod
-    def test_6(self):
-        Main(['-file', './test/miss_index/test.txt'])
+    def test_void_icon_png(self):
+        Main(['-file', './test/ConfigExceptions/void_icon_png/test.txt'])
 
-    # all optional parameters
-    # Success
+    # Path passed with 'icon_png' doesn't exists
     @classmethod
-    def test_7(self):
-        Main(['-file', './test/options/test.txt',
-            '--exclude-comment',
-            '--exclude-html',
-            '--exclude-config',
-            '--exclude-seo',
-            '--exclude-opengraph',
-            '--exclude-facebook',
-            '--exclude-twitter',
-            '--exclude-opensearch',
-            '--exclude-author'
-            ])
+    def test_icon_png_doesnt_exists(self):
+        Main(['-file', './test/ConfigExceptions/icon_png_doesnt_exists/test.txt'])
 
-    # correct -preset usage
-    # Success
+    # Miss 'html_file' key
     @classmethod
-    def test_8(self):
-        Main(['-preset', './test/foo.bar'])
+    def test_miss_html_file(self):
+        Main(['-file', './test/ConfigExceptions/miss_html_file/test.txt'])
 
-    # file passed with -file doesn't have path key-value pair
-    # Exception
+    # Void 'html_file' key value
     @classmethod
-    def test_9(self):
-        Main(['-file', './test/miss_path/test.txt'])
+    def test_void_html_file(self):
+        Main(['-file', './test/ConfigExceptions/void_html_file/test.txt'])
 
-    # file passed with -file only have path key-value pair
-    # Success
+    # The path passed with 'html_file' doesn't exists
     @classmethod
-    def test_10(self):
-        Main(['-file', './test/only_path/test.txt'])
+    def test_html_file_doesnt_exists(self):
+        Main(['-file', './test/ConfigExceptions/html_file_doesnt_exists/test.txt'])
 
-    # file passed with -file are void
-    # Exception
+    # The path passed with 'html_file' isn't a file
     @classmethod
-    def test_11(self):
-        Main(['-file', './test/miss_value_preset/test.txt'])
+    def test_html_file_no_file(self):
+        Main(['-file', './test/ConfigExceptions/html_file_no_file/test.txt'])
 
-    # missing some key-value pairs
-    # color, title, preview, description
-    # Success
+    # Miss 'output' key
     @classmethod
-    def test_12(self):
-        Main(['-file', './test/miss_special/test.txt'])
+    def test_miss_output(self):
+        Main(['-file', './test/ConfigExceptions/miss_output/test.txt'])
 
-    # void some values in key pairs
-    # color, title, preview, description
-    # Success
+    # The path passed with 'output' doesn't exists
     @classmethod
-    def test_13(self):
-        Main(['-file', './test/void_special/test.txt'])
+    def test_output_doesnt_exists(self):
+        Main(['-file', './test/ConfigExceptions/output_doesnt_exists/test.txt'])
 
-    # void all values except path
-    # Success
+    # The path passed with 'outputh' isn't a folder
     @classmethod
-    def test_14(self):
-        Main(['-file', './test/void_except_path/test.txt'])
+    def test_output_no_folder(self):
+        Main(['-file', './test/ConfigExceptions/output_no_folder/test.txt'])
 
-    # void all values
-    # Exception
+    # Miss 'static_url' key
     @classmethod
-    def test_15(self):
-        Main(['-file', './test/void_preset/test.txt'])
+    def test_miss_static_url(self):
+        Main(['-file', './test/ConfigExceptions/miss_static_url/test.txt'])
 
-    # miss only title
-    # Success
+
+# Success
+class TestSuccess(unittest.TestCase):
+
+    # Complete config
     @classmethod
-    def test_16(self):
-        Main(['-file', './test/miss_title/test.txt'])
+    def test_complete_config(self):
+        Main(['-file', './test/Success/complete_config/test.txt'])
 
-    # miss only description
-    # Success
+    # Void config
     @classmethod
-    def test_17(self):
-        Main(['-file', './test/miss_description/test.txt'])
+    def test_void_config(self):
+        Main(['-file', './test/Success/void_config/test.txt'])
 
-    # void icon
-    # Success
+    # Void *.html file
     @classmethod
-    def test_18(self):
-        Main(['-file', './test/void_icon/test.txt'])
+    def test_void_html_FILE(self):
+        Main(['-file', './test/Success/void_html_FILE/test.txt'])
 
-    # miss only preview
-    # Success
+    # -preset
     @classmethod
-    def test_19(self):
-        Main(['-file', './test/miss_preview/test.txt'])
-
-    # void preview
-    # Success
-    @classmethod
-    def test_20(self):
-        Main(['-file', './test/void_preview/test.txt'])
-
-    # miss only icon
-    # Success
-    @classmethod
-    def test_21(self):
-        Main(['-file', './test/miss_icon/test.txt'])
-
-    # miss only preview and void icon
-    # Success
-    @classmethod
-    def test_22(self):
-        Main(['-file', './test/miss_preview_void_icon/test.txt'])
-
-    # void preview and miss icon
-    # Success
-    @classmethod
-    def test_23(self):
-        Main(['-file', './test/void_preview_miss_icon/test.txt'])
+    def test_preset(self):
+        Main(['-preset', './test/Success/test.txt'])
 
 
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestApp))
-    return suite
-
-unittest.TextTestRunner(verbosity=2).run(suite())
+unittest.main()

@@ -3,8 +3,8 @@
 
 from PIL import Image
 import json
-from os import getcwd
-from os.path import isfile, join
+from os import getcwd, path
+from textwrap import dedent
 
 from resizeimage import resizeimage
 
@@ -72,12 +72,12 @@ class Values():
 class Icons():
 
     def __init__(self, dictionary=None):
-        self.values = dictionary
+        self.config = dictionary
 
     def _resize(self, image, size, filename):
-        filepath = join(self.values['output'], filename)
+        filepath = path.join(self.config['output'], filename)
         cover = resizeimage.resize_contain(image, [size[0], size[1]])
-        cover.save(join(self.values['output'], filename), image.format)
+        cover.save(path.join(self.config['output'], filename), image.format)
         return filepath
 
     def general_icons(self, name, size, filename):
@@ -95,7 +95,7 @@ class Icons():
         # A: <link rel="shortcut icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
         # B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft" />
         name_ref = self.brand[name]['name_ref']
-        static_url = self.values['static_url']
+        static_url = self.config['static_url']
         element = "<{} {}='{}' {}{}{}='{}{}' {}/>".format(
                 tagname,    # A: link
                 attribute,  # A: rel
@@ -110,42 +110,42 @@ class Icons():
         return element
 
     def icon(self):
-        if 'icon' in self.values:
+        if 'icon' in self.config:
             return ("<link rel='shortcut icon' href='{}' type='image/x-icon' />".format(
-                self.values['icon']))
+                self.config['icon']))
 
     def mask_icon(self):
-        if 'mask-icon' in self.values:
-            color = self.values.get('color', '')
+        if 'mask-icon' in self.config:
+            color = self.config.get('color', '')
             return ("<link rel='mask-icon' href='{}' color='{}' />".format(
-                    self.values['mask-icon'], color))
+                    self.config['mask-icon'], color))
 
 
 class Others():
 
     def __init__(self, dictionary=None):
-        self.values = dictionary
+        self.config = dictionary
 
     def browserconfig(self):
         string = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>" +
             "<msapplication><tile>")
         string += ''.join([
             "<square{0}x{0}logo src='{1}{2}-{0}x{0}.png' />".format(
-                size, self.values['static_url'], self.brand['browserconfig']['name'])
+                size, self.config['static_url'], self.brand['browserconfig']['name'])
             for size in self.brand['browserconfig']['sizes']])
         string += ''.join([
             "<wide{0}x{1}logo src='{2}{3}-{0}x{1}.png' />".format(
-                size[0], size[1], self.values['static_url'],
+                size[0], size[1], self.config['static_url'],
                 self.brand['browserconfig']['name'])
             for size in self.brand['browserconfig']['special_sizes']])
-        color = self.values.get('color', '')
+        color = self.config.get('color', '')
         string += ("<TileColor>{}</TileColor></tile></msapplication></browserconfig>"
             .format(color))
         return [string.replace('\'', '"'), ("<meta name='msapplication-config' " +
-            "content='{}' />".format(self.values['browserconfig']))]
+            "content='{}' />".format(self.config['browserconfig']))]
 
     def manifest(self):
-        path = self.values['static_url'].replace('/', '\/')
+        path = self.config['static_url'].replace('/', '\/')
         icons = [{
             'src': "{0}{1}-{2}x{2}".format(path, self.brand['manifest']['name'],
                 str(size)),
@@ -154,37 +154,37 @@ class Others():
             'density': str(size/48)}
             for size in self.brand['manifest']['sizes']]
         dictionary = {}
-        if 'title' in self.values:
-            dictionary['title'] = self.values['title']
-            dictionary['short_name'] = self.values['title']
-        if 'description' in self.values:
-            dictionary['description'] = self.values['description']
-        if 'dir' in self.values:
-            dictionary['dir'] = self.values['dir']
-        if 'start_url' in self.values:
-            dictionary['start_url'] = self.values['start_url']
-        if 'orientation' in self.values:
-            dictionary['orientation'] = self.values['orientation']
-        if 'color' in self.values:
-            dictionary['background_color'] = self.values['color']
-            dictionary['theme_color'] = self.values['color']
-        if 'lang' in self.values:
-            dictionary['lang'] = self.values['lang']
-        if 'scope' in self.values:
-            dictionary['scope'] = self.values['scope']
-        if 'display' in self.values:
-            dictionary['display'] = self.values['display']
-        if 'plataform' in self.values:
-            dictionary['platform'] = self.values['plataform']
-        if 'applications' in self.values:
-            dictionary['related_applications'] = self.values['applications']
+        if 'title' in self.config:
+            dictionary['title'] = self.config['title']
+            dictionary['short_name'] = self.config['title']
+        if 'description' in self.config:
+            dictionary['description'] = self.config['description']
+        if 'dir' in self.config:
+            dictionary['dir'] = self.config['dir']
+        if 'start_url' in self.config:
+            dictionary['start_url'] = self.config['start_url']
+        if 'orientation' in self.config:
+            dictionary['orientation'] = self.config['orientation']
+        if 'color' in self.config:
+            dictionary['background_color'] = self.config['color']
+            dictionary['theme_color'] = self.config['color']
+        if 'lang' in self.config:
+            dictionary['lang'] = self.config['lang']
+        if 'scope' in self.config:
+            dictionary['scope'] = self.config['scope']
+        if 'display' in self.config:
+            dictionary['display'] = self.config['display']
+        if 'plataform' in self.config:
+            dictionary['platform'] = self.config['plataform']
+        if 'applications' in self.config:
+            dictionary['related_applications'] = self.config['applications']
         dictionary['icons'] = icons
         return [json.dumps(dictionary).replace('\\\\', '\\'),
-            "<link rel='manifest' href='{}' />".format(self.values['manifest'])]
+            "<link rel='manifest' href='{}' />".format(self.config['manifest'])]
 
     def opensearch(self):
-        title = self.values.get('title', '')
-        url = self.values.get('url', '')
+        title = self.config.get('title', '')
+        url = self.config.get('url', '')
         content = ("<?xml version='1.0' encoding='utf-8'?>" +
             "<OpenSearchDescription xmlns:moz='" +
             "http://www.mozilla.org/2006/browser/search/' " +
@@ -198,14 +198,14 @@ class Others():
             "</OpenSearchDescription>".format(title, url))
         return [content.replace('\'', '"'), ("<link rel='search' " +
             "type='application/opensearchdescription+xml' title='{}' href='{}' />".format(
-                title, self.values['opensearch']))]
+                title, self.config['opensearch']))]
 
     def robots(self):
         string = ("User-agent: *" +
             "Allow: /" +
             "\\" +
-            "Sitemap: {}{}/{}".format(self.values.get('protocol', ''),
-                self.values['url'], self.values['sitemap']))
+            "Sitemap: {}{}/{}".format(self.config.get('protocol', ''),
+                self.config['url'], self.config['sitemap']))
         return string
 
     def sitemap(self):
@@ -215,25 +215,31 @@ class Others():
 	        "xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 " +
             "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>" +
             "<url><loc>{}{}/</loc></url></urlset>""".format(
-                self.values.get('protocol', ''), self.values['url'])).replace('\'', '"')
+                self.config.get('protocol', ''), self.config['url'])).replace('\'', '"')
 
 
 class ComplementaryFiles(Values, Icons, Others):
 
     def __init__(self, dictionary=None):
-        self.values = dictionary
+        self.config = dictionary
         Values.__init__(self)
         Icons.__init__(self)
         Others.__init__(self)
 
     def generate(self):
         head = []
-        if 'icon_png' in self.values and 'static_url' in self.values:
-            if not isfile(self.values['icon_png']):
-                raise Exception("Missing file passed by icon_png key value ({})".format(
-                    join(getcwd(), self.values['icon_png'])))
+        if 'icon_png' in self.config and 'static_url' in self.config:
+            if not len(self.config['icon_png']):
+                # test: test_void_icon_png
+                raise Exception("'icon_png' key value can't be void.")
+            if not path.isfile(self.config['icon_png']):
+                # test: test_icon_png_doesnt_exists
+                raise Exception(dedent("""\
+                    'icon_png' key ({}) must be referred to a file path that exists.
+                    FILE PATH: {}""".format(self.config['icon_png'],
+                        path.join(getcwd(), self.config['icon_png']))))
             new_files = []
-            with open(self.values['icon_png'], 'r+b') as f:
+            with open(self.config['icon_png'], 'r+b') as f:
                 with Image.open(f) as image:
                     for name in self.names:
                         for size in self.brand[name].get('sizes', []):
@@ -255,25 +261,25 @@ class ComplementaryFiles(Values, Icons, Others):
             element = self.mask_icon()
             if element:
                 head.append(element)
-            if 'browserconfig' in self.values:
+            if 'browserconfig' in self.config:
                 browserconfig_content, browserconfig_head = self.browserconfig()
                 head.append(browserconfig_head)
-                new_files.append(self._write_file(join(self.values['output'],
-                    self.values['browserconfig']), browserconfig_content))
-            if 'manifest' in self.values:
+                new_files.append(self._write_file(path.join(self.config['output'],
+                    self.config['browserconfig']), browserconfig_content))
+            if 'manifest' in self.config:
                 manifest_content, manifest_head = self.manifest()
                 head.append(manifest_head)
-                new_files.append(self._write_file(join(self.values['output'],
-                    self.values['manifest']), manifest_content))
-            if 'opensearch' in self.values:
+                new_files.append(self._write_file(path.join(self.config['output'],
+                    self.config['manifest']), manifest_content))
+            if 'opensearch' in self.config:
                 opensearch_content, opensearch_head = self.opensearch()
                 head.append(opensearch_head)
-                new_files.append(self._write_file(join(self.values['output'],
+                new_files.append(self._write_file(path.join(self.config['output'],
                     'opensearch.xml'), opensearch_content))
-            if 'url' in self.values:
-                new_files.append(self._write_file(join(self.values['output'],
+            if 'url' in self.config:
+                new_files.append(self._write_file(path.join(self.config['output'],
                     'robots.txt'), self.robots()))
-            if 'url' in self.values and 'sitemap' in self.values:
-                new_files.append(self._write_file(join(self.values['output'],
-                    self.values['sitemap']), self.sitemap()))
+            if 'url' in self.config and 'sitemap' in self.config:
+                new_files.append(self._write_file(path.join(self.config['output'],
+                    self.config['sitemap']), self.sitemap()))
         return head, new_files

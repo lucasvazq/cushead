@@ -1,30 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from src.support import Support
+Support().install()
+
 import sys
-from _info import get_info
-INFO = get_info()
-CURRENT_PYTHON = sys.version_info[:2]
-MIN_PYTHON = INFO['python_min_version']
-MAX_PYTHON = INFO['python_max_version']
-MESSAGE = """
-==========================
-Unsupported Python version
-==========================
-This version of cushead.py requires Python >={}.{} and <{}.{}, but you're trying to
-install it with Python {}.{}.
-Make sure you have pip >= 9.0 and setuptools >= 24.2, then try again:
-    $ python -m pip install --upgrade pip setuptools
-    $ python3 -m pip install cushead.py
-This will update pip and setuptools, and install the latest version of
-cushead.py, make sure you still trying to install and running it with a
-supported version of python.
-""".format(*(MIN_PYTHON + MAX_PYTHON + CURRENT_PYTHON))
-if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON >= MAX_PYTHON:
-    sys.stderr.write(MESSAGE)
-    sys.exit(1)
 
 import setuptools
+
+from _info import get_info
 
 
 with open('README.md', 'r') as fh:

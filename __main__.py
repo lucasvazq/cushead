@@ -1,36 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from src.support import Support
+Support().install()
+
 import sys
-
-# Check Python version compatibility
-CURRENT_PYTHON = sys.version_info[:2]
-MIN_PYTHON = (3, 5)
-MAX_PYTHON = (4, 0)
-if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON > MAX_PYTHON:
-    err = True
-else:
-    err = False
-if err:
-    sys.stderr.write(textwrap.dedent("""\
-        ==========================
-        Unsupported Python version
-        ==========================
-        This version of cushead.py requires Python >={}.{} and <{},
-        but you're trying to run it with Python {}.{}.
-        Try running:
-            $ python3 cushead.py""".format(*(MIN_PYTHON + MAX_PYTHON +
-            CURRENT_PYTHON))))
-    sys.exit(1)
-
 from os import name as os_name
 
-from src.main import Main
 from _info import get_info
+from src.main import Main
 
 
 INFO = get_info()
-
 
 # Blue
 (COLOR, RESET) = ('', '') if os_name == 'nt' else ('\033[1;34m', '\033[0;0m')
