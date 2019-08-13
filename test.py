@@ -143,9 +143,9 @@ class TestSpe(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    test_classes = ['TestArgumentsException', 'TestConfigExceptions', 'TestSuccess',
-        'TestSpecialConfigSuccess']
-    test_classes = ['TestSpe']
+    test_classes = [TestArgumentsException, TestConfigExceptions, TestSuccess,
+        TestSpecialConfigSuccess]
+    test_classes = [TestSpe]
     for test_class in test_classes:
         suite.addTests(unittest.TestLoader().loadTestsFromTestCase(test_class))
     return suite
