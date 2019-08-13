@@ -253,17 +253,20 @@ class ComplementaryFiles(Values, Icons, Others):
                 with Image.open(f) as image:
                     for name in self.names:
                         for size in self.brand[name].get('sizes', []):
-                            # Some square icons are added to head
                             filename = "{0}-{1}x{1}.png".format(self.brand[name]['name'], str(size))
                             new_files.append(self._resize(image, [size, size], filename))
+                            # Some square icons are added to head
+                            # Can return a String
                             element = self.general_icons(name, [size, size], filename)
                             if element:
                                 head.append(element)
                         for size in self.brand[name].get('special_sizes', []):
-                            # Non square icons aren't added to head
                             filename = "{}-{}x{}.png".format(self.brand[name]['name'], str(size[0]),
                                 str(size[1]))
                             new_files.append(self._resize(image, size, filename))
+                            # Non square icons aren't added to head
+                            # Returns always None
+                            self.general_icons(name, size, filename)
             element = self.icon()
             if element:
                 head.append(element)

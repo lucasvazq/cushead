@@ -11,7 +11,7 @@
 
 **A CLI that help you to improve the SEO and UX of your websites.**
 
-_meta-tags, favicons, manifest, robots, browserconfig, sitemap, opensearch_
+Works with: _meta-tags, favicons, manifest, robots, browserconfig, sitemap, opensearch_
 
 This script edits an html file adding some meta-tags and other stuff for
 improving the SEO and the UX of your website. Also, it generate a lot of useful
@@ -26,10 +26,13 @@ You can edit that file how you want, and then run the script using:
 
 `cushead.py -file example-config.txt`
 
-## INFO
+
+**INFO**
 
 Python: >=3.5, <4.0
+
 Version: 3.0.0
+
 Status: Production/Stable
 
 ## MENU
