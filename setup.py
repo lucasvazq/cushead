@@ -11,6 +11,9 @@ import setuptools
 from _info import get_info
 
 
+INFO = get_info()
+
+
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(

@@ -7,6 +7,7 @@ from _info import get_info
 
 
 INFO = get_info()
+
 CURRENT_PYTHON = sys.version_info[:2]
 MIN_PYTHON = INFO['python_min_version']
 MAX_PYTHON = INFO['python_max_version']

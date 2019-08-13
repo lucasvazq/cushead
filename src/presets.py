@@ -9,6 +9,7 @@ from _info import get_info
 
 
 INFO = get_info()
+
 VALUES = """\
 \"\"\"
 Python syntax
