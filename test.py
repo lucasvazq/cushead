@@ -127,7 +127,7 @@ class TestSpecialConfigSuccess(unittest.TestCase):
     # 'locale', 'scope', 'display', 'platform' and 'applications'
     @classmethod
     def test_miss_2(self):
-        Main(['-file', './test/SpecialConfigSuccess/miss_1/test.txt']).run()
+        Main(['-file', './test/SpecialConfigSuccess/miss_2/test.txt']).run()
 
     # Miss 'url'
     @classmethod
