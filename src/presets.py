@@ -1,8 +1,16 @@
-values = {
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from os import getcwd
+from os.path import join
+import textwrap
+
+
+VALUES = """values = {
 
     # MAIN CONFIG (Required)
-    'html_file':        './test/correct/index.html',
-    'output':           './test/correct/output/', # e.g. for manifest.json
+    'html_file':        './index.html',
+    'output':           './OUTPUT/PATH/', # e.g. for manifest.json
     'static_url':       '/static/',
 
     # GENERAL CONFIG
@@ -31,7 +39,7 @@ values = {
     'preview':          'preview.png', # Big image preview
     'preview_type':     'image/png', # image/jpeg, image/gif or image/png
     'icon':             'favicon.ico', # *.ico
-    'icon_png':         './test/correct/favicon.png', # 512x512 *.png
+    'icon_png':         'favicon.png', # FILEPATH PNG IMAGE 512x512
     'mask-icon':        'maskicon.svg', # svg file type
 
     # SOCIAL MEDIA
@@ -61,4 +69,20 @@ values = {
     # AUTHOR
     'author':           'Lucas Vazquez'
 
-}
+}"""
+
+
+class Presets():
+
+    def __init__(self):
+        self.presets = VALUES
+        super().__init__()
+
+    def _make_preset(self, file):
+        file = join(getcwd(), file)
+        f = open(file, 'w+')
+        f.write(self.presets)
+        f.close()
+        print(textwrap.dedent("""\
+            PRESET:
+            {}""".format(self.presets)))

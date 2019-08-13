@@ -1,0 +1,10 @@
+README recomendation:
+    screenshots in manifest.json para PWA
+    maskable icons practique
+
+spaces // tests
+
+info.py (documentation, scriptname)
+make new README
+
+add resizeimage

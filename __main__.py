@@ -12,32 +12,29 @@ if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON > MAX_PYTHON:
 else:
     err = False
 if err:
-    sys.stderr.write("""
-==========================
-Unsupported Python version
-==========================
-This version of cushead.py requires Python >=3.5 and <4, but you're trying to
-run it with Python {}.{}.
-Try running:
-    $ python3 cushead.py
-""".format(
-        *(CURRENT_PYTHON))
-    )
+    sys.stderr.write(textwrap.dedent("""\
+        ==========================
+        Unsupported Python version
+        ==========================
+        This version of cushead.py requires Python >={}.{} and <{},
+        but you're trying to run it with Python {}.{}.
+        Try running:
+            $ python3 cushead.py""".format(*(MIN_PYTHON + MAX_PYTHON +
+            CURRENT_PYTHON))))
     sys.exit(1)
 
 from os import name as os_name
 
-from cushead import main
-from version import get_version
+from src.main import Main
+from _info import get_info
 
 
-if os_name == 'nt':
-    COLOR = ''
-    RESET = ''
-else:
-    COLOR = '\033[1;34m'
-    RESET = '\033[0;0m'
-print('''{}
+INFO = get_info()
+
+
+# Blue
+(COLOR, RESET) = ('', '') if os_name == 'nt' else ('\033[1;34m', '\033[0;0m')
+print("""{}
    ____  _   _  ____   _   _  _____     _     ____     ____ __   __
   / ___|| | | |/ ___| | | | || ____|   / \   |  _ \   |  _ \\\ \ / /
  | |    | | | |\___ \ | |_| ||  _|    / _ \  | | | |  | |_) |\ V / 
@@ -51,16 +48,19 @@ print('''{}
                         / /
                        /'
                        
-Author: Lucas Vazquez
-Mail: lucas5zvazquez@gmail.com
-Page: https://github.com/lucasvazq
-License: MIT
-Source: https://github.com/lucasvazq/cushead.py
+Author: {}
+Email: {}
+Page: {}
+License: {}
 
-For help run: python3 cushead.py -h
-{}
-'''.format(COLOR, get_version(), RESET))
+Git: {}
+Documentation: {}
+
+For help run: {} -h
+{}""".format(COLOR, INFO['version'], INFO['author'], INFO['email'],
+    INFO['author_page'], INFO['license'], INFO['source'], INFO['documentation'],
+    INFO['name'], RESET))
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    Main(sys.argv[1:]).run()
