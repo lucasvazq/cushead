@@ -61,10 +61,8 @@ class Support():
             sys.stderr.write(message)
             sys.exit(1)
 
-    @staticmethod
     def install(self):
         self.check(UNSUPPORTED_INSTALLATION)
 
-    @staticmethod
     def run(self):
         self.check(UNSUPPORTED_RUN)

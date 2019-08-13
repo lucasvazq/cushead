@@ -158,7 +158,7 @@ class Others():
             'src': "{0}{1}-{2}x{2}".format(path, self.brand['manifest']['name'],
                 str(size)),
             'sizes': "{0}x{0}".format(str(size)),
-            'type': 'image\/png',
+            'type': 'image/png',
             'density': str(size/48)}
             for size in self.brand['manifest']['sizes']]
         dictionary = {}
