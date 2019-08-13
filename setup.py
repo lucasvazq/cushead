@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from ._info import get_info
+from _info import get_info
 INFO = get_info()
 CURRENT_PYTHON = sys.version_info[:2]
 MIN_PYTHON = INFO['python_min_version']
