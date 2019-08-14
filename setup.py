@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from _info import Info
+from src.info import Info
 from src.support import Support
 INFO = Info().get_info()
 Support(INFO).install()
@@ -14,10 +14,11 @@ with open('README.md', 'r') as fh:
 setuptools.setup(
     name=INFO['package_name'],
     version=INFO['package_version'],
-    url=INFO['source'],
+    scripts=["{}.py".format(INFO['package_name'])],
     entry_points = {
-        'console_scripts': ["{0}={0}:main".format(INFO['package_name'])],
+        'console_scripts': ["{0}={0}:main".format(INFO['package_name'])]
     },
+    url=INFO['source'],
     project_urls={
         'Documentation': INFO['documentation'],
         'Source': INFO['source']

@@ -12,11 +12,11 @@
 
 ## 2 - Remove old packages deleting the next folders
 
-['./cushead.py.egg-info/'](./cushead.py.egg-info/.)
+['./cushead.egg-info/'](./cushead.egg-info/.)
 
 ['./dist/'](./dist/.)
 
-`rm -rf ./cushead.py.egg-info/ ./dist/`
+`rm -rf ./cushead.egg-info/ ./dist/`
 
 ## 3 - Build the new package
 
@@ -36,8 +36,8 @@
 
 ## - 7 Upgrade package in machine
 
-`python3 -m pip install cushead.py --upgrade`
+`python3 -m pip install cushead --upgrade`
 
 ## - 8 Test
 
-`python3 cushead.py -h`
+`python3 cushead -h`

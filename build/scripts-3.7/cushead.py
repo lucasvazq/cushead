@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/home/lucas/Lucas/Projects/wasa/venv_test/bin/python
 # -*- coding: utf-8 -*-
 
 from src.info import Info

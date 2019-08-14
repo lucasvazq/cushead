@@ -2,9 +2,9 @@
 branch = True
 source = ./
 omit =
+    src/info.py
     src/support.py
     __init__.py
-    _info.py
     cushead.py
     setup.py
 

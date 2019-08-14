@@ -3,10 +3,11 @@
 
 
 # Used for setup.py
-__package_name__ = "cushead.py"
-__package_version__ = "3.1.3"
-__source__ = "https://github.com/lucasvazq/cushead.py"
-__documentation__ = "https://github.com/lucasvazq/cushead.py/blob/master/README.md"
+__package_name__ = "cushead"
+__package_version__ = "3.1.7"
+__source__ = "https://github.com/lucasvazq/{}".format(__package_name__)
+__documentation__ = ("https://github.com/lucasvazq/{}/blob/master/README.md"
+    .format(__package_name__))
 __python_min_version__ = (3, 5)
 __python_max_version__ = (4, 0)
 __required_packages__ = ['argparse', 'python-resize-image']

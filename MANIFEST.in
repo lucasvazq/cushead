@@ -1,2 +1,5 @@
-include LICENSE.md README.md __init__.py __main__.py _info.py
+include LICENSE.md
+include README.md
+include cushead.py
+
 prune test/

@@ -1,37 +1,46 @@
-"""
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+from os import path
+
+
+def get_values(info):
+    return """\
+\"\"\"
 Python syntax
-cushead config file
-Git: https://github.com/lucasvazq/cushead
-Documentation: https://github.com/lucasvazq/cushead/blob/master/README.md
+{} config file
+Git: {}
+Documentation: {}
 
 CONFIG VARIABLES:
 
     html_file (FILE PATH):
-        Required, can't be void, need to exist and refer a file
+        Required, can't be void, need to exist and referrer to a file
 
     output (FOLDER PATH):
-        Required, need to exist and refer a folder
+        Required, need to exist and referrer to a folder
 
     static_url (STRING):
         Required
 
     icon_png (FILE PATH):
-        If declared, need to exist and refer a image file
+        If declared, need to exist and referrer to an image file
         Recomended 310x310 png image
-"""
+\"\"\"
 
 # Don't delete or change the name of this variable
-config = {
+config = {{
 
     # MAIN CONFIG
-    'html_file':        './test/tests/Success/complete_config/index.html',
-    'output':           './test/tests/Success/complete_config/', # e.g. for manifest.json
+    'html_file':        './index.html',
+    'output':           './output/', # e.g. for manifest.json
     'static_url':       '/static/',
 
     # GENERAL CONFIG
     'content-type':     'text/html; charset=utf-8',
     'X-UA-Compatible':  'ie=edge',
-    'viewport':         {'width': 'device-width', 'initial-scale': '1'},
+    'viewport':         {{'width': 'device-width', 'initial-scale': '1'}},
     'language':         'en',
     'territory':        'US', # language territory
     'type':             'website', # http://ogp.me/#types
@@ -54,7 +63,7 @@ config = {
     'preview':          'preview.png', # Big image preview
     'preview_type':     'image/png', # image/jpeg, image/gif or image/png
     'icon':             'favicon.ico', # *.ico
-    'icon_png':         './test/tests/favicon.png', # FILEPATH PNG IMAGE 310x310
+    'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 310x310
     'mask-icon':        'maskicon.svg', # svg file type
 
     # SOCIAL MEDIA
@@ -70,18 +79,33 @@ config = {
     'display':          'browser',
     'platform':        'web',
     'applications':     [
-        {
+        {{
             'platform': 'play',
             'url':      'https://play.google.com/store/apps/details?id=com.example.app',
             'id':       'com.example.app'
-        },
-        {
+        }},
+        {{
             'platform': 'itunes',
             'url':      'https://itunes.apple.com/app/example-app/id123456',
-        }
+        }}
     ],
 
     # AUTHOR
     'author':           'Lucas Vazquez'
 
-}
+}}""".format(info['package_name'], info['source'], info['documentation'])
+
+
+class Presets():
+
+    def __init__(self):
+        self.presets = get_values(self.info)
+        super().__init__()
+
+    def _make_preset(self, file):
+        file = path.join(os.getcwd(), file)
+        f = open(file, 'w+')
+        f.write(self.presets)
+        f.close()
+        print("PRESET:")
+        print("{}".format(self.presets))

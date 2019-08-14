@@ -1,8 +1,8 @@
 """
 Python syntax
-cushead.py config file
-Git: https://github.com/lucasvazq/cushead.py
-Documentation: https://github.com/lucasvazq/cushead.py/blob/master/README.md
+cushead config file
+Git: https://github.com/lucasvazq/cushead
+Documentation: https://github.com/lucasvazq/cushead/blob/master/README.md
 
 CONFIG VARIABLES:
 

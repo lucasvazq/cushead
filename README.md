@@ -1,13 +1,13 @@
-[![Build Status](https://api.travis-ci.org/lucasvazq/cushead.py.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead.py)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce412113e4144c9f9739a99a0d0b77f5)](https://app.codacy.com/app/lucasvazq/cushead.py?utm_source=github.com&utm_medium=referral&utm_content=lucasvazq/cushead.py&utm_campaign=Badge_Grade_Dashboard)
-[![codecov](https://codecov.io/gh/lucasvazq/cushead.py/branch/master/graph/badge.svg)](https://codecov.io/gh/lucasvazq/cushead.py)
-[![PyPI version](https://badge.fury.io/py/cushead.py.svg)](https://badge.fury.io/py/cushead.py)
+[![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce412113e4144c9f9739a99a0d0b77f5)](https://app.codacy.com/app/lucasvazq/cushead?utm_source=github.com&utm_medium=referral&utm_content=lucasvazq/cushead&utm_campaign=Badge_Grade_Dashboard)
+[![codecov](https://codecov.io/gh/lucasvazq/cushead/branch/master/graph/badge.svg)](https://codecov.io/gh/lucasvazq/cushead)
+[![PyPI version](https://badge.fury.io/py/cushead.svg)](https://badge.fury.io/py/cushead)
 
 <p align="center">
   <img src="./logo.png">
 </p>
 
-# cushead.py
+# cushead
 
 **A CLI that help you to improve the SEO and UX of your websites.**
 
@@ -15,7 +15,7 @@
 
 **Python Versions:** _>=3.5, <4.0_
 
-**Package Version**: _3.1.3_
+**Package Version**: _3.1.7_
 
 **Status:** _Production/Stable_
 
@@ -29,12 +29,12 @@ be set through a config file.
 
 The script can generate a full default config file running:
 
-`cushead.py -preset settings.txt`
+`cushead -preset settings.txt`
 
 You can edit that file how you want, and then run the script with that settings
 using:
 
-`cushead.py -file settings.txt`
+`cushead -file settings.txt`
 
 ## MENU
 
@@ -56,16 +56,16 @@ using:
 
 ## Install
 
-`python3 -m pip install cushead.py`
+`python3 -m pip install cushead`
 
 ## Arguments
 
 ### -h
 
-`python3 cushead.py -h`
+`python3 cushead -h`
 
 ```txt
-usage: cushead.py -file FILEPATH
+usage: cushead -file FILEPATH
 
 Options (one required):
   -preset FILENAME  Name of config file. Generate an example config file. That
@@ -82,9 +82,9 @@ Options (one required):
 
 Examples:
 1) Generate config file:
-    cushead.py -preset settings.txt
+    cushead -preset settings.txt
 2) Execute with using that config file:
-    cushead.py -file settings.txt
+    cushead -file settings.txt
 ```
 
 ### -preset
@@ -92,15 +92,15 @@ Examples:
 This command generate a full config file in python syntax.
 Example:
 
-`cushead.py -preset settings.txt`
+`cushead -preset settings.txt`
 
 _(settings.txt)_
 ```python
 """
 Python syntax
-cushead.py config file
-Git: https://github.com/lucasvazq/cushead.py
-Documentation: https://github.com/lucasvazq/cushead.py/blob/master/README.md
+cushead config file
+Git: https://github.com/lucasvazq/cushead
+Documentation: https://github.com/lucasvazq/cushead/blob/master/README.md
 
 CONFIG VARIABLES:
 
@@ -221,7 +221,7 @@ This argument uses a config file to run the script.
 Using the default config file generated with -preset, we run the script with
 -file:
 
-`cushead.py -file settings.txt`
+`cushead -file settings.txt`
 
 Output:
 ```txt
@@ -614,4 +614,4 @@ Here is a list of concepts that comprise good practices to improve **SEO** and
 
 ## License
 
-**cushead.py** © 2019 Lucas Vazquez. Released under the [MIT](http://mit-license.org/) License.
+**cushead** © 2019 Lucas Vazquez. Released under the [MIT](http://mit-license.org/) License.
