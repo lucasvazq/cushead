@@ -40,4 +40,4 @@
 
 ## - 8 Test
 
-`python3 cushead -h`
+`cushead -h`

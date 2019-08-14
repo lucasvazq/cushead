@@ -4,7 +4,7 @@
 
 # Used for setup.py
 __package_name__ = "cushead"
-__package_version__ = "3.1.7"
+__package_version__ = "3.1.8"
 __source__ = "https://github.com/lucasvazq/{}".format(__package_name__)
 __documentation__ = ("https://github.com/lucasvazq/{}/blob/master/README.md"
     .format(__package_name__))

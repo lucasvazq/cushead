@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cushead
-Version: 3.1.7
+Version: 3.1.8
 Summary: CLI that help you to improve the SEO and UX of your websites.
 Home-page: https://github.com/lucasvazq/cushead
 Author: Lucas Vazquez
@@ -25,7 +25,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?br
         
         **Python Versions:** _>=3.5, <4.0_
         
-        **Package Version**: _3.1.7_
+        **Package Version**: _3.1.8_
         
         **Status:** _Production/Stable_
         
@@ -72,7 +72,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?br
         
         ### -h
         
-        `python3 cushead -h`
+        `cushead -h`
         
         ```txt
         usage: cushead -file FILEPATH

@@ -15,7 +15,7 @@
 
 **Python Versions:** _>=3.5, <4.0_
 
-**Package Version**: _3.1.7_
+**Package Version**: _3.1.8_
 
 **Status:** _Production/Stable_
 
@@ -62,7 +62,7 @@ using:
 
 ### -h
 
-`python3 cushead -h`
+`cushead -h`
 
 ```txt
 usage: cushead -file FILEPATH
