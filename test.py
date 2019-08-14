@@ -126,19 +126,23 @@ class TestConfigExceptions(unittest.TestCase):
 class TestSuccess(unittest.TestCase):
 
     # Complete config
-    def test_complete_config(self):
+    @staticmethod
+    def test_complete_config():
         Main(INFO, ['-file', './test/Success/complete_config/test.txt']).run()
 
     # Void config
-    def test_void_config(self):
+    @staticmethod
+    def test_void_config():
         Main(INFO, ['-file', './test/Success/void_config/test.txt']).run()
 
     # Void *.html file
-    def test_void_html_FILE(self):
+    @staticmethod
+    def test_void_html_FILE():
         Main(INFO, ['-file', './test/Success/void_html_FILE/test.txt']).run()
 
     # -preset
-    def test_preset(self):
+    @staticmethod
+    def test_preset():
         Main(INFO, ['-preset', './test/Success/test.txt']).run()
 
 
@@ -146,20 +150,24 @@ class TestSuccess(unittest.TestCase):
 class TestSpecialConfigSuccess(unittest.TestCase):
 
     # Miss 'icon', 'mask_icon', 'browserconfig', 'manifest' and 'opensearch'
-    def test_miss_1(self):
+    @staticmethod
+    def test_miss_1():
         Main(INFO, ['-file', './test/SpecialConfigSuccess/miss_1/test.txt']).run()
 
     # Miss 'title', 'description', 'dir', 'start_url', 'orientation', 'color',
     # 'locale', 'scope', 'display', 'platform' and 'applications'
-    def test_miss_2(self):
+    @staticmethod
+    def test_miss_2():
         Main(INFO, ['-file', './test/SpecialConfigSuccess/miss_2/test.txt']).run()
 
     # Miss 'url'
-    def test_miss_url(self):
+    @staticmethod
+    def test_miss_url():
         Main(INFO, ['-file', './test/SpecialConfigSuccess/miss_url/test.txt']).run()
 
     # Miss 'sitemap'
-    def test_miss_sitemap(self):
+    @staticmethod
+    def test_miss_sitemap():
         Main(INFO, ['-file', './test/SpecialConfigSuccess/miss_sitemap/test.txt']).run()
 
 
