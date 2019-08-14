@@ -36,7 +36,7 @@
 
 ## - 7 Upgrade package in machine
 
-`python3 -m pip install cushead --upgrade`
+`cd .. && python3 -m pip install cushead --upgrade`
 
 ## - 8 Test
 
