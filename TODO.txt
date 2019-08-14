@@ -1,2 +1,3 @@
 Replace exceptions with inline errors
 fix logo
+include logo for readme
