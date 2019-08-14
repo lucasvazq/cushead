@@ -16,15 +16,15 @@ class Arguments():
 
     def parse_args(self, args):
         parser = argparse.ArgumentParser(
-            prog=self.info['name'],
+            prog=self.info['package_name'],
             formatter_class=argparse.RawDescriptionHelpFormatter,
-            usage="{} -file FILEPATH".format(self.info['name']),
+            usage="{} -file FILEPATH".format(self.info['package_name']),
             epilog=textwrap.dedent("""\
                 Examples:
                 1) Generate config file:
                     {0} -preset settings.txt
                 2) Execute with using that config file:
-                    {0} -file settings.txt""").format(self.info['name']))
+                    {0} -file settings.txt""").format(self.info['package_name']))
 
         parser._action_groups.pop()
         options = parser.add_argument_group('Options (one required)')

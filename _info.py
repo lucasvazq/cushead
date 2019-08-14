@@ -4,7 +4,7 @@
 
 # Used for setup.py
 __package_name__ = "cushead.py"
-__package_version__ = "3.1.0"
+__package_version__ = "3.1.1"
 __source__ = "https://github.com/lucasvazq/cushead.py"
 __documentation__ = "https://github.com/lucasvazq/cushead.py/blob/master/README.md"
 __python_min_version__ = (3, 5)
@@ -30,8 +30,8 @@ class Info():
 
     def __init__(self):
         self.info = {
-            'name': __package_name__,
-            'version': __package_version__,
+            'package_name': __package_name__,
+            'package_version': __package_version__,
             'source': __source__,
             'documentation': __documentation__,
             'python_min_version': __python_min_version__,

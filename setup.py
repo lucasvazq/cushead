@@ -12,9 +12,12 @@ import setuptools
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 setuptools.setup(
-    name=INFO['name'],
-    version=INFO['version'],
+    name=INFO['package_name'],
+    version=INFO['package_version'],
     url=INFO['source'],
+    entry_points = {
+        'console_scripts': ["{}=__main__".format(INFO['package_name'])],
+    },
     project_urls={
         'Documentation': INFO['documentation'],
         'Source': INFO['source']

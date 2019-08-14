@@ -7,6 +7,7 @@ setup.py
 cushead.py.egg-info/PKG-INFO
 cushead.py.egg-info/SOURCES.txt
 cushead.py.egg-info/dependency_links.txt
+cushead.py.egg-info/entry_points.txt
 cushead.py.egg-info/requires.txt
 cushead.py.egg-info/top_level.txt
 src/__init__.py

@@ -1,0 +1,3 @@
+[console_scripts]
+cushead.py = __main__
+

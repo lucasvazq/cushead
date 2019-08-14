@@ -45,7 +45,7 @@ class Support():
         self.min_python = self.info['python_min_version']
         self.max_python = self.info['python_max_version']
         self.support_string_format = {
-            'name': self.info['name'],
+            'name': self.info['package_name'],
             'min_major': self.min_python[0],
             'min_minor': self.min_python[1],
             'max_major': self.max_python[0],

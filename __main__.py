@@ -37,9 +37,9 @@ Git: {}
 Documentation: {}
 
 For help run: {} -h
-{}""".format(COLOR, INFO['version'], INFO['author'], INFO['email'],
+{}""".format(COLOR, INFO['package_version'], INFO['author'], INFO['email'],
     INFO['author_page'], INFO['license'], INFO['source'], INFO['documentation'],
-    INFO['name'], RESET))
+    INFO['package_name'], RESET))
 
 
 if __name__ == '__main__':

@@ -93,7 +93,7 @@ config = {{
     # AUTHOR
     'author':           'Lucas Vazquez'
 
-}}""".format(info['name'], info['source'], info['documentation'])
+}}""".format(info['package_name'], info['source'], info['documentation'])
 
 
 class Presets():
