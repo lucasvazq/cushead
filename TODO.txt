@@ -1,3 +1,7 @@
+replace image with PIL
+delete argparse
+add No dependences message readme
+
 Replace exceptions with inline errors
     image errors at start
 
@@ -7,7 +11,5 @@ change "preview" description
 
 output -> /static_url/
 
-fix logo
+fix logo align
 include logo for readme
-delete argparse
-add No dependences message readme
