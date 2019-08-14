@@ -1,0 +1,2 @@
+include LICENSE.md README.md __init__.py __main__.py _info.py
+prune test/

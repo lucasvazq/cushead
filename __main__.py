@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from _info import get_info
+from _info import Info
 from src.support import Support
-INFO = get_info()
-Support(INFO).install()
+INFO = Info().get_info()
+Support(INFO).run()
 
+import os
 import sys
-from os import name as os_name
 
 from src.main import Main
 
 
 # Blue
-(COLOR, RESET) = ('', '') if os_name == 'nt' else ('\033[1;34m', '\033[0;0m')
+(COLOR, RESET) = ('', '') if os.name == 'nt' else ('\033[1;34m', '\033[0;0m')
 print("""{}
    ____  _   _  ____   _   _  _____     _     ____     ____ __   __
   / ___|| | | |/ ___| | | | || ____|   / \   |  _ \   |  _ \\\ \ / /

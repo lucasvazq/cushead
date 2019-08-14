@@ -15,7 +15,7 @@
 
 **Python Versions:** _>=3.5, <4.0_
 
-**Package Version**: _3.0.0_
+**Package Version**: _3.1.0_
 
 **Status:** _Production/Stable_
 
@@ -29,12 +29,12 @@ be set through a config file.
 
 The script can generate a full default config file running:
 
-`cushead.py -preset example-config.txt`
+`cushead.py -preset settings.txt`
 
 You can edit that file how you want, and then run the script with that settings
 using:
 
-`cushead.py -file example-config.txt`
+`cushead.py -file settings.txt`
 
 ## MENU
 
@@ -68,7 +68,7 @@ using:
 usage: cushead.py -file FILEPATH
 
 Options (one required):
-  -preset FILENAME  Name for config file. Generate an example config file. That
+  -preset FILENAME  Name of config file. Generate an example config file. That
                     file contains a variable named 'config' that can be
                     customized. It has some required values: 'html_file' (FILE
                     PATH), 'output' (FOLDER PATH) and 'static_url' (STRING).
@@ -82,9 +82,9 @@ Options (one required):
 
 Examples:
 1) Generate config file:
-    cushead.py -preset custom.txt
+    cushead.py -preset settings.txt
 2) Execute with using that config file:
-    cushead.py -file custom.txt
+    cushead.py -file settings.txt
 ```
 
 ### -preset
@@ -92,9 +92,9 @@ Examples:
 This command generate a full config file in python syntax.
 Example:
 
-`cushead.py -preset config.txt`
+`cushead.py -preset settings.txt`
 
-_(config.txt)_
+_(settings.txt)_
 ```python
 """
 Python syntax
@@ -111,7 +111,7 @@ CONFIG VARIABLES:
     Required, need to exist and referrer to a folder
 
   static_url (STRING):
-    Required
+      Required
 
   icon_png (FILE PATH):
     If declared, need to exist and referrer to an image file
@@ -130,7 +130,8 @@ config = {
   'content-type':     'text/html; charset=utf-8',
   'X-UA-Compatible':  'ie=edge',
   'viewport':         {'width': 'device-width', 'initial-scale': '1'},
-  'locale':           'en_US',
+  'language':         'en',
+  'territory':        'US', # language territory
   'type':             'website', # http://ogp.me/#types
   'color':            '#FFFFFF',
   'url':              'microsoft.com', # Without "www." and protocol (e.g. "http://")
@@ -220,19 +221,18 @@ This argument uses a config file to run the script.
 Using the default config file generated with -preset, we run the script with
 -file:
 
-`cushead.py -file config.txt`
+`cushead.py -file settings.txt`
 
 Output:
 ```txt
-HTML:
-<html lang="en_US">
+<html lang="en">
 
 HEAD:
 <!-- Custom head elements -->
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 <meta http-equiv='X-UA-Compatible' content='ie=edge' />
 <meta name='viewport' content='width=device-width, initial-scale=1' />
-<meta http-equiv='Content-Language' content='en_US' />
+<meta http-equiv='Content-Language' content='en' />
 <meta name='theme-color' content='#FFFFFF' />
 <meta name='msapplication-TileColor' content='#FFFFFF' />
 <meta name='robots' content='index, follow' />
@@ -359,9 +359,9 @@ NEW FILES:
 ./output/sitemap.xml
 
 HTML FILE: ./index.html
-(full path): /home/user/Documents/Projects/Websites/Example/./index.html
+(full path): /home/user/Projects/Example/./index.html
 OUTPUT FILES: ./output/
-(full path): /home/user/Documents/Projects/Websites/Example/./output/
+(full path): /home/user/Projects/Example/./output/
 ```
 
 #### Edited html file
@@ -371,13 +371,13 @@ will be:
 
 _(index.html)_
 ```html
-<html lang="en_US">
+<html lang="en">
   <head>
     <!-- Custom head elements -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Language" content="en_US" />
+    <meta http-equiv="Content-Language" content="en" />
     <meta name="theme-color" content="#FFFFFF" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="robots" content="index, follow" />
@@ -485,7 +485,7 @@ _(manifest.json)_ _BEAUTY VERSION_
   "orientation": "landscape",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF",
-  "locale": "en_US",
+  "default_locale": "en",
   "scope": "/",
   "display": "browser",
   "platform": "web",

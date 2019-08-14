@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+import textwrap
 import types
 from importlib import machinery
-from os import getcwd, path
-from textwrap import dedent
+from os import path
 
 
 class Helpers():
@@ -13,17 +14,17 @@ class Helpers():
         pass
 
     def _get_values(self, filename):
-        filepath = path.join(getcwd(), filename)
+        filepath = path.join(os.getcwd(), filename)
         loader = machinery.SourceFileLoader(filename, filepath)
         mod = types.ModuleType(loader.name)
         loader.exec_module(mod)
         try:
             return mod.config
         except:
-            raise Exception(dedent("""\
+            raise Exception(textwrap.dedent("""\
                 Can't found 'config' variable in ({})
                 FILE PATH: {}""".format(self.args.file,
-                    path.join(getcwd(), self.args.file))))
+                    path.join(os.getcwd(), self.args.file))))
 
     @staticmethod
     def _write_file(filepath, content):

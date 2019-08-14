@@ -28,9 +28,9 @@ class Head(ComplementaryFiles):
                 for content in self.config['viewport']))[0:-2]
             head.append("<meta name='viewport' content='{}' />".format(concat))
         # locale
-        if 'locale' in self.config:
+        if 'language' in self.config:
             head.append("<meta http-equiv='Content-Language' content='{}' />".format(
-                self.config['locale']))
+                self.config['language']))
         # theme-color and msapplication-TileColor
         if 'color' in self.config:
             head.append("<meta name='theme-color' content='{}' />".format(
@@ -76,9 +76,11 @@ class Head(ComplementaryFiles):
             head.append("<meta porperty='fb:app_id' content='{}' />".format(
                 self.config['fb:app_id']))
         # og:locale
-        if 'locale' in self.config:
-            head.append("<meta property='og:locale' content='{}' />".format(
-                self.config['locale']))
+        if 'language' in self.config:
+            head.append("<meta property='og:locale' content='{}{}' />".format(
+                self.config['language'],
+                "_{}".format(self.config['territory']) \
+                    if 'territory' in self.config else ''))
         # og:type
         if 'type' in self.config:
             head.append("<meta property='og:type' content='{}' />".format(
@@ -160,11 +162,11 @@ class Head(ComplementaryFiles):
         file_handle.close()
 
         # Add lang attribute to <html>
-        if 'locale' in self.config:
+        if 'language' in self.config:
             if not '<html>' in file_string:
                 print("Miss <html>, cant add lang attribute\n")
             else:
-                html = "<html lang=\"{}\">".format(self.config['locale'])
+                html = "<html lang=\"{}\">".format(self.config['language'])
                 file_string = file_string.replace('<html>', html)
                 print(("HTML:\n" +
                     "{}\n".format(html)))

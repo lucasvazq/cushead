@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PIL import Image
 import json
-from os import getcwd, path
-from textwrap import dedent
+import os
+import textwrap
+from PIL import Image
+from os import path
 
 from resizeimage import resizeimage
 
@@ -176,8 +177,8 @@ class Others():
         if 'color' in self.config:
             dictionary['background_color'] = self.config['color']
             dictionary['theme_color'] = self.config['color']
-        if 'locale' in self.config:
-            dictionary['locale'] = self.config['locale']
+        if 'language' in self.config:
+            dictionary['default_locale'] = self.config['language']
         if 'scope' in self.config:
             dictionary['scope'] = self.config['scope']
         if 'display' in self.config:
@@ -244,10 +245,10 @@ class ComplementaryFiles(Values, Icons, Others):
                 raise Exception("'icon_png' key value can't be void.")
             if not path.isfile(self.config['icon_png']):
                 # test: test_icon_png_doesnt_exists
-                raise Exception(dedent("""\
+                raise Exception(textwrap.dedent("""\
                     'icon_png' key ({}) must be referred to a file path that exists.
                     FILE PATH: {}""".format(self.config['icon_png'],
-                        path.join(getcwd(), self.config['icon_png']))))
+                        path.join(os.getcwd(), self.config['icon_png']))))
             with open(self.config['icon_png'], 'r+b') as f:
                 with Image.open(f) as image:
                     for name in self.names:

@@ -9,8 +9,8 @@ def unsupported_title():
     return """\
 {0}
 {1}
-{0}""".format("="*len(title), title)
-
+{0}
+""".format("="*len(title), title)
 
 
 def unsupported_installation(info, support_string_format):
@@ -23,7 +23,8 @@ Make sure you have pip >= 9.0 and setuptools >= 24.2, then try again:
     $ python3 -m pip install {name}
 This will update pip and setuptools, and install the latest version of
 {name}, make sure you still trying to install and running it with a
-supported version of python.""".format(**support_string_format)
+supported version of python.
+""".format(**support_string_format)
 
 
 def unsupported_run(info, support_string_format):
@@ -32,7 +33,8 @@ This version of {name} requires Python >={min_major}.{min_minor} and \
 <{max_major}.{max_minor}, but you're trying to
 run it with Python {current_major}.{current_minor}
 Try running:
-    $ python3 {name}""".format(**support_string_format)
+    $ python3 {name}
+""".format(**support_string_format)
 
 
 class Support():
@@ -54,7 +56,7 @@ class Support():
     def check(self, message):
         if self.current_python < self.min_python or \
             self.current_python > self.max_python:
-            sys.stderr.write(message)
+            sys.stderr.write(unsupported_title() + message)
             sys.exit(1)
 
     def install(self):

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from os import getcwd, path
+import os
+from os import path
 
 
 def get_values(info):
@@ -40,7 +41,8 @@ config = {{
     'content-type':     'text/html; charset=utf-8',
     'X-UA-Compatible':  'ie=edge',
     'viewport':         {{'width': 'device-width', 'initial-scale': '1'}},
-    'locale':           'en_US',
+    'language':         'en',
+    'territory':        'US', # language territory
     'type':             'website', # http://ogp.me/#types
     'color':            '#FFFFFF',
     'url':              'microsoft.com', # Without "www." and protocol (e.g. "http://")
@@ -101,7 +103,7 @@ class Presets():
         super().__init__()
 
     def _make_preset(self, file):
-        file = path.join(getcwd(), file)
+        file = path.join(os.getcwd(), file)
         f = open(file, 'w+')
         f.write(self.presets)
         f.close()

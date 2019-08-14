@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from _info import get_info
+from _info import Info
 from src.support import Support
-INFO = get_info()
+INFO = Info().get_info()
 Support(INFO).install()
 
 import setuptools
@@ -22,6 +22,7 @@ setuptools.setup(
     python_requires=">={}.{}, <{}.{}".format(*(INFO['python_min_version'] +
         INFO['python_max_version'])),
     packages=setuptools.find_packages(),
+    include_package_data=True,
     install_requires=INFO['required_packages'],
     author=INFO['author'],
     author_email=INFO['email'],

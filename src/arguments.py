@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from os import getcwd, path
-from textwrap import dedent
+import os
+import textwrap
+from os import path
 
 import argparse
 
@@ -18,17 +19,17 @@ class Arguments():
             prog=self.info['name'],
             formatter_class=argparse.RawDescriptionHelpFormatter,
             usage="{} -file FILEPATH".format(self.info['name']),
-            epilog=dedent("""\
+            epilog=textwrap.dedent("""\
                 Examples:
                 1) Generate config file:
-                    {0} -preset custom.txt
+                    {0} -preset settings.txt
                 2) Execute with using that config file:
-                    {0} -file custom.txt""").format(self.info['name']))
+                    {0} -file settings.txt""").format(self.info['name']))
 
         parser._action_groups.pop()
         options = parser.add_argument_group('Options (one required)')
         options.add_argument('-preset', metavar=('FILENAME'), dest='preset',
-            help=dedent("""\
+            help=textwrap.dedent("""\
                 Name of config file.
                 Generate an example config file. That file contains a variable named 'config'
                 that can be customized. It has some required values: 'html_file' (FILE PATH),
@@ -36,7 +37,7 @@ class Arguments():
                 (IMAGE FILE PATH) is declared, this key need to have a value related to a path
                 of an existing image."""))
         options.add_argument('-file', metavar=('FILEPATH'), dest='file',
-            help=dedent("""\
+            help=textwrap.dedent("""\
                 Path to config file.
                 Read a config file that contains configurable values related to SEO and UX.
                 After it, the script edits an html file and generate complementary files like
@@ -52,14 +53,14 @@ class Arguments():
         if parser.file:
             if not path.exists(parser.file):
                 # test: test_file_doesnt_exists
-                raise Exception(dedent("""\
+                raise Exception(textwrap.dedent("""\
                     -file ({}) must be referred to a file path that exists.
                     FILE PATH: {}""".format(parser.file,
-                        path.join(getcwd(), parser.file))))
+                        path.join(os.getcwd(), parser.file))))
             if not path.isfile(parser.file):
                 # test: test_file_no_file
-                raise Exception(dedent("""\
+                raise Exception(textwrap.dedent("""\
                     -file ({}) must be referred to a file path.
                     FILE PATH: {}""".format(parser.file,
-                        path.join(getcwd(), parser.file))))
+                        path.join(os.getcwd(), parser.file))))
         return parser
