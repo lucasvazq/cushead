@@ -1,3 +1,13 @@
 Replace exceptions with inline errors
+    image errors at start
+
+favicon required
+preview required
+change "preview" description
+
+output -> /static_url/
+
 fix logo
 include logo for readme
+delete argparse
+add No dependences message readme
