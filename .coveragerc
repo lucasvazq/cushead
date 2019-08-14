@@ -5,13 +5,8 @@ omit =
     src/support.py
     __init__.py
     __main__.py
-    _version.py
+    _info.py
     setup.py
-    
-[report]
-exclude_lines =
-    pragma: no cover
-    if __name__ == .__main__.:
 
 [html]
 directory = coverage_html_report

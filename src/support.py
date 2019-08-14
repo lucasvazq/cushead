@@ -3,19 +3,18 @@
 
 import sys
 
-from ._info import get_info
+
+def unsupported_title():
+    title = "Unsupported Python version"
+    return """\
+{0}
+{1}
+{0}""".format("="*len(title), title)
 
 
-INFO = get_info()
 
-CURRENT_PYTHON = sys.version_info[:2]
-MIN_PYTHON = INFO['python_min_version']
-MAX_PYTHON = INFO['python_max_version']
-
-UNSUPPORTED_INSTALLATION = """\
-{separators}
-Unsupported Python version
-{separators}
+def unsupported_installation(info, support_string_format):
+    return """\
 This version of {name} requires Python >={min_major}.{min_minor} and \
 <{max_major}.{max_minor}, but you're trying to
 install it with Python {current_major}.{current_minor}
@@ -24,45 +23,42 @@ Make sure you have pip >= 9.0 and setuptools >= 24.2, then try again:
     $ python3 -m pip install {name}
 This will update pip and setuptools, and install the latest version of
 {name}, make sure you still trying to install and running it with a
-supported version of python.""".format(**{
-    'separators': "="*26,
-    'name': INFO['name'],
-    'min_major': MIN_PYTHON[0],
-    'min_minor': MIN_PYTHON[1],
-    'max_major': MAX_PYTHON[0],
-    'max_minor': MAX_PYTHON[1],
-    'current_major': CURRENT_PYTHON[0],
-    'current_minor': CURRENT_PYTHON[1]})
+supported version of python.""".format(**support_string_format)
 
-UNSUPPORTED_RUN = """\
-{separators}
-Unsupported Python version
-{separators}
+
+def unsupported_run(info, support_string_format):
+    return """\
 This version of {name} requires Python >={min_major}.{min_minor} and \
 <{max_major}.{max_minor}, but you're trying to
 run it with Python {current_major}.{current_minor}
 Try running:
-    $ python3 {name}""".format(**{
-    'separators': "="*26,
-    'name': INFO['name'],
-    'min_major': MIN_PYTHON[0],
-    'min_minor': MIN_PYTHON[1],
-    'max_major': MAX_PYTHON[0],
-    'max_minor': MAX_PYTHON[1],
-    'current_major': CURRENT_PYTHON[0],
-    'current_minor': CURRENT_PYTHON[1]})
+    $ python3 {name}""".format(**support_string_format)
 
 
 class Support():
 
-    @staticmethod
-    def check(message):
-        if CURRENT_PYTHON < MIN_PYTHON or CURRENT_PYTHON > MAX_PYTHON:
+    def __init__(self, info):
+        self.info = info
+        self.current_python = sys.version_info[:2]
+        self.min_python = self.info['python_min_version']
+        self.max_python = self.info['python_max_version']
+        self.support_string_format = {
+            'name': self.info['name'],
+            'min_major': self.min_python[0],
+            'min_minor': self.min_python[1],
+            'max_major': self.max_python[0],
+            'max_minor': self.max_python[1],
+            'current_major': self.current_python[0],
+            'current_minor': self.current_python[1]}
+
+    def check(self, message):
+        if self.current_python < self.min_python or \
+            self.current_python > self.max_python:
             sys.stderr.write(message)
             sys.exit(1)
 
     def install(self):
-        self.check(UNSUPPORTED_INSTALLATION)
+        self.check(unsupported_installation(self.info, self.support_string_format))
 
     def run(self):
-        self.check(UNSUPPORTED_RUN)
+        self.check(unsupported_run(self.info, self.support_string_format))

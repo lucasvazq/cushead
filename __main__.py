@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from _info import get_info
 from src.support import Support
-Support().install()
+INFO = get_info()
+Support(INFO).install()
 
 import sys
 from os import name as os_name
 
-from _info import get_info
 from src.main import Main
 
-
-INFO = get_info()
 
 # Blue
 (COLOR, RESET) = ('', '') if os_name == 'nt' else ('\033[1;34m', '\033[0;0m')
@@ -44,4 +43,4 @@ For help run: {} -h
 
 
 if __name__ == '__main__':
-    Main(sys.argv[1:]).run()
+    Main(INFO, sys.argv[1:]).run()

@@ -6,11 +6,6 @@ from textwrap import dedent
 
 import argparse
 
-from _info import get_info
-
-
-INFO = get_info()
-
 
 class Arguments():
 
@@ -18,18 +13,17 @@ class Arguments():
         self.args = self.parse_args(args)
         super().__init__()
 
-    @staticmethod
-    def parse_args(args):
+    def parse_args(self, args):
         parser = argparse.ArgumentParser(
-            prog=INFO['name'],
+            prog=self.info['name'],
             formatter_class=argparse.RawDescriptionHelpFormatter,
-            usage="{} -file FILEPATH".format(INFO['name']),
+            usage="{} -file FILEPATH".format(self.info['name']),
             epilog=dedent("""\
                 Examples:
                 1) Generate config file:
                     {0} -preset custom.txt
                 2) Execute with using that config file:
-                    {0} -file custom.txt""").format(INFO['name']))
+                    {0} -file custom.txt""").format(self.info['name']))
 
         parser._action_groups.pop()
         options = parser.add_argument_group('Options (one required)')

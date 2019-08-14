@@ -3,12 +3,9 @@
 
 from os import getcwd, path
 
-from _info import get_info
 
-
-INFO = get_info()
-
-VALUES = """\
+def get_values(info):
+    return """\
 \"\"\"
 Python syntax
 {} config file
@@ -94,13 +91,13 @@ config = {{
     # AUTHOR
     'author':           'Lucas Vazquez'
 
-}}""".format(INFO['name'], INFO['source'], INFO['documentation'])
+}}""".format(info['name'], info['source'], info['documentation'])
 
 
 class Presets():
 
     def __init__(self):
-        self.presets = VALUES
+        self.presets = get_values(self.info)
         super().__init__()
 
     def _make_preset(self, file):

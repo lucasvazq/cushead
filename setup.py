@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from _info import get_info
 from src.support import Support
-Support().install()
+INFO = get_info()
+Support(INFO).install()
 
 import setuptools
-
-from _info import get_info
-
-
-INFO = get_info()
 
 
 with open('README.md', 'r') as fh:

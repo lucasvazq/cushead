@@ -12,7 +12,8 @@ from .presets import Presets
 
 class Main(Arguments, Presets, Head, Helpers):
 
-    def __init__(self, args):
+    def __init__(self, info, args):
+        self.info = info
         super().__init__(args)
 
     def run(self):
@@ -42,7 +43,7 @@ class Main(Arguments, Presets, Head, Helpers):
             if not path.isfile(self.config['html_file']):
                 # test: test_html_file_no_file
                 raise Exception(dedent("""\
-                    'html_file' ({}) must be referred to a file.
+                    'html_file' ({}) must be referred to a file path.
                     FILE PATH: {}""".format(self.config['html_file'],
                         path.join(getcwd(), self.config['html_file']))))
             if not 'output' in self.config:
