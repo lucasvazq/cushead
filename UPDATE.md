@@ -2,13 +2,13 @@
 
 ## 1 - Change the version in
 
-['./_info.py'](./_info.py)
-
 ['./README.md](./README.md)
 
 ['./logo.xcf'](./logo.xcf)
 
 ['./logo.png'](./logo.png)
+
+['./src/info.py'](./src/info.py)
 
 ## 2 - Remove old packages deleting the next folders
 

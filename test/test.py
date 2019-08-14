@@ -9,7 +9,7 @@ import unittest
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
-from _info import Info
+from src.info import Info
 from src.main import Main
 
 
