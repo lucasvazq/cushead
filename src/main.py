@@ -10,8 +10,6 @@ from .head import Head
 from .helpers import Helpers
 from .presets import Presets
 
-def main():
-    print("WASAAA")
 
 class Main(Arguments, Presets, Head, Helpers):
 
