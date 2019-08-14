@@ -15,7 +15,7 @@
 
 **Python Versions:** _>=3.5, <4.0_
 
-**Package Version**: _3.1.0_
+**Package Version**: _3.1.3_
 
 **Status:** _Production/Stable_
 

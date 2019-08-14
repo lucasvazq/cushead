@@ -16,7 +16,7 @@ setuptools.setup(
     version=INFO['package_version'],
     url=INFO['source'],
     entry_points = {
-        'console_scripts': ["{}=__main__".format(INFO['package_name'])],
+        'console_scripts': ["{0}={0}:main".format(INFO['package_name'])],
     },
     project_urls={
         'Documentation': INFO['documentation'],

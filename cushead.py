@@ -41,6 +41,5 @@ For help run: {} -h
     INFO['author_page'], INFO['license'], INFO['source'], INFO['documentation'],
     INFO['package_name'], RESET))
 
-
-if __name__ == '__main__':
+def main():
     Main(INFO, sys.argv[1:]).run()

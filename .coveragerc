@@ -4,8 +4,8 @@ source = ./
 omit =
     src/support.py
     __init__.py
-    __main__.py
     _info.py
+    cushead.py
     setup.py
 
 [html]
