@@ -598,19 +598,20 @@ Here is a list of concepts that comprise good practices to improve **SEO** and
 
 1) Structured data: RDFa, JSON-D, Microdata, GoodRelations, vCard, hCard
 2) rel profile attribute for referring to author or website owner
-3) Maskable icons
-4) Accelerated Mobiles Pages
-5) Progressive Web Apps
-6) Screenshots in manifest for PWA
-7) Add PWA to App stores (like the Play Store of Google)
-8) Javascript and css minified and purged with short variables names
-9) Responsive Design
-10) Mobile call and Whatsapp sms for mobiles websites
-11) Google my Business integration
-12) gzip and bzip2 compression
-13) Server Side Rendering
-14) HTTP caching in Client Side
-15) Content Delivery Network
+3) ARIA Labels (with role attribute)
+4) Maskable icons
+5) Accelerated Mobiles Pages
+6) Progressive Web Apps
+7) Screenshots in manifest for PWA
+8) Add PWA to App stores (like the Play Store of Google)
+9) Javascript and css minified and purged with short variables names
+10) Responsive Design
+11) Mobile call and Whatsapp sms for mobiles websites
+12) Google my Business integration
+13) gzip and bzip2 compression
+14) Server Side Rendering
+15) HTTP caching in Client Side
+16) Content Delivery Network
 
 ## License
 
