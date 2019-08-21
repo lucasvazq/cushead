@@ -4,6 +4,7 @@
 import os
 import sys
 from os import path
+from shutil import copyfile
 
 
 class Errors:
@@ -39,6 +40,10 @@ class Errors:
 
 
 class FilesHelpers:
+
+    @staticmethod
+    def copy_file(source, destination):
+        copyfile(source, destination)
 
     @staticmethod
     def write_file(filepath, content):

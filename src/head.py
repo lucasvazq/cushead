@@ -114,15 +114,6 @@ class Head(ComplementaryFiles):
         if 'description' in self.config:
             head.append("<meta property='og:description' "
                         f"content='{self.config['description']}' />")
-        # og:image (http), og:image:secure_url (https) and twitter:image
-        if 'presentation_png' in self.config:
-            image = (self.config['static_url']
-                     + self.config.get('presentation_png'))
-            head.extend([
-                f"<meta property='og:image' content='{image}' />",
-                f"<meta property='og:image:secure_url' content='{image}' />",
-                f"<meta name='twitter:image' content='{image}' />",
-            ])
         # og:image:type
         # Only allow png type for simplicity
         head.append("<meta property='og:image:type' content='image/png' />")

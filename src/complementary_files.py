@@ -194,7 +194,7 @@ class Icons:
         )
         return element
 
-    def _icons_requirements(self, key):
+    def _requirements(self, key):
         if key not in self.config:
             return False
         Errors.void_key(self.config[key], key)
@@ -202,7 +202,7 @@ class Icons:
 
     def favicon_png(self):
 
-        if not self._icons_requirements('favicon_png'):
+        if not self._requirements('favicon_png'):
             return []
 
         head = []
@@ -232,8 +232,12 @@ class Icons:
 
     def favicon_ico(self):
 
-        if not self._icons_requirements('favicon_ico'):
+        if not self._requirements('favicon_ico'):
             return []
+
+        source = path.join(os.getcwd(), self.config['favicon_ico'])
+        destination = path.join(self.static_folderpath, "favicon.ico")
+        FilesHelpers.copy_file(source, destination)
 
         s = ("<link rel='shortcut icon' "
              f"href='/{self.config['favicon_ico']}' type='image/x-icon' />")
@@ -241,13 +245,35 @@ class Icons:
 
     def favicon_svg(self):
 
-        if not self._icons_requirements('favicon_svg'):
+        if not self._requirements('favicon_svg'):
             return []
+
+        source = path.join(os.getcwd(), self.config['favicon_svg'])
+        destination = path.join(self.static_folderpath, "favicon.svg")
+        FilesHelpers.copy_file(source, destination)
 
         color = self.config.get('color', '')
         s = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
              f"color='{color}' />")
         return s
+
+    def preview_png(self):
+
+        if not self._requirements('preview_png'):
+            return []
+
+        source = path.join(os.getcwd(), self.config['preview_png'])
+        destination = path.join(self.static_folderpath, "preview.png")
+        FilesHelpers.copy_file(source, destination)
+
+        # og:image (http), og:image:secure_url (https) and twitter:image
+        image = f"{self.config['static_url']}preview.png"
+        head = [
+            f"<meta property='og:image' content='{image}' />",
+            f"<meta property='og:image:secure_url' content='{image}' />",
+            f"<meta name='twitter:image' content='{image}' />",
+        ]
+        return head
 
     @staticmethod
     def resize(image, size, filepath):
@@ -415,6 +441,11 @@ class ComplementaryFiles(Values, Icons, Others):
         # Only one element
         element = self.favicon_svg()
         head.append(element)
+
+        # Preview .png
+        # Multiples elements
+        elements = self.preview_png()
+        head.extend(elements)
 
         # browserconfig.xml
         browserconfig_content, browserconfig_head = self.browserconfig()

@@ -32,7 +32,7 @@ class Presets(Helpers):
                     'favicon_png':      './test/tests/favicon.png',
                     'favicon_ico':      'favicon.ico',
                     'favicon_svg':      'favicon.svg',
-                    'presentation_png': 'presentation.png'
+                    'preview_png':      'preview.png'
                 }},
                 'default': {{
                     'general': {{

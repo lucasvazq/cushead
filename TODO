@@ -1,4 +1,3 @@
-TODO: copy favicon
 FIXME: sys.exit(..) -> sys.exit()
 FIXME: all textwrap
 TODO: colors in support
