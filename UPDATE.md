@@ -4,9 +4,11 @@
 
 ['./README.md](./README.md)
 
-['./logo.xcf'](./logo.xcf)
+['./doc/logo.xcf'](./doc/logo.xcf)
 
-['./logo.png'](./logo.png)
+['./doc/logo.png'](./doc/logo.png)
+
+['./src/presentation.png'](./doc/presentation.png)
 
 ['./src/info.py'](./src/info.py)
 

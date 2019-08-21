@@ -1,16 +1,14 @@
 language: python
 python:
-  - "3.5"
   - "3.6"
   - "3.7"
 notifications:
   email: false
 cache: pip
 install:
-  - pip install argparse
   - pip install codecov
-  - python setup.py install
+  - python3 setup.py install
   - python3 -m pip install coverage
 script:
-  - python3 -m coverage run ./test/test.py
+  - python3 -m coverage run ./cushead.py -file ./test/tests/Success/complete_config/test.txt
   - codecov

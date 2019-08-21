@@ -3,19 +3,18 @@
 
 import sys
 
-from .src.info import Info
-from .src.support import Support
-
 # Check python version
 try:
+    from src.info import Info
+    from src.support import Support
     INFO = Info().get_info()
     Support(INFO).run()
 except Exception as e:
-    print(e)
+    sys.stdout(e)
     sys.exit()
 
 from src.console import PRESENTATION_MESSAGE
-from .src.main import Main
+from src.main import Main
 
 
 def main():

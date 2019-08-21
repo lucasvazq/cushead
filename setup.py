@@ -1,30 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from src.info import Info
-from src.support import Support
-INFO = Info().get_info()
-Support(INFO).install()
+import sys
+
+# Check python version
+try:
+    from src.info import Info
+    from src.support import Support
+    INFO = Info().get_info()
+    Support(INFO).install()
+except Exception as e:
+    sys.stdout(e)
+    sys.exit()
 
 import setuptools
 
 
 with open('README.md', 'r') as fh:
     long_description = fh.read()
+python_requires = ">={}.{}, <{}.{}"
+python_requires = python_requires.format(*(INFO['python_min_version'] +
+                                           INFO['python_max_version']))
 setuptools.setup(
     name=INFO['package_name'],
     version=INFO['package_version'],
-    scripts=["{}.py".format(INFO['package_name'])],
-    entry_points = {
-        'console_scripts': ["{0}={0}:main".format(INFO['package_name'])]
+    scripts=[
+        f"{INFO['package_name']}.py",
+    ],
+    entry_points={
+        'console_scripts': [
+            "{0}={0}:main".format(INFO['package_name']),
+        ],
     },
     url=INFO['source'],
     project_urls={
         'Documentation': INFO['documentation'],
-        'Source': INFO['source']
+        'Source': INFO['source'],
     },
-    python_requires=">={}.{}, <{}.{}".format(*(INFO['python_min_version'] +
-        INFO['python_max_version'])),
+    python_requires=python_requires,
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=INFO['required_packages'],
@@ -34,7 +47,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     license=INFO['license'],
-    keywords='SEO, UX, front-end',
+    keywords=INFO['keywords'],
     platforms='any',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -47,6 +60,6 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3 :: Only'
+        'Programming Language :: Python :: 3 :: Only',
     ]
 )
