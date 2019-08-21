@@ -1,7 +1,9 @@
-TODO: recommended ico, svg and preview, and they are files
+TODO: copy favicon
 FIXME: sys.exit(..) -> sys.exit()
 FIXME: all textwrap
 TODO: colors in support
+TODO: fix ident in void lines
+
 
 TODO: test section:
     remove exceptions
@@ -21,5 +23,6 @@ TODO: docs section:
     Make wiki
     ./example/ with inputs and output separated folders, and test.txt in root
 
+TODO: better docs
 TODO: add apple-touch-start-image but need references
 

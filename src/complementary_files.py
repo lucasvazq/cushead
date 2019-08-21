@@ -3,21 +3,76 @@
 
 import json
 import os
-import textwrap
 from os import path
 
 from PIL import Image
 from resizeimage import resizeimage
 
-from .helpers import Helpers
+from .helpers import Errors, FilesHelpers, FoldersHelpers
 
 
 class Values:
 
     def __init__(self):
-        self.names = ['icon-sizes', 'windows', 'apple-touch-icon-default',
+        __doc__ = """
+        Variables:
+            names (list)
+            brand (obj)
+            
+        names = [identifier (str)]
+            
+        brand: {
+                identifier: {
+                    name_ref (str) Required
+                    name (str) Required
+                    square_sizes (int list)
+                    non_square_sizes (list of int list)
+                    file_type (str)
+                    title (str)
+                    metatag (bool)
+                    no_head (bool)
+                    verbosity (bool)
+                }
+            }
+        
+        identifier: only for identify objects inside brand object
+        metatag: used to define tagname, attribute and ref variables
+            True: 'meta', 'name', 'content'
+            False: 'link', 'rel', 'href'
+        no_head: used to determine if icon needs to be added to the head
+        verbosity: used to determine if icon filename need to specify its sizes
+            True: generate sizes variable with the next format:
+                'size="SIZExSIZE"'
+            False: generate blank variable named sizes
+
+        Result:
+        A: <link rel="shortcut icon" type="image/png" sizes="16x16"
+            href="/static/favicon-16x16.png" />
+        B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+            title="Microsoft" />
+            
+        Template:
+        <{} {}='{}' {}{}{}='{}{}' {}/>.format(
+            tagname,  # A: link
+            attribute,  # A: rel
+            name_ref,  # A: shortcut icon
+            file_type,  # A: type="image/png"
+            sizes,  # A: sizes="16x16"
+            ref,  # A: href
+            static_url,  # A: /static/
+            filename,  # A: favicon-16x16.png
+            title,  # B: title="Microsoft"
+        )
+        
+        """
+
+        # Order of how icons are generated and added to the head if it's
+        # required
+        # The order matters
+        self.names = ['icon-sizes', 'apple-touch-icon-default',
                       'apple-touch-icon-sizes', 'apple-touch-startup-image',
-                      'fluid-icon', 'browserconfig', 'manifest', 'opensearch']
+                      'windows', 'fluid-icon', 'browserconfig', 'manifest',
+                      'opensearch']
         self.brand = {
             'icon-sizes': {
                 'name_ref': 'icon',
@@ -25,61 +80,62 @@ class Values:
                 # https://www.favicon-generator.org/
                 # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
                 # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-                'sizes': [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114, 120,
-                          128, 144, 150, 152, 167, 180, 192, 195, 196, 228,
-                          310],
-                'verbosity': True,
+                'square_sizes': [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96,
+                                 114, 120, 128, 144, 150, 152, 167, 180, 192,
+                                 195, 196, 228, 310],
                 'type': 'image/png',
+                'verbosity': True,
             },
             'windows': {
                 'name_ref': 'msapplication-TileImage',
                 'name': 'ms-icon',
-                'sizes': [144],
+                'square_sizes': [144],
                 'metatag': True,
             },
             'apple-touch-icon-default': {
                 'name_ref': 'apple-touch-icon',
                 'name': 'apple-touch-icon',
-                'sizes': [57],
+                'square_sizes': [57],
             },
             'apple-touch-icon-sizes': {
                 'name_ref': 'apple-touch-icon',
                 'name': 'apple-touch-icon',
-                'sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024],
+                'square_sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
+                                 1024],
                 'verbosity': True,
             },
             'apple-touch-startup-image': {
                 'name_ref': 'apple-touch-startup-image',
                 'name': 'launch',
-                'sizes': [768],
+                'square_sizes': [768],
             },
             'fluid-icon': {
                 'name_ref': 'fluid-icon',
                 'name': 'fluidicon',
-                'sizes': [512],
+                'square_sizes': [512],
                 'title': 'Microsoft',
             },
             'browserconfig': {
                 'name_ref': 'browserconfig',
                 'name': 'ms-icon',
-                'sizes': [30, 44, 70, 150, 310],
-                'special_sizes': [[310, 150]],
-                'no-head': True,
+                'square_sizes': [30, 44, 70, 150, 310],
+                'non_square_sizes': [[310, 150]],
+                'no_head': True,
             },
             'manifest': {
                 'name_ref': 'manifest',
                 'name': 'android-icon',
-                'sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
+                'square_sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
+                'file_type': 'image/png',
+                'no_head': True,
                 'verbosity': True,
-                'type': 'image/png',
-                'no-head': True,
             },
             'opensearch': {
                 'name_ref': 'opensearch',
                 'name': 'opensearch',
-                'sizes': [16],
+                'sqyare_sizes': [16],
+                'no_head': True,
                 'verbosity': True,
-                'no-head': True,
             },
         }
         super().__init__()
@@ -88,14 +144,22 @@ class Values:
 class Icons:
     brand = None
     config = None
+    names = None
+    static_folderpath = None
 
     def __init__(self):
         super().__init__()
 
-    def general_icons(self, filename, name, size):
+    def _icons_head_creator(self, filename, name, size):
+
         if 'no-head' in self.brand[name]:
-            return None
-        verbosity = (
+            return False
+
+        file_type = (
+            f"type='{self.brand[name]['file_type']}' "
+            if 'file_type' in self.brand[name] else ''
+        )
+        sizes = (
             f"sizes='{size[0]}x{size[1]}' "
             if 'verbosity' in self.brand[name] else ''
         )
@@ -104,14 +168,11 @@ class Icons:
             if 'metatag' in self.brand[name] else
             ('link', 'rel', 'href')
         )
-        file_type = (
-            f"type='{self.brand[name]['type']}' "
-            if 'type' in self.brand[name] else ''
-        )
         title = (
             f"title='{self.brand[name]['title']}' "
             if 'title' in self.brand[name] else ''
         )
+
         # Keep using format function for better reference to each element of the
         # formated string
         # A: <link rel="shortcut icon" type="image/png" sizes="16x16"
@@ -125,7 +186,7 @@ class Icons:
             attribute,  # A: rel
             name_ref,  # A: shortcut icon
             file_type,  # A: type="image/png"
-            verbosity,  # A: sizes="16x16"
+            sizes,  # A: sizes="16x16"
             ref,  # A: href
             static_url,  # A: /static/
             filename,  # A: favicon-16x16.png
@@ -133,18 +194,60 @@ class Icons:
         )
         return element
 
+    def _icons_requirements(self, key):
+        if key not in self.config:
+            return False
+        Errors.void_key(self.config[key], key)
+        Errors.is_file(self.config[key], key)
+
+    def favicon_png(self):
+
+        if not self._icons_requirements('favicon_png'):
+            return []
+
+        head = []
+
+        # Open favicon_png file
+        with open(self.config['favicon_png'], 'r+b') as f, \
+                Image.open(f) as image:
+            for name in self.names:
+
+                # Resize 'favicon_png' to determinated sizes
+                square_sizes = self.brand[name].get('square_sizes', [])
+                square_sizes = [[size, size] for size in square_sizes]
+                non_square_sizes = self.brand[name].get('non_square_sizes', [])
+                sizes = square_sizes + non_square_sizes
+                for size in sizes:
+                    filename = (f"{self.brand[name]['name']}-"
+                                f"{size[0]}x{size[1]}.png")
+                    filepath = path.join(self.static_folderpath, filename)
+                    self.resize(image, size, filepath)
+
+                    # Some icons need to be added to head
+                    element = self._icons_head_creator(filename, name, size)
+                    if element:
+                        head.append(element)
+
+        return head
+
     def favicon_ico(self):
-        if 'favicon_ico' in self.config:
-            s = ("<link rel='shortcut icon' "
-                 f"href='/{self.config['favicon_ico']}' type='image/x-icon' />")
-            return s
+
+        if not self._icons_requirements('favicon_ico'):
+            return []
+
+        s = ("<link rel='shortcut icon' "
+             f"href='/{self.config['favicon_ico']}' type='image/x-icon' />")
+        return s
 
     def favicon_svg(self):
-        if 'favicon_svg' in self.config:
-            color = self.config.get('color', '')
-            s = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
-                 f"color='{color}' />")
-            return s
+
+        if not self._icons_requirements('favicon_svg'):
+            return []
+
+        color = self.config.get('color', '')
+        s = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
+             f"color='{color}' />")
+        return s
 
     @staticmethod
     def resize(image, size, filepath):
@@ -281,118 +384,66 @@ class Others:
         return s
 
 
-class ComplementaryFiles(Values, Icons, Others, Helpers):
+class ComplementaryFiles(Values, Icons, Others):
     config = None
+    static_folderpath = None
 
     def __init__(self):
         super().__init__()
 
     def generate(self):
-        head, new_files = ([], [])
+        head = []
 
         # Create folder for statics folder
         static_folderpath = path.join(self.config['files_output'],
                                       self.config['static_url'])
         static_folderpath = path.join(os.getcwd(), static_folderpath)
-        self.create_folder(static_folderpath)
+        FoldersHelpers.create_folder(static_folderpath)
+        self.static_folderpath = static_folderpath
 
-        if 'favicon_png' in self.config:
+        # Favicon .png version
+        # Multiples elements
+        elements = self.favicon_png()
+        head.extend(elements)
 
-            # Test: test_void_icon_png
-            # Action: get in
-            if not len(self.config['favicon_png']):
-                self.error_message("'favicon_png' key value can't be void.")
+        # Favicon .ico version
+        # Only one element
+        element = self.favicon_ico()
+        head.append(element)
 
-            # Test: test_icon_png_doesnt_exists
-            # Action: get in
-            if not path.isfile(self.config['favicon_png']):
-                filepath = path.join(os.getcwd(), self.config['favicon_png'])
-                e = (
-                    f"'favicon_png' key ({self.config['favicon_png']}) must be "
-                    "referred to a file path that exists."
-                    f"FILE PATH: {filepath}"
-                )
-                self.error_message(e)
+        # Favicon .svg version
+        # Only one element
+        element = self.favicon_svg()
+        head.append(element)
 
-            # General icons
-            with open(self.config['favicon_png'], 'r+b') as f, \
-                    Image.open(f) as image:
-                for name in self.names:
+        # browserconfig.xml
+        browserconfig_content, browserconfig_head = self.browserconfig()
+        head.append(browserconfig_head)
+        filepath = path.join(static_folderpath, 'browserconfig.xml')
+        FilesHelpers.write_file(filepath, browserconfig_content)
 
-                    # Resize 'favicon_png' to determinated sizes
+        # manifest.json
+        manifest_content, manifest_head = self.manifest()
+        head.append(manifest_head)
+        filepath = path.join(static_folderpath, 'manifest.json')
+        FilesHelpers.write_file(filepath, manifest_content)
 
-                    # Square icons, e.g., 16x16
-                    sizes = self.brand[name].get('sizes', [])
-                    for size in sizes:
-                        filename = (f"{self.brand[name]['name']}-"
-                                    f"{size}x{size}.png")
-                        filepath = path.join(static_folderpath, filename)
-                        self.resize(image, [size, size], filepath)
-                        new_files.append(filepath)
-                        # Some square icons are added to head
-                        # The function 'general_icons' can return a String for
-                        # this cases
-                        element = self.general_icons(filename, name,
-                                                     [size, size])
-                        if element:
-                            head.append(element)
+        # opensearch.xml
+        opensearch_content, opensearch_head = self.opensearch()
+        head.append(opensearch_head)
+        filepath = path.join(static_folderpath, 'opensearch.xml')
+        FilesHelpers.write_file(filepath, opensearch_content)
 
-                    # Non square icons, e.g., 310x150
-                    sizes = self.brand[name].get('special_sizes', [])
-                    for size in sizes:
-                        filename = (f"{self.brand[name]['name']}-"
-                                    f"{size[0]}x{size[1]}.png")
-                        filepath = path.join(static_folderpath, filename)
-                        self.resize(image, size, filepath)
-                        new_files.append(filepath)
-                        # Non square icons aren't added to head
-                        # The function 'general_icons' returns always None for
-                        # this cases
-                        self.general_icons(filename, name, size)
+        if 'clear_url' in self.config:
 
-            # Favicon .ico version
-            element = self.favicon_ico()
-            if element:
-                head.append(element)
+            # robots.txt
+            robots_content = self.robots()
+            filepath = path.join(self.config['files_output'], 'robots.txt')
+            FilesHelpers.write_file(filepath, robots_content)
 
-            # Favicon .svg version
-            element = self.favicon_svg()
-            if element:
-                head.append(element)
+            # sitemap.xml
+            sitemap_content = self.sitemap()
+            filepath = path.join(self.config['files_output'], 'sitemap.xml')
+            FilesHelpers.write_file(filepath, sitemap_content)
 
-            # browserconfig.xml
-            browserconfig_content, browserconfig_head = self.browserconfig()
-            head.append(browserconfig_head)
-            filepath = path.join(static_folderpath, 'browserconfig.xml')
-            self.write_file(filepath, browserconfig_content)
-            new_files.append(filepath)
-
-            # manifest.json
-            manifest_content, manifest_head = self.manifest()
-            head.append(manifest_head)
-            filepath = path.join(static_folderpath, 'manifest.json')
-            self.write_file(filepath, manifest_content)
-            new_files.append(filepath)
-
-            # opensearch.xml
-            opensearch_content, opensearch_head = self.opensearch()
-            head.append(opensearch_head)
-            filepath = path.join(static_folderpath, 'opensearch.xml')
-            self.write_file(filepath, opensearch_content)
-            new_files.append(filepath)
-
-            if 'clear_url' in self.config:
-
-                # robots.txt
-                robots_content = self.robots()
-                filepath = path.join(self.config['files_output'], 'robots.txt')
-                self.write_file(filepath, robots_content)
-                new_files.append(filepath)
-
-                # sitemap.xml
-                sitemap_content = self.sitemap()
-                filepath = path.join(self.config['files_output'], 'sitemap.xml')
-                self.write_file(filepath, sitemap_content)
-                new_files.append(filepath)
-
-        return head, new_files
+        return head

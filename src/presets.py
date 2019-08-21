@@ -55,7 +55,7 @@ class Presets(Helpers):
                         'background_color': '#FFFFFF',
                     }},
                     'social_media': {{
-                        'facebook_app_id':  '12345',
+                        'facebook_app_id':  '123456',
                         'twitter_user_@':   '@Microsoft',
                         'twitter_user_id':  '123456'
                     }}
