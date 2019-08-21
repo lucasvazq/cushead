@@ -42,7 +42,7 @@ class Presets:
                                                'initial-scale=1')}',
                         'language':         'en',
                         'territory':        'US',
-                        'clear_url':        'microsoft.com',
+                        'clean_url':        'microsoft.com',
                         'protocol':         'https://',
                         'robots':           'index, follow'
                     }},

@@ -29,8 +29,8 @@ class Head(ComplementaryFiles):
             head.append("<meta http-equiv='Content-Language' "
                         f"content='{self.config['language']}' />")
         # theme-color and msapplication-TileColor
-        if 'color' in self.config:
-            color = self.config['color']
+        if 'background_color' in self.config:
+            color = self.config['background_color']
             color_components = [
                 f"<meta name='theme-color' content='{color}' />",
                 f"<meta name='msapplication-TileColor' content='{color}' />"
@@ -80,9 +80,9 @@ class Head(ComplementaryFiles):
         # OPENGRAPH AND FACEBOOK
 
         # fb:app_id
-        if 'fb:app_id' in self.config:
+        if 'facebook_app_id' in self.config:
             head.append("<meta porperty='fb:app_id' "
-                        f"content='{self.config['fb:app_id']}' />")
+                        f"content='{self.config['facebook_app_id']}' />")
         # og:locale
         if 'language' in self.config:
             territory = (
@@ -95,10 +95,10 @@ class Head(ComplementaryFiles):
         # Only allow website type for simplicity
         head.append("<meta property='og:type' content='website' />")
         # og:url, Likes and Shared are stored under this url
-        if 'url' in self.config:
+        if 'clean_url' in self.config:
             head.append(f"<meta property='og:url' "
                         f"content='{self.config.get('protocol', '')}"
-                        f"{self.config['url']}' />")
+                        f"{self.config['clean_url']}' />")
         # og:site_name
         if 'title' in self.config:
             head.append("<meta property='og:site_name' "
@@ -135,9 +135,9 @@ class Head(ComplementaryFiles):
         # Only allow summary type for simplicity
         head.append("<meta name='twitter:card' content='summary' />")
         # twitter:site
-        if 'tw:site' in self.config:
+        if 'twitter_user_@' in self.config:
             head.append("<meta name='twitter:site' "
-                        f"content='{self.config['tw:site']}' />")
+                        f"content='{self.config['twitter_user_@']}' />")
         # twitter:title
         if 'title' in self.config:
             head.append("<meta name='twitter:title' "
@@ -147,9 +147,9 @@ class Head(ComplementaryFiles):
             head.append("<meta name='twitter:description' "
                         f"content='{self.config['description']}' />")
         # tw:creator
-        if 'tw:creator:id' in self.config:
+        if 'twitter_user_id' in self.config:
             head.append("<meta property='twitter:creator:id' "
-                        f"content='{self.config['tw:creator:id']}' />")
+                        f"content='{self.config['twitter_user_id']}' />")
 
         return head
 

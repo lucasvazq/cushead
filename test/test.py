@@ -7,7 +7,10 @@ import os
 import sys
 import unittest
 
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+try:
+    sys.path.insert(1, os.path.join(sys.path[0], '..'))
+except Exception as e:
+    print(e)
 
 from src.info import Info
 from src.main import Main
@@ -132,7 +135,13 @@ class TestSuccess(unittest.TestCase):
     # Complete config
     @staticmethod
     def test_complete_config():
-        Main(INFO, ['-file', './test/tests/Success/complete_config/test.txt']).run()
+        Main(INFO, ['-file', './test/tests/Success/complete_config/test.txt']) \
+            .run()
+
+    # preset
+    # void
+    # miss preset
+    # two arguments
 
     # Void config
     @staticmethod

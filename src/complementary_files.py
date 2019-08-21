@@ -152,7 +152,7 @@ class Icons:
 
     def _icons_head_creator(self, filename, name, size):
 
-        if 'no-head' in self.brand[name]:
+        if 'no_head' in self.brand[name]:
             return False
 
         file_type = (
@@ -254,7 +254,7 @@ class Icons:
         destination = path.join(self.static_folderpath, "favicon.svg")
         FilesHelper.copy_file(source, destination)
 
-        color = self.config.get('color', '')
+        color = self.config.get('background_color', '')
         s = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
              f"color='{color}' />")
         return s
@@ -310,7 +310,7 @@ class Others:
             )
             for size in self.brand['browserconfig']['non_square_sizes']
         ])
-        color = self.config.get('color', '')
+        color = self.config.get('background_color', '')
         s += (f"<TileColor>{color}</TileColor></tile></msapplication>"
               "</browserconfig>")
         s = s.replace('\'', '"')
@@ -343,9 +343,9 @@ class Others:
             dictionary['start_url'] = self.config['start_url']
         if 'orientation' in self.config:
             dictionary['orientation'] = self.config['orientation']
-        if 'color' in self.config:
-            dictionary['background_color'] = self.config['color']
-            dictionary['theme_color'] = self.config['color']
+        if 'background_color' in self.config:
+            dictionary['background_color'] = self.config['background_color']
+            dictionary['theme_color'] = self.config['background_color']
         if 'language' in self.config:
             dictionary['default_locale'] = self.config['language']
         if 'scope' in self.config:
@@ -390,7 +390,7 @@ class Others:
         protocol = self.config.get('protocol', '')
         sitemap_content = (
             "\n"
-            f"Sitemap: {protocol}{self.config['clear_url']}/sitemap.xml"
+            f"Sitemap: {protocol}{self.config['clean_url']}/sitemap.xml"
             if 'sitemap' in self.config else ''
         )
         s = ("User-agent: *\n"
@@ -405,7 +405,7 @@ class Others:
              "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
              "xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 "
              "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
-             f"<url><loc>{protocol}{self.config['clear_url']}/</loc></url>"
+             f"<url><loc>{protocol}{self.config['clean_url']}/</loc></url>"
              "</urlset>")
         s = s.replace('\'', '"')
         return s
@@ -467,7 +467,7 @@ class ComplementaryFiles(Values, Icons, Others):
         filepath = path.join(static_folderpath, 'opensearch.xml')
         FilesHelper.write_file(filepath, opensearch_content)
 
-        if 'clear_url' in self.config:
+        if 'clean_url' in self.config:
 
             # robots.txt
             robots_content = self.robots()

@@ -6,6 +6,10 @@ import sys
 from .console import DEFAULT_COLOR, ERROR_COLOR
 
 
+class Unsupported(Exception):
+    pass
+
+
 class Messages:
     support_string_format = None
 
@@ -73,13 +77,13 @@ class Support(Messages):
             self.current_python > self.max_python
         ):
             title = self.unsupported_title()
-            sys.stdout.write(
+            exception = (
                 ERROR_COLOR
                 + title
                 + message
                 + DEFAULT_COLOR
             )
-            sys.exit()
+            raise Unsupported(exception)
 
     def install(self):
         message = self.unsupported_installation()

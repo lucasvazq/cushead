@@ -38,7 +38,7 @@ class Config:
         general = default.get('general', {})
         basic = default.get('basic', {})
         social_media = default.get('social_media', {})
-        progressive_web_app = jsonstring.get('progressive_web_app', {})
+        progressive_web_app = jsonstring.get('progressive_web_apps', {})
         if 'required' not in jsonstring:
             e = "Miss 'required' object and it's required."
             Errors.error_message(e)
