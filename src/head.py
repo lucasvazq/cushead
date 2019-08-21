@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""HTML Head elements generator"""
+
 from .complementary_files import ComplementaryFiles
 
 
 class Head(ComplementaryFiles):
-    config = None
 
-    def __init__(self):
-        super().__init__()
+    """Main class"""
+
+    config = {}
 
     def add_general_config(self):
+
+        """General config section"""
+
         # content-type
         head = []
         if 'content-type' in self.config:
@@ -43,6 +48,9 @@ class Head(ComplementaryFiles):
         return head
 
     def add_basic_config(self):
+
+        """Basic config section"""
+
         head = []
         # title
         if 'title' in self.config:
@@ -75,6 +83,9 @@ class Head(ComplementaryFiles):
         return head
 
     def add_social_media(self):
+
+        """Social media section"""
+
         head = []
 
         # OPENGRAPH AND FACEBOOK
@@ -118,8 +129,8 @@ class Head(ComplementaryFiles):
         if 'title' in self.config or 'description' in self.config:
             title = self.config.get('title', '')
             description = self.config.get('description', '')
-            connector = (' - ' if 'title' in self.config and
-                                  'description' in self.config else '')
+            connector = (' - ' if ('title' in self.config and
+                                   'description' in self.config) else '')
             text = title + connector + description
             head.extend([
                 f"<meta property='og:image:alt' content='{text}' />",
@@ -154,6 +165,9 @@ class Head(ComplementaryFiles):
         return head
 
     def add_author(self):
+
+        """Author section"""
+
         head = []
         # author
         if 'author' in self.config:
@@ -162,6 +176,8 @@ class Head(ComplementaryFiles):
         return head
 
     def head_general(self):
+
+        """Main function of this class"""
 
         # Generate tags for head
         # Order matters

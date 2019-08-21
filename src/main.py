@@ -1,28 +1,36 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Arguments handler"""
+
 import os
 from os import path
 
-from .arguments import Arguments
-from .config import Config
+from .arguments import parse_args
+from .config import get_values
 from .head import Head
 from .helpers import FilesHelper, FoldersHelper
-from .presets import Presets
+from .presets import make_preset
 
 
-class Main(Arguments, Presets, Config, Head):
-    config = None
+class Main(Head):
+
+    """Main class of this module"""
+
+    config = {}
 
     def __init__(self, info, args):
         self.info = info
-        super().__init__(args)
+        self.args = parse_args(args, info)
+        super().__init__()
 
     def run(self):
 
+        """Main function of this class"""
+
         # -presets
         if self.args.preset:
-            self.make_preset(self.args.preset)
+            make_preset(self.args.preset)
             filepath = path.join(os.getcwd(), self.args.preset)
             print(
                 f"PATH: {self.args.preset}\n"
@@ -31,7 +39,7 @@ class Main(Arguments, Presets, Config, Head):
 
         # -file
         else:
-            self.get_values()
+            get_values(self.args)
 
             FoldersHelper.create_folder(self.config['files_output'])
 
@@ -42,7 +50,7 @@ class Main(Arguments, Presets, Config, Head):
 
             # Concatenate all head elements in a string
             head = [element for array in head for element in array]
-            space = "    "  # four spaces for identation
+            space = "    "  # four spaces for indentation
             head = ''.join(f"{space * 2}{element}\n" for element in head)
             head = head.replace('\'', '"')
 
@@ -55,7 +63,7 @@ class Main(Arguments, Presets, Config, Head):
                 "<!DOCTYPE html>\n"
                 f"<html{html_lang}>\n"
                 f"{space}<head>\n"
-                f"{head}"  # already have identation
+                f"{head}"  # already have indentation
                 f"{space}</head>\n"
                 f"{space}<body>\n"
                 f"{space}</body>\n"

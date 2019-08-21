@@ -1,19 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Handle supported situations"""
+
 import sys
 
 from .console import DEFAULT_COLOR, ERROR_COLOR
 
 
 class Unsupported(Exception):
-    pass
+
+    """Unsupported Exception"""
 
 
 class Messages:
-    support_string_format = None
+
+    """Generate unsupported messages"""
+
+    support_string_format = {}
 
     def unsupported_title(self):
+
+        """Generate unsupported title presentation"""
+
         title = "Unsupported Python version"
         title_length = len(title)
         title_frame = "=" * title_length
@@ -29,7 +38,10 @@ class Messages:
         return title
 
     def unsupported_installation(self):
-        s = (
+
+        """Generate unsupported message for the installation attempt"""
+
+        string = (
             "but you're trying to install it with Python "
             "{current_major}.{current_minor}\n"
             "Make sure you have pip and setuptools updated, then try again.\n"
@@ -41,21 +53,26 @@ class Messages:
             "version \n"
             "of Python.\n"
         )
-        s = s.format(**self.support_string_format)
-        return s
+        string = string.format(**self.support_string_format)
+        return string
 
     def unsupported_run(self):
-        s = (
+
+        """Generate unsupported message for the run script attempt"""
+
+        string = (
             "but you're trying to run it with Python "
             "{current_major}.{current_minor}\n"
             "Try running:\n"
             "   $ python3 ./{name}.py\n"
         )
-        s = s.format(**self.support_string_format)
-        return s
+        string = string.format(**self.support_string_format)
+        return string
 
 
 class Support(Messages):
+
+    """Main class of this module"""
 
     def __init__(self, info):
         self.current_python = sys.version_info[:2]
@@ -72,10 +89,11 @@ class Support(Messages):
         }
 
     def check(self, message):
-        if (
-            self.current_python < self.min_python or
-            self.current_python > self.max_python
-        ):
+
+        """Check if current version is supported"""
+
+        if self.current_python < self.min_python or \
+                self.current_python > self.max_python:
             title = self.unsupported_title()
             exception = (
                 ERROR_COLOR
@@ -86,9 +104,15 @@ class Support(Messages):
             raise Unsupported(exception)
 
     def install(self):
+
+        """Check installation support"""
+
         message = self.unsupported_installation()
         self.check(message)
 
     def run(self):
+
+        """Check script run support"""
+
         message = self.unsupported_run()
         self.check(message)

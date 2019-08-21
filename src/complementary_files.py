@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""This module generate new files"""
+
 import json
 import os
 from os import path
@@ -11,144 +13,141 @@ from resizeimage import resizeimage
 from .helpers import Errors, FilesHelper, FoldersHelper
 
 
-class Values:
+def values():
+    """
+    Function used for return some values
 
-    def __init__(self):
-        __doc__ = """
-        Variables:
-            names (list)
-            brand (obj)
-            
-        names = [identifier (str)]
-            
-        brand: {
-                identifier: {
-                    name_ref (str) Required
-                    name (str) Required
-                    square_sizes (int list)
-                    non_square_sizes (list of int list)
-                    file_type (str)
-                    title (str)
-                    metatag (bool)
-                    no_head (bool)
-                    verbosity (bool)
-                }
+    Variables:
+        names (list)
+        brand (obj)
+
+    names = [identifier (str)]
+
+    brand: {
+            identifier: {
+                name_ref (str) Required
+                name (str) Required
+                square_sizes (int list)
+                non_square_sizes (list of int list)
+                file_type (str)
+                title (str)
+                metatag (bool)
+                no_head (bool)
+                verbosity (bool)
             }
-        
-        identifier: only for identify objects inside brand object
-        metatag: used to define tagname, attribute and ref variables
-            True: 'meta', 'name', 'content'
-            False: 'link', 'rel', 'href'
-        no_head: used to determine if icon needs to be added to the head
-        verbosity: used to determine if icon filename need to specify its sizes
-            True: generate sizes variable with the next format:
-                'size="SIZExSIZE"'
-            False: generate blank variable named sizes
-
-        Result:
-        A: <link rel="shortcut icon" type="image/png" sizes="16x16"
-            href="/static/favicon-16x16.png" />
-        B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
-            title="Microsoft" />
-            
-        Template:
-        <{} {}='{}' {}{}{}='{}{}' {}/>.format(
-            tagname,  # A: link
-            attribute,  # A: rel
-            name_ref,  # A: shortcut icon
-            file_type,  # A: type="image/png"
-            sizes,  # A: sizes="16x16"
-            ref,  # A: href
-            static_url,  # A: /static/
-            filename,  # A: favicon-16x16.png
-            title,  # B: title="Microsoft"
-        )
-        
-        """
-
-        # Order of how icons are generated and added to the head if it's
-        # required
-        # The order matters
-        self.names = ['icon-sizes', 'apple-touch-icon-default',
-                      'apple-touch-icon-sizes', 'apple-touch-startup-image',
-                      'windows', 'fluid-icon', 'browserconfig', 'manifest',
-                      'opensearch']
-        self.brand = {
-            'icon-sizes': {
-                'name_ref': 'icon',
-                'name': 'favicon',
-                # https://www.favicon-generator.org/
-                # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
-                # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-                'square_sizes': [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96,
-                                 114, 120, 128, 144, 150, 152, 167, 180, 192,
-                                 195, 196, 228, 310],
-                'type': 'image/png',
-                'verbosity': True,
-            },
-            'windows': {
-                'name_ref': 'msapplication-TileImage',
-                'name': 'ms-icon',
-                'square_sizes': [144],
-                'metatag': True,
-            },
-            'apple-touch-icon-default': {
-                'name_ref': 'apple-touch-icon',
-                'name': 'apple-touch-icon',
-                'square_sizes': [57],
-            },
-            'apple-touch-icon-sizes': {
-                'name_ref': 'apple-touch-icon',
-                'name': 'apple-touch-icon',
-                'square_sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
-                                 1024],
-                'verbosity': True,
-            },
-            'apple-touch-startup-image': {
-                'name_ref': 'apple-touch-startup-image',
-                'name': 'launch',
-                'square_sizes': [768],
-            },
-            'fluid-icon': {
-                'name_ref': 'fluid-icon',
-                'name': 'fluidicon',
-                'square_sizes': [512],
-                'title': 'Microsoft',
-            },
-            'browserconfig': {
-                'name_ref': 'browserconfig',
-                'name': 'ms-icon',
-                'square_sizes': [30, 44, 70, 150, 310],
-                'non_square_sizes': [[310, 150]],
-                'no_head': True,
-            },
-            'manifest': {
-                'name_ref': 'manifest',
-                'name': 'android-icon',
-                'square_sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
-                'file_type': 'image/png',
-                'no_head': True,
-                'verbosity': True,
-            },
-            'opensearch': {
-                'name_ref': 'opensearch',
-                'name': 'opensearch',
-                'sqyare_sizes': [16],
-                'no_head': True,
-                'verbosity': True,
-            },
         }
-        super().__init__()
+
+    identifier: only for identify objects inside brand object
+    metatag: used to define tagname, attribute and ref variables
+        True: 'meta', 'name', 'content'
+        False: 'link', 'rel', 'href'
+    no_head: used to determine if icon needs to be added to the head
+    verbosity: used to determine if icon filename need to specify its sizes
+        True: generate sizes variable with the next format:
+            'size="SIZExSIZE"'
+        False: generate blank variable named sizes
+
+    Result:
+    A: <link rel="shortcut icon" type="image/png" sizes="16x16"
+        href="/static/favicon-16x16.png" />
+    B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+        title="Microsoft" />
+
+    Template:
+    <{} {}='{}' {}{}{}='{}{}' {}/>.format(
+        tagname,  # A: link
+        attribute,  # A: rel
+        name_ref,  # A: shortcut icon
+        file_type,  # A: type="image/png"
+        sizes,  # A: sizes="16x16"
+        ref,  # A: href
+        static_url,  # A: /static/
+        filename,  # A: favicon-16x16.png
+        title,  # B: title="Microsoft"
+    )
+    """
+
+    # Order of how icons are generated and added to the head if it's
+    # required
+    # The order matters
+    names = ['icon-sizes', 'apple-touch-icon-default',
+             'apple-touch-icon-sizes', 'apple-touch-startup-image', 'windows',
+             'fluid-icon', 'browserconfig', 'manifest', 'opensearch']
+    brand = {
+        'icon-sizes': {
+            'name_ref': 'icon',
+            'name': 'favicon',
+            # https://www.favicon-generator.org/
+            # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
+            # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
+            'square_sizes': [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96,
+                             114, 120, 128, 144, 150, 152, 167, 180, 192,
+                             195, 196, 228, 310],
+            'type': 'image/png',
+            'verbosity': True,
+        },
+        'windows': {
+            'name_ref': 'msapplication-TileImage',
+            'name': 'ms-icon',
+            'square_sizes': [144],
+            'metatag': True,
+        },
+        'apple-touch-icon-default': {
+            'name_ref': 'apple-touch-icon',
+            'name': 'apple-touch-icon',
+            'square_sizes': [57],
+        },
+        'apple-touch-icon-sizes': {
+            'name_ref': 'apple-touch-icon',
+            'name': 'apple-touch-icon',
+            'square_sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
+                             1024],
+            'verbosity': True,
+        },
+        'apple-touch-startup-image': {
+            'name_ref': 'apple-touch-startup-image',
+            'name': 'launch',
+            'square_sizes': [768],
+        },
+        'fluid-icon': {
+            'name_ref': 'fluid-icon',
+            'name': 'fluidicon',
+            'square_sizes': [512],
+            'title': 'Microsoft',
+        },
+        'browserconfig': {
+            'name_ref': 'browserconfig',
+            'name': 'ms-icon',
+            'square_sizes': [30, 44, 70, 150, 310],
+            'non_square_sizes': [[310, 150]],
+            'no_head': True,
+        },
+        'manifest': {
+            'name_ref': 'manifest',
+            'name': 'android-icon',
+            'square_sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
+            'file_type': 'image/png',
+            'no_head': True,
+            'verbosity': True,
+        },
+        'opensearch': {
+            'name_ref': 'opensearch',
+            'name': 'opensearch',
+            'sqyare_sizes': [16],
+            'no_head': True,
+            'verbosity': True,
+        },
+    }
+    return [names, brand]
 
 
 class Icons:
-    brand = None
-    config = None
-    names = None
-    static_folderpath = None
+    """Class related to icons generation"""
 
-    def __init__(self):
-        super().__init__()
+    brand = {}
+    config = {}
+    names = []
+    static_folderpath = None
 
     def _icons_head_creator(self, filename, name, size):
 
@@ -173,8 +172,8 @@ class Icons:
             if 'title' in self.brand[name] else ''
         )
 
-        # Keep using format function for better reference to each element of the
-        # formated string
+        # Keep using format function for better reference to each element of
+        # the formated string
         # A: <link rel="shortcut icon" type="image/png" sizes="16x16"
         #    href="/static/favicon-16x16.png" />
         # B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
@@ -203,14 +202,16 @@ class Icons:
 
     def favicon_png(self):
 
+        """Generate .png icons"""
+
         if not self._requirements('favicon_png'):
             return []
 
         head = []
 
         # Open favicon_png file
-        with open(self.config['favicon_png'], 'r+b') as f, \
-                Image.open(f) as image:
+        with open(self.config['favicon_png'], 'r+b') as file, \
+                Image.open(file) as image:
             for name in self.names:
 
                 # Resize 'favicon_png' to determinated sizes
@@ -233,6 +234,8 @@ class Icons:
 
     def favicon_ico(self):
 
+        """favicon.ico"""
+
         if not self._requirements('favicon_ico'):
             return []
 
@@ -241,11 +244,13 @@ class Icons:
         destination = path.join(self.config['files_output'], "favicon.ico")
         FilesHelper.copy_file(source, destination)
 
-        s = ("<link rel='shortcut icon' "
-             f"href='/favicon.ico' type='image/x-icon' />")
-        return s
+        string = ("<link rel='shortcut icon' "
+                  f"href='/favicon.ico' type='image/x-icon' />")
+        return string
 
     def favicon_svg(self):
+
+        """favicon.svg"""
 
         if not self._requirements('favicon_svg'):
             return []
@@ -255,11 +260,13 @@ class Icons:
         FilesHelper.copy_file(source, destination)
 
         color = self.config.get('background_color', '')
-        s = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
-             f"color='{color}' />")
-        return s
+        string = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
+                  f"color='{color}' />")
+        return string
 
     def preview_png(self):
+
+        """preview.png"""
 
         if not self._requirements('preview_png'):
             return []
@@ -279,21 +286,26 @@ class Icons:
 
     @staticmethod
     def resize(image, size, filepath):
+
+        """Resize a image"""
+
         cover = resizeimage.resize_contain(image, [size[0], size[1]])
         cover.save(filepath, image.format)
 
 
 class Others:
-    brand = None
-    config = None
+    """Class related to the generation of files that are not icons"""
 
-    def __init__(self):
-        super().__init__()
+    brand = {}
+    config = {}
 
     def browserconfig(self):
-        s = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>"
-             "<msapplication><tile>")
-        s += ''.join([
+
+        """browserconfig.xml"""
+
+        string = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>"
+                  "<msapplication><tile>")
+        string += ''.join([
             "<square{0}x{0}logo src='{1}{2}-{0}x{0}.png' />".format(
                 size,
                 self.config['static_url'],
@@ -301,7 +313,7 @@ class Others:
             )
             for size in self.brand['browserconfig']['square_sizes']
         ])
-        s += ''.join([
+        string += ''.join([
             "<wide{0}x{1}logo src='{2}{3}-{0}x{1}.png' />".format(
                 size[0],
                 size[1],
@@ -311,14 +323,17 @@ class Others:
             for size in self.brand['browserconfig']['non_square_sizes']
         ])
         color = self.config.get('background_color', '')
-        s += (f"<TileColor>{color}</TileColor></tile></msapplication>"
-              "</browserconfig>")
-        s = s.replace('\'', '"')
+        string += (f"<TileColor>{color}</TileColor></tile></msapplication>"
+                   "</browserconfig>")
+        string = string.replace('\'', '"')
         head = ("<meta name='msapplication-config' "
                 f"content='{self.config['static_url']}browserconfig.xml' />")
-        return [s, head]
+        return [string, head]
 
     def manifest(self):
+
+        """manifest.json"""
+
         urlpath = self.config['static_url']
         icons = [
             {
@@ -363,62 +378,78 @@ class Others:
         return [dictionary, head]
 
     def opensearch(self):
+
+        """opensearch.xml"""
+
         title = self.config.get('title', '')
         url = self.config.get('url', '')
         static_url = self.config['static_url']
-        s = ("<?xml version='1.0' encoding='utf-8'?>"
-             "<OpenSearchDescription xmlns:moz='"
-             "http://www.mozilla.org/2006/browser/search/' "
-             "xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
-             "</OpenSearchDescription>"
-             f"<ShortName>{title}</ShortName>"
-             f"<Description>Search {title}</Description>"
-             "<InputEncoding>UTF-8</InputEncoding>"
-             "<Url method='get' type='text/html' "
-             "template='http://www.google.com/search?q="
-             f"{{searchTerms}}+site%3A{url}' />"
-             "<Image height='16' width='16' type='image/png'>"
-             f"{static_url}opensearch-16x16.png"
-             "</Image>")
-        s = s.replace('\'', '"')
+        string = ("<?xml version='1.0' encoding='utf-8'?>"
+                  "<OpenSearchDescription xmlns:moz='"
+                  "http://www.mozilla.org/2006/browser/search/' "
+                  "xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
+                  "</OpenSearchDescription>"
+                  f"<ShortName>{title}</ShortName>"
+                  f"<Description>Search {title}</Description>"
+                  "<InputEncoding>UTF-8</InputEncoding>"
+                  "<Url method='get' type='text/html' "
+                  "template='http://www.google.com/search?q="
+                  f"{{searchTerms}}+site%3A{url}' />"
+                  "<Image height='16' width='16' type='image/png'>"
+                  f"{static_url}opensearch-16x16.png"
+                  "</Image>")
+        string = string.replace('\'', '"')
         head = ("<link rel='search' "
-                f"type='application/opensearchdescription+xml' title='{title}' "
-                f"href='{static_url}opensearch.xml' />")
-        return [s, head]
+                f"type='application/opensearchdescription+xml' "
+                f"title='{title}' href='{static_url}opensearch.xml' />")
+        return [string, head]
 
     def robots(self):
+
+        """robots.txt"""
+
         protocol = self.config.get('protocol', '')
         sitemap_content = (
             "\n"
             f"Sitemap: {protocol}{self.config['clean_url']}/sitemap.xml"
             if 'sitemap' in self.config else ''
         )
-        s = ("User-agent: *\n"
-             "Allow: /\n"
-             f"{sitemap_content}")
-        return s
+        string = ("User-agent: *\n"
+                  "Allow: /\n"
+                  f"{sitemap_content}")
+        return string
 
     def sitemap(self):
+
+        """sitemap.xml"""
+
         protocol = self.config.get('protocol', '')
-        s = ("<?xml version='1.0' encoding='uft-8'?>"
-             "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9' "
-             "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-             "xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 "
-             "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
-             f"<url><loc>{protocol}{self.config['clean_url']}/</loc></url>"
-             "</urlset>")
-        s = s.replace('\'', '"')
-        return s
+        string = ("<?xml version='1.0' encoding='uft-8'?>"
+                  "<urlset xmlns="
+                  "'http://www.sitemaps.org/schemas/sitemap/0.9' "
+                  "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                  "xsi:schemaLocation="
+                  "'http://www.sitemaps.org/schemas/sitemap/0.9 "
+                  "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
+                  f"<url><loc>{protocol}{self.config['clean_url']}/</loc>"
+                  "</url></urlset>")
+        string = string.replace('\'', '"')
+        return string
 
 
-class ComplementaryFiles(Values, Icons, Others):
-    config = None
+class ComplementaryFiles(Icons, Others):
+    """Main class of this module"""
+
+    config = {}
     static_folderpath = None
 
     def __init__(self):
+        self.names, self.brand = values()
         super().__init__()
 
     def generate(self):
+        """Main function of this class"""
+
         head = []
 
         # Create folder for statics folder
@@ -468,7 +499,6 @@ class ComplementaryFiles(Values, Icons, Others):
         FilesHelper.write_file(filepath, opensearch_content)
 
         if 'clean_url' in self.config:
-
             # robots.txt
             robots_content = self.robots()
             filepath = path.join(self.config['files_output'], 'robots.txt')

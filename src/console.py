@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Console output related module"""
+
 import os
 import textwrap
 
-from .info import Info
-INFO = Info().get_info()
+from .info import get_info
+
+
+INFO = get_info()
 
 
 (DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR) = (
