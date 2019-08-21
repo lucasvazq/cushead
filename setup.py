@@ -1,26 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Setup script"""
+
 import sys
+import setuptools
+
+from src.info import Info
+from src.support import Support, Unsupported
 
 # Check python version
 try:
-    from src.info import Info
-    from src.support import Support
     INFO = Info().get_info()
     Support(INFO).install()
-except Exception as e:
-    sys.stdout(e)
+except Unsupported as exception:
+    sys.stdout.write(exception)
     sys.exit()
-
-import setuptools
 
 
 with open('README.md', 'r') as fh:
-    long_description = fh.read()
-python_requires = ">={}.{}, <{}.{}"
-python_requires = python_requires.format(*(INFO['python_min_version'] +
-                                           INFO['python_max_version']))
+    LONG_DESCRIPTION = fh.read()
+PYTHON_REQUIRES = ">={}.{}, <{}.{}"
+PYTHON_REQUIRES = PYTHON_REQUIRES.format(*(INFO['python_min_version']
+                                           + INFO['python_max_version']))
 setuptools.setup(
     name=INFO['package_name'],
     version=INFO['package_version'],
@@ -37,14 +39,14 @@ setuptools.setup(
         'Documentation': INFO['documentation'],
         'Source': INFO['source'],
     },
-    python_requires=python_requires,
+    python_requires=PYTHON_REQUIRES,
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=INFO['required_packages'],
     author=INFO['author'],
     author_email=INFO['email'],
     description=INFO['description'],
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
     license=INFO['license'],
     keywords=INFO['keywords'],

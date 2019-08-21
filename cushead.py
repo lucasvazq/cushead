@@ -5,12 +5,11 @@
 
 import sys
 
-from src.support import Unsupported
+from src.info import Info
+from src.support import Support, Unsupported
 
 # Check python version
 try:
-    from src.info import Info
-    from src.support import Support
     INFO = Info().get_info()
     Support(INFO).run()
 except Unsupported as exception:
