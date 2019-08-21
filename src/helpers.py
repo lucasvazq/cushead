@@ -6,20 +6,14 @@ import sys
 from os import path
 from shutil import copyfile
 
+from .console import DEFAULT_COLOR, ERROR_COLOR
+
 
 class Errors:
 
     @staticmethod
     def error_message(message):
-        (COLOR, RESET) = (
-            ('', '')
-            if os.name == 'nt' else
-            (
-                '\033[1;31m',  # Red
-                '\033[0;0m'  # Default
-            )
-        )
-        print(f"{COLOR}{message}{RESET}")
+        print(f"{ERROR_COLOR}{message}{DEFAULT_COLOR}")
         sys.exit()
 
     @classmethod
