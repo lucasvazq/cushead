@@ -5,7 +5,7 @@ import os
 import textwrap
 from os import path
 
-from .helpers import FilesHelper
+from .helpers import FilesHelper, FoldersHelper
 
 
 class Presets:
@@ -85,4 +85,6 @@ class Presets:
             }}""")
         s = s.replace('\'', '"')
         filepath = path.join(os.getcwd(), file)
+        folderpath = path.dirname(filepath)
+        FoldersHelper.create_folder(folderpath)
         FilesHelper.write_file(filepath, s)

@@ -23,12 +23,23 @@ class Errors:
         sys.exit()
 
     @classmethod
-    def is_file(cls, key, keyname):
-        if not path.isfile(key):
-            filepath = path.join(os.getcwd(), key)
+    def exists(cls, relative_path, keyname):
+        ffpath = path.join(os.getcwd(), relative_path)
+        if not path.exists(ffpath):
             e = (
-                f"'{keyname}' key ({key}) must be referred to a file path that "
-                "exists.\n"
+                f"'{keyname}' ({relative_path}) must be referred to a path "
+                "that exists.\n"
+                f"PATH: {ffpath}"
+            )
+            cls.error_message(e)
+
+    @classmethod
+    def is_file(cls, relative_path, keyname):
+        filepath = path.join(os.getcwd(), relative_path)
+        if not path.isfile(filepath):
+            e = (
+                f"'{keyname}' key ({relative_path}) must be referred to a file "
+                "path that exists.\n"
                 f"FILE PATH: {filepath}"
             )
             cls.error_message(e)

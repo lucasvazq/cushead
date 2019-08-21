@@ -7,6 +7,7 @@ from os import path
 
 import argparse
 
+from .helpers import Errors
 
 class Arguments:
     info = None
@@ -59,39 +60,16 @@ class Arguments:
                 complementary files like icons, robots.txt, etc.""")
         )
 
-        # Parse arguments
         parser = parser.parse_args(args)
 
-        # Test: test_no_arguments
-        # Action: get in
+        # Validation
         if not (parser.preset or parser.file):
-            raise Exception("Miss arguments. Use -preset or -file")
-
-        # Test: test_two_arguments
-        # Action: get in
+            Errors.error_message("Miss arguments. Use -preset or -file")
         if parser.preset and parser.file:
-            raise Exception("Can't use -preset and -file arguments together.")
-
+            Errors.error_message("Can't use -preset and -file arguments "
+                                 "together.")
         if parser.file:
-            file = parser.file
-            filepath = path.join(os.getcwd(), file)
-
-            # Test: test_file_doesnt_exists
-            # Action: get in
-            if not path.exists(filepath):
-                e = (
-                    f"-file ({file}) must be referred to a file path that "
-                    "exists.\n"
-                    f"FILE PATH: {filepath}"
-                )
-                raise Exception(e)
-
-            # Test: test_file_no_file
-            # Action: get in
-            if not path.isfile(parser.file):
-                e = textwrap.dedent(f"""\
-                    -file ({file}) must be referred to a file path.
-                    FILE PATH: {filepath}""")
-                raise Exception(e)
+            Errors.exists(parser.file, "-file")
+            Errors.is_file(parser.file, "-file")
 
         return parser

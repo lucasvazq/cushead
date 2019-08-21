@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import textwrap
-
 from .complementary_files import ComplementaryFiles
 
 
