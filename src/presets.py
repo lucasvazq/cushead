@@ -29,7 +29,10 @@ class Presets(Helpers):
                     'static_url':       'statiz/'
                 }},
                 'recommended': {{
-                    'favicon_png':      './test/tests/favicon.png'
+                    'favicon_png':      './test/tests/favicon.png',
+                    'favicon_ico':      'favicon.ico',
+                    'favicon_svg':      'favicon.svg',
+                    'presentation_png': 'presentation.png'
                 }},
                 'default': {{
                     'general': {{
@@ -39,7 +42,6 @@ class Presets(Helpers):
                                                'initial-scale=1')}',
                         'language':         'en',
                         'territory':        'US',
-                        'type':             'website',
                         'clear_url':        'microsoft.com',
                         'protocol':         'https://',
                         'robots':           'index, follow'
@@ -51,10 +53,6 @@ class Presets(Helpers):
                         'author':           'Lucas Vazquez',
                         'keywords':         'Microsoft, Windows',
                         'background_color': '#FFFFFF',
-                        'preview':          'preview.png',
-                        'preview_type':     'image/png',
-                        'icon_ico':         'favicon.ico',
-                        'icon_svg':         'maskicon.svg'
                     }},
                     'social_media': {{
                         'facebook_app_id':  '12345',

@@ -95,9 +95,8 @@ class Head(ComplementaryFiles):
             head.append("<meta property='og:locale' "
                         f"content='{self.config['language']}{territory}' />")
         # og:type
-        if 'type' in self.config:
-            head.append("<meta property='og:type' "
-                        f"content='{self.config['type']}' />")
+        # Only allow website type for simplicity
+        head.append("<meta property='og:type' content='website' />")
         # og:url, Likes and Shared are stored under this url
         if 'url' in self.config:
             head.append(f"<meta property='og:url' "
@@ -116,18 +115,17 @@ class Head(ComplementaryFiles):
             head.append("<meta property='og:description' "
                         f"content='{self.config['description']}' />")
         # og:image (http), og:image:secure_url (https) and twitter:image
-        if 'preview' in self.config or 'icon' in self.config:
-            image = (self.config['static_url'] +
-                     self.config.get('preview', self.config.get('icon')))
+        if 'presentation_png' in self.config:
+            image = (self.config['static_url']
+                     + self.config.get('presentation_png'))
             head.extend([
                 f"<meta property='og:image' content='{image}' />",
                 f"<meta property='og:image:secure_url' content='{image}' />",
                 f"<meta name='twitter:image' content='{image}' />",
             ])
         # og:image:type
-        if 'preview_type' in self.config:
-            head.append("<meta property='og:image:type' "
-                        f"content='{self.config['preview_type']}' />")
+        # Only allow png type for simplicity
+        head.append("<meta property='og:image:type' content='image/png' />")
         # og:image:alt and twitter:image:alt
         if 'title' in self.config or 'description' in self.config:
             title = self.config.get('title', '')
@@ -145,7 +143,8 @@ class Head(ComplementaryFiles):
         # section
         # twitter:image:alt mixed with op:image:alt in OPENGRAPH section
 
-        # twitter:card = summary (only card supported)
+        # twitter:card
+        # Only allow summary type for simplicity
         head.append("<meta name='twitter:card' content='summary' />")
         # twitter:site
         if 'tw:site' in self.config:

@@ -1,8 +1,12 @@
-TODO delete obvious config attributes
-TODO recommended ico, svg and preview, and they are files
+TODO: recommended ico, svg and preview, and they are files
 FIXME: sys.exit(..) -> sys.exit()
 FIXME: all textwrap
 TODO: colors in support
+
+TODO: test section:
+    remove exceptions
+    longs errors need be inside a "e" variable
+    search all # Test and # FIX
 
 TODO: docs section:
     fix logo align
@@ -15,12 +19,7 @@ TODO: docs section:
     DEPRECATED: yandex browsers, manifest.webapp
     DEPRECATED: xmlns="http://www.w3.org/1999/xhtml" BC is auto
     Make wiki
-    ./example/
-
-TODO: test section:
-    remove exceptions
-    longs errors need be inside a "e" variable
-    search all # Test and # FIX
+    ./example/ with inputs and output separated folders, and test.txt in root
 
 TODO: add apple-touch-start-image but need references
 

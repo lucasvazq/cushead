@@ -133,16 +133,16 @@ class Icons:
         )
         return element
 
-    def favicon(self):
-        if 'icon' in self.config:
-            s = (f"<link rel='shortcut icon' href='/{self.config['icon']}'"
-                 "type='image/x-icon' />")
+    def favicon_ico(self):
+        if 'favicon_ico' in self.config:
+            s = ("<link rel='shortcut icon' "
+                 f"href='/{self.config['favicon_ico']}' type='image/x-icon' />")
             return s
 
-    def mask_icon(self):
-        if 'mask-icon' in self.config:
+    def favicon_svg(self):
+        if 'favicon_svg' in self.config:
             color = self.config.get('color', '')
-            s = (f"<link rel='mask-icon' href='{self.config['mask-icon']}' "
+            s = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
                  f"color='{color}' />")
             return s
 
@@ -351,12 +351,12 @@ class ComplementaryFiles(Values, Icons, Others, Helpers):
                         self.general_icons(filename, name, size)
 
             # Favicon .ico version
-            element = self.favicon()
+            element = self.favicon_ico()
             if element:
                 head.append(element)
 
             # Favicon .svg version
-            element = self.mask_icon()
+            element = self.favicon_svg()
             if element:
                 head.append(element)
 
