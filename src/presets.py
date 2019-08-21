@@ -2,110 +2,89 @@
 # -*- coding: utf-8 -*-
 
 import os
+import textwrap
 from os import path
 
-
-def get_values(info):
-    return """\
-\"\"\"
-Python syntax
-{} config file
-Git: {}
-Documentation: {}
-
-CONFIG VARIABLES:
-
-    html_file (FILE PATH):
-        Required, can't be void, need to exist and referrer to a file
-
-    output (FOLDER PATH):
-        Required, need to exist and referrer to a folder
-
-    static_url (STRING):
-        Required
-
-    icon_png (FILE PATH):
-        If declared, need to exist and referrer to an image file
-        Recomended 310x310 png image
-\"\"\"
-
-# Don't delete or change the name of this variable
-config = {{
-
-    # MAIN CONFIG
-    'html_file':        './index.html',
-    'output':           './output/', # e.g. for manifest.json
-    'static_url':       '/static/',
-
-    # GENERAL CONFIG
-    'content-type':     'text/html; charset=utf-8',
-    'X-UA-Compatible':  'ie=edge',
-    'viewport':         {{'width': 'device-width', 'initial-scale': '1'}},
-    'language':         'en',
-    'territory':        'US', # language territory
-    'type':             'website', # http://ogp.me/#types
-    'color':            '#FFFFFF',
-    'url':              'microsoft.com', # Without "www." and protocol (e.g. "http://")
-    'protocol':         'https://',
-    'robots':           'index, follow',
-    'browserconfig':    'browserconfig.xml',
-    'manifest':         'manifest.json',
-    'opensearch':       'opensearch.xml',
-    'sitemap':          'sitemap.xml',
-
-    # BASIC CONFIG
-    'title':            'Microsoft',
-    'description':      'Technology Solutions',
-    'subject':          'Home Page',
-    'keywords':         'Microsoft, Windows',
-
-    # IMAGES
-    'preview':          'preview.png', # Big image preview
-    'preview_type':     'image/png', # image/jpeg, image/gif or image/png
-    'icon':             'favicon.ico', # *.ico
-    'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 310x310
-    'mask-icon':        'maskicon.svg', # svg file type
-
-    # SOCIAL MEDIA
-    'fb:app_id':        '12345', # Facebook App ID
-    'tw:site':          '@Microsoft', # Twitter account
-    'tw:creator:id':    '123456', # Page editor ID
-
-    # PWA
-    'dir':              'ltr',
-    'start_url':        '/',
-    'orientation':      'landscape',
-    'scope':            '/',
-    'display':          'browser',
-    'platform':        'web',
-    'applications':     [
-        {{
-            'platform': 'play',
-            'url':      'https://play.google.com/store/apps/details?id=com.example.app',
-            'id':       'com.example.app'
-        }},
-        {{
-            'platform': 'itunes',
-            'url':      'https://itunes.apple.com/app/example-app/id123456',
-        }}
-    ],
-
-    # AUTHOR
-    'author':           'Lucas Vazquez'
-
-}}""".format(info['package_name'], info['source'], info['documentation'])
+from .helpers import Helpers
 
 
-class Presets():
+class Presets(Helpers):
+    info = None
 
     def __init__(self):
-        self.presets = get_values(self.info)
         super().__init__()
 
-    def _make_preset(self, file):
-        file = path.join(os.getcwd(), file)
-        f = open(file, 'w+')
-        f.write(self.presets)
-        f.close()
-        print("PRESET:")
-        print("{}".format(self.presets))
+    def make_preset(self, file):
+        s = textwrap.dedent(f"""\
+            {{
+                'comment':  {{
+                    'About':            '{('Config file used by python cushead '
+                                           'CLI')}',
+                    'Format':           'JSON',
+                    'Git':              '{self.info['source']}',
+                    'Documentation':    '{self.info['documentation']}'
+                }},
+                'required': {{
+                    'files_output':     './test/tests/Success/complete_config/',
+                    'static_url':       'statiz/'
+                }},
+                'recommended': {{
+                    'favicon_png':      './test/tests/favicon.png'
+                }},
+                'default': {{
+                    'general': {{
+                        'content-type':     'text/html; charset=utf-8',
+                        'X-UA-Compatible':  'ie=edge',
+                        'viewport':         '{('width=device-width, '
+                                               'initial-scale=1')}',
+                        'language':         'en',
+                        'territory':        'US',
+                        'type':             'website',
+                        'clear_url':        'microsoft.com',
+                        'protocol':         'https://',
+                        'robots':           'index, follow'
+                    }},
+                    'basic': {{
+                        'title':            'Microsoft',
+                        'description':      'Technology Solutions',
+                        'subject':          'Home Page',
+                        'author':           'Lucas Vazquez',
+                        'keywords':         'Microsoft, Windows',
+                        'background_color': '#FFFFFF',
+                        'preview':          'preview.png',
+                        'preview_type':     'image/png',
+                        'icon_ico':         'favicon.ico',
+                        'icon_svg':         'maskicon.svg'
+                    }},
+                    'social_media': {{
+                        'facebook_app_id':  '12345',
+                        'twitter_user_@':   '@Microsoft',
+                        'twitter_user_id':  '123456'
+                    }}
+                }},
+                'progressive_web_apps': {{
+                    'dir':              'ltr',
+                    'start_url':        '/',
+                    'orientation':      'landscape',
+                    'scope':            '/',
+                    'display':          'browser',
+                    'platform':        'web',
+                    'applications':     [
+                        {{
+                            'platform':     'play',
+                            'url':          '{('https://play.google.com/store/'
+                                               'apps/details?id=com.example'
+                                               '.app')}',
+                            'id':           'com.example.app'
+                        }},
+                        {{
+                            'platform':     'itunes',
+                            'url':          '{('https://itunes.apple.com/app/'
+                                            'example-app/id123456')}'
+                        }}
+                    ]
+                }}
+            }}""")
+        s = s.replace('\'', '"')
+        filepath = path.join(os.getcwd(), file)
+        self.write_file(filepath, s)

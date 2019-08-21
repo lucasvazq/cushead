@@ -1,0 +1,26 @@
+TODO delete obvious config attributes
+TODO recommended ico, svg and preview, and they are files
+FIXME: sys.exit(..) -> sys.exit()
+FIXME: all textwrap
+TODO: colors in support
+
+TODO: docs section:
+    fix logo align
+    include logo for readme
+    logo inside ./doc/
+    presentation.png inside ./doc/
+    RECOMENDATION: xhtml rules
+    RECOMENDATION: keep an .ico in root
+    recomendations have links
+    DEPRECATED: yandex browsers, manifest.webapp
+    DEPRECATED: xmlns="http://www.w3.org/1999/xhtml" BC is auto
+    Make wiki
+    ./example/
+
+TODO: test section:
+    remove exceptions
+    longs errors need be inside a "e" variable
+    search all # Test and # FIX
+
+TODO: add apple-touch-start-image but need references
+

@@ -7,63 +7,74 @@ from .complementary_files import ComplementaryFiles
 
 
 class Head(ComplementaryFiles):
+    config = None
 
     def __init__(self):
         super().__init__()
 
     def add_general_config(self):
         # content-type
+        print(self.config)
         head = []
         if 'content-type' in self.config:
-            head.append("<meta http-equiv='Content-Type' content='{}' />".format(
-                self.config['content-type']))
+            head.append("<meta http-equiv='Content-Type' "
+                        f"content='{self.config['content-type']}' />")
         # x-ua-compatible
         if 'X-UA-Compatible' in self.config:
-            head.append("<meta http-equiv='X-UA-Compatible' content='{}' />".format(
-                self.config['X-UA-Compatible']))
+            head.append("<meta http-equiv='X-UA-Compatible' "
+                        f"content='{self.config['X-UA-Compatible']}' />")
         # viewport
         if 'viewport' in self.config:
-            concat = (''.join("{}={}, ".format(
-                str(content), str(self.config['viewport'][content])) \
-                for content in self.config['viewport']))[0:-2]
-            head.append("<meta name='viewport' content='{}' />".format(concat))
+            head.append("<meta name='viewport' "
+                        f"content='{self.config['viewport']}' />")
         # locale
         if 'language' in self.config:
-            head.append("<meta http-equiv='Content-Language' content='{}' />".format(
-                self.config['language']))
+            head.append("<meta http-equiv='Content-Language' "
+                        f"content='{self.config['language']}' />")
         # theme-color and msapplication-TileColor
         if 'color' in self.config:
-            head.append("<meta name='theme-color' content='{}' />".format(
-                self.config['color']))
-            head.append("<meta name='msapplication-TileColor' content='{}' />".format(
-                self.config['color']))
+            color = self.config['color']
+            color_components = [
+                f"<meta name='theme-color' content='{color}' />",
+                f"<meta name='msapplication-TileColor' content='{color}' />"
+            ]
+            head.extend(color_components)
         # robots
         if 'robots' in self.config:
-            head.append("<meta name='robots' content='{}' />".format(
-                self.config['robots']))
-
+            head.append("<meta name='robots' "
+                        f"content='{self.config['robots']}' />")
         return head
 
     def add_basic_config(self):
         head = []
         # title
         if 'title' in self.config:
-            head.append("<title>{}</title>".format(self.config['title']))
-            head.append("<meta name='application-name' content='{}'>".format(
-                self.config['title']))
+            title = self.config['title']
+            title_components = [
+                f"<title>{title}</title>",
+                f"<meta name='application-name' content='{title}' />",
+                f"<meta name='apple-mobile-web-app-title' content='{title}' />",
+            ]
+            head.extend(title_components)
         # description
         if 'description' in self.config:
-            head.append("<meta name='description' content='{}' />".format(
-                self.config['description']))
+            head.append("<meta name='description' "
+                        f"content='{self.config['description']}' />")
         # subject
         if 'subject' in self.config:
-            head.append("<meta name='subject' content='{}' />".format(
-                self.config['subject']))
+            head.append("<meta name='subject' "
+                        f"content='{self.config['subject']}' />")
         # keywords
         if 'keywords' in self.config:
-            head.append("<meta name='keywords' content='{}' />".format(
-                self.config['keywords']))
-
+            head.append("<meta name='keywords' "
+                        f"content='{self.config['keywords']}' />")
+        # apple
+        # Multiline strings inside a list get together into a parentheses
+        head.extend([
+            "<meta name='apple-mobile-web-app-capable' content='yes'>",
+            ("<meta name='apple-mobile-web-app-status-bar-style' "
+             "content='black-translucent'>"),
+        ])
         return head
 
     def add_social_media(self):
@@ -73,77 +84,85 @@ class Head(ComplementaryFiles):
 
         # fb:app_id
         if 'fb:app_id' in self.config:
-            head.append("<meta porperty='fb:app_id' content='{}' />".format(
-                self.config['fb:app_id']))
+            head.append("<meta porperty='fb:app_id' "
+                        f"content='{self.config['fb:app_id']}' />")
         # og:locale
         if 'language' in self.config:
-            head.append("<meta property='og:locale' content='{}{}' />".format(
-                self.config['language'],
-                "_{}".format(self.config['territory']) \
-                    if 'territory' in self.config else ''))
+            territory = (
+                "_{}".format(self.config['territory'])
+                if 'territory' in self.config else ''
+            )
+            head.append("<meta property='og:locale' "
+                        f"content='{self.config['language']}{territory}' />")
         # og:type
         if 'type' in self.config:
-            head.append("<meta property='og:type' content='{}' />".format(
-                self.config['type']))
+            head.append("<meta property='og:type' "
+                        f"content='{self.config['type']}' />")
         # og:url, Likes and Shared are stored under this url
         if 'url' in self.config:
-            head.append("<meta property='og:url' content='{}{}' />".format(
-                self.config.get('protocol', ''), self.config['url']))
+            head.append(f"<meta property='og:url' "
+                        f"content='{self.config.get('protocol', '')}"
+                        f"{self.config['url']}' />")
         # og:site_name
         if 'title' in self.config:
-            head.append("<meta property='og:site_name' content='{}' />".format(
-                self.config['title']))
+            head.append("<meta property='og:site_name' "
+                        f"content='{self.config['title']}' />")
         # og:title
         if 'title' in self.config:
-            head.append("<meta property='og:title' content='{}' />".format(
-                self.config['title']))
+            head.append("<meta property='og:title' "
+                        f"content='{self.config['title']}' />")
         # og:description
         if 'description' in self.config:
-            head.append("<meta property='og:description' content='{}' />".format(
-                self.config['description']))
+            head.append("<meta property='og:description' "
+                        f"content='{self.config['description']}' />")
         # og:image (http), og:image:secure_url (https) and twitter:image
         if 'preview' in self.config or 'icon' in self.config:
-            text = "{}{}".format(self.config['static_url'], self.config.get('preview',
-                self.config.get('icon')))
-            head.append("<meta property='og:image' content='{}' />".format(text))
-            head.append("<meta property='og:image:secure_url' content='{}' />".format(
-                text))
-            head.append("<meta name='twitter:image' content='{}' />".format(text))
+            image = (self.config['static_url'] +
+                     self.config.get('preview', self.config.get('icon')))
+            head.extend([
+                f"<meta property='og:image' content='{image}' />",
+                f"<meta property='og:image:secure_url' content='{image}' />",
+                f"<meta name='twitter:image' content='{image}' />",
+            ])
         # og:image:type
         if 'preview_type' in self.config:
-            head.append("<meta property='og:image:type' content='{}' />".format(
-                self.config['preview_type']))
+            head.append("<meta property='og:image:type' "
+                        f"content='{self.config['preview_type']}' />")
         # og:image:alt and twitter:image:alt
         if 'title' in self.config or 'description' in self.config:
             title = self.config.get('title', '')
             description = self.config.get('description', '')
-            connector = ' - ' if 'title' in self.config and \
-                'description' in self.config else ''
-            text = "{}{}{}".format(title, connector, description)
-            head.append("<meta property='og:image:alt' content='{}' />".format(text))
-            head.append("<meta name='twitter:image:alt' content='{}' />".format(text))
+            connector = (' - ' if 'title' in self.config and
+                                  'description' in self.config else '')
+            text = title + connector + description
+            head.extend([
+                f"<meta property='og:image:alt' content='{text}' />",
+                f"<meta name='twitter:image:alt' content='{text}' />",
+            ])
 
         # TWITTER
-        # twitter:image mixed with op:image and op:image:secure in OPENGRAH section
+        # twitter:image mixed with op:image and op:image:secure in OPENGRAH
+        # section
         # twitter:image:alt mixed with op:image:alt in OPENGRAPH section
 
+        # twitter:card = summary (only card supported)
         head.append("<meta name='twitter:card' content='summary' />")
         # twitter:site
         if 'tw:site' in self.config:
-            head.append("<meta name='twitter:site' content='{}' />".format(
-                self.config['tw:site']))
+            head.append("<meta name='twitter:site' "
+                        f"content='{self.config['tw:site']}' />")
         # twitter:title
         if 'title' in self.config:
-            head.append("<meta name='twitter:title' content='{}' />".format(
-                self.config['title']))
+            head.append("<meta name='twitter:title' "
+                        f"content='{self.config['title']}' />")
         # twitter:description
         if 'description' in self.config:
-            head.append("<meta name='twitter:description' content='{}' />".format(
-                self.config['description']))
+            head.append("<meta name='twitter:description' "
+                        f"content='{self.config['description']}' />")
         # tw:creator
         if 'tw:creator:id' in self.config:
-            head.append("<meta property='twitter:creator:id' content='{}' />".format(
-                self.config['tw:creator:id']))
+            head.append("<meta property='twitter:creator:id' "
+                        f"content='{self.config['tw:creator:id']}' />")
 
         return head
 
@@ -151,55 +170,43 @@ class Head(ComplementaryFiles):
         head = []
         # author
         if 'author' in self.config:
-            head.append("<meta name='author' content='{}' />".format(self.config['author']))
-
+            head.append("<meta name='author' "
+                        f"content='{self.config['author']}' />")
         return head
 
     def head_general(self):
-        # Read contents from file as a single string
-        file_handle = open(self.config['html_file'], 'r')
-        file_string = file_handle.read()
-        file_handle.close()
 
-        # Add lang attribute to <html>
-        if 'language' in self.config:
-            if not '<html>' in file_string:
-                print("Miss <html>, cant add lang attribute\n")
-            else:
-                html = "<html lang=\"{}\">".format(self.config['language'])
-                file_string = file_string.replace('<html>', html)
-                print(("HTML:\n" +
-                    "{}\n".format(html)))
+        # Generate tags for head
+        # Order matters
+        files_related_head_elements, new_files = self.generate()
+        head = [
+            self.add_general_config(),
+            self.add_basic_config(),
+            files_related_head_elements,
+            self.add_social_media(),
+            self.add_author(),
+        ]
 
-        # Add custom head elements
-        space = file_string.split('$head$')
-        if not '$head$' in file_string:
-            print("Miss $head$, cant add custom elements")
-        else:
-            head = []
-            head.append(self.add_general_config())
-            head.append(self.add_basic_config())
-            new_head_elements, new_files = self.generate()
-            head.append(new_head_elements)
-            head.append(self.add_social_media())
-            head.append(self.add_author())
-            head = [element for array in head for element in array]
-            space = space[0].split('\n')
-            space = space[len(space) - 1]
-            message = "<!-- Custom head elements -->"
-            concat = ("{}\n".format(message) + \
-                ''.join("{}{}\n".format(space, element) for element in head)) \
-                    [0:-1].replace('\'', '"')
-            file_string = file_string.replace('$head$', concat)
-            print(textwrap.dedent("""\
-                HEAD:
-                {}""".format(message)))
-            for element in head:
-                print(element)
-            if len(new_files):
-                print(textwrap.dedent("""
-                    NEW FILES:"""))
-            for element in new_files:
-                print(element)
+        # Concatenate all head elements in a string
+        head = [element for array in head for element in array]
+        space = "    "  # four spaces for identation
+        head = ''.join(f"{space*2}{element}\n" for element in head)
+        head = head.replace('\'', '"')
 
-        return file_string
+        # Generate html document filestring
+        html_lang = (
+            f" lang={self.config['language']}"
+            if 'language' in self.config else ""
+        )
+        html_string = (
+            "<!DOCTYPE html>\n"
+            f"<html{html_lang}>\n"
+            f"{space}<head>\n"
+            f"{head}"  # already have identation
+            f"{space}</head>\n"
+            f"{space}<body>\n"
+            f"{space}</body>\n"
+            "</html>"
+        )
+
+        return html_string

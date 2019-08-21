@@ -4,18 +4,20 @@
 import json
 import os
 import textwrap
-from PIL import Image
 from os import path
 
+from PIL import Image
 from resizeimage import resizeimage
 
+from .helpers import Helpers
 
-class Values():
+
+class Values:
 
     def __init__(self):
         self.names = ['icon-sizes', 'windows', 'apple-touch-icon-default',
-            'apple-touch-icon-sizes', 'fluid-icon', 'browserconfig', 'manifest',
-            'opensearch']
+                      'apple-touch-icon-sizes', 'apple-touch-startup-image',
+                      'fluid-icon', 'browserconfig', 'manifest', 'opensearch']
         self.brand = {
             'icon-sizes': {
                 'name_ref': 'icon',
@@ -23,8 +25,9 @@ class Values():
                 # https://www.favicon-generator.org/
                 # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
                 # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-                'sizes' : [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114, 120, 128, 144, 150,
-                    152, 167, 180, 192, 195, 196, 228, 310],
+                'sizes': [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114, 120,
+                          128, 144, 150, 152, 167, 180, 192, 195, 196, 228,
+                          310],
                 'verbosity': True,
                 'type': 'image/png',
             },
@@ -32,7 +35,7 @@ class Values():
                 'name_ref': 'msapplication-TileImage',
                 'name': 'ms-icon',
                 'sizes': [144],
-                'metatag': True
+                'metatag': True,
             },
             'apple-touch-icon-default': {
                 'name_ref': 'apple-touch-icon',
@@ -42,126 +45,162 @@ class Values():
             'apple-touch-icon-sizes': {
                 'name_ref': 'apple-touch-icon',
                 'name': 'apple-touch-icon',
-                'sizes': [57, 60, 72, 76, 114, 120, 144, 152, 180],
+                'sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024],
                 'verbosity': True,
+            },
+            'apple-touch-startup-image': {
+                'name_ref': 'apple-touch-startup-image',
+                'name': 'launch',
+                'sizes': [768],
             },
             'fluid-icon': {
                 'name_ref': 'fluid-icon',
                 'name': 'fluidicon',
                 'sizes': [512],
-                'title': 'Microsoft'
+                'title': 'Microsoft',
             },
             'browserconfig': {
                 'name_ref': 'browserconfig',
                 'name': 'ms-icon',
                 'sizes': [30, 44, 70, 150, 310],
                 'special_sizes': [[310, 150]],
-                'no-head': True
+                'no-head': True,
             },
             'manifest': {
                 'name_ref': 'manifest',
                 'name': 'android-icon',
-                'sizes' : [36, 48, 72, 96, 144, 192],
+                'sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
                 'verbosity': True,
                 'type': 'image/png',
-                'no-head': True
+                'no-head': True,
             },
             'opensearch': {
                 'name_ref': 'opensearch',
                 'name': 'opensearch',
                 'sizes': [16],
                 'verbosity': True,
-                'no-head': True
-            }
+                'no-head': True,
+            },
         }
         super().__init__()
 
 
-class Icons():
+class Icons:
+    brand = None
+    config = None
 
     def __init__(self):
         super().__init__()
 
-    def _resize(self, image, size, filename):
-        filepath = path.join(self.config['output'], filename)
-        cover = resizeimage.resize_contain(image, [size[0], size[1]])
-        cover.save(path.join(self.config['output'], filename), image.format)
-        return filepath
-
-    def general_icons(self, name, size, filename):
+    def general_icons(self, filename, name, size):
         if 'no-head' in self.brand[name]:
             return None
-        verbosity = "sizes='{}x{}' ".format(str(size[0]), str(size[1])) \
+        verbosity = (
+            f"sizes='{size[0]}x{size[1]}' "
             if 'verbosity' in self.brand[name] else ''
-        (tagname, attribute, ref) = ('meta', 'name', 'content') \
-            if 'metatag' in self.brand[name] else \
+        )
+        tagname, attribute, ref = (
+            ('meta', 'name', 'content')
+            if 'metatag' in self.brand[name] else
             ('link', 'rel', 'href')
-        file_type = 'type="{}" '.format(self.brand[name]['type']) \
+        )
+        file_type = (
+            f"type='{self.brand[name]['type']}' "
             if 'type' in self.brand[name] else ''
-        title = "title='{}' ".format(self.brand[name]['title']) \
+        )
+        title = (
+            f"title='{self.brand[name]['title']}' "
             if 'title' in self.brand[name] else ''
-        # A: <link rel="shortcut icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
-        # B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft" />
+        )
+        # Keep using format function for better reference to each element of the
+        # formated string
+        # A: <link rel="shortcut icon" type="image/png" sizes="16x16"
+        #    href="/static/favicon-16x16.png" />
+        # B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+        #    title="Microsoft" />
         name_ref = self.brand[name]['name_ref']
         static_url = self.config['static_url']
         element = "<{} {}='{}' {}{}{}='{}{}' {}/>".format(
-                tagname,    # A: link
-                attribute,  # A: rel
-                name_ref,   # A: shortcut icon
-                file_type,  # A: type="image/png"
-                verbosity,  # A: sizes="16x16"
-                ref,        # A: href
-                static_url, # A: /static/
-                filename,   # A: favicon-16x16.png
-                title       # B: title="Microsoft"
-            )
+            tagname,  # A: link
+            attribute,  # A: rel
+            name_ref,  # A: shortcut icon
+            file_type,  # A: type="image/png"
+            verbosity,  # A: sizes="16x16"
+            ref,  # A: href
+            static_url,  # A: /static/
+            filename,  # A: favicon-16x16.png
+            title,  # B: title="Microsoft"
+        )
         return element
 
-    def icon(self):
+    def favicon(self):
         if 'icon' in self.config:
-            return ("<link rel='shortcut icon' href='{}{}' type='image/x-icon' />".format(
-                self.config['static_url'], self.config['icon']))
+            s = (f"<link rel='shortcut icon' href='/{self.config['icon']}'"
+                 "type='image/x-icon' />")
+            return s
 
     def mask_icon(self):
         if 'mask-icon' in self.config:
             color = self.config.get('color', '')
-            return ("<link rel='mask-icon' href='{}' color='{}' />".format(
-                    self.config['mask-icon'], color))
+            s = (f"<link rel='mask-icon' href='{self.config['mask-icon']}' "
+                 f"color='{color}' />")
+            return s
+
+    @staticmethod
+    def resize(image, size, filepath):
+        print(size)
+        cover = resizeimage.resize_contain(image, [size[0], size[1]])
+        cover.save(filepath, image.format)
 
 
-class Others():
+class Others:
+    brand = None
+    config = None
 
     def __init__(self):
         super().__init__()
 
     def browserconfig(self):
-        string = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>" +
-            "<msapplication><tile>")
-        string += ''.join([
+        s = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>"
+             "<msapplication><tile>")
+        s += ''.join([
             "<square{0}x{0}logo src='{1}{2}-{0}x{0}.png' />".format(
-                size, self.config['static_url'], self.brand['browserconfig']['name'])
-            for size in self.brand['browserconfig']['sizes']])
-        string += ''.join([
+                size,
+                self.config['static_url'],
+                self.brand['browserconfig']['name']
+            )
+            for size in self.brand['browserconfig']['sizes']
+        ])
+        s += ''.join([
             "<wide{0}x{1}logo src='{2}{3}-{0}x{1}.png' />".format(
-                size[0], size[1], self.config['static_url'],
-                self.brand['browserconfig']['name'])
-            for size in self.brand['browserconfig']['special_sizes']])
+                size[0],
+                size[1],
+                self.config['static_url'],
+                self.brand['browserconfig']['name']
+            )
+            for size in self.brand['browserconfig']['special_sizes']
+        ])
         color = self.config.get('color', '')
-        string += ("<TileColor>{}</TileColor></tile></msapplication></browserconfig>"
-            .format(color))
-        return [string.replace('\'', '"'), ("<meta name='msapplication-config' " +
-            "content='{}{}' />".format(self.config['static_url'],
-                self.config['browserconfig']))]
+        s += (f"<TileColor>{color}</TileColor></tile></msapplication>"
+              "</browserconfig>")
+        s = s.replace('\'', '"')
+        head = ("<meta name='msapplication-config' "
+                f"content='{self.config['static_url']}browserconfig.xml' />")
+        return [s, head]
 
     def manifest(self):
-        path = self.config['static_url']
-        icons = [{
-            'src': "{0}{1}-{2}x{2}".format(path, self.brand['manifest']['name'],
-                str(size)),
-            'sizes': "{0}x{0}".format(str(size)),
-            'type': 'image/png',
-            'density': str(size/48)}
-            for size in self.brand['manifest']['sizes']]
+        urlpath = self.config['static_url']
+        icons = [
+            {
+                'src': "{0}{1}-{2}x{2}".format(
+                    urlpath, self.brand['manifest']['name'], size
+                ),
+                'sizes': f"{size}x{size}",
+                'type': 'image/png',
+                'density': str(size / 48)
+            }
+            for size in self.brand['manifest']['sizes']
+        ]
         dictionary = {}
         if 'title' in self.config:
             dictionary['name'] = self.config['title']
@@ -188,110 +227,172 @@ class Others():
         if 'applications' in self.config:
             dictionary['related_applications'] = self.config['applications']
         dictionary['icons'] = icons
-        return [json.dumps(dictionary), "<link rel='manifest' href='{}{}' />".format(
-            self.config['static_url'], self.config['manifest'])]
+        dictionary = json.dumps(dictionary)
+        head = (f"<link rel='manifest' href='{self.config['static_url']}"
+                f"manifest.json' />")
+        return [dictionary, head]
 
     def opensearch(self):
-        content = ("<?xml version='1.0' encoding='utf-8'?>" +
-            "<OpenSearchDescription xmlns:moz='" +
-            "http://www.mozilla.org/2006/browser/search/' " +
-            "xmlns='http://a9.com/-/spec/opensearch/1.1/'>" +
-            "<ShortName>{}</ShortName>".format(self.config.get('title', '')) +
-            "<Description>Search {}</Description>".format(self.config.get(
-                'title', '')) +
-            "<InputEncoding>UTF-8</InputEncoding>" +
-            "<Url method='get' type='text/html' " +
-            "template='http://www.google.com/search?q=" +
-            "{{searchTerms}}+site%3A{}' />".format(self.config.get('url', '')) +
-            "<Image height='16' width='16' type='image/png'>" +
-            "{}opensearch-16x16.png".format(self.config['static_url']) +
-            "</Image>" +
-            "</OpenSearchDescription>")
-        return [content.replace('\'', '"'), ("<link rel='search' " +
-            "type='application/opensearchdescription+xml' title='{}' href='{}{}' />"
-                .format(self.config.get('title', ''), self.config['static_url'],
-                    self.config['opensearch']))]
+        title = self.config.get('title', '')
+        url = self.config.get('url', '')
+        static_url = self.config['static_url']
+        s = ("<?xml version='1.0' encoding='utf-8'?>"
+             "<OpenSearchDescription xmlns:moz='"
+             "http://www.mozilla.org/2006/browser/search/' "
+             "xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
+             "</OpenSearchDescription>"
+             f"<ShortName>{title}</ShortName>"
+             f"<Description>Search {title}</Description>"
+             "<InputEncoding>UTF-8</InputEncoding>"
+             "<Url method='get' type='text/html' "
+             "template='http://www.google.com/search?q="
+             f"{{searchTerms}}+site%3A{url}' />"
+             "<Image height='16' width='16' type='image/png'>"
+             f"{static_url}opensearch-16x16.png"
+             "</Image>")
+        s = s.replace('\'', '"')
+        head = ("<link rel='search' "
+                f"type='application/opensearchdescription+xml' title='{title}' "
+                f"href='{static_url}opensearch.xml' />")
+        return [s, head]
 
     def robots(self):
-        sitemap = "Sitemap: {}{}/{}".format(self.config.get('protocol', ''),
-                self.config['url'], self.config['sitemap']) \
+        protocol = self.config.get('protocol', '')
+        sitemap_content = (
+            f"Sitemap: {protocol}{self.config['clear_url']}/sitemap.xml"
             if 'sitemap' in self.config else ''
-        string = ("User-agent: *\n" +
-            "Allow: /\n" +
-            "\n" +
-            "{}".format(sitemap))
-        return string
+        )
+        s = ("User-agent: *\n"
+             "Allow: /\n"
+             "\n"
+             f"{sitemap_content}")
+        return s
 
     def sitemap(self):
-        return ("<?xml version='1.0' encoding='uft-8'?>" +
-            "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9' " +
-            "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " +
-            "xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 " +
-            "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>" +
-            "<url><loc>{}{}/</loc></url></urlset>""".format(
-                self.config.get('protocol', ''), self.config['url'])).replace('\'', '"')
+        protocol = self.config.get('protocol', '')
+        s = ("<?xml version='1.0' encoding='uft-8'?>"
+             "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9' "
+             "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+             "xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 "
+             "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
+             f"<url><loc>{protocol}{self.config['clear_url']}/</loc></url>"
+             "</urlset>")
+        s = s.replace('\'', '"')
+        return s
 
 
-class ComplementaryFiles(Values, Icons, Others):
+class ComplementaryFiles(Values, Icons, Others, Helpers):
+    config = None
 
     def __init__(self):
         super().__init__()
 
     def generate(self):
-        (head, new_files) = ([], [])
-        if 'icon_png' in self.config and 'static_url' in self.config:
-            if not len(self.config['icon_png']):
-                # test: test_void_icon_png
-                raise Exception("'icon_png' key value can't be void.")
-            if not path.isfile(self.config['icon_png']):
-                # test: test_icon_png_doesnt_exists
-                raise Exception(textwrap.dedent("""\
-                    'icon_png' key ({}) must be referred to a file path that exists.
-                    FILE PATH: {}""".format(self.config['icon_png'],
-                        path.join(os.getcwd(), self.config['icon_png']))))
-            with open(self.config['icon_png'], 'r+b') as f:
-                with Image.open(f) as image:
-                    for name in self.names:
-                        for size in self.brand[name].get('sizes', []):
-                            filename = "{0}-{1}x{1}.png".format(self.brand[name]['name'], str(size))
-                            new_files.append(self._resize(image, [size, size], filename))
-                            # Some square icons are added to head
-                            # Can return a String
-                            element = self.general_icons(name, [size, size], filename)
-                            if element:
-                                head.append(element)
-                        for size in self.brand[name].get('special_sizes', []):
-                            filename = "{}-{}x{}.png".format(self.brand[name]['name'], str(size[0]),
-                                str(size[1]))
-                            new_files.append(self._resize(image, size, filename))
-                            # Non square icons aren't added to head
-                            # Returns always None
-                            self.general_icons(name, size, filename)
-            element = self.icon()
+        head, new_files = ([], [])
+
+        # Create folder for statics folder
+        static_folderpath = path.join(self.config['files_output'],
+                                      self.config['static_url'])
+        static_folderpath = path.join(os.getcwd(), static_folderpath)
+        self.create_folder(static_folderpath)
+
+        if 'favicon_png' in self.config:
+
+            # Test: test_void_icon_png
+            # Action: get in
+            if not len(self.config['favicon_png']):
+                self.error_message("'favicon_png' key value can't be void.")
+
+            # Test: test_icon_png_doesnt_exists
+            # Action: get in
+            if not path.isfile(self.config['favicon_png']):
+                filepath = path.join(os.getcwd(), self.config['favicon_png'])
+                e = (
+                    f"'favicon_png' key ({self.config['favicon_png']}) must be "
+                    "referred to a file path that exists."
+                    f"FILE PATH: {filepath}"
+                )
+                self.error_message(e)
+
+            # General icons
+            with open(self.config['favicon_png'], 'r+b') as f, \
+                    Image.open(f) as image:
+                for name in self.names:
+
+                    # Resize 'favicon_png' to determinated sizes
+
+                    # Square icons, e.g., 16x16
+                    sizes = self.brand[name].get('sizes', [])
+                    for size in sizes:
+                        filename = (f"{self.brand[name]['name']}-"
+                                    f"{size}x{size}.png")
+                        filepath = path.join(static_folderpath, filename)
+                        self.resize(image, [size, size], filepath)
+                        new_files.append(filepath)
+                        # Some square icons are added to head
+                        # The function 'general_icons' can return a String for
+                        # this cases
+                        element = self.general_icons(filename, name,
+                                                     [size, size])
+                        if element:
+                            head.append(element)
+
+                    # Non square icons, e.g., 310x150
+                    sizes = self.brand[name].get('special_sizes', [])
+                    for size in sizes:
+                        filename = (f"{self.brand[name]['name']}-"
+                                    f"{size[0]}x{size[1]}.png")
+                        filepath = path.join(static_folderpath, filename)
+                        self.resize(image, size, filepath)
+                        new_files.append(filepath)
+                        # Non square icons aren't added to head
+                        # The function 'general_icons' returns always None for
+                        # this cases
+                        self.general_icons(filename, name, size)
+
+            # Favicon .ico version
+            element = self.favicon()
             if element:
                 head.append(element)
+
+            # Favicon .svg version
             element = self.mask_icon()
             if element:
                 head.append(element)
-            if 'browserconfig' in self.config:
-                browserconfig_content, browserconfig_head = self.browserconfig()
-                head.append(browserconfig_head)
-                new_files.append(self._write_file(path.join(self.config['output'],
-                    self.config['browserconfig']), browserconfig_content))
-            if 'manifest' in self.config:
-                manifest_content, manifest_head = self.manifest()
-                head.append(manifest_head)
-                new_files.append(self._write_file(path.join(self.config['output'],
-                    self.config['manifest']), manifest_content))
-            if 'opensearch' in self.config:
-                opensearch_content, opensearch_head = self.opensearch()
-                head.append(opensearch_head)
-                new_files.append(self._write_file(path.join(self.config['output'],
-                    'opensearch.xml'), opensearch_content))
-            if 'url' in self.config:
-                new_files.append(self._write_file(path.join(self.config['output'],
-                    'robots.txt'), self.robots()))
-            if 'url' in self.config and 'sitemap' in self.config:
-                new_files.append(self._write_file(path.join(self.config['output'],
-                    self.config['sitemap']), self.sitemap()))
+
+            # browserconfig.xml
+            browserconfig_content, browserconfig_head = self.browserconfig()
+            head.append(browserconfig_head)
+            filepath = path.join(static_folderpath, 'browserconfig.xml')
+            self.write_file(filepath, browserconfig_content)
+            new_files.append(filepath)
+
+            # manifest.json
+            manifest_content, manifest_head = self.manifest()
+            head.append(manifest_head)
+            filepath = path.join(static_folderpath, 'manifest.json')
+            self.write_file(filepath, manifest_content)
+            new_files.append(filepath)
+
+            # opensearch.xml
+            opensearch_content, opensearch_head = self.opensearch()
+            head.append(opensearch_head)
+            filepath = path.join(static_folderpath, 'opensearch.xml')
+            self.write_file(filepath, opensearch_content)
+            new_files.append(filepath)
+
+            if 'clear_url' in self.config:
+
+                # robots.txt
+                robots_content = self.robots()
+                filepath = path.join(self.config['files_output'], 'robots.txt')
+                self.write_file(filepath, robots_content)
+                new_files.append(filepath)
+
+                # sitemap.xml
+                sitemap_content = self.sitemap()
+                filepath = path.join(self.config['files_output'], 'sitemap.xml')
+                self.write_file(filepath, sitemap_content)
+                new_files.append(filepath)
+
         return head, new_files

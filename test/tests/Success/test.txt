@@ -1,0 +1,87 @@
+"""
+Python syntax
+cushead config file
+Git: https://github.com/lucasvazq/cushead
+Documentation: https://github.com/lucasvazq/cushead/blob/master/README.md
+
+CONFIG VARIABLES:
+
+    html_file (FILE PATH):
+        Required, can't be void, need to exist and referrer to a file
+
+    output (FOLDER PATH):
+        Required, need to exist and referrer to a folder
+
+    static_url (STRING):
+        Required
+
+    icon_png (FILE PATH):
+        If declared, need to exist and referrer to an image file
+        Recomended 1024x1024 png image
+"""
+
+# Don't delete or change the name of this variable
+config = {
+
+    # MAIN CONFIG
+    'html_file':        './index.html',
+    'output':           './output/', # e.g. for manifest.json
+    'static_url':       '/static/',
+
+    # GENERAL CONFIG
+    'content-type':     'text/html; charset=utf-8',
+    'X-UA-Compatible':  'ie=edge',
+    'viewport':         {'width': 'device-width', 'initial-scale': '1'},
+    'language':         'en',
+    'territory':        'US', # language territory
+    'type':             'website', # http://ogp.me/#types
+    'color':            '#FFFFFF',
+    'url':              'microsoft.com', # Without "www." and protocol (e.g. "http://")
+    'protocol':         'https://',
+    'robots':           'index, follow',
+    'browserconfig':    'browserconfig.xml',
+    'manifest':         'manifest.json',
+    'opensearch':       'opensearch.xml',
+    'sitemap':          'sitemap.xml',
+
+    # BASIC CONFIG
+    'title':            'Microsoft',
+    'description':      'Technology Solutions',
+    'subject':          'Home Page',
+    'keywords':         'Microsoft, Windows',
+
+    # IMAGES
+    'preview':          'preview.png', # Big image preview
+    'preview_type':     'image/png', # image/jpeg, image/gif or image/png
+    'icon':             'favicon.ico', # *.ico
+    'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 1024x1024
+    'mask-icon':        'maskicon.svg', # svg file type
+
+    # SOCIAL MEDIA
+    'fb:app_id':        '12345', # Facebook App ID
+    'tw:site':          '@Microsoft', # Twitter account
+    'tw:creator:id':    '123456', # Page editor ID
+
+    # PWA
+    'dir':              'ltr',
+    'start_url':        '/',
+    'orientation':      'landscape',
+    'scope':            '/',
+    'display':          'browser',
+    'platform':        'web',
+    'applications':     [
+        {
+            'platform': 'play',
+            'url':      'https://play.google.com/store/apps/details?id=com.example.app',
+            'id':       'com.example.app'
+        },
+        {
+            'platform': 'itunes',
+            'url':      'https://itunes.apple.com/app/example-app/id123456',
+        }
+    ],
+
+    # AUTHOR
+    'author':           'Lucas Vazquez'
+
+}

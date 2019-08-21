@@ -10,7 +10,7 @@ def unsupported_title():
 {0}
 {1}
 {0}
-""".format("="*len(title), title)
+""".format("=" * len(title), title)
 
 
 def unsupported_installation(info, support_string_format):
@@ -37,7 +37,7 @@ Try running:
 """.format(**support_string_format)
 
 
-class Support():
+class Support:
 
     def __init__(self, info):
         self.info = info
@@ -54,13 +54,16 @@ class Support():
             'current_minor': self.current_python[1]}
 
     def check(self, message):
-        if self.current_python < self.min_python or \
-            self.current_python > self.max_python:
+        if (
+            self.current_python < self.min_python or
+            self.current_python > self.max_python
+        ):
             sys.stderr.write(unsupported_title() + message)
-            sys.exit(1)
+            raise Exception("Unsupported Python version.")
 
     def install(self):
-        self.check(unsupported_installation(self.info, self.support_string_format))
+        self.check(
+            unsupported_installation(self.info, self.support_string_format))
 
     def run(self):
         self.check(unsupported_run(self.info, self.support_string_format))

@@ -2,33 +2,33 @@
 # -*- coding: utf-8 -*-
 
 import os
-import textwrap
-import types
-from importlib import machinery
-from os import path
+import sys
 
 
-class Helpers():
+class Helpers:
 
     def __init__(self):
-        pass
-
-    def _get_values(self, filename):
-        filepath = path.join(os.getcwd(), filename)
-        loader = machinery.SourceFileLoader(filename, filepath)
-        mod = types.ModuleType(loader.name)
-        loader.exec_module(mod)
-        try:
-            return mod.config
-        except:
-            raise Exception(textwrap.dedent("""\
-                Can't found 'config' variable in ({})
-                FILE PATH: {}""".format(self.args.file,
-                    path.join(os.getcwd(), self.args.file))))
+        super().__init__()
 
     @staticmethod
-    def _write_file(filepath, content):
+    def error_message(message):
+        (COLOR, RESET) = (
+            ('', '')
+            if os.name == 'nt' else
+            (
+                '\033[1;31m',  # Red
+                '\033[0;0m'  # Default
+            )
+        )
+        print(f"{COLOR}{message}{RESET}")
+        sys.exit()
+
+    @staticmethod
+    def create_folder(folderpath):
+        os.makedirs(folderpath, exist_ok=True)
+
+    @staticmethod
+    def write_file(filepath, content):
         file_handle = open(filepath, 'w')
         file_handle.write(content)
         file_handle.close()
-        return filepath

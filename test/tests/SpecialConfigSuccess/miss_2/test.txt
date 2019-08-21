@@ -17,7 +17,7 @@ CONFIG VARIABLES:
 
     icon_png (FILE PATH):
         If declared, need to exist and refer a image file
-        Recomended 310x310 png image
+        Recomended 1024x1024 png image
 """
 
 # Don't delete or change the name of this variable
@@ -49,7 +49,7 @@ config = {
     'preview':          'preview.png', # Big image preview
     'preview_type':     'image/png', # image/jpeg, image/gif or image/png
     'icon':             'favicon.ico', # *.ico
-    'icon_png':         './test/tests/favicon.png', # FILEPATH PNG IMAGE 310x310
+    'icon_png':         './test/tests/favicon.png', # FILEPATH PNG IMAGE 1024x1024
     'mask-icon':        'maskicon.svg', # svg file type
 
     # SOCIAL MEDIA

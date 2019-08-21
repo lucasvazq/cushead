@@ -13,7 +13,7 @@
 
 **Works with:** _meta-tags, favicons, manifest, robots, browserconfig, sitemap, opensearch_
 
-**Python Versions:** _>=3.5, <4.0_
+**Python Versions:** _>=3.6, <4.0_
 
 **Package Version**: _3.1.8_
 
@@ -115,7 +115,7 @@ CONFIG VARIABLES:
 
   icon_png (FILE PATH):
     If declared, need to exist and referrer to an image file
-    Recomended 310x310 png image
+    Recomended 1024x1024 png image
 """
 
 # Don't delete or change the name of this variable
@@ -152,7 +152,7 @@ config = {
   'preview':          'preview.png', # Big image preview
   'preview_type':     'image/png', # image/jpeg, image/gif or image/png
   'icon':             'favicon.ico', # *.ico
-  'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 310x310
+  'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 1024x1024
   'mask-icon':        'maskicon.svg', # svg file type
 
   # SOCIAL MEDIA
@@ -213,7 +213,7 @@ The URL path of statics files.
 
 #### icon_png
 
-A PNG image file used to generate the icons. 310x310 size recommended.
+A PNG image file used to generate the icons. 1024x1024 size recommended.
 
 ### -file
 
@@ -223,8 +223,12 @@ Using the default config file generated with -preset, we run the script with
 
 `cushead -file settings.txt`
 
-Output:
+<details>
+
+  <summary>Console output</summary>
+
 ```txt
+HTML:
 <html lang="en">
 
 HEAD:
@@ -363,6 +367,8 @@ HTML FILE: ./index.html
 OUTPUT FILES: ./output/
 (full path): /home/user/Projects/Example/./output/
 ```
+
+</details>
 
 #### Edited html file
 

@@ -125,7 +125,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?br
         
           icon_png (FILE PATH):
             If declared, need to exist and referrer to an image file
-            Recomended 310x310 png image
+            Recomended 1024x1024 png image
         """
         
         # Don't delete or change the name of this variable
@@ -162,7 +162,7 @@ Description: [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?br
           'preview':          'preview.png', # Big image preview
           'preview_type':     'image/png', # image/jpeg, image/gif or image/png
           'icon':             'favicon.ico', # *.ico
-          'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 310x310
+          'icon_png':         './favicon.png', # FILEPATH PNG IMAGE 1024x1024
           'mask-icon':        'maskicon.svg', # svg file type
         
           # SOCIAL MEDIA
