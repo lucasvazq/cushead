@@ -6,11 +6,14 @@
         "Documentation":    "https://github.com/lucasvazq/cushead/blob/master/README.md"
     },
     "required": {
-        "files_output":     "./test/tests/Success/complete_config/",
-        "static_url":       "statiz/"
+        "files_output":     "./test/tests/Success/complete_config/wasa",
+        "static_url":       "/static/wasa"
     },
     "recommended": {
-        "favicon_png":      "./test/tests/favicon.png"
+        "favicon_png":      "./test/tests/favicon.png",
+        "favicon_ico":      "./test/tests/favicon.ico",
+        "favicon_svg":      "./test/tests/favicon.svg",
+        "preview_png":      "./test/tests/preview.png"
     },
     "default": {
         "general": {
@@ -19,7 +22,6 @@
             "viewport":         "width=device-width, initial-scale=1",
             "language":         "en",
             "territory":        "US",
-            "type":             "website",
             "clear_url":        "microsoft.com",
             "protocol":         "https://",
             "robots":           "index, follow"
@@ -30,14 +32,10 @@
             "subject":          "Home Page",
             "author":           "Lucas Vazquez",
             "keywords":         "Microsoft, Windows",
-            "background_color": "#FFFFFF",
-            "preview":          "preview.png",
-            "preview_type":     "image/png",
-            "icon_ico":         "favicon.ico",
-            "icon_svg":         "maskicon.svg"
+            "background_color": "#FFFFFF"
         },
         "social_media": {
-            "facebook_app_id":  "12345",
+            "facebook_app_id":  "123456",
             "twitter_user_@":   "@Microsoft",
             "twitter_user_id":  "123456"
         }

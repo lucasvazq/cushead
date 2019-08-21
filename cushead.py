@@ -14,7 +14,7 @@ try:
     Support(INFO).run()
 except Exception as e:
     print(e)
-    sys.exit(1)
+    sys.exit()
 
 from src.main import Main
 

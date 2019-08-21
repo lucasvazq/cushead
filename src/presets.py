@@ -5,10 +5,10 @@ import os
 import textwrap
 from os import path
 
-from .helpers import Helpers
+from .helpers import FilesHelper
 
 
-class Presets(Helpers):
+class Presets:
     info = None
 
     def __init__(self):
@@ -25,14 +25,14 @@ class Presets(Helpers):
                     'Documentation':    '{self.info['documentation']}'
                 }},
                 'required': {{
-                    'files_output':     './test/tests/Success/complete_config/',
-                    'static_url':       'statiz/'
+                    'files_output':     './test/tests/Success/complete_config/wasa',
+                    'static_url':       '/static/wasa'
                 }},
                 'recommended': {{
                     'favicon_png':      './test/tests/favicon.png',
-                    'favicon_ico':      'favicon.ico',
-                    'favicon_svg':      'favicon.svg',
-                    'preview_png':      'preview.png'
+                    'favicon_ico':      './test/tests/favicon.ico',
+                    'favicon_svg':      './test/tests/favicon.svg',
+                    'preview_png':      './test/tests/preview.png'
                 }},
                 'default': {{
                     'general': {{
@@ -52,7 +52,7 @@ class Presets(Helpers):
                         'subject':          'Home Page',
                         'author':           'Lucas Vazquez',
                         'keywords':         'Microsoft, Windows',
-                        'background_color': '#FFFFFF',
+                        'background_color': '#FFFFFF'
                     }},
                     'social_media': {{
                         'facebook_app_id':  '123456',
@@ -85,4 +85,4 @@ class Presets(Helpers):
             }}""")
         s = s.replace('\'', '"')
         filepath = path.join(os.getcwd(), file)
-        self.write_file(filepath, s)
+        FilesHelper.write_file(filepath, s)

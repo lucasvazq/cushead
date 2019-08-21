@@ -14,7 +14,6 @@ class Head(ComplementaryFiles):
 
     def add_general_config(self):
         # content-type
-        print(self.config)
         head = []
         if 'content-type' in self.config:
             head.append("<meta http-equiv='Content-Type' "
@@ -168,7 +167,7 @@ class Head(ComplementaryFiles):
 
         # Generate tags for head
         # Order matters
-        files_related_head_elements, new_files = self.generate()
+        files_related_head_elements = self.generate()
         head = [
             self.add_general_config(),
             self.add_basic_config(),
@@ -177,26 +176,4 @@ class Head(ComplementaryFiles):
             self.add_author(),
         ]
 
-        # Concatenate all head elements in a string
-        head = [element for array in head for element in array]
-        space = "    "  # four spaces for identation
-        head = ''.join(f"{space*2}{element}\n" for element in head)
-        head = head.replace('\'', '"')
-
-        # Generate html document filestring
-        html_lang = (
-            f" lang={self.config['language']}"
-            if 'language' in self.config else ""
-        )
-        html_string = (
-            "<!DOCTYPE html>\n"
-            f"<html{html_lang}>\n"
-            f"{space}<head>\n"
-            f"{head}"  # already have identation
-            f"{space}</head>\n"
-            f"{space}<body>\n"
-            f"{space}</body>\n"
-            "</html>"
-        )
-
-        return html_string
+        return head

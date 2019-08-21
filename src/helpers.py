@@ -28,10 +28,15 @@ class Errors:
             filepath = path.join(os.getcwd(), key)
             e = (
                 f"'{keyname}' key ({key}) must be referred to a file path that "
-                "exists."
+                "exists.\n"
                 f"FILE PATH: {filepath}"
             )
             cls.error_message(e)
+
+    @classmethod
+    def required_key(cls, dictionary, keyname):
+        if keyname not in dictionary:
+            cls.error_message("Miss '{keyname}' key and it's required.")
 
     @classmethod
     def void_key(cls, key, keyname):
@@ -39,7 +44,7 @@ class Errors:
             cls.error_message(f"'{keyname}' key value can't be void.")
 
 
-class FilesHelpers:
+class FilesHelper:
 
     @staticmethod
     def copy_file(source, destination):
@@ -52,7 +57,7 @@ class FilesHelpers:
         file_handle.close()
 
 
-class FoldersHelpers:
+class FoldersHelper:
 
     @staticmethod
     def create_folder(folderpath):

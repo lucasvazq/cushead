@@ -2,18 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
-import textwrap
 from os import path
 
 from .arguments import Arguments
 from .config import Config
 from .head import Head
-from .helpers import Helpers
+from .helpers import FilesHelper, FoldersHelper
 from .presets import Presets
 
 
-class Main(Arguments, Presets, Config, Head, Helpers):
+class Main(Arguments, Presets, Config, Head):
+    config = None
 
     def __init__(self, info, args):
         self.info = info
@@ -32,13 +31,47 @@ class Main(Arguments, Presets, Config, Head, Helpers):
 
         # -file
         else:
-            config = self.get_values()
+            self.get_values()
+
+            FoldersHelper.create_folder(self.config['files_output'])
+
             output_filepath = path.join(os.getcwd(),
                                         self.config['files_output'])
             html_filepath = path.join(output_filepath, 'index.html')
             head = self.head_general()
-            self.write_file(html_filepath, head)
+
+            # Concatenate all head elements in a string
+            head = [element for array in head for element in array]
+            space = "    "  # four spaces for identation
+            head = ''.join(f"{space * 2}{element}\n" for element in head)
+            head = head.replace('\'', '"')
+
+            # Generate html document filestring
+            html_lang = (
+                f" lang={self.config['language']}"
+                if 'language' in self.config else ""
+            )
+            html_string = (
+                "<!DOCTYPE html>\n"
+                f"<html{html_lang}>\n"
+                f"{space}<head>\n"
+                f"{head}"  # already have identation
+                f"{space}</head>\n"
+                f"{space}<body>\n"
+                f"{space}</body>\n"
+                "</html>"
+            )
+
+            FilesHelper.write_file(html_filepath, html_string)
+
+            static_relative_folderpath = f".{self.config['static_url']}"
+            static_relative_folderpath = path.join(self.config['files_output'],
+                                                   static_relative_folderpath)
+            static_folderpath = path.join(os.getcwd(),
+                                          static_relative_folderpath)
             print(
-                f"OUTPUT FILES: {config['files_output']}\n"
-                f"(full path): {output_filepath}"
+                f"OUTPUT ROOT FILES: {self.config['files_output']}\n"
+                f"(full path): {output_filepath}\n"
+                f"OUTPUT STATIC FILES: {static_relative_folderpath}\n"
+                f"(full path): {static_folderpath}"
             )

@@ -8,7 +8,7 @@ from os import path
 from PIL import Image
 from resizeimage import resizeimage
 
-from .helpers import Errors, FilesHelpers, FoldersHelpers
+from .helpers import Errors, FilesHelper, FoldersHelper
 
 
 class Values:
@@ -199,6 +199,7 @@ class Icons:
             return False
         Errors.void_key(self.config[key], key)
         Errors.is_file(self.config[key], key)
+        return True
 
     def favicon_png(self):
 
@@ -235,12 +236,13 @@ class Icons:
         if not self._requirements('favicon_ico'):
             return []
 
+        # Root destination
         source = path.join(os.getcwd(), self.config['favicon_ico'])
-        destination = path.join(self.static_folderpath, "favicon.ico")
-        FilesHelpers.copy_file(source, destination)
+        destination = path.join(self.config['files_output'], "favicon.ico")
+        FilesHelper.copy_file(source, destination)
 
         s = ("<link rel='shortcut icon' "
-             f"href='/{self.config['favicon_ico']}' type='image/x-icon' />")
+             f"href='/favicon.ico' type='image/x-icon' />")
         return s
 
     def favicon_svg(self):
@@ -250,7 +252,7 @@ class Icons:
 
         source = path.join(os.getcwd(), self.config['favicon_svg'])
         destination = path.join(self.static_folderpath, "favicon.svg")
-        FilesHelpers.copy_file(source, destination)
+        FilesHelper.copy_file(source, destination)
 
         color = self.config.get('color', '')
         s = (f"<link rel='mask-icon' href='{self.config['favicon_svg']}' "
@@ -264,7 +266,7 @@ class Icons:
 
         source = path.join(os.getcwd(), self.config['preview_png'])
         destination = path.join(self.static_folderpath, "preview.png")
-        FilesHelpers.copy_file(source, destination)
+        FilesHelper.copy_file(source, destination)
 
         # og:image (http), og:image:secure_url (https) and twitter:image
         image = f"{self.config['static_url']}preview.png"
@@ -277,7 +279,6 @@ class Icons:
 
     @staticmethod
     def resize(image, size, filepath):
-        print(size)
         cover = resizeimage.resize_contain(image, [size[0], size[1]])
         cover.save(filepath, image.format)
 
@@ -298,7 +299,7 @@ class Others:
                 self.config['static_url'],
                 self.brand['browserconfig']['name']
             )
-            for size in self.brand['browserconfig']['sizes']
+            for size in self.brand['browserconfig']['square_sizes']
         ])
         s += ''.join([
             "<wide{0}x{1}logo src='{2}{3}-{0}x{1}.png' />".format(
@@ -307,7 +308,7 @@ class Others:
                 self.config['static_url'],
                 self.brand['browserconfig']['name']
             )
-            for size in self.brand['browserconfig']['special_sizes']
+            for size in self.brand['browserconfig']['non_square_sizes']
         ])
         color = self.config.get('color', '')
         s += (f"<TileColor>{color}</TileColor></tile></msapplication>"
@@ -328,7 +329,7 @@ class Others:
                 'type': 'image/png',
                 'density': str(size / 48)
             }
-            for size in self.brand['manifest']['sizes']
+            for size in self.brand['manifest']['square_sizes']
         ]
         dictionary = {}
         if 'title' in self.config:
@@ -388,12 +389,12 @@ class Others:
     def robots(self):
         protocol = self.config.get('protocol', '')
         sitemap_content = (
+            "\n"
             f"Sitemap: {protocol}{self.config['clear_url']}/sitemap.xml"
             if 'sitemap' in self.config else ''
         )
         s = ("User-agent: *\n"
              "Allow: /\n"
-             "\n"
              f"{sitemap_content}")
         return s
 
@@ -421,10 +422,11 @@ class ComplementaryFiles(Values, Icons, Others):
         head = []
 
         # Create folder for statics folder
+        static_folderpath = f".{self.config['static_url']}"
         static_folderpath = path.join(self.config['files_output'],
-                                      self.config['static_url'])
+                                      static_folderpath)
         static_folderpath = path.join(os.getcwd(), static_folderpath)
-        FoldersHelpers.create_folder(static_folderpath)
+        FoldersHelper.create_folder(static_folderpath)
         self.static_folderpath = static_folderpath
 
         # Favicon .png version
@@ -451,30 +453,30 @@ class ComplementaryFiles(Values, Icons, Others):
         browserconfig_content, browserconfig_head = self.browserconfig()
         head.append(browserconfig_head)
         filepath = path.join(static_folderpath, 'browserconfig.xml')
-        FilesHelpers.write_file(filepath, browserconfig_content)
+        FilesHelper.write_file(filepath, browserconfig_content)
 
         # manifest.json
         manifest_content, manifest_head = self.manifest()
         head.append(manifest_head)
         filepath = path.join(static_folderpath, 'manifest.json')
-        FilesHelpers.write_file(filepath, manifest_content)
+        FilesHelper.write_file(filepath, manifest_content)
 
         # opensearch.xml
         opensearch_content, opensearch_head = self.opensearch()
         head.append(opensearch_head)
         filepath = path.join(static_folderpath, 'opensearch.xml')
-        FilesHelpers.write_file(filepath, opensearch_content)
+        FilesHelper.write_file(filepath, opensearch_content)
 
         if 'clear_url' in self.config:
 
             # robots.txt
             robots_content = self.robots()
             filepath = path.join(self.config['files_output'], 'robots.txt')
-            FilesHelpers.write_file(filepath, robots_content)
+            FilesHelper.write_file(filepath, robots_content)
 
             # sitemap.xml
             sitemap_content = self.sitemap()
             filepath = path.join(self.config['files_output'], 'sitemap.xml')
-            FilesHelpers.write_file(filepath, sitemap_content)
+            FilesHelper.write_file(filepath, sitemap_content)
 
         return head
