@@ -3,6 +3,7 @@ branch = True
 source = ./
 omit =
     *__init__*
+    src/console.py
     src/info.py
     src/support.py
     cushead.py
