@@ -21,9 +21,9 @@ def parse_args(info, args):
         epilog=textwrap.dedent(f"""\
             Examples:
             1) Generate config file:
-                {name} -preset settings.txt
+                {name} -preset settings.json
             2) Execute with using that config file:
-                {name} -file settings.txt""")
+                {name} -file settings.json""")
     )
 
     # ARGUMENTS
@@ -36,13 +36,9 @@ def parse_args(info, args):
         metavar='FILENAME',
         dest='preset',
         help=textwrap.dedent("""\
-            Name of config file.
-            Generate an example config file. That file contains a variable
-            named 'config' that can be customized. It has some required
-            values: 'html_file' (FILE PATH), 'output' (FOLDER PATH) and
-            'static_url' (STRING). Also, if 'icon_png' (IMAGE FILE PATH) is
-            declared, this key need to have a value related to a path of an
-            existing image.""")
+            Name of config file, example = config.json
+            Generate an example config file in JSON format. That file contains
+            differents variables that can be customized.""")
     )
     # -file
     options.add_argument(
@@ -51,9 +47,8 @@ def parse_args(info, args):
         dest='file',
         help=textwrap.dedent("""\
             Path to the config file.
-            Read a config file that contains configurable values related to
-            SEO and UX. After it, the script edits an html file and generate
-            complementary files like icons, robots.txt, etc.""")
+            Read a config file that contains settings related to SEO and UX and
+            generate custom files based on that.""")
     )
 
     parser = parser.parse_args(args)
