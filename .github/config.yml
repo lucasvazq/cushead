@@ -1,0 +1,9 @@
+newIssueWelcomeComment: >
+  Thanks for opening your firstB **a**
+
+
+newPRWelcomeComment: >
+  Thanks for opening this pull B
+
+firstPRMergeComment: >
+  Congrats on merging your firsB
