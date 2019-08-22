@@ -9,6 +9,8 @@
 
 # cushead
 
+## IN DEVELOPMENT
+
 **A CLI that help you to improve the SEO and UX of your websites.**
 
 **Works with:** _meta-tags, favicons, manifest, robots, browserconfig, sitemap, opensearch_
@@ -17,7 +19,7 @@
 
 **Package Version**: _3.1.8_
 
-**Status:** _Production/Stable_
+**Status:** _Development_
 
 ## Description
 
