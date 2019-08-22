@@ -37,7 +37,8 @@ class TestSuccess(unittest.TestCase):
     # Complete config
     @staticmethod
     def test_complete_config():
-        arguments = ['-file', './test/tests/Success/complete_config/test.txt']
+        arguments = ['-file',
+                     './test/tests/Success/complete_config/config.json']
         Main(INFO, arguments).run()
 
     # -preset
