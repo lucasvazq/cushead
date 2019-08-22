@@ -15,10 +15,9 @@ TODO
     RECOMENDATION: xhtml rules
     RECOMENDATION: keep an .ico in root
     recomendations have links
-    DEPRECATED: xmlns="http://www.w3.org/1999/xhtml" BC is auto
     Make wiki
     ./example/ with inputs and output separated folders, and test.txt in root
 
-TODO json-LD
+TODO json-LD and other techs
 TODO: fix ident in void lines
 TODO: better docs

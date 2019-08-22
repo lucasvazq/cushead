@@ -54,7 +54,8 @@ class Head(ComplementaryFiles):
             title_components = [
                 f"<title>{title}</title>",
                 f"<meta name='application-name' content='{title}' />",
-                f"<meta name='apple-mobile-web-app-title' content='{title}' />",
+                "<meta name='apple-mobile-web-app-title' "
+                f"content='{title}' />",
             ]
             head.extend(title_components)
         # description
