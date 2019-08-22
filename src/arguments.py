@@ -57,8 +57,7 @@ def parse_args(info, args):
     if not (parser.preset or parser.file):
         Errors.error_message("Miss arguments. Use -preset or -file")
     if parser.preset and parser.file:
-        Errors.error_message("Can't use -preset and -file arguments "
-                             "together.")
+        Errors.error_message("Can't use -preset and -file arguments together.")
     if parser.file:
         Errors.exists(parser.file, "-file")
         Errors.is_file(parser.file, "-file")

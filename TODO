@@ -2,12 +2,6 @@ TODO: fix ident in void lines
 
 
 
-
-TODO: test section:
-    remove exceptions
-    longs errors need be inside a "e" variable
-    search all # Test and # FIX
-
 TODO: docs section:
     fix logo align
     include logo for readme

@@ -37,8 +37,7 @@ def get_values(args):
     social_media = default.get('social_media', {})
     progressive_web_app = jsonstring.get('progressive_web_apps', {})
     if 'required' not in jsonstring:
-        exception = "Miss 'required' object and it's required."
-        Errors.error_message(exception)
+        Errors.error_message("Miss 'required' object and it's required.")
     jsonstring = {**jsonstring['required'], **recommended, **general,
                   **basic, **social_media, **progressive_web_app}
     config = jsonstring

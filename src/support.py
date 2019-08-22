@@ -94,9 +94,9 @@ class Support(Messages):
     def install(self):
         """Check installation support"""
         message = self.unsupported_installation()
-        self._check(message)
+        self.check(message)
 
     def run(self):
         """Check script run support"""
         message = self.unsupported_run()
-        self._check(message)
+        self.check(message)
