@@ -10,6 +10,9 @@ class Head(ComplementaryFiles):
     """Main class"""
     config = {}
 
+    def __init__(self):
+        super().__init__()
+
     def add_general_config(self):
         """General config section"""
         # content-type

@@ -1,5 +1,3 @@
-TODO: fix ident in void lines
-TODO: add apple-touch-start-image but need references
 TODO: examples icos
 
 TODO: docs section:
@@ -10,9 +8,9 @@ TODO: docs section:
     RECOMENDATION: xhtml rules
     RECOMENDATION: keep an .ico in root
     recomendations have links
-    DEPRECATED: yandex browsers, manifest.webapp
     DEPRECATED: xmlns="http://www.w3.org/1999/xhtml" BC is auto
     Make wiki
     ./example/ with inputs and output separated folders, and test.txt in root
 
+TODO: fix ident in void lines
 TODO: better docs

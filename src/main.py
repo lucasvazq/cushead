@@ -20,7 +20,9 @@ class Main(Head):
     def __init__(self, info, args):
         self.info = info
         self.args = parse_args(args, info)
-        self.config = get_values(self.args)
+        if self.args.file:
+            self.config = get_values(self.args)
+        print("wasa")
         super().__init__()
 
     def run(self):
@@ -34,6 +36,7 @@ class Main(Head):
                 f"PATH: {self.args.preset}\n"
                 f"FULL PATH: {filepath}"
             )
+            return '-preset'
 
         # -file
         else:
@@ -80,3 +83,5 @@ class Main(Head):
                 f"OUTPUT STATIC FILES: {static_relative_folderpath}\n"
                 f"(full path): {static_folderpath}"
             )
+
+            return '-file'

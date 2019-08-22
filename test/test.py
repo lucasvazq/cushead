@@ -20,13 +20,10 @@ INFO = get_info()
 
 """
 
-# The path passed with 'outputh' isn't a folder
-def test_output_no_folder(self):
-    with self.assertRaises(Exception) as e:
-        Main(INFO, ['-file',
-            './test/tests/ConfigExceptions/output_no_folder/test.txt']).run()
-    self.assertRegex(str(e.exception),
-        "('output' )(\(.*\))( must be referred to a folder path.)(\n.*)")
+    def test_exit(self):
+        with self.assertRaises(SystemExit) as ex:
+            Main(INFO, [])
+        self.assertRegex(str(ex.exception), "WASAAA")
             
 """
 
@@ -44,8 +41,8 @@ class TestSuccess(unittest.TestCase):
     # -preset
     @staticmethod
     def test_preset():
-        pass
-        arguments = ['-preset', './test/tests/Success/preset/test.txt']
+        arguments = ['-preset',
+                     './test/tests/Success/preset/config.json']
         Main(INFO, arguments).run()
 
 
@@ -57,5 +54,4 @@ def suite_setup():
     return suite
 
 
-with contextlib.redirect_stdout(io.StringIO()) as stdout:
-    unittest.TextTestRunner(verbosity=3).run(suite_setup())
+unittest.TextTestRunner().run(suite_setup())

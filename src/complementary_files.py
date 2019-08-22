@@ -75,9 +75,11 @@ def values(config):
     )
     """
 
+    static_url = config.get('static_url', '')
+    background_color = config.get('background_color', '')
     yandex_content = (
-        f"logo={config['static_url']}yandex.png, "
-        f"color={config['background_color']}"
+        f"logo={static_url}yandex.png, "
+        f"color={background_color}"
     )
 
     # Order of how icons are generated and added to the head if it's
@@ -494,6 +496,7 @@ class ComplementaryFiles(Icons, Others):
     static_folderpath = None
 
     def __init__(self):
+
         self.names, self.brand = values(self.config)
 
     def generate(self):

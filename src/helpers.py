@@ -23,7 +23,7 @@ class Errors:
     def error_message(message):
         """Print error message"""
         print(f"{ERROR_COLOR}{message}{DEFAULT_COLOR}")
-        sys.exit()
+        sys.exit(message)
 
     @classmethod
     def exists(cls, relative_path, keyname):
