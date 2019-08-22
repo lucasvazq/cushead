@@ -20,6 +20,8 @@ class Main(Head):
     def __init__(self, info, args):
         self.info = info
         self.args = parse_args(args, info)
+        self.config = get_values(self.args)
+        super().__init__()
 
     def run(self):
         """Handle the different arguments"""
@@ -35,8 +37,6 @@ class Main(Head):
 
         # -file
         else:
-            self.config = get_values(self.args)
-            super().__init__()
 
             FoldersHelper.create_folder(self.config['files_output'])
 
