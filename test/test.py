@@ -19,12 +19,10 @@ from src.main import Main
 INFO = get_info()
 
 """
-
     def test_exit(self):
         with self.assertRaises(SystemExit) as ex:
             Main(INFO, [])
         self.assertRegex(str(ex.exception), "WASAAA")
-            
 """
 
 
@@ -41,6 +39,7 @@ class TestSuccess(unittest.TestCase):
     # -preset
     @staticmethod
     def test_preset():
+        pass
         arguments = ['-preset',
                      './test/tests/Success/preset/config.json']
         Main(INFO, arguments).run()

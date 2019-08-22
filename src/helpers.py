@@ -73,9 +73,8 @@ class FilesHelper:
     @staticmethod
     def write_file(filepath, content):
         """Write files"""
-        file_handle = open(filepath, 'w')
-        file_handle.write(content)
-        file_handle.close()
+        with open(filepath, 'w') as file:
+            file.write(content)
 
 
 class FoldersHelper:

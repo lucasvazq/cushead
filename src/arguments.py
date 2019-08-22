@@ -20,44 +20,66 @@ def parse_args(args, info):
         usage=f"{info['package_name']} -file FILEPATH",
         epilog=textwrap.dedent(f"""\
             Examples:
-            1) Generate config file:
-                {name} -preset settings.json
-            2) Execute with using that config file:
+            1) Generate config file with images:
+                {name} -preset settings.json --images
+            2) Execute with that config:
                 {name} -file settings.json""")
     )
 
     # ARGUMENTS
 
-    options = parser.add_argument_group('Options (one required)')
+    required = parser.add_argument_group("Required (only one)")
+    options = parser.add_argument_group("Options (use with Required "
+                                        "arguments)")
 
+    # GROUP: required
     # -preset
-    options.add_argument(
+    required.add_argument(
         '-preset',
         metavar='FILENAME',
         dest='preset',
-        help=textwrap.dedent("""\
-            Name of config file, example = config.json
-            Generate an example config file in JSON format. That file contains
-            differents variables that can be customized.""")
+        help=(
+            "Generate an example config file in JSON format. "
+            "That file contains differents variables that can be customized. "
+            "Can use with --images"
+        )
     )
     # -file
-    options.add_argument(
+    required.add_argument(
         '-file',
         metavar='FILEPATH',
         dest='file',
-        help=textwrap.dedent("""\
-            Path to the config file.
-            Read a config file that contains settings related to SEO and UX and
-            generate custom files based on that.""")
+        help=(
+            "Path to the config file. "
+            "Read a config file that contains settings related to SEO and UX "
+            "and generate custom files based on that."
+        )
+    )
+    # GROUP: options
+    # -images
+    options.add_argument(
+        '--images',
+        dest='images',
+        action='store_true',
+        help=(
+            "Use with -preset. "
+            "Add example images that can be used by the settings generated "
+            "with -preset. "
+            "This include: favicon_ico.ico, favicon_png.png, favicon_svg.svg "
+            "and presentation_png.png"
+        )
     )
 
+    parser.set_defaults(images=False)
     parser = parser.parse_args(args)
 
     # Validation
     if not (parser.preset or parser.file):
-        Errors.error_message("Miss arguments. Use -preset or -file")
+        Errors.error_message("Miss Required arguments. Use -preset or -file")
     if parser.preset and parser.file:
         Errors.error_message("Can't use -preset and -file arguments together.")
+    if parser.images and not parser.preset:
+        Errors.error_message("Can't use --images without -preset.")
     if parser.file:
         Errors.exists(parser.file, "-file")
         Errors.is_file(parser.file, "-file")

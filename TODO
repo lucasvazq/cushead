@@ -1,6 +1,13 @@
 TODO: examples icos
+TODO: images_presets
 
-TODO: docs section:
+Docs section
+
+TODO RECOMENDATION logo_png 1600px
+TODO RECOMENDATION logo_ico 16px
+TODO RECOMENDATION preview = 500px
+TODO RECOMENDATION logos = square
+TODO
     fix logo align
     include logo for readme
     logo inside ./doc/

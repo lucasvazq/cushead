@@ -10,10 +10,10 @@ from .arguments import parse_args
 from .config import get_values
 from .head import Head
 from .helpers import FilesHelper, FoldersHelper
-from .presets import make_preset
+from .presets import Presets
 
 
-class Main(Head):
+class Main(Head, Presets):
     """Main class of this module"""
     config = {}
 
@@ -22,7 +22,6 @@ class Main(Head):
         self.args = parse_args(args, info)
         if self.args.file:
             self.config = get_values(self.args)
-        print("wasa")
         super().__init__()
 
     def run(self):
@@ -30,11 +29,14 @@ class Main(Head):
 
         # -presets
         if self.args.preset:
-            make_preset(self.args.preset, self.info)
-            filepath = path.join(os.getcwd(), self.args.preset)
+            self.settings()
+            if self.args.images:
+                self.assets()
+            relative_path = path.dirname(self.args.preset)
+            full_path = path.join(os.getcwd(), relative_path)
             print(
-                f"PATH: {self.args.preset}\n"
-                f"FULL PATH: {filepath}"
+                f"PATH: {relative_path}\n"
+                f"FULL PATH: {full_path}"
             )
             return '-preset'
 

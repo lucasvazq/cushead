@@ -223,8 +223,7 @@ class Icons:
         )
         media = (
             f"media=(min-device-width: {min_size}px) and "
-            f"(max-device-width: {max_size}px) and "
-            f"(max-device-height: {max_size}px) "
+            f"(min-device-height: {min_size}px) "
             if 'media' in self.brand[name] else ''
         )
         if 'content' in self.brand[name]:
