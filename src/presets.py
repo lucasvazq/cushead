@@ -11,9 +11,7 @@ from .helpers import FilesHelper, FoldersHelper
 
 
 def make_preset(file, info):
-
-    """Generate confing in idented Json format"""
-
+    """Generate config in indented JSON format"""
     string = textwrap.dedent(f"""\
         {{
             'comment':  {{

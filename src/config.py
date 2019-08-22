@@ -12,7 +12,6 @@ from .helpers import Errors
 
 
 def get_values(args):
-
     """Read and obtain values as settings from json file"""
 
     filename = args.file

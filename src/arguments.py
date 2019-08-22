@@ -11,7 +11,6 @@ from .helpers import Errors
 
 
 def parse_args(info, args):
-
     """Argparse main function"""
 
     name = info['package_name']

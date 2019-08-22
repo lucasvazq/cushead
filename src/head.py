@@ -7,15 +7,11 @@ from .complementary_files import ComplementaryFiles
 
 
 class Head(ComplementaryFiles):
-
     """Main class"""
-
     config = {}
 
     def add_general_config(self):
-
         """General config section"""
-
         # content-type
         head = []
         if 'content-type' in self.config:
@@ -38,7 +34,7 @@ class Head(ComplementaryFiles):
             color = self.config['background_color']
             color_components = [
                 f"<meta name='theme-color' content='{color}' />",
-                f"<meta name='msapplication-TileColor' content='{color}' />"
+                f"<meta name='msapplication-TileColor' content='{color}' />",
             ]
             head.extend(color_components)
         # robots
@@ -48,9 +44,7 @@ class Head(ComplementaryFiles):
         return head
 
     def add_basic_config(self):
-
         """Basic config section"""
-
         head = []
         # title
         if 'title' in self.config:
@@ -83,9 +77,7 @@ class Head(ComplementaryFiles):
         return head
 
     def add_social_media(self):
-
         """Social media section"""
-
         head = []
 
         # OPENGRAPH AND FACEBOOK
@@ -165,9 +157,7 @@ class Head(ComplementaryFiles):
         return head
 
     def add_author(self):
-
         """Author section"""
-
         head = []
         # author
         if 'author' in self.config:
@@ -176,9 +166,7 @@ class Head(ComplementaryFiles):
         return head
 
     def head_general(self):
-
-        """Main function of this class"""
-
+        """Join the differents HTML head elements in order"""
         # Generate tags for head
         # Order matters
         files_related_head_elements = self.generate()

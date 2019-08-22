@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""This module generate new files"""
+"""Handle the generations of files"""
 
 import json
 import os
@@ -13,9 +13,9 @@ from resizeimage import resizeimage
 from .helpers import Errors, FilesHelper, FoldersHelper
 
 
-def values():
+def values(config):
     """
-    Function used for return some values
+    Function used for return values
 
     Variables:
         names (list)
@@ -26,9 +26,10 @@ def values():
     brand: {
             identifier: {
                 name_ref (str) Required
-                name (str) Required
+                filename (str) Required
                 square_sizes (int list)
                 non_square_sizes (list of int list)
+                content (str)
                 file_type (str)
                 title (str)
                 metatag (bool)
@@ -38,6 +39,7 @@ def values():
         }
 
     identifier: only for identify objects inside brand object
+    filename: filename of new resized image, its include extension and sizes
     metatag: used to define tagname, attribute and ref variables
         True: 'meta', 'name', 'content'
         False: 'link', 'rel', 'href'
@@ -50,7 +52,9 @@ def values():
     Result:
     A: <link rel="shortcut icon" type="image/png" sizes="16x16"
         href="/static/favicon-16x16.png" />
-    B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+    B: <meta name="yandex-tableau-widget"
+        content="/static/yandex-150x150.png, color=#0000FF" />
+    C: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
         title="Microsoft" />
 
     Template:
@@ -63,20 +67,26 @@ def values():
         ref,  # A: href
         static_url,  # A: /static/
         filename,  # A: favicon-16x16.png
-        title,  # B: title="Microsoft"
+        content, # B content="/static/yandex-150x150.png, color=#0000FF"
+        title,  # C: title="Microsoft"
     )
     """
+
+    yandex_content = (
+        f"logo={config['static_url']}yandex.png, "
+        f"color={config['background_color']}"
+    )
 
     # Order of how icons are generated and added to the head if it's
     # required
     # The order matters
-    names = ['icon-sizes', 'apple-touch-icon-default',
-             'apple-touch-icon-sizes', 'apple-touch-startup-image', 'windows',
-             'fluid-icon', 'browserconfig', 'manifest', 'opensearch']
+    names = ['icon-sizes', 'windows', 'apple-touch-icon-default',
+             'apple-touch-icon-sizes', 'apple-touch-startup-image',
+             'fluid-icon', 'browserconfig', 'manifest', 'opensearch', 'yandex']
     brand = {
         'icon-sizes': {
             'name_ref': 'icon',
-            'name': 'favicon',
+            'filename': 'favicon',
             # https://www.favicon-generator.org/
             # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
             # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
@@ -88,43 +98,43 @@ def values():
         },
         'windows': {
             'name_ref': 'msapplication-TileImage',
-            'name': 'ms-icon',
+            'filename': 'ms-icon',
             'square_sizes': [144],
             'metatag': True,
         },
         'apple-touch-icon-default': {
             'name_ref': 'apple-touch-icon',
-            'name': 'apple-touch-icon',
+            'filename': 'apple-touch-icon',
             'square_sizes': [57],
         },
         'apple-touch-icon-sizes': {
             'name_ref': 'apple-touch-icon',
-            'name': 'apple-touch-icon',
+            'filename': 'apple-touch-icon',
             'square_sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
                              1024],
             'verbosity': True,
         },
         'apple-touch-startup-image': {
             'name_ref': 'apple-touch-startup-image',
-            'name': 'launch',
+            'filename': 'launch',
             'square_sizes': [768],
         },
         'fluid-icon': {
             'name_ref': 'fluid-icon',
-            'name': 'fluidicon',
+            'filename': 'fluidicon',
             'square_sizes': [512],
             'title': 'Microsoft',
         },
         'browserconfig': {
             'name_ref': 'browserconfig',
-            'name': 'ms-icon',
+            'filename': 'ms-icon',
             'square_sizes': [30, 44, 70, 150, 310],
             'non_square_sizes': [[310, 150]],
             'no_head': True,
         },
         'manifest': {
             'name_ref': 'manifest',
-            'name': 'android-icon',
+            'filename': 'android-icon',
             'square_sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
             'file_type': 'image/png',
             'no_head': True,
@@ -132,10 +142,17 @@ def values():
         },
         'opensearch': {
             'name_ref': 'opensearch',
-            'name': 'opensearch',
+            'filename': 'opensearch',
             'sqyare_sizes': [16],
             'no_head': True,
             'verbosity': True,
+        },
+        'yandex': {
+            'name_ref': 'yandex-tableau-widget',
+            'filename': 'yandex',
+            'square_sizes': [120],
+            'metatag': True,
+            'content': yandex_content,
         },
     }
     return [names, brand]
@@ -201,7 +218,6 @@ class Icons:
         return True
 
     def favicon_png(self):
-
         """Generate .png icons"""
 
         if not self._requirements('favicon_png'):
@@ -233,7 +249,6 @@ class Icons:
         return head
 
     def favicon_ico(self):
-
         """favicon.ico"""
 
         if not self._requirements('favicon_ico'):
@@ -249,7 +264,6 @@ class Icons:
         return string
 
     def favicon_svg(self):
-
         """favicon.svg"""
 
         if not self._requirements('favicon_svg'):
@@ -265,7 +279,6 @@ class Icons:
         return string
 
     def preview_png(self):
-
         """preview.png"""
 
         if not self._requirements('preview_png'):
@@ -286,23 +299,18 @@ class Icons:
 
     @staticmethod
     def resize(image, size, filepath):
-
         """Resize a image"""
-
         cover = resizeimage.resize_contain(image, [size[0], size[1]])
         cover.save(filepath, image.format)
 
 
 class Others:
     """Class related to the generation of files that are not icons"""
-
     brand = {}
     config = {}
 
     def browserconfig(self):
-
         """browserconfig.xml"""
-
         string = ("<?xml version='1.0' encoding='utf-8'?><browserconfig>"
                   "<msapplication><tile>")
         string += ''.join([
@@ -331,9 +339,7 @@ class Others:
         return [string, head]
 
     def manifest(self):
-
         """manifest.json"""
-
         urlpath = self.config['static_url']
         icons = [
             {
@@ -378,9 +384,7 @@ class Others:
         return [dictionary, head]
 
     def opensearch(self):
-
         """opensearch.xml"""
-
         title = self.config.get('title', '')
         url = self.config.get('url', '')
         static_url = self.config['static_url']
@@ -405,9 +409,7 @@ class Others:
         return [string, head]
 
     def robots(self):
-
         """robots.txt"""
-
         protocol = self.config.get('protocol', '')
         sitemap_content = (
             "\n"
@@ -420,9 +422,7 @@ class Others:
         return string
 
     def sitemap(self):
-
         """sitemap.xml"""
-
         protocol = self.config.get('protocol', '')
         string = ("<?xml version='1.0' encoding='uft-8'?>"
                   "<urlset xmlns="
@@ -444,11 +444,11 @@ class ComplementaryFiles(Icons, Others):
     static_folderpath = None
 
     def __init__(self):
-        self.names, self.brand = values()
+        self.names, self.brand = values(self.config)
         super().__init__()
 
     def generate(self):
-        """Main function of this class"""
+        """Generate HTML head elements and new files"""
 
         head = []
 

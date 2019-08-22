@@ -14,9 +14,7 @@ from .presets import make_preset
 
 
 class Main(Head):
-
     """Main class of this module"""
-
     config = {}
 
     def __init__(self, info, args):
@@ -25,12 +23,11 @@ class Main(Head):
         super().__init__()
 
     def run(self):
-
-        """Main function of this class"""
+        """Handle the different arguments"""
 
         # -presets
         if self.args.preset:
-            make_preset(self.args.preset)
+            make_preset(self.args.preset, self.args.info)
             filepath = path.join(os.getcwd(), self.args.preset)
             print(
                 f"PATH: {self.args.preset}\n"

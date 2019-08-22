@@ -1,17 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Disable modules import order on Pylint because it generate a warning
+# Thats warning is ok, but need to call some functions before call rest of
+# methods for check the python version and generate a custom alert message to
+# the user.
+# pylint: disable=C0413
+
 """Setup script"""
 
 import sys
 import setuptools
 
-from src.info import Info
+from src.info import get_info
 from src.support import Support, Unsupported
 
 # Check python version
 try:
-    INFO = Info().get_info()
+    INFO = get_info()
     Support(INFO).install()
 except Unsupported as exception:
     sys.stdout.write(exception)

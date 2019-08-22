@@ -9,20 +9,15 @@ from .console import DEFAULT_COLOR, ERROR_COLOR
 
 
 class Unsupported(Exception):
-
-    """Unsupported Exception"""
+    """Used to raise an exception related to an unsupported versions problem"""
 
 
 class Messages:
-
     """Generate unsupported messages"""
-
     support_string_format = {}
 
     def unsupported_title(self):
-
         """Generate unsupported title presentation"""
-
         title = "Unsupported Python version"
         title_length = len(title)
         title_frame = "=" * title_length
@@ -38,9 +33,7 @@ class Messages:
         return title
 
     def unsupported_installation(self):
-
         """Generate unsupported message for the installation attempt"""
-
         string = (
             "but you're trying to install it with Python "
             "{current_major}.{current_minor}\n"
@@ -57,9 +50,7 @@ class Messages:
         return string
 
     def unsupported_run(self):
-
         """Generate unsupported message for the run script attempt"""
-
         string = (
             "but you're trying to run it with Python "
             "{current_major}.{current_minor}\n"
@@ -71,8 +62,7 @@ class Messages:
 
 
 class Support(Messages):
-
-    """Main class of this module"""
+    """Handle situations"""
 
     def __init__(self, info):
         self.current_python = sys.version_info[:2]
@@ -89,9 +79,7 @@ class Support(Messages):
         }
 
     def check(self, message):
-
         """Check if current version is supported"""
-
         if self.current_python < self.min_python or \
                 self.current_python > self.max_python:
             title = self.unsupported_title()
@@ -104,15 +92,11 @@ class Support(Messages):
             raise Unsupported(exception)
 
     def install(self):
-
         """Check installation support"""
-
         message = self.unsupported_installation()
-        self.check(message)
+        self._check(message)
 
     def run(self):
-
         """Check script run support"""
-
         message = self.unsupported_run()
-        self.check(message)
+        self._check(message)

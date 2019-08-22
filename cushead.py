@@ -11,12 +11,12 @@
 
 import sys
 
-from src.info import Info
+from src.info import get_info
 from src.support import Support, Unsupported
 
 # Check python version
 try:
-    INFO = Info().get_info()
+    INFO = get_info()
     Support(INFO).run()
 except Unsupported as exception:
     sys.stdout.write(exception)
@@ -27,9 +27,7 @@ from src.main import Main
 
 
 def main():
-
     """Main function"""
-
     print(PRESENTATION_MESSAGE)
     Main(INFO, sys.argv[1:]).run()
 
