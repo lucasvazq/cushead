@@ -40,6 +40,7 @@ def values(config):
 
     identifier: only for identify objects inside brand object
     filename: filename of new resized image, its include extension and sizes
+    content: used to replace the filename and set the static url to blank
     metatag: used to define tagname, attribute and ref variables
         True: 'meta', 'name', 'content'
         False: 'link', 'rel', 'href'
@@ -52,13 +53,11 @@ def values(config):
     Result:
     A: <link rel="shortcut icon" type="image/png" sizes="16x16"
         href="/static/favicon-16x16.png" />
-    B: <meta name="yandex-tableau-widget"
-        content="/static/yandex-150x150.png, color=#0000FF" />
-    C: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+    B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
         title="Microsoft" />
 
     Template:
-    <{} {}='{}' {}{}{}='{}{}' {}/>.format(
+    <{} {}='{}' {}{}{}='{}{}' {}{}/>.format(
         tagname,  # A: link
         attribute,  # A: rel
         name_ref,  # A: shortcut icon
@@ -67,7 +66,6 @@ def values(config):
         ref,  # A: href
         static_url,  # A: /static/
         filename,  # A: favicon-16x16.png
-        content, # B content="/static/yandex-150x150.png, color=#0000FF"
         title,  # C: title="Microsoft"
     )
     """
@@ -171,6 +169,8 @@ class Icons:
         if 'no_head' in self.brand[name]:
             return False
 
+        name_ref = self.brand[name]['name_ref']
+        static_url = self.config['static_url']
         file_type = (
             f"type='{self.brand[name]['file_type']}' "
             if 'file_type' in self.brand[name] else ''
@@ -184,6 +184,9 @@ class Icons:
             if 'metatag' in self.brand[name] else
             ('link', 'rel', 'href')
         )
+        if 'content' in self.brand[name]:
+            static_url = ''
+            filename = f"content='{self.brand[name]['content']}'"
         title = (
             f"title='{self.brand[name]['title']}' "
             if 'title' in self.brand[name] else ''
@@ -195,8 +198,6 @@ class Icons:
         #    href="/static/favicon-16x16.png" />
         # B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
         #    title="Microsoft" />
-        name_ref = self.brand[name]['name_ref']
-        static_url = self.config['static_url']
         element = "<{} {}='{}' {}{}{}='{}{}' {}/>".format(
             tagname,  # A: link
             attribute,  # A: rel
