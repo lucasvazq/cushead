@@ -16,8 +16,9 @@ TODO new code structure
         .src/cli/
         .src/(info, support, console)
     Workflow:
-        modules return images compressed in base64 for heach group (apple, favicon.png, windows)
+        A-modules return images compressed in base64 for heach group (apple, favicon.png, windows)
             when resize a image, this.images (list) = image group
+        B-modules write images
         cli have function for tranform this.images into real images
 
 Docs section
