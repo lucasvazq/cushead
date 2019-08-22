@@ -48,9 +48,9 @@ def make_preset(file, info):
                     'title':            'Microsoft',
                     'description':      'Technology Solutions',
                     'subject':          'Home Page',
-                    'author':           'Lucas Vazquez',
                     'keywords':         'Microsoft, Windows',
-                    'background_color': '#FFFFFF'
+                    'background_color': '#FFFFFF',
+                    'author':           'Lucas Vazquez'
                 }},
                 'social_media': {{
                     'facebook_app_id':  '123456',

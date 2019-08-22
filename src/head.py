@@ -17,7 +17,7 @@ class Head(ComplementaryFiles):
         if 'content-type' in self.config:
             head.append("<meta http-equiv='Content-Type' "
                         f"content='{self.config['content-type']}' />")
-        # x-ua-compatible
+        # X-UA-Compatible
         if 'X-UA-Compatible' in self.config:
             head.append("<meta http-equiv='X-UA-Compatible' "
                         f"content='{self.config['X-UA-Compatible']}' />")
@@ -29,18 +29,17 @@ class Head(ComplementaryFiles):
         if 'language' in self.config:
             head.append("<meta http-equiv='Content-Language' "
                         f"content='{self.config['language']}' />")
-        # theme-color and msapplication-TileColor
-        if 'background_color' in self.config:
-            color = self.config['background_color']
-            color_components = [
-                f"<meta name='theme-color' content='{color}' />",
-                f"<meta name='msapplication-TileColor' content='{color}' />",
-            ]
-            head.extend(color_components)
         # robots
         if 'robots' in self.config:
             head.append("<meta name='robots' "
                         f"content='{self.config['robots']}' />")
+        # apple
+        # Multiline strings inside a list get together into a parentheses
+        head.extend([
+            "<meta name='apple-mobile-web-app-capable' content='yes'>",
+            ("<meta name='apple-mobile-web-app-status-bar-style' "
+             "content='black-translucent'>"),
+        ])
         return head
 
     def add_basic_config(self):
@@ -67,13 +66,18 @@ class Head(ComplementaryFiles):
         if 'keywords' in self.config:
             head.append("<meta name='keywords' "
                         f"content='{self.config['keywords']}' />")
-        # apple
-        # Multiline strings inside a list get together into a parentheses
-        head.extend([
-            "<meta name='apple-mobile-web-app-capable' content='yes'>",
-            ("<meta name='apple-mobile-web-app-status-bar-style' "
-             "content='black-translucent'>"),
-        ])
+        # theme-color and msapplication-TileColor
+        if 'background_color' in self.config:
+            color = self.config['background_color']
+            color_components = [
+                f"<meta name='theme-color' content='{color}' />",
+                f"<meta name='msapplication-TileColor' content='{color}' />",
+            ]
+            head.extend(color_components)
+        # author
+        if 'author' in self.config:
+            head.append("<meta name='author' "
+                        f"content='{self.config['author']}' />")
         return head
 
     def add_social_media(self):
@@ -156,15 +160,6 @@ class Head(ComplementaryFiles):
 
         return head
 
-    def add_author(self):
-        """Author section"""
-        head = []
-        # author
-        if 'author' in self.config:
-            head.append("<meta name='author' "
-                        f"content='{self.config['author']}' />")
-        return head
-
     def head_general(self):
         """Join the differents HTML head elements in order"""
         # Generate tags for head
@@ -175,7 +170,6 @@ class Head(ComplementaryFiles):
             self.add_basic_config(),
             files_related_head_elements,
             self.add_social_media(),
-            self.add_author(),
         ]
 
         return head
