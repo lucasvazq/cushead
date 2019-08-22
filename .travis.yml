@@ -10,5 +10,5 @@ install:
   - python3 setup.py install
   - python3 -m pip install coverage
 script:
-  - python3 -m coverage run ./cushead.py -file ./test/tests/Success/complete_config/test.txt
+  - python3 -m coverage run ./cushead.py -file ./test/test.py
   - codecov

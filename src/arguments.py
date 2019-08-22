@@ -10,7 +10,7 @@ import argparse
 from .helpers import Errors
 
 
-def parse_args(info, args):
+def parse_args(args, info):
     """Argparse main function"""
 
     name = info['package_name']

@@ -78,7 +78,7 @@ class Support(Messages):
             'current_minor': self.current_python[1],
         }
 
-    def check(self, message):
+    def _check(self, message):
         """Check if current version is supported"""
         if self.current_python < self.min_python or \
                 self.current_python > self.max_python:
@@ -94,9 +94,9 @@ class Support(Messages):
     def install(self):
         """Check installation support"""
         message = self.unsupported_installation()
-        self.check(message)
+        self._check(message)
 
     def run(self):
         """Check script run support"""
         message = self.unsupported_run()
-        self.check(message)
+        self._check(message)

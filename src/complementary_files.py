@@ -29,6 +29,7 @@ def values(config):
                 filename (str) Required
                 square_sizes (int list)
                 non_square_sizes (list of int list)
+                max_min (list of int list)
                 content (str)
                 file_type (str)
                 title (str)
@@ -40,6 +41,7 @@ def values(config):
 
     identifier: only for identify objects inside brand object
     filename: filename of new resized image, its include extension and sizes
+    max_min: used for generate medias queries
     content: used to replace the filename and set the static url to blank
     metatag: used to define tagname, attribute and ref variables
         True: 'meta', 'name', 'content'
@@ -53,8 +55,10 @@ def values(config):
     Result:
     A: <link rel="shortcut icon" type="image/png" sizes="16x16"
         href="/static/favicon-16x16.png" />
-    B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
-        title="Microsoft" />
+    B: <link href="apple-touch-startup-image-320x320.png"
+       media="screen and (min-device-width: 320px) and ... ..." />
+    C: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+       title="Microsoft" />
 
     Template:
     <{} {}='{}' {}{}{}='{}{}' {}{}/>.format(
@@ -66,6 +70,7 @@ def values(config):
         ref,  # A: href
         static_url,  # A: /static/
         filename,  # A: favicon-16x16.png
+        media,  # B: media="screen and (min-device-width: 320px) and ...
         title,  # C: title="Microsoft"
     )
     """
@@ -79,8 +84,9 @@ def values(config):
     # required
     # The order matters
     names = ['icon-sizes', 'windows', 'apple-touch-icon-default',
-             'apple-touch-icon-sizes', 'apple-touch-startup-image',
-             'fluid-icon', 'browserconfig', 'manifest', 'opensearch', 'yandex']
+             'apple-touch-icon-sizes', 'apple-touch-startup-image-default',
+             'apple-touch-startup-image', 'fluid-icon', 'browserconfig',
+             'manifest', 'opensearch', 'yandex']
     brand = {
         'icon-sizes': {
             'name_ref': 'icon',
@@ -112,10 +118,31 @@ def values(config):
                              1024],
             'verbosity': True,
         },
-        'apple-touch-startup-image': {
+        'apple-touch-startup-image-default': {
             'name_ref': 'apple-touch-startup-image',
             'filename': 'launch',
             'square_sizes': [768],
+        },
+        'apple-touch-startup-image': {
+            'name_ref': 'apple-touch-startup-image',
+            'filename': 'launch',
+            # Based on:
+            # https://css-tricks.com/snippets/css/media-queries-for-standard-devices/
+            'max_min': [
+                [38, 42],
+                [320, 375],
+                [375, 414],
+                [414, 480],
+                [480, 568],
+                [568, 667],
+                [667, 736],
+                [736, 812],
+                [812, 834],
+                [1024, 1112],
+                [1112, 1200],
+                [1200, 1366],
+                [1366, 1600],
+            ],
         },
         'fluid-icon': {
             'name_ref': 'fluid-icon',
@@ -169,6 +196,10 @@ class Icons:
         if 'no_head' in self.brand[name]:
             return False
 
+        max_size, min_size = size
+        if 'media' in self.brand[name]:
+            size[1] = size[0]
+
         name_ref = self.brand[name]['name_ref']
         static_url = self.config['static_url']
         file_type = (
@@ -184,21 +215,29 @@ class Icons:
             if 'metatag' in self.brand[name] else
             ('link', 'rel', 'href')
         )
-        if 'content' in self.brand[name]:
-            static_url = ''
-            filename = f"content='{self.brand[name]['content']}'"
         title = (
             f"title='{self.brand[name]['title']}' "
             if 'title' in self.brand[name] else ''
         )
+        media = (
+            f"media=(min-device-width: {min_size}px) and "
+            f"(max-device-width: {max_size}px) and "
+            f"(max-device-height: {max_size}px) "
+            if 'media' in self.brand[name] else ''
+        )
+        if 'content' in self.brand[name]:
+            static_url = ''
+            filename = f"content='{self.brand[name]['content']}'"
 
         # Keep using format function for better reference to each element of
         # the formated string
         # A: <link rel="shortcut icon" type="image/png" sizes="16x16"
         #    href="/static/favicon-16x16.png" />
-        # B: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+        # B: <link href="apple-touch-startup-image-320x320.png"
+        #    media="screen and (min-device-width: 320px) and ... ..." />
+        # C: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
         #    title="Microsoft" />
-        element = "<{} {}='{}' {}{}{}='{}{}' {}/>".format(
+        element = "<{} {}='{}' {}{}{}='{}{}' {}{}/>".format(
             tagname,  # A: link
             attribute,  # A: rel
             name_ref,  # A: shortcut icon
@@ -207,7 +246,8 @@ class Icons:
             ref,  # A: href
             static_url,  # A: /static/
             filename,  # A: favicon-16x16.png
-            title,  # B: title="Microsoft"
+            media,  # B: media="screen and (min-device-width: 320px) and ...
+            title,  # C: title="Microsoft"
         )
         return element
 
@@ -217,6 +257,31 @@ class Icons:
         Errors.void_key(self.config[key], key)
         Errors.is_file(self.config[key], key)
         return True
+
+    def _sizes_handler(self, image, name):
+        """Resize 'favicon_png' to determinated sizes"""
+        head = []
+
+        # Get sizes
+        square_sizes = self.brand[name].get('square_sizes', [])
+        square_sizes = [[size, size] for size in square_sizes]
+        non_square_sizes = self.brand[name].get('non_square_sizes', [])
+        max_min = self.brand[name].get('squares_sizes', [])
+        max_min = [size[0] for size in max_min]
+        sizes = square_sizes + non_square_sizes + max_min
+
+        for size in sizes:
+            filename = (f"{self.brand[name]['filename']}-"
+                        f"{size[0]}x{size[1]}.png")
+            filepath = path.join(self.static_folderpath, filename)
+            self.resize(image, size, filepath)
+
+            # Some icons need to be added to head
+            element = self._icons_head_creator(filename, name, size)
+            if element:
+                head.append(element)
+
+        return head
 
     def favicon_png(self):
         """Generate .png icons"""
@@ -230,22 +295,7 @@ class Icons:
         with open(self.config['favicon_png'], 'r+b') as file, \
                 Image.open(file) as image:
             for name in self.names:
-
-                # Resize 'favicon_png' to determinated sizes
-                square_sizes = self.brand[name].get('square_sizes', [])
-                square_sizes = [[size, size] for size in square_sizes]
-                non_square_sizes = self.brand[name].get('non_square_sizes', [])
-                sizes = square_sizes + non_square_sizes
-                for size in sizes:
-                    filename = (f"{self.brand[name]['name']}-"
-                                f"{size[0]}x{size[1]}.png")
-                    filepath = path.join(self.static_folderpath, filename)
-                    self.resize(image, size, filepath)
-
-                    # Some icons need to be added to head
-                    element = self._icons_head_creator(filename, name, size)
-                    if element:
-                        head.append(element)
+                head.append(self._sizes_handler(image, name))
 
         return head
 
@@ -318,7 +368,7 @@ class Others:
             "<square{0}x{0}logo src='{1}{2}-{0}x{0}.png' />".format(
                 size,
                 self.config['static_url'],
-                self.brand['browserconfig']['name']
+                self.brand['browserconfig']['filename']
             )
             for size in self.brand['browserconfig']['square_sizes']
         ])
@@ -327,7 +377,7 @@ class Others:
                 size[0],
                 size[1],
                 self.config['static_url'],
-                self.brand['browserconfig']['name']
+                self.brand['browserconfig']['filename']
             )
             for size in self.brand['browserconfig']['non_square_sizes']
         ])
@@ -345,7 +395,7 @@ class Others:
         icons = [
             {
                 'src': "{0}{1}-{2}x{2}".format(
-                    urlpath, self.brand['manifest']['name'], size
+                    urlpath, self.brand['manifest']['filename'], size
                 ),
                 'sizes': f"{size}x{size}",
                 'type': 'image/png',
@@ -440,13 +490,11 @@ class Others:
 
 class ComplementaryFiles(Icons, Others):
     """Main class of this module"""
-
     config = {}
     static_folderpath = None
 
     def __init__(self):
         self.names, self.brand = values(self.config)
-        super().__init__()
 
     def generate(self):
         """Generate HTML head elements and new files"""

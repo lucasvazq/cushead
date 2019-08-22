@@ -31,9 +31,7 @@ __status__ = "Production"
 
 
 def get_info():
-
     """Return the info"""
-
     info = {
         'package_name': __package_name__,
         'package_version': __package_version__,

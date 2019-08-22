@@ -23,8 +23,8 @@ def make_preset(file, info):
             }},
             'required': {{
                 'files_output':     '{('./test/tests/Success/'
-                                       'complete_config/wasa')}',
-                'static_url':       '/static/wasa'
+                                       'complete_config/output')}',
+                'static_url':       '/static/'
             }},
             'recommended': {{
                 'favicon_png':      './test/tests/favicon.png',
@@ -49,7 +49,7 @@ def make_preset(file, info):
                     'description':      'Technology Solutions',
                     'subject':          'Home Page',
                     'keywords':         'Microsoft, Windows',
-                    'background_color': '#FFFFFF',
+                    'background_color': '#0000FF',
                     'author':           'Lucas Vazquez'
                 }},
                 'social_media': {{

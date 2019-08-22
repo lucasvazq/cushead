@@ -20,14 +20,13 @@ class Main(Head):
     def __init__(self, info, args):
         self.info = info
         self.args = parse_args(args, info)
-        super().__init__()
 
     def run(self):
         """Handle the different arguments"""
 
         # -presets
         if self.args.preset:
-            make_preset(self.args.preset, self.args.info)
+            make_preset(self.args.preset, self.info)
             filepath = path.join(os.getcwd(), self.args.preset)
             print(
                 f"PATH: {self.args.preset}\n"
@@ -36,7 +35,8 @@ class Main(Head):
 
         # -file
         else:
-            get_values(self.args)
+            self.config = get_values(self.args)
+            super().__init__()
 
             FoldersHelper.create_folder(self.config['files_output'])
 

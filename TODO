@@ -1,6 +1,6 @@
 TODO: fix ident in void lines
-
-
+TODO: add apple-touch-start-image but need references
+TODO: examples icos
 
 TODO: docs section:
     fix logo align
@@ -16,5 +16,3 @@ TODO: docs section:
     ./example/ with inputs and output separated folders, and test.txt in root
 
 TODO: better docs
-TODO: add apple-touch-start-image but need references
-
