@@ -3,6 +3,22 @@ TODO: images_presets
 FIXME: filepath, folderpath, ff, ffpath, *path* => sourcepath, destpath, fullpath, relativepath
 FIXME: ./doc/ -> ./docs/
 FIXME: ./docs/presentation.png -> ./docs/console.png (console.py, UPDATE.md)
+FIXME: addd './' + static_url for generate output folders.
+    Prevent:
+        /static/ (root)
+        outputstatic (merged)
+    Actions:
+        replace '/static/ example in preset.py
+
+TODO new code structure
+    Structure:
+        .src/modules/
+        .src/cli/
+        .src/(info, support, console)
+    Workflow:
+        modules return images compressed in base64 for heach group (apple, favicon.png, windows)
+            when resize a image, this.images (list) = image group
+        cli have function for tranform this.images into real images
 
 Docs section
 
@@ -25,3 +41,5 @@ TODO
 TODO json-LD and other techs
 TODO: fix ident in void lines
 TODO: better docs
+
+Expected version at end? = 4
