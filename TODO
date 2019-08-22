@@ -27,6 +27,7 @@ TODO RECOMENDATION logo_ico 16px
 TODO RECOMENDATION preview = 500px
 TODO RECOMENDATION svg => 16/32px
 TODO RECOMENDATION logos = square
+TODO RECOMENDATION compressed html
 TODO
     fix logo align
     include logo for readme
