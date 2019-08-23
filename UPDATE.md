@@ -22,7 +22,7 @@
 
 ## 3 - Build the new package
 
-`python3 ./setup.py sdist`
+`python3 ./setup.py sdist bdist_wheel`
 
 ## 4 - Remove all python cache files
 
