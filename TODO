@@ -1,5 +1,6 @@
 TODO: examples icos
 TODO: images_presets
+FIXME: delete max python version
 FIXME: filepath, folderpath, ff, ffpath, *path* => sourcepath, destpath, fullpath, relativepath
 FIXME: ./doc/ -> ./docs/
 FIXME: ./docs/presentation.png -> ./docs/console.png (console.py, UPDATE.md)
