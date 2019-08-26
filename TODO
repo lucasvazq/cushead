@@ -22,7 +22,9 @@ TODO new code structure
         B-modules write images
         cli have function for tranform this.images into real images
 
-Docs section
+TODO /docs/ Docs section
+
+FIXME pull request template inside PULL_REQUEST_TEMPLATE folder
 
 TODO RECOMENDATION logo_png 1600px
 TODO RECOMENDATION logo_ico 16px
