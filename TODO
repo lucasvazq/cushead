@@ -21,6 +21,8 @@ TODO new code structure
             when resize a image, this.images (list) = image group
         B-modules write images
         cli have function for tranform this.images into real images
+        
+TODO: look at modernizr, html5 boilerplate and voxed IE html tag declaration
 
 TODO /docs/ Docs section
 TODO windows html EOF (for html examples files) 
