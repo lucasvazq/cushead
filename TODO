@@ -35,6 +35,7 @@ TODO RECOMENDATION preview = 500px
 TODO RECOMENDATION svg => 16/32px
 TODO RECOMENDATION logos = square
 TODO RECOMENDATION compressed html
+TODO RECOMENDATION UX: colorblind thinking (keep in mind the color of menus, lines, borders, shadows, and text when are designing website)
 TODO
     fix logo align
     include logo for readme
