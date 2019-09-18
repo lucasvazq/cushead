@@ -1,21 +1,25 @@
 # BUG
 
-**Description**
+## Description
+
 Description here
 
-**Error log**
+## Error log
+
 ```
 Traceback (most recent call last):
  File "<stdin>", line 1, in <module>
 AttributeError: module 'foo' has no attribute 'bar'
 ```
 
-**To Reproduce**
+## Reproduce
+
 Steps to reproduce the behavior:
 
 1 - 
 2 - 
 3 - 
 
-**Expected behavior**
+## Expected behavior
+
 A clear and concise description of what you expected to happen.
