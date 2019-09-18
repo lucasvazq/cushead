@@ -6,7 +6,7 @@ Description here
 
 ## Error log
 
-```
+```txt
 Traceback (most recent call last):
  File "<stdin>", line 1, in <module>
 AttributeError: module 'foo' has no attribute 'bar'
