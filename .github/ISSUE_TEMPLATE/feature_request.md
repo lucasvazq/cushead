@@ -1,20 +1,12 @@
----
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
+# FEATURE
 
----
+**Feature Name**: <FEATURE_NAME>
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**Priority**: <1-5>
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Description
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Make a description of the feature here
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+NOTES:
+- Attach files if it's necessary. I.e., image.png
