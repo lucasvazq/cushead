@@ -12,13 +12,13 @@ Description here
 
 Steps to reproduce the behavior:
 
-1 - 
-2 - 
-3 - 
+1) Foo
+2) Bar
+3) Etc
 
 ## Error log
 
-**Step**: last (Default)
+**Step**: Last (Default)
 
 ```txt
 Traceback (most recent call last):
@@ -32,4 +32,4 @@ A clear and concise description of what you expected to happen.
 
 ## Files
 
-Attach the files used or upload their contents into code blocks. 
+Attach the files used or upload their contents into separated code blocks. 
