@@ -65,8 +65,8 @@ def parse_args(args, info):
             "Use with -preset. "
             "Add example images that can be used by the settings generated "
             "with -preset. "
-            "This include: favicon_ico.ico, favicon_png.png, favicon_svg.svg "
-            "and presentation_png.png"
+            "This include: favicon_ico_16px.ico, favicon_png_1600px.png,"
+            "favicon_svg.svg and presentation_png_500px.png"
         )
     )
 

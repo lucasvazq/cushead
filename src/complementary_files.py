@@ -198,7 +198,7 @@ class Icons:
         if 'no_head' in self.brand[name]:
             return False
 
-        max_size, min_size = size
+        min_size = size[1]
         if 'media' in self.brand[name]:
             size[1] = size[0]
 

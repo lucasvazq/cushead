@@ -5,28 +5,33 @@
 
 import os
 from os import path
-import shutil
 import textwrap
 
 from .helpers import FilesHelper, FoldersHelper
 
 
+IMAGEFILES = [
+    'favicon_ico_16px.ico',
+    'favicon_png_1600px.png',
+    'favicon_svg.svg',
+    'presentation_png_500px.png',
+]
+
+
 class Presets:
     """Generate presets"""
-    args = {}
+    args = {'preset': ''}
     info = {}
 
     def assets(self):
         """Generate images files to attach to the preset settings"""
-        filenames = [
-            'favicon_ico.ico',
-            'favicon_png.png',
-            'favicon_svg.svg',
-            'presentation_png.png',
-        ]
-        for filename in filenames:
-            # GENERATE BASE64 .png, .ico
-            pass
+        realpath = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                'assets')
+        destination_folder = ''.join(self.args.preset.split('/')[0:-1])
+        for filename in IMAGEFILES:
+            filepath = os.path.join(realpath, filename)
+            destination = os.path.join(destination_folder, filename)
+            FilesHelper.copy_file(filepath, destination)
 
     def settings(self):
         """Generate config file in indented JSON format"""

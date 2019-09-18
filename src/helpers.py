@@ -76,6 +76,12 @@ class FilesHelper:
         with open(filepath, 'w') as file:
             file.write(content)
 
+    @staticmethod
+    def write_byte_file(filepath, content):
+        """Write bytecode files"""
+        with open(filepath, 'wb') as file:
+            file.write(content)
+
 
 class FoldersHelper:
     """Folders related helpers"""
