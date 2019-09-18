@@ -16,7 +16,13 @@ Steps to reproduce the behavior:
 2) Bar
 3) Etc
 
-## Error log
+## Output
+
+### Files
+
+Attach the output files related with bug or upload their contents into separated code blocks identified with titles. 
+
+### Console Log
 
 **Step**: Last (Default)
 
@@ -32,4 +38,4 @@ A clear and concise description of what you expected to happen.
 
 ## Files
 
-Attach the files used or upload their contents into separated code blocks. 
+Attach the files used or upload their contents into separated code blocks identified with titles.
