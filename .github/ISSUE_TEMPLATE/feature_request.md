@@ -1,10 +1,15 @@
-# FEATURE
+
+---
+title: 'Bug report'
+labels: ''
+assignees: ''
+---
 
 **Feature Name**: <FEATURE_NAME>
 
 **Priority**: <1-5>
 
-## Description
+**Description**
 
 Make a description of the feature here
 
