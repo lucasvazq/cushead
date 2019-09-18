@@ -5,16 +5,16 @@ labels: ''
 assignees: ''
 ---
 
-# FEATURE
+**FEATURE**
 
 **Feature Name**: <FEATURE_NAME>
 
 **Priority**: <1-5>
 
-## Description
+**Description**
 
 Make a description of the feature here.
 
-## Files
+**Files**
 
 Attach related files or upload their content into separated code blocks identified with titles.
