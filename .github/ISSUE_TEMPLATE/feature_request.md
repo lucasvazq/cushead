@@ -1,9 +1,12 @@
 ---
 name: Feature request
-about: Description
-priority: <1-5>
-
+about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
 ---
+
+priority: <1-5>
 
 **Description**
 Describe the feature here.
