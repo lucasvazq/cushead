@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: ''
+about: Description
 priority: <1-5>
 
 ---
