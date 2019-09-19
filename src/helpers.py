@@ -73,14 +73,8 @@ class FilesHelper:
     @staticmethod
     def write_file(filepath, content):
         """Write files"""
-        with open(filepath, 'w') as file:
-            file.write(content)
-
-    @staticmethod
-    def write_byte_file(filepath, content):
-        """Write bytecode files"""
-        with open(filepath, 'wb') as file:
-            file.write(content)
+        with open(filepath, 'w') as fileinstance:
+            fileinstance.write(content)
 
 
 class FoldersHelper:
