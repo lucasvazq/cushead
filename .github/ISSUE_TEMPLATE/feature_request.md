@@ -1,58 +1,20 @@
- Prerequisites
+---
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
 
-Please answer the following questions for yourself before submitting an issue. **YOU MAY DELETE THE PREREQUISITES SECTION.**
+---
 
-- [ ] I am running the latest version
-- [ ] I checked the documentation and found no answer
-- [ ] I checked to make sure that this issue has not already been filed
-- [ ] I'm reporting the issue to the correct repository (for multi-repository projects)
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-# Expected Behavior
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
 
-Please describe the behavior you are expecting
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
 
-# Current Behavior
-
-What is the current behavior?
-
-# Failure Information (for bugs)
-
-Please help provide information about the failure if this is a bug. If it is not a bug, please remove the rest of this template.
-
-## Steps to Reproduce
-
-Please provide detailed steps for reproducing the issue.
-
-1. step 1
-2. step 2
-3. you get it...
-
-## Context
-
-Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions.
-
-* Firmware Version:
-* Operating System:
-* SDK version:
-* Toolchain version:
-
-## Failure Logs
-
-Please include any relevant log snippets or files here.
-
-**FEATURE**
-
-**Feature Name**: <FEATURE_NAME>
-
-**Priority**: <1-5>
-
-**Description**
-
-Make a description of the feature here.
-NBLASKLSAKGLÑSA
-GKSLÑGKDSL
-GDKLÑDSLÑ
-
-**Files**
-
-Attach related files or upload their content into separated code blocks identified with titles.
+**Additional context**
+Add any other context or screenshots about the feature request here.
