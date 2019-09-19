@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Something isn't working
-title: ''
-labels: ''
-assignees: ''
+title: 'BUG: '
+labels: 'bug'
+assignees: 'lucasvazq'
 ---
 
 # FEATURE
