@@ -1,14 +1,12 @@
 ---
 name: Bug report
 about: Something isn't working
-title: 'BUG: '
+title: ''
 labels: 'bug'
 assignees: 'lucasvazq'
 ---
 
-# FEATURE
-
-**Feature name**:
+# BUG
 
 **Priority**: <1-5>
 
