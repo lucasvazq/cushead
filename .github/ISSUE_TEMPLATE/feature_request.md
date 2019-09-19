@@ -1,14 +1,12 @@
 ---
 name: Feature request
 about: New feature or request
-title: 'FEATURE - '
+title: ''
 labels: 'enhancement'
 assignees: 'lucasvazq'
 ---
 
 # FEATURE
-
-**Feature name**:
 
 **Priority**: <1-5>
 
