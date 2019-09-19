@@ -23,7 +23,7 @@ INFO = get_info()
 )
 
 
-# Console output in /doc/presentation.png
+# Console output in /docs/console.png
 PRESENTATION_MESSAGE = textwrap.dedent("""\
        {}____  _   _  ____   _   _  _____     _     ____     ____ __   __
       / ___|| | | |/ ___| | | | || ____|   / \\   |  _ \\   |  _ \\\\ \\ / /
