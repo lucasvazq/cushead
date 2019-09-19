@@ -1,21 +1,19 @@
 ---
 name: Feature request
-about: Short description
-title: ''
-labels: ''
-assignees: ''
+about: Suggest an idea for this project
+title: FEATURE:
+labels: enhancement
+assignees: lucasvazq
 ---
+
+# FEATURE
+
+**Feature name**:
 
 **Priority**: <1-5>
 
 **Description**
-Long description of the feature
+Description of the feature
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
-
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+**Files**
+Attach files or provide code with titles separated in block
