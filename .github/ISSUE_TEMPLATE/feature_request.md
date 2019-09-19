@@ -1,14 +1,15 @@
 ---
 name: Feature request
+about: Short description
 title: ''
 labels: ''
 assignees: ''
 ---
 
-priority: <1-5>
+**Priority**: <1-5>
 
 **Description**
-Describe the feature here.
+Long description of the feature
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
