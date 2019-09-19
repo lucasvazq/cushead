@@ -1,12 +1,19 @@
-# BUG
+---
+name: Feature request
+about: New feature or request
+title: 'FEATURE - '
+labels: 'enhancement'
+assignees: 'lucasvazq'
+---
+
+# FEATURE
+
+**Feature name**:
 
 **Priority**: <1-5>
 
-**Branch**: Master (Default)
-
 ## Description
-
-Description here
+Description of the feature
 
 ## Reproduce
 
@@ -16,26 +23,15 @@ Steps to reproduce the behavior:
 2) Bar
 3) Etc
 
+## Input
+Attach files or provide description of the inputs or code with titles separated in block
+
 ## Output
 
-### Files
+### Actual output
+Attach files or provide description of the output (except the console logs) or code with titles separated in block
 
-Attach the output files related with bug or upload their contents into separated code blocks identified with titles. 
+### Expected output
+Expected behavior
 
-### Console Log
-
-**Step**: Last (Default)
-
-```txt
-Traceback (most recent call last):
- File "<stdin>", line 1, in <module>
-AttributeError: module 'foo' has no attribute 'bar'
-```
-
-## Expected behavior
-
-A clear and concise description of what you expected to happen.
-
-## Files
-
-Attach the files used or upload their contents into separated code blocks identified with titles.
+### Error logs
