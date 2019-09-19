@@ -1,8 +1,8 @@
 ---
-name: Feature request
-about: New feature or request
-title: 'FEATURE - '
-labels: 'enhancement'
+name: Bug report
+about: Something isn't working
+title: 'BUG - '
+labels: 'bug'
 assignees: 'lucasvazq'
 ---
 
