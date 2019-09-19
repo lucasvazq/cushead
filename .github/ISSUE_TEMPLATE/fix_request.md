@@ -1,11 +1,17 @@
+---
+name: Feature request
+about: Something need to be fixed or improved
+title: 'FIX - '
+labels: 'fix'
+assignees: 'lucasvazq'
+---
+
 # FIX
 
-## Description
+**Priority**: <1-5>
 
-Description here
+**Description**
+Description
 
-## Files
-
-```txt
-foo/bar
-```
+**Files**
+Attach files or provide code with titles separated in block
