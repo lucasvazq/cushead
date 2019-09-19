@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Fix
 about: Something need to be fixed or improved
 title: 'FIX - '
 labels: 'fix'
