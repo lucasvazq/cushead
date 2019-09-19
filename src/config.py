@@ -16,9 +16,8 @@ def get_values(args):
 
     filename = args.file
     filepath = path.join(os.getcwd(), filename)
-    file = open(filepath, 'r')
-    filestring = file.read()
-    file.close()
+    with open(filepath, 'r') as fileinstance:
+        filestring = fileinstance.read()
     jsonstring = None
     try:
         jsonstring = json.loads(filestring)
