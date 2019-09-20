@@ -13,7 +13,7 @@ from .helpers import FilesHelper, FoldersHelper
 IMAGEFILES = [
     'favicon_ico_16px.ico',
     'favicon_png_1600px.png',
-    'favicon_svg.svg',
+    'favicon_svg_scalable.svg',
     'preview_png_500px.png',
 ]
 
@@ -50,7 +50,7 @@ class Presets:
                 'recommended': {{
                     'favicon_ico':      './favicon_ico_16px.ico',
                     'favicon_png':      './favicon_png_1600px.png',
-                    'favicon_svg':      './favicon_svg.svg',
+                    'favicon_svg':      './favicon_svg_scalable.svg',
                     'preview_png':      './preview_png_500px.png'
                 }},
                 'default': {{

@@ -659,6 +659,9 @@ Here is a list of concepts that comprise good practices to improve **SEO** and
 18) Content Delivery Network
 19) Make svg files scalable
 20) [Short and SEO related filenames](https://saradoesseo.com/seo-basics/what-should-i-name-images-for-seo/)
+21) svg files must be scalables
+22) Think when to use svg instead of img
+23) Minimize icon fonts
 
 ## License
 
