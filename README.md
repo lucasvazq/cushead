@@ -657,6 +657,8 @@ Here is a list of concepts that comprise good practices to improve **SEO** and
 16) Client Side routing
 17) HTTP caching in Client Side
 18) Content Delivery Network
+19) Make svg files scalable
+20) [Short and SEO related filenames](https://saradoesseo.com/seo-basics/what-should-i-name-images-for-seo/)
 
 ## License
 
