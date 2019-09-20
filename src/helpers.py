@@ -28,24 +28,24 @@ class Errors:
     @classmethod
     def exists(cls, relative_path, keyname):
         """Check if path exists"""
-        ffpath = path.join(os.getcwd(), relative_path)
-        if not path.exists(ffpath):
+        fullpath = path.join(os.getcwd(), relative_path)
+        if not path.exists(relative_path):
             exception = (
                 f"'{keyname}' ({relative_path}) must be referred to a path "
                 "that exists.\n"
-                f"PATH: {ffpath}"
+                f"PATH: {fullpath}"
             )
             cls.error_message(exception)
 
     @classmethod
     def is_file(cls, relative_path, keyname):
         """Check if path is file"""
-        filepath = path.join(os.getcwd(), relative_path)
-        if not path.isfile(filepath):
+        fullpath = path.join(os.getcwd(), relative_path)
+        if not path.isfile(relative_path):
             exception = (
                 f"'{keyname}' key ({relative_path}) must be referred to a "
                 "file path that exists.\n"
-                f"FILE PATH: {filepath}"
+                f"FILE PATH: {fullpath}"
             )
             cls.error_message(exception)
 

@@ -191,7 +191,6 @@ class Icons:
     brand = {}
     config = {}
     names = []
-    static_folderpath = None
 
     def _icons_head_creator(self, filename, name, size):
 
@@ -256,7 +255,8 @@ class Icons:
         if key not in self.config:
             return False
         Errors.void_key(self.config[key], key)
-        Errors.is_file(self.config[key], key)
+        filepath = path.join(self.config['main_path'], self.config[key])
+        Errors.is_file(filepath, key)
         return True
 
     def _sizes_handler(self, image, name):
@@ -274,7 +274,7 @@ class Icons:
         for size in sizes:
             filename = (f"{self.brand[name]['filename']}-"
                         f"{size[0]}x{size[1]}.png")
-            filepath = path.join(self.static_folderpath, filename)
+            filepath = path.join(self.config['static_url_path'], filename)
             self.resize(image, size, filepath)
 
             # Some icons need to be added to head
@@ -293,7 +293,9 @@ class Icons:
         head = []
 
         # Open favicon_png file
-        with open(self.config['favicon_png'], 'r+b') as file, \
+        filepath = path.join(self.config['main_path'],
+                             self.config['favicon_png'])
+        with open(filepath, 'r+b') as file, \
                 Image.open(file) as image:
             for name in self.names:
                 head.append(self._sizes_handler(image, name))
@@ -307,8 +309,9 @@ class Icons:
             return []
 
         # Root destination
-        source = path.join(os.getcwd(), self.config['favicon_ico'])
-        destination = path.join(self.config['files_output'], "favicon.ico")
+        source = path.join(self.config['main_path'],
+                           self.config['favicon_ico'])
+        destination = path.join(self.config['output_path'], "favicon.ico")
         FilesHelper.copy_file(source, destination)
 
         string = ("<link rel='shortcut icon' "
@@ -321,8 +324,9 @@ class Icons:
         if not self._requirements('favicon_svg'):
             return []
 
-        source = path.join(os.getcwd(), self.config['favicon_svg'])
-        destination = path.join(self.static_folderpath, "favicon.svg")
+        source = path.join(self.config['main_path'],
+                           self.config['favicon_svg'])
+        destination = path.join(self.config['static_url_path'], "favicon.svg")
         FilesHelper.copy_file(source, destination)
 
         color = self.config.get('background_color', '')
@@ -336,8 +340,9 @@ class Icons:
         if not self._requirements('preview_png'):
             return []
 
-        source = path.join(os.getcwd(), self.config['preview_png'])
-        destination = path.join(self.static_folderpath, "preview.png")
+        source = path.join(self.config['main_path'],
+                           self.config['preview_png'])
+        destination = path.join(self.config['static_url_path'], "preview.png")
         FilesHelper.copy_file(source, destination)
 
         # og:image (http), og:image:secure_url (https) and twitter:image
@@ -492,7 +497,6 @@ class Others:
 class ComplementaryFiles(Icons, Others):
     """Main class of this module"""
     config = {}
-    static_folderpath = None
 
     def __init__(self):
 
@@ -502,14 +506,6 @@ class ComplementaryFiles(Icons, Others):
         """Generate HTML head elements and new files"""
 
         head = []
-
-        # Create folder for statics folder
-        static_folderpath = f".{self.config['static_url']}"
-        static_folderpath = path.join(self.config['files_output'],
-                                      static_folderpath)
-        static_folderpath = path.join(os.getcwd(), static_folderpath)
-        FoldersHelper.create_folder(static_folderpath)
-        self.static_folderpath = static_folderpath
 
         # Favicon .png version
         # Multiples elements
@@ -534,30 +530,31 @@ class ComplementaryFiles(Icons, Others):
         # browserconfig.xml
         browserconfig_content, browserconfig_head = self.browserconfig()
         head.append(browserconfig_head)
-        filepath = path.join(static_folderpath, 'browserconfig.xml')
+        filepath = path.join(self.config['static_url_path'],
+                             'browserconfig.xml')
         FilesHelper.write_file(filepath, browserconfig_content)
 
         # manifest.json
         manifest_content, manifest_head = self.manifest()
         head.append(manifest_head)
-        filepath = path.join(static_folderpath, 'manifest.json')
+        filepath = path.join(self.config['static_url_path'], 'manifest.json')
         FilesHelper.write_file(filepath, manifest_content)
 
         # opensearch.xml
         opensearch_content, opensearch_head = self.opensearch()
         head.append(opensearch_head)
-        filepath = path.join(static_folderpath, 'opensearch.xml')
+        filepath = path.join(self.config['static_url_path'], 'opensearch.xml')
         FilesHelper.write_file(filepath, opensearch_content)
 
         if 'clean_url' in self.config:
             # robots.txt
             robots_content = self.robots()
-            filepath = path.join(self.config['files_output'], 'robots.txt')
+            filepath = path.join(self.config['output_path'], 'robots.txt')
             FilesHelper.write_file(filepath, robots_content)
 
             # sitemap.xml
             sitemap_content = self.sitemap()
-            filepath = path.join(self.config['files_output'], 'sitemap.xml')
+            filepath = path.join(self.config['output_path'], 'sitemap.xml')
             FilesHelper.write_file(filepath, sitemap_content)
 
         return head

@@ -14,17 +14,16 @@ from .helpers import Errors
 def get_values(args):
     """Read and obtain values as settings from json file"""
 
-    filename = args.file
-    filepath = path.join(os.getcwd(), filename)
-    with open(filepath, 'r') as fileinstance:
+    fullpath = path.join(os.getcwd(), args.file)
+    with open(args.file, 'r') as fileinstance:
         filestring = fileinstance.read()
     jsonstring = None
     try:
         jsonstring = json.loads(filestring)
     except JSONDecodeError:
         exception = (
-            f"Invalid json file format in ({filename})\n"
-            f"FILE PATH: {filepath}"
+            f"Invalid json file format in ({args.file})\n"
+            f"FILE PATH: {fullpath}"
         )
         Errors.error_message(exception)
 
@@ -42,7 +41,6 @@ def get_values(args):
     config = jsonstring
 
     # Required values
-    Errors.required_key(config, 'files_output')
     Errors.required_key(config, 'static_url')
 
     return jsonstring

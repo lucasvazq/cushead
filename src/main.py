@@ -32,22 +32,34 @@ class Main(Head, Presets):
             self.settings()
             if self.args.images:
                 self.assets()
-            relative_path = path.dirname(self.args.preset)
-            full_path = path.join(os.getcwd(), relative_path)
+            fullpath = path.join(os.getcwd(), self.args.preset)
             print(
-                f"PATH: {relative_path}\n"
-                f"FULL PATH: {full_path}"
+                f"CONFIG FILE: {self.args.preset}\n"
+                f"(full path): {fullpath}"
             )
             return '-preset'
 
         # -file
         else:
 
-            FoldersHelper.create_folder(self.config['files_output'])
+            # Define the main path as the passed throught -file argument
+            self.config['main_path'] = path.dirname(self.args.file)
 
-            output_filepath = path.join(os.getcwd(),
-                                        self.config['files_output'])
-            html_filepath = path.join(output_filepath, 'index.html')
+            self.config['output_path'] = path.join(self.config['main_path'],
+                                                      'output')
+            FoldersHelper.create_folder(self.config['output_path'])
+            html_filepath = path.join(self.config['output_path'], 'index.html')
+
+            # Prevent the declare creation of folder in root path if the static
+            # url start with a slash
+            if self.config['static_url'][0] == '/':
+                self.config['static_url'] = self.config['static_url'][1:]
+            self.config['static_url_path'] = path.join(
+                self.config['output_path'],
+                self.config['static_url']
+            )
+            FoldersHelper.create_folder(self.config['static_url_path'])
+
             head = self.head_general()
 
             # Concatenate all head elements in a string
@@ -74,16 +86,15 @@ class Main(Head, Presets):
 
             FilesHelper.write_file(html_filepath, html_string)
 
-            static_relative_folderpath = f".{self.config['static_url']}"
-            static_relative_folderpath = path.join(self.config['files_output'],
-                                                   static_relative_folderpath)
-            static_folderpath = path.join(os.getcwd(),
-                                          static_relative_folderpath)
+            output_fullpath = path.join(os.getcwd(),
+                                           self.config['output_path'])
+            static_fullpath = path.join(os.getcwd(),
+                                          self.config['static_url_path'])
             print(
-                f"OUTPUT ROOT FILES: {self.config['files_output']}\n"
-                f"(full path): {output_filepath}\n"
-                f"OUTPUT STATIC FILES: {static_relative_folderpath}\n"
-                f"(full path): {static_folderpath}"
+                f"OUTPUT ROOT FILES: {self.config['output_path']}\n"
+                f"(full path): {output_fullpath}\n"
+                f"OUTPUT STATIC FILES: {self.config['static_url_path']}\n"
+                f"(full path): {static_fullpath}"
             )
 
             return '-file'

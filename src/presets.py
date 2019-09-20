@@ -14,23 +14,23 @@ IMAGEFILES = [
     'favicon_ico_16px.ico',
     'favicon_png_1600px.png',
     'favicon_svg.svg',
-    'presentation_png_500px.png',
+    'preview_png_500px.png',
 ]
 
 
 class Presets:
     """Generate presets"""
-    args = {'preset': ''}
+    args = lambda: None
+    args.preset = ''
     info = {}
 
     def assets(self):
         """Generate images files to attach to the preset settings"""
-        realpath = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                'assets')
+        realpath = path.join(path.dirname(path.realpath(__file__)), 'assets')
         destination_folder = ''.join(self.args.preset.split('/')[0:-1])
         for filename in IMAGEFILES:
-            filepath = os.path.join(realpath, filename)
-            destination = os.path.join(destination_folder, filename)
+            filepath = path.join(realpath, filename)
+            destination = path.join(destination_folder, filename)
             FilesHelper.copy_file(filepath, destination)
 
     def settings(self):
@@ -45,15 +45,13 @@ class Presets:
                     'Documentation':    '{self.info['documentation']}'
                 }},
                 'required': {{
-                    'files_output':     '{('./test/tests/Success/'
-                                           'complete_config/output')}',
                     'static_url':       '/static/'
                 }},
                 'recommended': {{
-                    'favicon_ico':      './test/tests/favicon-16px.ico',
-                    'favicon_png':      './test/tests/favicon-1600px.png',
-                    'favicon_svg':      './test/tests/favicon.svg',
-                    'preview_png':      './test/tests/preview-500px.png'
+                    'favicon_ico':      './favicon_ico_16px.ico',
+                    'favicon_png':      './favicon_png_1600px.png',
+                    'favicon_svg':      './favicon_svg.svg',
+                    'preview_png':      './preview_png_500px.png'
                 }},
                 'default': {{
                     'general': {{
@@ -105,7 +103,6 @@ class Presets:
                 }}
             }}""")
         string = string.replace('\'', '"')
-        filepath = path.join(os.getcwd(), self.args.preset)
-        folderpath = path.dirname(filepath)
+        folderpath = path.dirname(self.args.preset)
         FoldersHelper.create_folder(folderpath)
-        FilesHelper.write_file(filepath, string)
+        FilesHelper.write_file(self.args.preset, string)
