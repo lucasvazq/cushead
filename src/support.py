@@ -8,10 +8,6 @@ import sys
 from .console import DEFAULT_COLOR, ERROR_COLOR
 
 
-class Unsupported(Exception):
-    """Used to raise an exception related to an unsupported versions problem"""
-
-
 class Messages:
     """Generate unsupported messages"""
     support_string_format = {}
@@ -100,3 +96,8 @@ class Support(Messages):
         """Check script run support"""
         message = self.unsupported_run()
         self._check(message)
+
+
+class Unsupported(Exception):
+    """Used to raise an exception related to an unsupported versions problem"""
+    pass
