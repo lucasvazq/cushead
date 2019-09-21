@@ -5,13 +5,13 @@ title: ''
 labels: 'fix'
 assignees: 'lucasvazq'
 ---
-
-# FIX
-
 **Priority**: <1-5>
 
-**Description**
-Description
+## Description
+[//]: # (Description here)
 
-**Files**
-Attach files or provide code with titles separated in block
+## Related Files
+[//]: # (Related files to the fix)
+
+## Files
+[//]: # (Attach necesarry files for the fix or provide code with titles separated in block)
