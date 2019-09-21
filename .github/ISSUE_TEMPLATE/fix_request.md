@@ -8,7 +8,7 @@ assignees: 'lucasvazq'
 **Priority**: <1-5>
 
 ## Description
-[//]: # (Description here)
+[//]: # (Description of the fix)
 
 ## Related Files
 [//]: # (Related files to the fix)
