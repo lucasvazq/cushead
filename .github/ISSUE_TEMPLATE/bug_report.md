@@ -24,8 +24,7 @@ assignees: 'lucasvazq'
 ## Output
 
 ### Actual output
-[//]: # (Attach files or provide description of the output (except the console logs) or code with titles separated in block
-)
+[//]: # (Attach files or provide description of the output, except for the console logs, or code with titles separated in block)
 
 ### Expected output
 [//]: # (Expected behavior)
