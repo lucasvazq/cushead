@@ -14,4 +14,4 @@ assignees: 'lucasvazq'
 [//]: # (Related files to the fix)
 
 ## Files
-[//]: # (Attach necesarry files for the fix or provide code with titles separated in block)
+[//]: # (Attach necessary files for the fix or provide code with titles separated in block)
