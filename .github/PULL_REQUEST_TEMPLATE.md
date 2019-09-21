@@ -6,9 +6,10 @@
 
 **Principal Issue Name**: 
 
-**Complete solves the Issue**: <yes/no>
-
 **Others related Issues**: #, #
+
+# Solves
+[//]: # (<Completely / Just a part: Description of what is missing>)
 
 [//]: # (====================)
 [//]: # (Non issue Related   )
