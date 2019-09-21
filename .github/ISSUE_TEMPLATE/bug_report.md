@@ -11,7 +11,7 @@ assignees: 'lucasvazq'
 [//]: # (Description of the bug)
 
 ## Reproduce
-[//]: # (Steps to reproduce the bug:)
+[//]: # (Steps to reproduce the bug)
 [//]: # (1 - bla)
 [//]: # (2 - bla bla)
 [//]: # (3 - bla bla bla)
