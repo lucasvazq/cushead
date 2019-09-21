@@ -662,6 +662,11 @@ Here is a list of concepts that comprise good practices to improve **SEO** and
 21) svg files must be scalables
 22) Think when to use svg instead of img
 23) Minimize icon fonts
+24) Minify all files (html, css, js, json, xml, images)
+xx) Purge javascript and css.
+xx) Obfuscate, if can, css class names and js variablenames
+25) Benefit from html5 (`<br>` better than `<br />`)
+xx) colorblind thinking (keep in mind the color of menus, lines, borders, shadows, and text when are designing website)
 
 ## License
 
