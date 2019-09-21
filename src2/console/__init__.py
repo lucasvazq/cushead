@@ -1,0 +1,1 @@
+from src2.console.__main__ import Main

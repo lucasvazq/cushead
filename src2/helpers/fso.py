@@ -19,23 +19,35 @@ from shutil import copyfile
 
 class FilesHelper:
     """Files, that aren't directories, helper class"""
+    
+    def __init__(self, content=None, destination_path=None, source_path=None):
+        self.content = content
+        self.destination_path = destination_path
+        self.source_path = source_path
+        folder_path = path.dirname(destination_path)
+        if folder_path: FoldersHelper(folder_path).create_folder()
 
-    @staticmethod
-    def copy_file(source, destination):
+    def copy_file(self):
         """Copy files"""
-        copyfile(source, destination)
+        copyfile(self.source_path, self.destination_path)
 
-    @staticmethod
-    def write_file(filepath, content):
+    def write_file(self):
         """Write files"""
-        with open(filepath, 'w') as fileinstance:
-            fileinstance.write(content)
+        with open(self.destination_path, 'w') as file_instance:
+            file_instance.write(self.content)
+
+    def write_binary(self):
+        """Write binary files"""
+        with open(self.source_path, 'wb') as file_instance:
+            file_instance.write(self.content)
 
 
 class FoldersHelper:
     """Folders helper class"""
 
-    @staticmethod
-    def create_folder(folderpath):
+    def __init__(self, folder_path=None):
+        self.folder_path = folder_path
+
+    def create_folder(self):
         """Create folder"""
-        os.makedirs(folderpath, exist_ok=True)
+        os.makedirs(self.folder_path, exist_ok=True)

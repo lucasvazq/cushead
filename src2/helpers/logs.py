@@ -20,5 +20,4 @@ import sys
 
 def error_message(message):
     """Print error message"""
-    print(f"{ERROR_COLOR}{message}{DEFAULT_COLOR}")
-    sys.exit(message)
+    sys.exit(ERROR_COLOR + message + DEFAULT_COLOR)

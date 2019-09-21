@@ -21,8 +21,8 @@ except Unsupported as exception:
     sys.stdout.write(exception)
     sys.exit()
 
-from src.console import PRESENTATION_MESSAGE
-from src.main import Main
+from src2.console.presentation import PRESENTATION_MESSAGE
+from src2.console import Main
 
 
 def main():

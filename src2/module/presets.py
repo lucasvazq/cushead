@@ -7,14 +7,11 @@ import os
 from os import path
 import textwrap
 
-from .helpers import FilesHelper, FoldersHelper
+from ..helpers import FilesHelper, FoldersHelper
 
 
 IMAGEFILES = [
     'favicon_ico_16px.ico',
-    'favicon_png_1600px.png',
-    'favicon_svg_scalable.svg',
-    'preview_png_500px.png',
 ]
 
 
@@ -24,18 +21,24 @@ class Presets:
     args.preset = ''
     info = {}
 
-    def assets(self):
+    def default_images(self):
         """Generate images files to attach to the preset settings"""
+        binary_files = []
         realpath = path.join(path.dirname(path.realpath(__file__)), 'assets')
-        destination_folder = ''.join(self.args.preset.split('/')[0:-1])
         for filename in IMAGEFILES:
             filepath = path.join(realpath, filename)
-            destination = path.join(destination_folder, filename)
-            FilesHelper.copy_file(filepath, destination)
+            with open(filepath, 'rb') as binary_file:
+                binary_files.append(
+                    {
+                        'filename': filename,
+                        'content': binary_file.read(),
+                    }
+                )
+        return binary_files
 
-    def settings(self):
+    def default_settings(self):
         """Generate config file in indented JSON format"""
-        string = textwrap.dedent(f"""\
+        settings = textwrap.dedent(f"""\
             {{
                 'comment':  {{
                     'About':            '{('Config file used by python '
@@ -102,7 +105,5 @@ class Presets:
                     ]
                 }}
             }}""")
-        string = string.replace('\'', '"')
-        folderpath = path.dirname(self.args.preset)
-        FoldersHelper.create_folder(folderpath)
-        FilesHelper.write_file(self.args.preset, string)
+        settings = settings.replace('\'', '"')
+        return settings
