@@ -5,15 +5,13 @@ title: ''
 labels: 'bug'
 assignees: 'lucasvazq'
 ---
-# BUG
-
 **Priority**: <1-5>
 
 ## Description
-[//]: # (Description of the feature)
+[//]: # (Description of the bug)
 
 ## Reproduce
-[//]: # (Steps to reproduce the behavior:)
+[//]: # (Steps to reproduce the bug:)
 [//]: # (1 - bla)
 [//]: # (2 - bla bla)
 [//]: # (3 - bla bla bla)
