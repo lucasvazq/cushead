@@ -5,13 +5,10 @@ title: ''
 labels: 'enhancement'
 assignees: 'lucasvazq'
 ---
-
-# FEATURE
-
 **Priority**: <1-5>
 
-**Description**
-Description of the feature
+## Description
+[//]: # (Description of the feature)
 
-**Files**
-Attach files or provide code with titles separated in block
+## Files
+[//]: # (Attach files or provide code with titles separated in block)
