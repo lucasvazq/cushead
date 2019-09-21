@@ -1,7 +1,7 @@
 ---
 name: Fix
 about: Something need to be fixed or improved
-title: ''
+title: 'ISSUE: '
 labels: 'fix'
 assignees: 'lucasvazq'
 ---

@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: New feature or request
-title: ''
+title: 'ISSUE: '
 labels: 'enhancement'
 assignees: 'lucasvazq'
 ---

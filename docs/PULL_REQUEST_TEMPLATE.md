@@ -1,8 +1,7 @@
 [//]: # (=========================)
 [//]: # (Issue Related)
 [//]: # (=========================)
-
-[//]: # (The title must have the next format: Issue <Issue ID>)
+[//]: # (The title must have the next format: PR: Issue <Issue ID>)
 
 **Principal Issue ID**: #
 
@@ -15,6 +14,7 @@ Completely / Just a part: Description of what is missing
 [//]: # (=========================)
 [//]: # (Non issue Related)
 [//]: # (=========================)
+[//]: # (The title must have the next format: PR NO ISSUE: short title)
 
 # NO ISSUE RELATED
 
