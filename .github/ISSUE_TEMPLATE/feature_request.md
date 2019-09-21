@@ -2,7 +2,7 @@
 name: Feature request
 about: New feature or request
 title: ''
-labels: 'enhancement, revision'
+labels: 'enhancement'
 assignees: 'lucasvazq'
 ---
 **Priority**: <1-5>
