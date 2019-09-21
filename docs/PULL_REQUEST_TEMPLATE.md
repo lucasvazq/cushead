@@ -1,6 +1,6 @@
-[//]: # (====================)
-[//]: # (Issue Related       )
-[//]: # (====================)
+[//]: # (=========================)
+[//]: # (Issue Related)
+[//]: # (=========================)
 
 [//]: # (The title must have the next format: Issue <Issue ID>)
 
@@ -12,9 +12,9 @@
 Completely / Just a part: Description of what is missing
 
 
-[//]: # (====================)
-[//]: # (Non issue Related   )
-[//]: # (====================)
+[//]: # (=========================)
+[//]: # (Non issue Related)
+[//]: # (=========================)
 
 # NO ISSUE RELATED
 
@@ -22,9 +22,9 @@ Completely / Just a part: Description of what is missing
 Describe the problem that this PR solves
 
 
-[//]: # (====================)
+[//]: # (=========================)
 [//]: # (All)
-[//]: # (====================)
+[//]: # (=========================)
 
 
 ## Tests
