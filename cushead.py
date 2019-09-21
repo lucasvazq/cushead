@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Disable modules import order on Pylint because it generate a warning
-# Thats warning is ok, but need to call some functions before call rest of
-# methods for check the python version and generate a custom alert message to
-# the user.
+# Need to call some functions before call rest of methods for check the python
+# version and generate a custom alert message to the user.
 # pylint: disable=C0413
 
 """Main script"""
