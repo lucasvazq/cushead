@@ -146,7 +146,7 @@ class ImagesCreationConfig(ImageService):
     def _favicon_ico(self):
         pass
     def _favicon_svg(self):
-        return {
+        return [{
             'destination_file_path': path.join(
                 self.config.get('static_folder_path'),
                 'favicon.svg'
@@ -155,10 +155,18 @@ class ImagesCreationConfig(ImageService):
                 self.config.get('main_folder_path', ''),
                 self.config.get('favicon_svg', '')
             ),
-        }
+            'svg': True,
+        }]
 
     def _preview_png(self):
         pass
 
     def default_images_creation_config(self):
-        return self._favicon_png()
+        images_creation_config = [
+            self._favicon_png(),
+            self._favicon_svg(),
+        ]
+        return [
+            element for group in images_creation_config
+            for element in group
+        ]

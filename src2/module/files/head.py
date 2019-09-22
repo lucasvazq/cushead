@@ -3,7 +3,7 @@ from .images import Images
 class Head(Images):
     config = {}
 
-    def general_config(self):
+    def general(self):
         """General config section"""
         # content-type
         head = []
@@ -35,7 +35,7 @@ class Head(Images):
         ])
         return head
 
-    def basic_config(self):
+    def basic(self):
         """Basic config section"""
         head = []
         # title
@@ -172,8 +172,8 @@ class Head(Images):
 
     def full_head(self):
         head = [
-            self.general_config(),
-            self.basic_config(),
+            self.general(),
+            self.basic(),
             self.favicon_ico(),
             self.favicon_png(),
             self.favicon_svg(),

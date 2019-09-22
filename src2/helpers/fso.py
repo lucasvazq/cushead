@@ -24,20 +24,24 @@ class FilesHelper:
         self.content = content
         self.destination_file_path = destination_file_path
         self.source_file_path = source_file_path
-        folder_path = path.dirname(destination_file_path)
-        if folder_path: FoldersHelper(folder_path).create_folder()
+
+    def _create_folder(self):
+        FoldersHelper(path.dirname(self.destination_file_path)).create_folder()
 
     def copy_file(self):
         """Copy files"""
+        self._create_folder()
         copyfile(self.source_file_path, self.destination_file_path)
 
     def write_file(self):
         """Write files"""
+        self._create_folder()
         with open(self.destination_file_path, 'w') as file_instance:
             file_instance.write(self.content)
 
     def write_binary(self):
         """Write binary files"""
+        self._create_folder()
         with open(self.destination_file_path, 'wb') as file_instance:
             file_instance.write(self.content)
 

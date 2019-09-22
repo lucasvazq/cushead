@@ -46,12 +46,22 @@ class Main(ModuleMain):
                 content=all_files[key]['content'],
                 destination_file_path=all_files[key]['destination_path']
             ).write_file()
+        print('===========')
         for image_config in self.default_images_creation_config():
-            self.open_image(image_config['source_file_path'])
-            self.resize_image(
-                image_config['destination_file_path'],
-                image_config.get('size', [])
-            )
+            print('=__________=')
+            print(image_config)
+            if image_config.get('svg', False):
+                self.move_svg(
+                    image_config.get('destination_file_path', ''),
+                    image_config.get('source_file_path', '')
+                )
+            else:
+                self.resize_image(
+                    image_config.get('destination_file_path', ''),
+                    image_config.get('source_file_path', ''),
+                    image_config.get('size', [])
+                )
+
 
     # -presets
     def argument_string_preset(self):

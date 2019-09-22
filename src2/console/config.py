@@ -64,7 +64,7 @@ def get_values(args):
         'output'
     )
     json_string['static_folder_path'] = path.join(
-        json_string['main_folder_path'],
+        json_string['output_folder_path'],
         json_string['static_folder_path']
     )
     return json_string
