@@ -1,21 +1,19 @@
 from os import path
 
-from src2.services.images import format_sizes
+from src2.services.images import ImageService
 
 class DefaultIconsConfig():
     config: dict
 
     def _png_icons_config(self):
-        static_url = self.config.get('static_url', '')
-        background_color = self.config.get('background_color', '')
-        yandex_content = (
-            f"logo={static_url}yandex.png, color={background_color}"
-        )
+        yandex_content = (f"logo={self.config.get('static_url', '')}"
+                           "/yandex.png, "
+                          f"color={self.config.get('background_color', '')}")
         return [
             # default png favicons
             {
                 'name_ref': 'icon',
-                'filename': 'favicon',
+                'file_name': 'favicon',
                 # https://www.favicon-generator.org/
                 # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
                 # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
@@ -28,20 +26,20 @@ class DefaultIconsConfig():
             # windows favicon
             {
                 'name_ref': 'msapplication-TileImage',
-                'filename': 'ms-icon',
+                'file_name': 'ms-icon',
                 'square_sizes': [144],
                 'metatag': True,
             },
             # apple touch default
             {
                 'name_ref': 'apple-touch-icon',
-                'filename': 'apple-touch-icon',
+                'file_name': 'apple-touch-icon',
                 'square_sizes': [57],
             },
             # apple touch with differents sizes
             {
                 'name_ref': 'apple-touch-icon',
-                'filename': 'apple-touch-icon',
+                'file_name': 'apple-touch-icon',
                 'square_sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
                                 1024],
                 'verbosity': True,
@@ -49,13 +47,13 @@ class DefaultIconsConfig():
             # apple touch startup image default
             {
                 'name_ref': 'apple-touch-startup-image',
-                'filename': 'launch',
+                'file_name': 'launch',
                 'square_sizes': [768],
             },
             # apple touch startup image with differents sizes
             {
                 'name_ref': 'apple-touch-startup-image',
-                'filename': 'launch',
+                'file_name': 'launch',
                 # Based on:
                 # https://css-tricks.com/snippets/css/media-queries-for-standard-devices/
                 'max_min': [
@@ -77,14 +75,14 @@ class DefaultIconsConfig():
             # Mac fluid icon
             {
                 'name_ref': 'fluid-icon',
-                'filename': 'fluidicon',
+                'file_name': 'fluidicon',
                 'square_sizes': [512],
                 'title': self.config.get('title', ''),
             },
             # yandex browser
             {
                 'name_ref': 'yandex-tableau-widget',
-                'filename': 'yandex',
+                'file_name': 'yandex',
                 'square_sizes': [120],
                 'metatag': True,
                 'content': yandex_content,
@@ -94,40 +92,73 @@ class DefaultIconsConfig():
     def _browserconfig_icons_config(self):
         return {
             'name_ref': 'browserconfig',
-            'filename': 'ms-icon',
+            'file_name': 'ms-icon',
             'square_sizes': [30, 44, 70, 150, 310],
             'non_square_sizes': [[310, 150]],
         }
+    def _manifest_icons_config(self):
+        return {
+            'name_ref': 'manifest',
+            'filename': 'android-icon',
+            'square_sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
+            'file_type': 'image/png',
+            'verbosity': True,
+        }
+    def _opensearch_icons_config(self):
+        return {
+            'name_ref': 'opensearch',
+            'filename': 'opensearch',
+            'sqyare_sizes': [16],
+            'verbosity': True,
+        }
 
     def default_icons_config(self):
-        # Order of how icons are generated and added to the head if it's
-        # required
-        # The order matters
-
         return {
             'favicon_png': self._png_icons_config(),
             'browserconfig': self._browserconfig_icons_config(),
+            'manifest': self._manifest_icons_config(),
+            'opensearch': self._opensearch_icons_config(),
         }
 
-class ImagesCreationConfig:
+class ImagesCreationConfig(ImageService):
     config: dict
     icons_config: dict
 
     def _favicon_png(self):
         images_format = []
-        if not 'favicon_png' in self.config: return images_format
-        main_path = self.config.get('main_path', '')
-        static_url = self.config.get('static_url_path', '')
-        source_file_path = path.join(main_path, self.config['favicon_png'])
-        for brand_icon_config in self.icons_config:
-            for size in format_sizes(brand_icon_config):
-                file_name = (f"{file_name}-{size[0]}x{size[1]}.png")
-                destination_file_path = path.join(static_url, file_name)
+        favicon_png = self.config.get('favicon_png', '')
+        if not favicon_png: return images_format
+        source_file_path = path.join(self.config.get('main_folder_path', ''),
+                                     favicon_png)
+        for brand_icon_config in self.icons_config.get('favicon_png', []):
+            file_name = brand_icon_config.get('file_name', '')
+            for size in self.format_sizes(brand_icon_config):
+                destination_file_path = path.join(
+                    self.config.get('static_folder_path', ''),
+                    f"{file_name}-{size[0]}x{size[1]}.png")
                 images_format.append({
-                    'source_file_path': source_file_path,
                     'destination_file_path': destination_file_path,
                     'size': size,
+                    'source_file_path': source_file_path,
                 })
+        return images_format
+
+    def _favicon_ico(self):
+        pass
+    def _favicon_svg(self):
+        return {
+            'destination_file_path': path.join(
+                self.config.get('static_folder_path'),
+                'favicon.svg'
+            ),
+            'source_file_path': path.join(
+                self.config.get('main_folder_path', ''),
+                self.config.get('favicon_svg', '')
+            ),
+        }
+
+    def _preview_png(self):
+        pass
 
     def default_images_creation_config(self):
-        pass
+        return self._favicon_png()

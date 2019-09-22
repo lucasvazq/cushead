@@ -1,10 +1,20 @@
+from os import path
+
 from .head import Head
 
 
 class Base(Head):
     
     def full_index(self):
-        return self.structure(self.full_head())
+        return {
+            'index': {
+                'content': self.structure(self.full_head()),
+                'destination_path': path.join(
+                    self.config.get('output_folder_path', ''),
+                                    'index.html'
+                ),
+            },
+        }
     
     def structure(self, head):
         indent = "    "  # 4 spaces

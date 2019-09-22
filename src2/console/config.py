@@ -45,8 +45,26 @@ def get_values(args):
     for key in required_values:
         KeysValidator(key, dictionary=json_string)
 
-    # Add '/' to static url
-    if json_string['static_url'][-1] != '/':
-        json_string['static_url'] += '/'
+    # Sanitize static_url key
+    # Prevent:
+    #   output = /output/
+    #   static_url = /static/
+    #   output + static_url = /static/ [root/static/]
+    if json_string['static_url'][0] == '/':
+        json_string['static_folder_path'] = json_string['static_url'][1:]
+    # HEre, prevent //
+    if json_string['static_url'][-1] == '/':
+        json_string['static_url'] = json_string['static_url'][:-1]
 
+    # Make paths
+    # Define the main path as the passed throught -file argument
+    json_string['main_folder_path'] = path.dirname(args.file)
+    json_string['output_folder_path'] = path.join(
+        json_string['main_folder_path'],
+        'output'
+    )
+    json_string['static_folder_path'] = path.join(
+        json_string['main_folder_path'],
+        json_string['static_folder_path']
+    )
     return json_string

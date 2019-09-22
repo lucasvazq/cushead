@@ -1,10 +1,9 @@
 from os import path
 
 from src2.helpers import FilesValidator, KeysValidator
-from src2.services import format_sizes
+from src2.services import ImageService
 
-
-class Images:
+class Images(ImageService):
     icons_config: dict
     config: dict
 
@@ -21,13 +20,12 @@ class Images:
         head = []
         if not self._requirements('favicon_png'): return head
         for icon_brand_config in self.icons_config.get('favicon_png', []):
-            sizes = format_sizes(icon_brand_config)
+            sizes = self.format_sizes(icon_brand_config)
+            file_name = icon_brand_config.get('file_name', '')
             for size in sizes:
-                filename = (f"{icon_brand_config['filename']}-"
-                            f"{size[0]}x{size[1]}.png")
-                element = self._icons_head_creator(filename, icon_brand_config,
-                                                   size)
-                head.append(element)
+                new_file_name = f"{file_name}-{size[0]}x{size[1]}.png"
+                head.append(self._icons_head_creator(new_file_name,
+                                                     icon_brand_config, size))
         return head
 
     def favicon_ico(self):
@@ -41,8 +39,7 @@ class Images:
         head = []
         if not self._requirements('favicon_svg'): return head
         color = self.config.get('background_color', '')
-        filename = self.config.get('favicon_svg', '')
-        head.append(f"<link rel='mask-icon' href='{filename}' "
+        head.append( "<link rel='mask-icon' href='favicon.svg' "
                     f"color='{color}' />")
         return head
 
@@ -50,8 +47,7 @@ class Images:
         head = []
         if not self._requirements('preview_png'): return head
         # og:image (http), og:image:secure_url (https) and twitter:image
-        static_url = self.config.get('static_url', '')
-        image = f"{static_url}preview.png"
+        image = f"{self.config.get('static_url', '')}/preview.png"
         head.extend(
             f"<meta property='og:image' content='{image}' />",
             f"<meta property='og:image:secure_url' content='{image}' />",
@@ -64,7 +60,6 @@ class Images:
         if 'media' in icon_brand_config:
             size[1] = size[0]
         name_ref = icon_brand_config.get('name_ref', '')
-        static_url = self.config['static_url']
         file_type = (
             f"type='{icon_brand_config['file_type']}' "
             if 'file_type' in icon_brand_config else ''
@@ -90,6 +85,8 @@ class Images:
         if 'content' in icon_brand_config:
             static_url = ''
             filename = f"content='{icon_brand_config['content']}'"
+        else:
+            static_url = self.config.get('static_url', '')
 
         # Keep using format function for better reference to each element of
         # the formated string
@@ -99,14 +96,14 @@ class Images:
         #    media="screen and (min-device-width: 320px) and ... ..." />
         # C: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
         #    title="Microsoft" />
-        element = "<{} {}='{}' {}{}{}='{}{}' {}{}/>".format(
+        element = "<{} {}='{}' {}{}{}='{}/{}' {}{}/>".format(
             tagname,  # A: link
             attribute,  # A: rel
             name_ref,  # A: shortcut icon
             file_type,  # A: type="image/png"
             sizes,  # A: sizes="16x16"
             ref,  # A: href
-            static_url,  # A: /static/
+            static_url,  # A: /static
             filename,  # A: favicon-16x16.png
             media,  # B: media="screen and (min-device-width: 320px) and ...
             title,  # C: title="Microsoft"

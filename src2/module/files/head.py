@@ -156,19 +156,18 @@ class Head(Images):
     
     def complementary_files(self):
         static_url = self.config.get('static_url', '')
-        title = self.config.get('title', '')
         return [
             # browserconfig.xml
             ( "<meta name='msapplication-config' "
-              f"content='{static_url}browserconfig.xml' />"),
+              f"content='{static_url}/browserconfig.xml' />"),
             # manifest.json
             (f"<link rel='manifest' href='{static_url}"
-             f"manifest.json' />"),
+             f"/manifest.json' />"),
             # opensearch.xml
             ( "<link rel='search' "
              f"type='application/opensearchdescription+xml' "
-             f"title='{title}' href='{static_url}"
-              "opensearch.xml' />"),
+             f"title='{self.config.get('title', '')}' href='{static_url}"
+              "/opensearch.xml' />"),
         ]
 
     def full_head(self):

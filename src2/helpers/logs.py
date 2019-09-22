@@ -18,7 +18,7 @@ import sys
 )
 
 
-def error_message(message):
+def error_message(message, test=False):
     """Print error message"""
-    raise Exception(message)
+    if test: raise Exception(message)
     sys.exit(ERROR_COLOR + message + DEFAULT_COLOR)
