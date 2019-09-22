@@ -13,27 +13,29 @@ from src2.helpers import error_message
 class FilesValidator:
     """Handle File System Objects validations"""        
 
-    @staticmethod
-    def path_exists(relative_path, keyname):
+    def __init__(self, file_path, key):
+        self.file_path = file_path
+        self.key = key
+        self.full_path = path.join(os.getcwd(), self.file_path)
+
+    def path_exists(self):
         """Check if path exists"""
-        fullpath = path.join(os.getcwd(), relative_path)
-        if not path.exists(relative_path):
+        if not path.exists(self.file_path):
             exception = (
-                f"'{keyname}' ({relative_path}) must be referred to a path "
+                f"'{self.key}' ({self.file_path}) must be referred to a path "
                 "that exists.\n"
-                f"PATH: {fullpath}"
+                f"PATH: {self.full_path}"
             )
             error_message(exception)
 
-    @classmethod
-    def path_is_not_directory(cls, relative_path, keyname):
+    def path_is_file(self):
         """Check if path is not directory"""
-        fullpath = path.join(os.getcwd(), relative_path)
-        if not path.isfile(relative_path):
+        self.path_exists()
+        if not path.isfile(self.file_path):
             exception = (
-                f"'{keyname}' key ({relative_path}) must be referred to a "
+                f"'{self.key}' key ({self.file_path}) must be referred to a "
                 "file path that exists.\n"
-                f"FILE PATH: {fullpath}"
+                f"FILE PATH: {self.full_path}"
             )
             error_message(exception)
 
@@ -41,14 +43,18 @@ class FilesValidator:
 class KeysValidator:
     """Handle keys related validations"""
 
-    @staticmethod
-    def key_is_not_void(key, keyname):
-        """Check if key in dictionary is void"""
-        if not key:
-            error_message(f"'{keyname}' key value can't be void.")
+    def __init__(self, key, dictionary=None, value=None):
+        self.key = key
+        self.dictionary = dictionary
+        self.value = value
 
-    @staticmethod
-    def key_exists(dictionary, keyname):
+    def key_exists(self):
         """Check if key is in dictionary"""
-        if keyname not in dictionary:
-            error_message("Miss '{keyname}' key and it's required.")
+        if self.key not in self.dictionary:
+            error_message(f"Miss '{self.key}' key and it's required in config "
+                           "file.")
+
+    def key_is_not_void(self):
+        """Check if key in dictionary is void"""
+        if not self.value:
+            error_message(f"'{self.key}' key value can't be void.")

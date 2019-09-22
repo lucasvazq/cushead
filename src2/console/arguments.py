@@ -71,17 +71,21 @@ def parse_args(args, info):
     )
 
     parser.set_defaults(images=False)
-    parser = parser.parse_args(args)
 
     # Validation
-    if not (parser.preset or parser.file):
+    unrecognized = parser.parse_known_args()[1]
+    if unrecognized:
+        error_message(f"Unrecognized argument {unrecognized[0]}")
+    # Need to recall arguments parser.
+    # pylint no-member error in child function
+    args = parser.parse_args()
+    if not (args.preset or args.file):
         error_message("Miss Required arguments. Use -preset or -file")
-    if parser.preset and parser.file:
+    if args.preset and args.file:
         error_message("Can't use -preset and -file arguments together.")
-    if parser.images and not parser.preset:
+    if args.images and not args.preset:
         error_message("Can't use --images without -preset.")
-    if parser.file:
-        FilesValidator.path_exists(parser.file, "-file")
-        FilesValidator.path_is_not_directory(parser.file, "-file")
-
-    return parser
+    if args.file:
+        FilesValidator.path_exists(args.file, "-file")
+        FilesValidator.path_is_not_directory(args.file, "-file")
+    return args

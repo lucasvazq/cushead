@@ -33,9 +33,6 @@ class Icons:
     def favicon_png(self):
         """Generate .png icons"""
 
-        if not self._requirements('favicon_png'):
-            return []
-
         head = []
 
         # Open favicon_png file

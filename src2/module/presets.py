@@ -24,7 +24,7 @@ class Presets:
     def default_images(self):
         """Generate images files to attach to the preset settings"""
         binary_files = []
-        realpath = path.join(path.dirname(path.realpath(__file__)), 'assets')
+        realpath = path.join(path.dirname(path.realpath(__file__)), '../assets')
         for filename in IMAGEFILES:
             filepath = path.join(realpath, filename)
             with open(filepath, 'rb') as binary_file:

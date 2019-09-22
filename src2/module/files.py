@@ -1,14 +1,26 @@
 from os import path
 
 from src2.services.images import format_sizes
+from src2.helpers import FilesValidator, KeysValidator
+
 
 class Images:
-    icons_config = {}
-    config = {}
+    icons_config: dict
+    config: dict
+
+    def _requirements(self, key):
+        if key not in self.config:
+            return False
+        KeysValidator(key, value=self.config[key]).key_is_not_void()
+        file_path = path.join(self.config.get('main_path', ''),
+                              self.config[key])
+        FilesValidator(key, file_path).path_is_file()
+        return True
 
     def favicon_png(self):
         head = []
-        for icon_brand_config in self.icons_config.get('head_index', []):
+        if not self._requirements('favicon_png'): return head
+        for icon_brand_config in self.icons_config.get('favicon_png', []):
             sizes = format_sizes(icon_brand_config)
             for size in sizes:
                 filename = (f"{icon_brand_config['filename']}-"
@@ -19,13 +31,13 @@ class Images:
         return head
 
     def favicon_ico(self):
-        return ( "<link rel='shortcut icon' "
-                f"href='/favicon.ico' type='image/x-icon' />")
+        return [( "<link rel='shortcut icon' "
+                 f"href='/favicon.ico' type='image/x-icon' />")]
 
     def favicon_svg(self):
         color = self.config.get('background_color', '')
         filename = self.config.get('favicon_svg', '')
-        return f"<link rel='mask-icon' href='{filename}' color='{color}' />"
+        return [f"<link rel='mask-icon' href='{filename}' color='{color}' />"]
 
     def preview_png(self):
         # og:image (http), og:image:secure_url (https) and twitter:image
@@ -41,8 +53,8 @@ class Images:
         min_size = size[1]
         if 'media' in icon_brand_config:
             size[1] = size[0]
-
         name_ref = icon_brand_config.get('name_ref', '')
+        static_url = self.config['static_url']
         file_type = (
             f"type='{icon_brand_config['file_type']}' "
             if 'file_type' in icon_brand_config else ''
@@ -276,17 +288,21 @@ class Head(Images):
 
 class Index(Head):
     
-    def full(self):
-        head = self.full_head
+    def full_index(self):
+        head = self.full_head()
         html = self.structure(head)
         return html
     
     def structure(self, head):
-        formated_head = head
         indent = "    "  # 4 spaces
+        formated_head = ''.join([
+            f"{indent*2}{tag}\n"
+            for conjunt in head
+            for tag in conjunt
+        ])
         return ( "<html>\n"
                 f"{indent}<head>\n"
-                f"{formated_head}\n"
+                f"{formated_head}"  # Already have newline
                 f"{indent}</head>\n"
                  "</html>")
 

@@ -13,36 +13,34 @@ from src2.helpers import error_message, KeysValidator
 
 def get_values(args):
     """Read and obtain values as settings from json file"""
-
-    fullpath = path.join(os.getcwd(), args.file)
-    with open(args.file, 'r') as fileinstance:
-        filestring = fileinstance.read()
-    jsonstring = None
+    
+    with open(args.file, 'r') as file_instance:
+        file_string = file_instance.read()
+    json_string = None
     try:
-        jsonstring = json.loads(filestring)
+        json_string = json.loads(file_string)
     except JSONDecodeError:
+        config_file_fullpath = path.join(os.getcwd(), args.file)
         exception = (
             f"Invalid json file format in ({args.file})\n"
-            f"FILE PATH: {fullpath}"
+            f"FILE PATH: {config_file_fullpath}"
         )
         error_message(exception)
 
     # Construct config
-    recommended = jsonstring.get('recommended', {})
-    default = jsonstring.get('default', {})
+    recommended = json_string.get('recommended', {})
+    default = json_string.get('default', {})
     general = default.get('general', {})
     basic = default.get('basic', {})
     social_media = default.get('social_media', {})
-    progressive_web_app = jsonstring.get('progressive_web_apps', {})
-    if 'required' not in jsonstring:
-        error_message("Miss 'required' object and it's required.")
-    jsonstring = {**jsonstring['required'], **recommended, **general,
+    progressive_web_app = json_string.get('progressive_web_apps', {})
+    if 'required' not in json_string:
+        error_message("Miss 'required' object and it's required in config "
+                      "file.")
+    json_string = {**json_string['required'], **recommended, **general,
                   **basic, **social_media, **progressive_web_app}
-    config = jsonstring
-
-    # Required values
     required_values = ['static_url']
     for key in required_values:
-        KeysValidator.key_exists(config, key)
+        KeysValidator.key_exists(json_string, key)
 
-    return jsonstring
+    return json_string

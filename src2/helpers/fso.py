@@ -38,7 +38,7 @@ class FilesHelper:
 
     def write_binary(self):
         """Write binary files"""
-        with open(self.source_path, 'wb') as file_instance:
+        with open(self.destination_path, 'wb') as file_instance:
             file_instance.write(self.content)
 
 
