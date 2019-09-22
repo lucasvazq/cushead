@@ -86,6 +86,5 @@ def parse_args(args, info):
     if args.images and not args.preset:
         error_message("Can't use --images without -preset.")
     if args.file:
-        FilesValidator.path_exists(args.file, "-file")
-        FilesValidator.path_is_not_directory(args.file, "-file")
+        FilesValidator(args.file, "-file").path_is_file()
     return args

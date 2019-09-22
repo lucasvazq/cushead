@@ -15,36 +15,6 @@ from .helpers import (error_message, FilesHelper, FilesValidator,
 
 
 class Icons:
-    """Class related to icons generation"""
-
-    brand = {}
-    config = {}
-    names = []
-
-    
-    def _requirements(self, key):
-        if key not in self.config:
-            return False
-        KeysValidator.key_is_not_void(self.config[key], key)
-        filepath = path.join(self.config['main_path'], self.config[key])
-        FilesValidator.path_is_not_directory(filepath, key)
-        return True
-
-    def favicon_png(self):
-        """Generate .png icons"""
-
-        head = []
-
-        # Open favicon_png file
-        filepath = path.join(self.config['main_path'],
-                             self.config['favicon_png'])
-        with open(filepath, 'r+b') as file, \
-                Image.open(file) as image:
-            for name in self.names:
-                head.append(self._sizes_handler(image, name))
-
-        return head
-
     def favicon_ico(self):
         """favicon.ico"""
 

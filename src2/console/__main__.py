@@ -8,7 +8,6 @@ from os import path
 
 from src2.console.arguments import parse_args
 from src2.console.config import get_values
-from src2.module.files import Files
 from src2.helpers import FilesHelper, FoldersHelper
 from src2.module.main import Main as ModuleMain
 from src2.module.presets import Presets
@@ -21,8 +20,9 @@ class Main(ModuleMain):
     def __init__(self, args):
         self.info = get_info()
         self.args = parse_args(args, self.info)
-        self.config = get_values(self.args)
-        super().__init__()
+        if self.args.file:
+            self.config = get_values(self.args)
+            super().__init__()
 
     def run(self):
         """Handle the different arguments"""

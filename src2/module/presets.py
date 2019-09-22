@@ -12,6 +12,9 @@ from ..helpers import FilesHelper, FoldersHelper
 
 IMAGEFILES = [
     'favicon_ico_16px.ico',
+    'favicon_png_1600px.png',
+    'favicon_svg_scalable.svg',
+    'preview_png_500px.png',
 ]
 
 

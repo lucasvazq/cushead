@@ -39,8 +39,14 @@ def get_values(args):
                       "file.")
     json_string = {**json_string['required'], **recommended, **general,
                   **basic, **social_media, **progressive_web_app}
+    
+    # Required values
     required_values = ['static_url']
     for key in required_values:
-        KeysValidator.key_exists(json_string, key)
+        KeysValidator(key, dictionary=json_string)
+
+    # Add '/' to static url
+    if json_string['static_url'][-1] != '/':
+        json_string['static_url'] += '/'
 
     return json_string
