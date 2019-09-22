@@ -132,6 +132,7 @@ class ComplementaryFiles:
 
     def _robots(self):
         """robots.txt"""
+        # clean_url
         sitemap_reference = (
             "\n"
             f"Sitemap: {self.config.get('protocol', '')}"
@@ -150,6 +151,7 @@ class ComplementaryFiles:
 
     def _sitemap(self):
         """sitemap.xml"""
+        # clean_url
         sitemap = ( "<?xml version='1.0' encoding='uft-8'?>"
                     "<urlset xmlns="
                     "'http://www.sitemaps.org/schemas/sitemap/0.9' "

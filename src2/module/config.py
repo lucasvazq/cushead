@@ -124,6 +124,20 @@ class ImagesCreationConfig(ImageService):
     config: dict
     icons_config: dict
 
+    def _favicon_ico(self):
+        favicon_ico = self.config.get('favicon_ico', '')
+        if not favicon_ico: return []
+        return [{
+            'destination_file_path': path.join(
+                self.config.get('output_folder_path'),
+                'favicon.ico'
+            ),
+            'source_file_path': path.join(
+                self.config.get('main_folder_path', ''),
+                favicon_ico
+            ),
+        }]
+
     def _favicon_png(self):
         images_format = []
         favicon_png = self.config.get('favicon_png', '')
@@ -138,14 +152,15 @@ class ImagesCreationConfig(ImageService):
                     f"{file_name}-{size[0]}x{size[1]}.png")
                 images_format.append({
                     'destination_file_path': destination_file_path,
+                    'resize': True,
                     'size': size,
                     'source_file_path': source_file_path,
                 })
         return images_format
 
-    def _favicon_ico(self):
-        pass
     def _favicon_svg(self):
+        favicon_svg = self.config.get('favicon_svg', '')
+        if not favicon_svg: return []
         return [{
             'destination_file_path': path.join(
                 self.config.get('static_folder_path'),
@@ -153,18 +168,32 @@ class ImagesCreationConfig(ImageService):
             ),
             'source_file_path': path.join(
                 self.config.get('main_folder_path', ''),
-                self.config.get('favicon_svg', '')
+                favicon_svg
             ),
-            'svg': True,
         }]
 
     def _preview_png(self):
-        pass
+        preview_png = self.config.get('preview_png', '')
+        if not preview_png: return []
+        return [{
+            'destination_file_path': path.join(
+                self.config.get('static_folder_path'),
+                'preview-500x500.png'
+            ),
+            'resize': True,
+            'size': [500, 500],
+            'source_file_path': path.join(
+                self.config.get('main_folder_path', ''),
+                preview_png
+            )
+        }]
 
     def default_images_creation_config(self):
         images_creation_config = [
+            self._favicon_ico(),
             self._favicon_png(),
             self._favicon_svg(),
+            self._preview_png(),
         ]
         return [
             element for group in images_creation_config
