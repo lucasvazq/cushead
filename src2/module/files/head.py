@@ -1,33 +1,39 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Module to handle the creation of tags that are inside the head tag
+
+Classes:
+    Head
+"""
+
 from .images import Images
 
-class Head(Images):
-    config = {}
 
-    def general(self):
+class Head(Images):
+    config: dict
+
+    def general(self) -> list:
         """General config section"""
-        # content-type
         head = []
-        if 'content-type' in self.config:
-            head.append("<meta http-equiv='Content-Type' "
-                        f"content='{self.config['content-type']}' />")
+        # content-type
+        string = self.config('content-type', '')
+        head.append( "<meta http-equiv='Content-Type' "
+                    f"content='{string}' />")
         # X-UA-Compatible
-        if 'X-UA-Compatible' in self.config:
-            head.append("<meta http-equiv='X-UA-Compatible' "
-                        f"content='{self.config['X-UA-Compatible']}' />")
+        string = self.config.get('X-UA-Compatible', '')
+        head.append( "<meta http-equiv='X-UA-Compatible' "
+                    f"content='{string}' />")
         # viewport
-        if 'viewport' in self.config:
-            head.append("<meta name='viewport' "
-                        f"content='{self.config['viewport']}' />")
+        string = self.config.get('viewport', '')
+        head.append(f"<meta name='viewport' content='{string}' />")
         # locale
-        if 'language' in self.config:
-            head.append("<meta http-equiv='Content-Language' "
-                        f"content='{self.config['language']}' />")
+        string = self.config('language', '')
+        head.append( "<meta http-equiv='Content-Language' "
+                    f"content='{string}' />")
         # robots
-        if 'robots' in self.config:
-            head.append("<meta name='robots' "
-                        f"content='{self.config['robots']}' />")
+        string = self.config('robots', '')
+        head.append(f"<meta name='robots' content='{string}' />")
         # apple
-        # Multiline strings inside a list get together into a parentheses
         head.extend([
             "<meta name='apple-mobile-web-app-capable' content='yes'>",
             ("<meta name='apple-mobile-web-app-status-bar-style' "
@@ -35,97 +41,86 @@ class Head(Images):
         ])
         return head
 
-    def basic(self):
+    def basic(self) -> list:
         """Basic config section"""
         head = []
         # title
-        if 'title' in self.config:
-            title = self.config['title']
-            title_components = [
-                f"<title>{title}</title>",
-                f"<meta name='application-name' content='{title}' />",
-                "<meta name='apple-mobile-web-app-title' "
-                f"content='{title}' />",
-            ]
-            head.extend(title_components)
+        string = self.config.get('title', '')
+        head.extend([
+            f"<title>{string}</title>",
+            f"<meta name='application-name' content='{string}' />",
+            "<meta name='apple-mobile-web-app-title' "
+            f"content='{string}' />",
+        ])
         # description
-        if 'description' in self.config:
-            head.append("<meta name='description' "
-                        f"content='{self.config['description']}' />")
+        string = self.config.get('description', '')
+        head.append(f"<meta name='description' content='{string}' />")
         # subject
-        if 'subject' in self.config:
-            head.append("<meta name='subject' "
-                        f"content='{self.config['subject']}' />")
+        string = self.config.get('subject', '')
+        head.append(f"<meta name='subject' content='{string}' />")
         # keywords
-        if 'keywords' in self.config:
-            head.append("<meta name='keywords' "
-                        f"content='{self.config['keywords']}' />")
+        string = self.config.get('keywords', '')
+        head.append(f"<meta name='keywords' content='{string}' />")
         # theme-color and msapplication-TileColor
-        if 'background_color' in self.config:
-            color = self.config['background_color']
-            color_components = [
-                f"<meta name='theme-color' content='{color}' />",
-                f"<meta name='msapplication-TileColor' content='{color}' />",
-            ]
-            head.extend(color_components)
+        string = self.config.get('background_color', '')
+        head.extend([
+            f"<meta name='theme-color' content='{string}' />",
+            f"<meta name='msapplication-TileColor' content='{string}' />",
+        ])
         # author
-        if 'author' in self.config:
-            head.append("<meta name='author' "
-                        f"content='{self.config['author']}' />")
+        string = self.config.get('author', '')
+        head.append(f"<meta name='author' content='{string}' />")
         return head
 
-    def social_media(self):
+    def social_media(self) -> list:
         """Social media section"""
         head = []
 
         # OPENGRAPH AND FACEBOOK
 
         # fb:app_id
-        if 'facebook_app_id' in self.config:
-            head.append("<meta porperty='fb:app_id' "
-                        f"content='{self.config['facebook_app_id']}' />")
+        string = self.config('facebook_app_id', '')
+        head.append("<meta porperty='fb:app_id' content='{string}' />")
         # og:locale
-        if 'language' in self.config:
-            territory = (
-                "_{}".format(self.config['territory'])
-                if 'territory' in self.config else ''
-            )
-            head.append("<meta property='og:locale' "
-                        f"content='{self.config['language']}{territory}' />")
+        language = self.config.get('language', '')
+        territory = (
+            "_{}".format(self.config['territory'])
+            if 'territory' in self.config else ''
+        )
+        string = language + territory
+        head.append(f"<meta property='og:locale' content='{string}' />")
         # og:type
         # Only allow website type for simplicity
         head.append("<meta property='og:type' content='website' />")
         # og:url, Likes and Shared are stored under this url
-        if 'clean_url' in self.config:
-            head.append(f"<meta property='og:url' "
-                        f"content='{self.config.get('protocol', '')}"
-                        f"{self.config['clean_url']}' />")
+        string = self.config.get('protocol', '')
+        string += self.config.get('clean_url', '')
+        head.append(f"<meta property='og:url' content='{string}' />")
         # og:site_name
-        if 'title' in self.config:
-            head.append("<meta property='og:site_name' "
-                        f"content='{self.config['title']}' />")
+        string = self.config.get('title', '')
+        head.append(f"<meta property='og:site_name' content='{string}' />")
         # og:title
-        if 'title' in self.config:
-            head.append("<meta property='og:title' "
-                        f"content='{self.config['title']}' />")
+        string = self.config.get('title', '')
+        head.append(f"<meta property='og:title' content='{string}' />")
         # og:description
-        if 'description' in self.config:
-            head.append("<meta property='og:description' "
-                        f"content='{self.config['description']}' />")
+        string = self.config.get('description', '')
+        head.append(f"<meta property='og:description' content='{string}' />")
         # og:image:type
         # Only allow png type for simplicity
         head.append("<meta property='og:image:type' content='image/png' />")
         # og:image:alt and twitter:image:alt
-        if 'title' in self.config or 'description' in self.config:
-            title = self.config.get('title', '')
-            description = self.config.get('description', '')
-            connector = (' - ' if ('title' in self.config and
-                                   'description' in self.config) else '')
-            text = title + connector + description
-            head.extend([
-                f"<meta property='og:image:alt' content='{text}' />",
-                f"<meta name='twitter:image:alt' content='{text}' />",
-            ])
+        title = self.config.get('title', '')
+        description = self.config.get('description', '')
+        connector = (
+            ' - '
+            if 'title' in self.config and
+            'description' in self.config else ''
+        )
+        string = title + connector + description
+        head.extend([
+            f"<meta property='og:image:alt' content='{string}' />",
+            f"<meta name='twitter:image:alt' content='{string}' />",
+        ])
 
         # TWITTER
         # twitter:image mixed with op:image and op:image:secure in OPENGRAH
@@ -136,21 +131,18 @@ class Head(Images):
         # Only allow summary type for simplicity
         head.append("<meta name='twitter:card' content='summary' />")
         # twitter:site
-        if 'twitter_user_@' in self.config:
-            head.append("<meta name='twitter:site' "
-                        f"content='{self.config['twitter_user_@']}' />")
+        string = self.config.get('twitter_user_@', '')
+        head.append(f"<meta name='twitter:site' content='{string}' />")
         # twitter:title
-        if 'title' in self.config:
-            head.append("<meta name='twitter:title' "
-                        f"content='{self.config['title']}' />")
+        string = self.config.get('title', '')
+        head.append(f"<meta name='twitter:title' content='{string}' />")
         # twitter:description
-        if 'description' in self.config:
-            head.append("<meta name='twitter:description' "
-                        f"content='{self.config['description']}' />")
+        string = self.config.get('description', '')
+        head.append(f"<meta name='twitter:description' content='{string}' />")
         # tw:creator
-        if 'twitter_user_id' in self.config:
-            head.append("<meta property='twitter:creator:id' "
-                        f"content='{self.config['twitter_user_id']}' />")
+        string = self.config.get('twitter_user_id', '')
+        head.append( "<meta property='twitter:creator:id' "
+                    f"content='{string}' />")
 
         return head
     

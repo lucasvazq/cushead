@@ -1,1 +1,14 @@
 check dependences
+
+opensearch:
+    title, url
+
+robots:
+    protocol, clean_url
+
+sitemap:
+    protocol, clean_url
+
+manifest:
+    icons_config['manifest']
+    
