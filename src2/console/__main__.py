@@ -13,6 +13,7 @@ from src2.module.__main__ import Main as ModuleMain
 from src2.module.presets import Presets
 from ..info import get_info
 
+
 class Main(ModuleMain):
     """Main class of this module"""
 

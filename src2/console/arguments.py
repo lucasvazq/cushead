@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Argparse"""
+"""Module for handle the arguments passed throught the CLI
+
+Functions:
+    parse_args(str, str) -> object
+"""
 
 import textwrap
 
@@ -10,8 +14,13 @@ import argparse
 from src2.helpers import error_message, FilesValidator
 
 
-def parse_args(args, info):
-    """Argparse main function"""
+def parse_args(args: str, info: str) -> object:
+    """Argparse main function
+
+    Allowed arguments: -file: str, -preset: str, --images: bool
+    This function validate the values of the arguments and, if everythings is
+    ok, return object with the arguments as attributes
+    """
 
     name = info['package_name']
     parser = argparse.ArgumentParser(
@@ -29,7 +38,7 @@ def parse_args(args, info):
     # ARGUMENTS
 
     required = parser.add_argument_group("Required (only one)")
-    options = parser.add_argument_group("Options (use with Required "
+    options = parser.add_argument_group("Optional (use with Required "
                                         "arguments)")
 
     # GROUP: required
@@ -70,6 +79,7 @@ def parse_args(args, info):
         )
     )
 
+    # Set defaults
     parser.set_defaults(images=False)
 
     # Validation
@@ -87,4 +97,5 @@ def parse_args(args, info):
         error_message("Can't use --images without -preset.")
     if args.file:
         FilesValidator(args.file, "-file").path_is_file()
+
     return args

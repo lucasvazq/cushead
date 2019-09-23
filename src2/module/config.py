@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from os import path
 
 from src2.services.images import ImageService
+
 
 class DefaultIconsConfig():
     config: dict

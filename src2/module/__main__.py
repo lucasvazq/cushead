@@ -14,15 +14,19 @@ from ..helpers import FilesHelper, FoldersHelper
 from ..info import get_info
 from ..module.presets import Presets
 
+
 class DefaultConfig(DefaultIconsConfig):
     pass
+
 
 class Config(ImagesCreationConfig):
     pass
 
+
 class Files(Base, ComplementaryFiles):
     def all_files(self):
         return dict(self.full_index(), **self.full_complementary_files())
+
 
 class Main(Config, DefaultConfig, Files, Presets):
     def __init__(self, config=None, icons_config=None):

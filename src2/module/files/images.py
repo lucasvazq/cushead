@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from os import path
 
 from src2.helpers import FilesValidator, KeysValidator
 from src2.services import ImageService
+
 
 class Images(ImageService):
     icons_config: dict
@@ -48,11 +52,11 @@ class Images(ImageService):
         if not self._requirements('preview_png'): return head
         # og:image (http), og:image:secure_url (https) and twitter:image
         image = f"{self.config.get('static_url', '')}/preview.png"
-        head.extend(
+        head.extend([
             f"<meta property='og:image' content='{image}' />",
             f"<meta property='og:image:secure_url' content='{image}' />",
             f"<meta name='twitter:image' content='{image}' />",
-        )
+        ])
         return head
 
     def _icons_head_creator(self, filename, icon_brand_config, size):

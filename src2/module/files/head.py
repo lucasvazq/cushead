@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Module to handle the creation of tags that are inside the head tag
 
 Classes:
@@ -10,13 +11,44 @@ from .images import Images
 
 
 class Head(Images):
+    """Class to handle the creation of tags that become inside the head tag
+
+    Methods:
+        full_head -> list
+        general -> list
+        basic -> list
+        complementary_files -> list
+        social_media -> list
+    """
     config: dict
 
+    def full_head(self) -> list:
+        """Return a list of tags related to the config of a website
+
+        It's get the tags from the functions of the class: general, basic,
+        complementary_files, social_media, and from the Parent class:
+        favicon_ico, favicon_png, favicon_svg and preview_png.
+
+        All of the tags are order with their importance
+        """
+        # The order matters
+        head = [
+            self.general(),
+            self.basic(),
+            self.favicon_ico(),
+            self.favicon_png(),
+            self.favicon_svg(),
+            self.preview_png(),
+            self.complementary_files(),
+            self.social_media(),
+        ]
+        return head
+
     def general(self) -> list:
-        """General config section"""
+        """Return a list of tags related to the general config of a website"""
         head = []
         # content-type
-        string = self.config('content-type', '')
+        string = self.config.get('content-type', '')
         head.append( "<meta http-equiv='Content-Type' "
                     f"content='{string}' />")
         # X-UA-Compatible
@@ -27,11 +59,11 @@ class Head(Images):
         string = self.config.get('viewport', '')
         head.append(f"<meta name='viewport' content='{string}' />")
         # locale
-        string = self.config('language', '')
+        string = self.config.get('language', '')
         head.append( "<meta http-equiv='Content-Language' "
                     f"content='{string}' />")
         # robots
-        string = self.config('robots', '')
+        string = self.config.get('robots', '')
         head.append(f"<meta name='robots' content='{string}' />")
         # apple
         head.extend([
@@ -42,7 +74,7 @@ class Head(Images):
         return head
 
     def basic(self) -> list:
-        """Basic config section"""
+        """Return a list of tags related to a basic and standart seo"""
         head = []
         # title
         string = self.config.get('title', '')
@@ -71,15 +103,33 @@ class Head(Images):
         string = self.config.get('author', '')
         head.append(f"<meta name='author' content='{string}' />")
         return head
+    
+    def complementary_files(self) -> list:
+        """Return a list with tags related to complementary files"""
+        static_url = self.config.get('static_url', '')
+        title = self.config.get('title', '')
+        return [
+            # browserconfig.xml
+            ( "<meta name='msapplication-config' "
+             f"content='{static_url}/browserconfig.xml' />"),
+            # manifest.json
+            (f"<link rel='manifest' href='{static_url}"
+             f"/manifest.json' />"),
+            # opensearch.xml
+            ( "<link rel='search' "
+             f"type='application/opensearchdescription+xml' "
+             f"title='{title}' href='{static_url}"
+              "/opensearch.xml' />"),
+        ]
 
     def social_media(self) -> list:
-        """Social media section"""
+        """Return a list with tags related to social media"""
         head = []
 
         # OPENGRAPH AND FACEBOOK
 
         # fb:app_id
-        string = self.config('facebook_app_id', '')
+        string = self.config.get('facebook_app_id', '')
         head.append("<meta porperty='fb:app_id' content='{string}' />")
         # og:locale
         language = self.config.get('language', '')
@@ -145,32 +195,3 @@ class Head(Images):
                     f"content='{string}' />")
 
         return head
-    
-    def complementary_files(self):
-        static_url = self.config.get('static_url', '')
-        return [
-            # browserconfig.xml
-            ( "<meta name='msapplication-config' "
-              f"content='{static_url}/browserconfig.xml' />"),
-            # manifest.json
-            (f"<link rel='manifest' href='{static_url}"
-             f"/manifest.json' />"),
-            # opensearch.xml
-            ( "<link rel='search' "
-             f"type='application/opensearchdescription+xml' "
-             f"title='{self.config.get('title', '')}' href='{static_url}"
-              "/opensearch.xml' />"),
-        ]
-
-    def full_head(self):
-        head = [
-            self.general(),
-            self.basic(),
-            self.favicon_ico(),
-            self.favicon_png(),
-            self.favicon_svg(),
-            self.complementary_files(),
-            self.social_media(),
-        ]
-        return head
-
