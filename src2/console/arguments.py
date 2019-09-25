@@ -4,35 +4,40 @@
 """Module for handle the arguments passed throught the CLI
 
 Functions:
-    parse_args(str, str) -> object
+    parse_args(list) -> object
 """
 
 import textwrap
 
 import argparse
 
+from src2.info import get_info
 from src2.helpers import error_message, FilesValidator
 
 
-def parse_args(args: str, info: str) -> object:
+def parse_args(args: list) -> object:
     """Argparse main function
 
-    Allowed arguments: -file: str, -preset: str, --images: bool
+    
     This function validate the values of the arguments and, if everythings is
     ok, return object with the arguments as attributes
-    """
 
+    Args:
+        args list: The arguments. Allowed -config: str, -default: str,
+            --images: bool
+    """
+    info = get_info()
     name = info['package_name']
     parser = argparse.ArgumentParser(
         prog=info['package_name'],
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage=f"{info['package_name']} -file FILEPATH",
+        usage=f"{info['package_name']} -config FILEPATH",
         epilog=textwrap.dedent(f"""\
             Examples:
-            1) Generate config file with images:
-                {name} -preset settings.json --images
+            1) Generate default config file with images:
+                {name} -default settings.json --images
             2) Execute with that config:
-                {name} -file settings.json""")
+                {name} -config settings.json""")
     )
 
     # ARGUMENTS
@@ -42,22 +47,22 @@ def parse_args(args: str, info: str) -> object:
                                         "arguments)")
 
     # GROUP: required
-    # -preset
+    # -default
     required.add_argument(
-        '-preset',
+        '-default',
         metavar='FILENAME',
-        dest='preset',
+        dest='default',
         help=(
             "Generate an example config file in JSON format. "
             "That file contains differents variables that can be customized. "
             "Can use with --images"
         )
     )
-    # -file
+    # -config
     required.add_argument(
-        '-file',
+        '-config',
         metavar='FILEPATH',
-        dest='file',
+        dest='config',
         help=(
             "Path to the config file. "
             "Read a config file that contains settings related to SEO and UX "
@@ -71,9 +76,9 @@ def parse_args(args: str, info: str) -> object:
         dest='images',
         action='store_true',
         help=(
-            "Use with -preset. "
+            "Use with -default. "
             "Add example images that can be used by the settings generated "
-            "with -preset. "
+            "with -config. "
             "This include: favicon_ico_16px.ico, favicon_png_1600px.png,"
             "favicon_svg_scalable.svg and presentation_png_500px.png"
         )
@@ -89,13 +94,13 @@ def parse_args(args: str, info: str) -> object:
     # Need to recall arguments parser.
     # pylint no-member error in child function
     args = parser.parse_args()
-    if not (args.preset or args.file):
-        error_message("Miss Required arguments. Use -preset or -file")
-    if args.preset and args.file:
-        error_message("Can't use -preset and -file arguments together.")
-    if args.images and not args.preset:
-        error_message("Can't use --images without -preset.")
-    if args.file:
-        FilesValidator(args.file, "-file").path_is_file()
+    if not (args.default or args.config):
+        error_message("Miss Required arguments. Use -default or -config")
+    if args.default and args.config:
+        error_message("Can't use -default and -config arguments together.")
+    if args.images and not args.default:
+        error_message("Can't use --images without -default.")
+    if args.config:
+        FilesValidator(args.config, "-config").path_is_file()
 
     return args
