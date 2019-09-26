@@ -4,7 +4,7 @@
 <!-- Make sure to replace anything in angle brackets ( < > ) -->
 
 # Description of PR
-<Completely/Partly> solves: <problem_that_PR_solves>
+<Completely/Partly> fixes: #<issue_that_PR_solves>
 
 <anything else you'd like to add>
 
