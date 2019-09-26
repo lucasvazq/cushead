@@ -7,7 +7,7 @@ from .complementary_files import ComplementaryFiles
 
 
 class Head(ComplementaryFiles):
-    """Main class"""
+    """Main class"""a
     config = {}
 
     def __init__(self):
