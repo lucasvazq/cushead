@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Package presentation in console mode"""
+"""Module to handle the presentation of the package in console mode
+
+Relevant Global Variables:
+    PRESENTATION_MESSAGE str: The presentation of the package, include a big
+        logo and info about the author and the package
+"""
 
 import os
 import textwrap
 
-from src2.helpers import CONSOLE_PRESENTATION_COLOR, DEFAULT_COLOR
-from src2.info import get_info
+from src.support import CONSOLE_PRESENTATION_COLOR, DEFAULT_COLOR
+from src.info import get_info
+
 
 INFO = get_info()
 

@@ -3,8 +3,8 @@
 
 from os import path
 
-from src2.helpers import FilesValidator, KeysValidator
-from src2.services import ImageService
+from src.helpers import FilesValidator, KeysValidator
+from src.services import ImageService
 
 
 class Images(ImageService):

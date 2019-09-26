@@ -1,121 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Module to handle the images configurations
+
+Classes DefaultIconsFormatConfig
+"""
+
 from os import path
-import textwrap
 
-from src2.info import get_info
-from src2.services.images import ImageService
+from src.services.images import ImageService
 
 
-IMAGEFILES = [
-    'favicon_ico_16px.ico',
-    'favicon_png_1600px.png',
-    'favicon_svg_scalable.svg',
-    'preview_png_500px.png',
-]
-
-
-class DefaultSettings:
-    """Generate presets"""
-
-    def __init__(self):
-        self.info = get_info()
-
-    def default_images(self):
-        """Generate images files to attach to the preset settings"""
-        binary_files = []
-        realpath = path.join(path.dirname(path.realpath(__file__)), '../assets')
-        for filename in IMAGEFILES:
-            filepath = path.join(realpath, filename)
-            with open(filepath, 'rb') as binary_file:
-                binary_files.append(
-                    {
-                        'filename': filename,
-                        'content': binary_file.read(),
-                    }
-                )
-        return binary_files
-
-    def default_settings(self):
-        """Generate config file in indented JSON format"""
-        settings = textwrap.dedent(f"""\
-            {{
-                'comment':  {{
-                    'About':            '{('Config file used by python '
-                                           'cushead CLI')}',
-                    'Format':           'JSON',
-                    'Git':              '{self.info['source']}',
-                    'Documentation':    '{self.info['documentation']}'
-                }},
-                'required': {{
-                    'static_url':       '/static/'
-                }},
-                'recommended': {{
-                    'favicon_ico':      './favicon_ico_16px.ico',
-                    'favicon_png':      './favicon_png_1600px.png',
-                    'favicon_svg':      './favicon_svg_scalable.svg',
-                    'preview_png':      './preview_png_500px.png'
-                }},
-                'default': {{
-                    'general': {{
-                        'content-type':     'text/html; charset=utf-8',
-                        'X-UA-Compatible':  'ie=edge',
-                        'viewport':         '{('width=device-width, '
-                                               'initial-scale=1')}',
-                        'language':         'en',
-                        'territory':        'US',
-                        'clean_url':        'microsoft.com',
-                        'protocol':         'https://',
-                        'robots':           'index, follow'
-                    }},
-                    'basic': {{
-                        'title':            'Microsoft',
-                        'description':      'Technology Solutions',
-                        'subject':          'Home Page',
-                        'keywords':         'Microsoft, Windows',
-                        'background_color': '#0000FF',
-                        'author':           'Lucas Vazquez'
-                    }},
-                    'social_media': {{
-                        'facebook_app_id':  '123456',
-                        'twitter_user_@':   '@Microsoft',
-                        'twitter_user_id':  '123456'
-                    }}
-                }},
-                'progressive_web_apps': {{
-                    'dir':              'ltr',
-                    'start_url':        '/',
-                    'orientation':      'landscape',
-                    'scope':            '/',
-                    'display':          'browser',
-                    'platform':        'web',
-                    'applications':     [
-                        {{
-                            'platform':     'play',
-                            'url':          '{('https://play.google.com/store/'
-                                               'apps/details?id=com.example'
-                                               '.app')}',
-                            'id':           'com.example.app'
-                        }},
-                        {{
-                            'platform':     'itunes',
-                            'url':          '{('https://itunes.apple.com/app/'
-                                            'example-app/id123456')}'
-                        }}
-                    ]
-                }}
-            }}""")
-        settings = settings.replace('\'', '"')
-        return settings
-
-
-class DefaultIconsConfig():
+class DefaultIconsFormatConfig:
     config: dict
 
     def _png_icons_config(self):
         yandex_content = (f"logo={self.config.get('static_url', '')}"
-                           "/yandex.png, "
+                          "/yandex.png, "
                           f"color={self.config.get('background_color', '')}")
         return [
             # default png favicons
@@ -126,8 +27,8 @@ class DefaultIconsConfig():
                 # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
                 # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
                 'square_sizes': [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96,
-                                114, 120, 128, 144, 150, 152, 167, 180, 192,
-                                195, 196, 228, 310],
+                                 114, 120, 128, 144, 150, 152, 167, 180, 192,
+                                 195, 196, 228, 310],
                 'type': 'image/png',
                 'verbosity': True,
             },
@@ -149,7 +50,7 @@ class DefaultIconsConfig():
                 'name_ref': 'apple-touch-icon',
                 'file_name': 'apple-touch-icon',
                 'square_sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
-                                1024],
+                                 1024],
                 'verbosity': True,
             },
             # apple touch startup image default
@@ -197,14 +98,17 @@ class DefaultIconsConfig():
             },
         ]
 
-    def _browserconfig_icons_config(self):
+    @staticmethod
+    def _browserconfig_icons_config():
         return {
             'name_ref': 'browserconfig',
             'file_name': 'ms-icon',
             'square_sizes': [30, 44, 70, 150, 310],
             'non_square_sizes': [[310, 150]],
         }
-    def _manifest_icons_config(self):
+
+    @staticmethod
+    def _manifest_icons_config():
         return {
             'name_ref': 'manifest',
             'filename': 'android-icon',
@@ -212,7 +116,9 @@ class DefaultIconsConfig():
             'file_type': 'image/png',
             'verbosity': True,
         }
-    def _opensearch_icons_config(self):
+
+    @staticmethod
+    def _opensearch_icons_config():
         return {
             'name_ref': 'opensearch',
             'filename': 'opensearch',
@@ -228,13 +134,15 @@ class DefaultIconsConfig():
             'opensearch': self._opensearch_icons_config(),
         }
 
-class ImagesCreationConfig(ImageService):
+
+class DefaultImagesCreationConfig(ImageService):
     config: dict
     icons_config: dict
 
     def _favicon_ico(self):
         favicon_ico = self.config.get('favicon_ico', '')
-        if not favicon_ico: return []
+        if not favicon_ico:
+            return []
         return [{
             'destination_file_path': path.join(
                 self.config.get('output_folder_path'),
@@ -249,7 +157,8 @@ class ImagesCreationConfig(ImageService):
     def _favicon_png(self):
         images_format = []
         favicon_png = self.config.get('favicon_png', '')
-        if not favicon_png: return images_format
+        if not favicon_png:
+            return images_format
         source_file_path = path.join(self.config.get('main_folder_path', ''),
                                      favicon_png)
         for brand_icon_config in self.icons_config.get('favicon_png', []):
@@ -268,7 +177,8 @@ class ImagesCreationConfig(ImageService):
 
     def _favicon_svg(self):
         favicon_svg = self.config.get('favicon_svg', '')
-        if not favicon_svg: return []
+        if not favicon_svg:
+            return []
         return [{
             'destination_file_path': path.join(
                 self.config.get('static_folder_path'),
@@ -282,7 +192,8 @@ class ImagesCreationConfig(ImageService):
 
     def _preview_png(self):
         preview_png = self.config.get('preview_png', '')
-        if not preview_png: return []
+        if not preview_png:
+            return []
         return [{
             'destination_file_path': path.join(
                 self.config.get('static_folder_path'),

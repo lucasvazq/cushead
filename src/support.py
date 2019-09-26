@@ -3,9 +3,19 @@
 
 """Handle supported situations"""
 
+import os
 import sys
 
-from .helpers import DEFAULT_COLOR, ERROR_COLOR
+
+(DEFAULT_COLOR, ERROR_COLOR, CONSOLE_PRESENTATION_COLOR) = (
+    ('', '', '')
+    if os.name == 'nt' else
+    (
+        '\033[0;0m',  # DEFAULT
+        '\033[1;31m',  # ERROR: Red
+        '\033[1;34m'  # CONSOLE PRESENTATION: Blue
+    )
+)
 
 
 class Messages:
@@ -101,3 +111,5 @@ class Support(Messages):
 class Unsupported(Exception):
     """Used to raise an exception related to an unsupported versions problem"""
     pass
+
+

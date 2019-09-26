@@ -4,7 +4,7 @@ from os import path
 from PIL import Image
 from resizeimage import resizeimage
 
-from src2.helpers import FilesHelper
+from src.helpers import FilesHelper
 
 
 class ImageService:
@@ -18,8 +18,8 @@ class ImageService:
             cover.save(destination_file_path, image_instance.format)
 
     def move_svg(self, destination_file_path, source_file_path):
-        FilesHelper(destination_file_path=destination_file_path,
-                    source_file_path=source_file_path).copy_file()
+        FilesHelper.copy_file(destination_file_path=destination_file_path,
+                              source_file_path=source_file_path)
 
     @staticmethod
     def format_sizes(icon_brand_config):

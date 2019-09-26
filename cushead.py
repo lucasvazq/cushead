@@ -10,8 +10,8 @@
 
 import sys
 
-from src2.info import get_info
-from src2.support import Support, Unsupported
+from src.info import get_info
+from src.support import Support, Unsupported
 
 # Check python version
 try:
@@ -21,8 +21,8 @@ except Unsupported as exception:
     sys.stdout.write(exception)
     sys.exit()
 
-from src2.console.presentation import PRESENTATION_MESSAGE
-from src2.console.__main__ import Main
+from src.console.presentation import PRESENTATION_MESSAGE
+from src.console.__main__ import Main
 
 
 def main():

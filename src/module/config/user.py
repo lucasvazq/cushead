@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Generate default config"""
+"""Module used to format default settings dictionary
 
-import os
-from os import path
+Relevant Global Variables:
+    IMAGEFILES: list of default images that can be used with user settings
+
+Functions:
+    get_values(dict) -> dict
+"""
+
 import textwrap
 
-from ..helpers import FilesHelper, FoldersHelper
+from src.info import get_info
 
 
 IMAGEFILES = [
@@ -18,11 +23,16 @@ IMAGEFILES = [
 ]
 
 
-class Presets:
+from os import path
+
+from src.helpers import stdout_error_report, KeysValidator
+
+
+class DefaultUserConfig:
     """Generate presets"""
-    args = lambda: None
-    args.preset = ''
-    info = {}
+
+    def __init__(self):
+        self.info = get_info()
 
     def default_images(self):
         """Generate images files to attach to the preset settings"""
@@ -109,4 +119,64 @@ class Presets:
                 }}
             }}""")
         settings = settings.replace('\'', '"')
+        return settings
+
+
+class UserConfigHandler:
+    error_handler = stdout_error_report
+
+    def transform(self, settings: dict, output_path: str) -> dict:
+        """Format default settings to a dict for this package classes
+
+        Format default settings dictionary into a dictionary that the classes
+        under this package can understand
+
+        Args:
+            settings dict: Pass a default settings dict format
+
+        Returns:
+            dict: config that the classes under this module can use
+
+        """
+
+        # Construct config
+        recommended = settings.get('recommended', {})
+        default = settings.get('default', {})
+        general = default.get('general', {})
+        basic = default.get('basic', {})
+        social_media = default.get('social_media', {})
+        progressive_web_app = settings.get('progressive_web_apps', {})
+        if 'required' not in settings:
+            self.error_handler("Miss 'required' object and it's required in config "
+                        "file.")
+        settings = {**settings['required'], **recommended, **general,
+                    **basic, **social_media, **progressive_web_app}
+
+        # Required values
+        required_values = ['static_url']
+        for key in required_values:
+            KeysValidator(key, dictionary=settings)
+
+        # Sanitize static_url key
+        # Prevent:
+        #   output = /output/
+        #   static_url = /static/
+        #   output + static_url = /static/ [root/static/]
+        if settings['static_url'][0] == '/':
+            settings['static_folder_path'] = settings['static_url'][1:]
+        # HEre, prevent //
+        if settings['static_url'][-1] == '/':
+            settings['static_url'] = settings['static_url'][:-1]
+
+        # Make paths
+        # Define the main path as the passed throught -file argument
+        settings['main_folder_path'] = output_path
+        settings['output_folder_path'] = path.join(
+            settings['main_folder_path'],
+            'output'
+        )
+        settings['static_folder_path'] = path.join(
+            settings['output_folder_path'],
+            settings['static_folder_path']
+        )
         return settings
