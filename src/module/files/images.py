@@ -3,8 +3,8 @@
 
 from os import path
 
-from src.helpers import FilesValidator, KeysValidator
-from src.services import ImageService
+from src.helpers.validators import FilesValidator, KeysValidator
+from src.services.images import ImageService
 
 
 class Images(ImageService):
@@ -22,7 +22,8 @@ class Images(ImageService):
 
     def favicon_png(self):
         head = []
-        if not self._requirements('favicon_png'): return head
+        if not self._requirements('favicon_png'):
+            return head
         for icon_brand_config in self.icons_config.get('favicon_png', []):
             sizes = self.format_sizes(icon_brand_config)
             file_name = icon_brand_config.get('file_name', '')
@@ -34,22 +35,25 @@ class Images(ImageService):
 
     def favicon_ico(self):
         head = []
-        if not self._requirements('favicon_ico'): return head
-        head.append( "<link rel='shortcut icon' "
+        if not self._requirements('favicon_ico'):
+            return head
+        head.append(f"<link rel='shortcut icon' "
                     f"href='/favicon.ico' type='image/x-icon' />")
         return head
 
     def favicon_svg(self):
         head = []
-        if not self._requirements('favicon_svg'): return head
+        if not self._requirements('favicon_svg'):
+            return head
         color = self.config.get('background_color', '')
-        head.append( "<link rel='mask-icon' href='favicon.svg' "
+        head.append(f"<link rel='mask-icon' href='favicon.svg' "
                     f"color='{color}' />")
         return head
 
     def preview_png(self):
         head = []
-        if not self._requirements('preview_png'): return head
+        if not self._requirements('preview_png'):
+            return head
         # og:image (http), og:image:secure_url (https) and twitter:image
         image = f"{self.config.get('static_url', '')}/preview.png"
         head.extend([

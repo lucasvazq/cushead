@@ -24,7 +24,7 @@ class Base(Head):
 
         Return
             dict: 1
-            
+
         1)
             content str: file content
             destination_path str: path where the file must be  written
@@ -56,8 +56,8 @@ class Base(Head):
             for conjunt in head
             for tag in conjunt
         ])
-        return ( "<html>\n"
+        return (f"<html>\n"
                 f"{indent}<head>\n"
                 f"{formated_head}"  # Already have newline
                 f"{indent}</head>\n"
-                 "</html>")
+                f"</html>")

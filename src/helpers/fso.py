@@ -13,8 +13,8 @@ Helper module related to the File System Objects:
     - Files that aren't directories
 
 Classes:
-    FilesHelper(str, str = '', str = '')
-    FoldersHelper(str)
+    FilesHelper
+    FoldersHelper
 """
 
 import os
@@ -66,9 +66,6 @@ class FoldersHelper:
     @staticmethod
     def create_folder(fso_path: str):
         """Create folder
-
-        Args:
-            fso_path: str
 
         The argument can be folder or file path. This method create the dirpath
         of that path.

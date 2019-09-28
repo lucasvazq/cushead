@@ -49,18 +49,18 @@ class Head(Images):
         head = []
         # content-type
         string = self.config.get('content-type', '')
-        head.append( "<meta http-equiv='Content-Type' "
+        head.append(f"<meta http-equiv='Content-Type' "
                     f"content='{string}' />")
         # X-UA-Compatible
         string = self.config.get('X-UA-Compatible', '')
-        head.append( "<meta http-equiv='X-UA-Compatible' "
+        head.append(f"<meta http-equiv='X-UA-Compatible' "
                     f"content='{string}' />")
         # viewport
         string = self.config.get('viewport', '')
         head.append(f"<meta name='viewport' content='{string}' />")
         # locale
         string = self.config.get('language', '')
-        head.append( "<meta http-equiv='Content-Language' "
+        head.append(f"<meta http-equiv='Content-Language' "
                     f"content='{string}' />")
         # robots
         string = self.config.get('robots', '')
@@ -81,7 +81,7 @@ class Head(Images):
         head.extend([
             f"<title>{string}</title>",
             f"<meta name='application-name' content='{string}' />",
-            "<meta name='apple-mobile-web-app-title' "
+            f"<meta name='apple-mobile-web-app-title' "
             f"content='{string}' />",
         ])
         # description
@@ -103,23 +103,23 @@ class Head(Images):
         string = self.config.get('author', '')
         head.append(f"<meta name='author' content='{string}' />")
         return head
-    
+
     def complementary_files(self) -> list:
         """Return a list with tags related to complementary files"""
         static_url = self.config.get('static_url', '')
         title = self.config.get('title', '')
         return [
             # browserconfig.xml
-            ( "<meta name='msapplication-config' "
+            (f"<meta name='msapplication-config' "
              f"content='{static_url}/browserconfig.xml' />"),
             # manifest.json
             (f"<link rel='manifest' href='{static_url}"
              f"/manifest.json' />"),
             # opensearch.xml
-            ( "<link rel='search' "
+            (f"<link rel='search' "
              f"type='application/opensearchdescription+xml' "
              f"title='{title}' href='{static_url}"
-              "/opensearch.xml' />"),
+             f"/opensearch.xml' />"),
         ]
 
     def social_media(self) -> list:
@@ -130,7 +130,7 @@ class Head(Images):
 
         # fb:app_id
         string = self.config.get('facebook_app_id', '')
-        head.append("<meta porperty='fb:app_id' content='{string}' />")
+        head.append(f"<meta porperty='fb:app_id' content='{string}' />")
         # og:locale
         language = self.config.get('language', '')
         territory = (
@@ -162,7 +162,7 @@ class Head(Images):
         title = self.config.get('title', '')
         description = self.config.get('description', '')
         connector = (
-            ' - '
+            " - "
             if 'title' in self.config and
             'description' in self.config else ''
         )
@@ -191,7 +191,7 @@ class Head(Images):
         head.append(f"<meta name='twitter:description' content='{string}' />")
         # tw:creator
         string = self.config.get('twitter_user_id', '')
-        head.append( "<meta property='twitter:creator:id' "
+        head.append(f"<meta property='twitter:creator:id' "
                     f"content='{string}' />")
 
         return head

@@ -8,28 +8,26 @@ Classes:
 """
 
 import json
-from json.decoder import JSONDecodeError
 import os
+from json.decoder import JSONDecodeError
 from os import path
 
-from src.console.arguments import parse_args
-from src.helpers.logs import stdout_error_report
+from src.console.arguments import Argparse
+from src.console.presentation import PRESENTATION_MESSAGE
 from src.helpers.fso import FilesHelper
-from src.helpers.miscellaneous import OBJECT_INSTANCE, wasa
+from src.helpers.logs import Logs, MessageHandler
 from src.module.__main__ import Main as ModuleMain
 from src.module.config.user import DefaultUserConfig
 
 
-class Esa:
-    file = 'esa'
-
-
-class Main(ModuleMain, DefaultUserConfig):
-    """Class used to run the diferent arguments situation
+class Main(ModuleMain, Argparse, Logs, DefaultUserConfig):
+    """Class used to handle arguments
 
     Init:
-        args list: Arguments, example: ['config', 'settings.json'] for insert
-            through the CLI: -config settings.json
+        args list: Arguments, example: ['config', 'settings.json'], equivalent
+            to an inputh of '-config settings.json' through the CLI
+
+    At init, the arguments been verified
 
     Methods:
         run
@@ -37,41 +35,38 @@ class Main(ModuleMain, DefaultUserConfig):
         argument_string_config
         argument_string_default
     """
-    args: object
 
     def __init__(self, args):
-        self.error_handler = stdout_error_report
-        self.args = parse_args(args, self.error_handler)
-        if self.args.file:
-            self._read_config()
+        self.error = MessageHandler.error_stdout
+        self.important(PRESENTATION_MESSAGE)
+        self.args = self.parse_args(args)
         user_config, output_path = self._read_config()
         super().__init__(user_config=user_config, output_path=output_path)
 
     def _read_config(self):
         json_dict = {}
         output_path = ''
-        if not self.args.file:
+        if not self.args.config:
             return json_dict, output_path
-        with open(self.args.file, 'r') as file_instance:
+        with open(self.args.config, 'r') as file_instance:
             file_string = file_instance.read()
         try:
             json_dict = json.loads(file_string)
         except JSONDecodeError:
-            config_file_fullpath = path.join(os.getcwd(), self.args.file)
+            config_file_fullpath = path.join(os.getcwd(), self.args.config)
             exception = (
-                f"Invalid json file format in ({self.args.file})\n"
+                f"Invalid json file format in ({self.args.config})\n"
                 f"FILE PATH: {config_file_fullpath}"
             )
-            self.error_handler(exception)
-        output_path = path.dirname(self.args.file)
+            self.error(message=exception)
+        output_path = path.dirname(self.args.config)
         return json_dict, output_path
-
 
     def run(self):
         """Run actual arguments
 
-        Check the current arguments and execute the functions that
-        correspond to each one
+        Check the current arguments and execute the functions that correspond
+        to each one
         """
         if self.args.images:
             self.argument_boolean_image()

@@ -5,17 +5,34 @@
 
 import sys
 
-from src.helpers.miscellaneous import void_function
-from src.support import ERROR_COLOR, DEFAULT_COLOR
+from src.support import CONSOLE_PRESENTATION_COLOR, DEFAULT_COLOR, ERROR_COLOR
 
 
-def error_message_processor(message: str) -> str:
-    return ERROR_COLOR + message + DEFAULT_COLOR
+class MessageHandler:
+
+    # important section
+
+    @staticmethod
+    def important_stdout(message: str):
+        print(CONSOLE_PRESENTATION_COLOR + message + DEFAULT_COLOR)
+
+    # error section
+
+    @staticmethod
+    def error_exception(message: str):
+        raise Exception(message)
+
+    @staticmethod
+    def error_stdout(message: str):
+        sys.exit(ERROR_COLOR + message + DEFAULT_COLOR)
 
 
-def stdout_error_report(message: str, processor: callable = void_function):
-    sys.exit(processor(message))
+class Logs:
+    error_function = MessageHandler.error_exception
+    important_function = MessageHandler.important_stdout
 
+    def important(self, message):
+        self.important_function(message)
 
-def exception_error_report(message: str, processor: callable = void_function):
-    raise Exception(processor(message))
+    def error(self, message):
+        self.error_function(message)

@@ -10,9 +10,13 @@ Functions:
     get_values(dict) -> dict
 """
 
+
+from os import path
+from src.info import get_info
 import textwrap
 
-from src.info import get_info
+from src.helpers.logs import Logs
+from src.helpers.validators import KeysValidator
 
 
 IMAGEFILES = [
@@ -23,21 +27,16 @@ IMAGEFILES = [
 ]
 
 
-from os import path
-
-from src.helpers import stdout_error_report, KeysValidator
-
-
 class DefaultUserConfig:
     """Generate presets"""
+    info = get_info()
 
-    def __init__(self):
-        self.info = get_info()
-
-    def default_images(self):
+    @staticmethod
+    def default_images():
         """Generate images files to attach to the preset settings"""
         binary_files = []
-        realpath = path.join(path.dirname(path.realpath(__file__)), '../assets')
+        realpath = path.join(path.dirname(path.realpath(__file__)),
+                             "../../assets")
         for filename in IMAGEFILES:
             filepath = path.join(realpath, filename)
             with open(filepath, 'rb') as binary_file:
@@ -122,8 +121,7 @@ class DefaultUserConfig:
         return settings
 
 
-class UserConfigHandler:
-    error_handler = stdout_error_report
+class UserConfigHandler(Logs):
 
     def transform(self, settings: dict, output_path: str) -> dict:
         """Format default settings to a dict for this package classes
@@ -138,7 +136,8 @@ class UserConfigHandler:
             dict: config that the classes under this module can use
 
         """
-
+        if not settings:
+            return {}
         # Construct config
         recommended = settings.get('recommended', {})
         default = settings.get('default', {})
@@ -147,8 +146,8 @@ class UserConfigHandler:
         social_media = default.get('social_media', {})
         progressive_web_app = settings.get('progressive_web_apps', {})
         if 'required' not in settings:
-            self.error_handler("Miss 'required' object and it's required in config "
-                        "file.")
+            self.error(message=("Miss 'required' object and it's required in "
+                                "config file."))
         settings = {**settings['required'], **recommended, **general,
                     **basic, **social_media, **progressive_web_app}
 

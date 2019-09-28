@@ -6,12 +6,11 @@
 import os
 from os import path
 
-from src.helpers.logs import stdout_error_report
+from src.helpers.logs import Logs
 
 
-class FilesValidator:
+class FilesValidator(Logs):
     """Handle File System Objects validations"""
-    error_handler = stdout_error_report
 
     def __init__(self, file_path, key):
         self.file_path = file_path
@@ -26,7 +25,7 @@ class FilesValidator:
                 "that exists.\n"
                 f"PATH: {self.full_path}"
             )
-            self.error_handler(exception)
+            self.error(message=exception)
 
     def path_is_file(self):
         """Check if path is not directory"""
@@ -37,12 +36,11 @@ class FilesValidator:
                 "file path that exists.\n"
                 f"FILE PATH: {self.full_path}"
             )
-            self.error_handler(exception)
+            self.error(message=exception)
 
 
-class KeysValidator:
+class KeysValidator(Logs):
     """Handle keys related validations"""
-    error_handler = stdout_error_report
 
     def __init__(self, key, dictionary=None, value=None):
         self.key = key
@@ -52,10 +50,10 @@ class KeysValidator:
     def key_exists(self):
         """Check if key is in dictionary"""
         if self.key not in self.dictionary:
-            self.error_handler(f"Miss '{self.key}' key and it's required in"
-                               "config file.")
+            self.error(message=(f"Miss '{self.key}' key and it's required in"
+                                f"config file."))
 
     def key_is_not_void(self):
         """Check if key in dictionary is void"""
         if not self.value:
-            self.error_handler(f"'{self.key}' key value can't be void.")
+            self.error(message=f"'{self.key}' key value can't be void.")

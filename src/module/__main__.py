@@ -9,12 +9,13 @@ Classes:
     Main(dict, dict, str)
 """
 
+from src.info import get_info
 from src.module.files.complementary_files import ComplementaryFiles
 from src.module.files.base import Base
 from src.module.config.user import UserConfigHandler
 from src.module.config.images import (DefaultIconsFormatConfig,
                                       DefaultImagesCreationConfig)
-from src.helpers.logs import exception_error_report
+from src.helpers.logs import Logs
 
 
 class DefaultConfig(DefaultIconsFormatConfig, DefaultImagesCreationConfig):
@@ -33,7 +34,7 @@ class Files(Base, ComplementaryFiles):
         return dict(self.full_index(), **self.full_complementary_files())
 
 
-class Main(DefaultConfig, Files, UserConfigHandler):
+class Main(DefaultConfig, Files, UserConfigHandler, Logs):
     """Main class
 
     The entire sub-modules serve this class
@@ -43,7 +44,7 @@ class Main(DefaultConfig, Files, UserConfigHandler):
         user_config dict = {}: user settings
         output_path str = '': output folder
     """
-    error_handler = exception_error_report
+    info = get_info()
 
     def __init__(self, icons_config: dict = {}, user_config: dict = {},
                  output_path: str = ''):

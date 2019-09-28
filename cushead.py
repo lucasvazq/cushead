@@ -21,13 +21,11 @@ except Unsupported as exception:
     sys.stdout.write(exception)
     sys.exit()
 
-from src.console.presentation import PRESENTATION_MESSAGE
 from src.console.__main__ import Main
 
 
 def main():
     """Main function"""
-    print(PRESENTATION_MESSAGE)
     Main(sys.argv[1:]).run()
 
 

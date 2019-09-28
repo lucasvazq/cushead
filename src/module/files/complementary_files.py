@@ -18,10 +18,10 @@ class ComplementaryFiles:
         """browserconfig.xml content
         Return the content of browserconfig.xml and the path where must be
         written
-        
+
         Return
             dict: 1
-            
+
         1)
             content str: file content
             destination_path str: path where the file must be written
@@ -51,10 +51,10 @@ class ComplementaryFiles:
             )
             for size in non_square_sizes
         ])
-        content += ( "<TileColor>"
+        content += (f"<TileColor>"
                     f"{background_color}"
-                     "</TileColor></tile></msapplication>"
-                     "</browserconfig>")
+                    f"</TileColor></tile></msapplication>"
+                    f"</browserconfig>")
         content = content.replace('\'', '"')
         destination_path = path.join(
             self.config.get('static_folder_path', ''),
@@ -68,16 +68,16 @@ class ComplementaryFiles:
     def _manifest(self) -> dict:
         """manifest.json content
         Return the content of manifest.json and the path where must be written
-        
+
         Return
             dict: 1
-            
+
         1)
             content str: file content
             destination_path str: path where the file must be written
         """
         manifest_config = self.icons_config.get('manifest', {})
-        content = {}
+        content = dict()
         content['name'] = self.config.get('title', '')
         content['short_name'] = self.config.get('title', '')
         content['description'] = self.config.get('description', '')
@@ -117,10 +117,10 @@ class ComplementaryFiles:
     def _opensearch(self) -> dict:
         """opensearch.xml content
         Return the content of opensearch.xml and the path where must be written
-                
+
         Return
             dict: 1
-            
+
         1)
             content str: file content
             destination_path str: path where the file must be written
@@ -156,10 +156,10 @@ class ComplementaryFiles:
     def _robots(self) -> dict:
         """robots.txt content
         Return the content of robots.txt and the path where must be written
-        
+
         Return
             dict: 1
-            
+
         1)
             content str: file content
             destination_path str: path where the file must be written
@@ -172,8 +172,8 @@ class ComplementaryFiles:
             f"{clean_url}/sitemap.xml"
             if 'sitemap' in self.config else ''
         )
-        content = ( "User-agent: *\n"
-                    "Allow: /\n"
+        content = (f"User-agent: *\n"
+                   f"Allow: /\n"
                    f"{sitemap_reference}")
         destination_path = path.join(
             self.config.get('output_folder_path', ''),
@@ -188,23 +188,23 @@ class ComplementaryFiles:
         """sitemap.xml content
         Return the content of sitemap.xml and the path where must be
         written
-        
+
         Return
             dict: 1
-            
+
         1)
             content str: file content
             destination_path str: path where the file must be written
         """
         protocol = self.config.get('protocol', '')
         clean_url = self.config.get('clean_url', '')
-        content = ( "<?xml version='1.0' encoding='uft-8'?>"
-                    "<urlset xmlns="
-                    "'http://www.sitemaps.org/schemas/sitemap/0.9' "
-                    "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                    "xsi:schemaLocation="
-                    "'http://www.sitemaps.org/schemas/sitemap/0.9 "
-                    "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
+        content = (f"<?xml version='1.0' encoding='uft-8'?>"
+                   f"<urlset xmlns="
+                   f"'http://www.sitemaps.org/schemas/sitemap/0.9' "
+                   f"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                   f"xsi:schemaLocation="
+                   f"'http://www.sitemaps.org/schemas/sitemap/0.9 "
+                   f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
                    f"<url><loc>{protocol}{clean_url}/</loc></url></urlset>")
         content = content.replace('\'', '"')
         destination_path = path.join(
@@ -221,7 +221,7 @@ class ComplementaryFiles:
 
         Return
             dict: 1
-        
+
         1)
             Keys are browserconfig, manifest, opensearch, robots and sitemap.
             Each key has of value another dict that has the keys content and

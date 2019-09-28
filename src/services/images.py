@@ -1,23 +1,23 @@
 
-from os import path
-
 from PIL import Image
 from resizeimage import resizeimage
 
-from src.helpers import FilesHelper
+from src.helpers.fso import FilesHelper
 
 
 class ImageService:
     image_instance: object
 
-    def resize_image(self, destination_file_path, source_file_path, size):
+    @staticmethod
+    def resize_image(destination_file_path, source_file_path, size):
         with open(source_file_path, 'rb') as file_instance, \
-            Image.open(file_instance) as image_instance:
+                Image.open(file_instance) as image_instance:
             cover = resizeimage.resize_contain(image_instance,
-                                                [size[0], size[1]])
+                                               [size[0], size[1]])
             cover.save(destination_file_path, image_instance.format)
 
-    def move_svg(self, destination_file_path, source_file_path):
+    @staticmethod
+    def move_svg(destination_file_path, source_file_path):
         FilesHelper.copy_file(destination_file_path=destination_file_path,
                               source_file_path=source_file_path)
 
