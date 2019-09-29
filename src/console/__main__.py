@@ -36,7 +36,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
 
     def __init__(self, args):
         self.error = self.error_stdout
-        self.presentation_message()
+        self.important_stdout(self.presentation_message())
         self.args = self.parse_args(args)
         user_config, output_path = self._read_config()
         super().__init__(user_config=user_config, output_path=output_path)
@@ -105,6 +105,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                     image_config.get('size', []),
                 )
             else:
+                print(image_config)
                 self.move_svg(
                     image_config.get('destination_file_path', ''),
                     image_config.get('source_file_path', ''),

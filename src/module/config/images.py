@@ -31,7 +31,7 @@ class DefaultImagesCreationConfig(ImageService):
         destination_file_path = path.join(
             self.config.get('output_folder_path'),
             'favicon.ico',
-        ),
+        )
         source_file_path = path.join(self.config.get('main_folder_path', ''),
                                      favicon_ico)
         return [{
@@ -52,7 +52,7 @@ class DefaultImagesCreationConfig(ImageService):
         source_file_path = path.join(self.config.get('main_folder_path', ''),
                                      favicon_png)
         for brand_icon_config in self.icons_config.get('favicon_png', []):
-            file_name = brand_icon_config.get('file_name', '')
+            file_name = getattr(brand_icon_config, 'file_name', '')
             for size in self.format_sizes(brand_icon_config):
                 destination_file_path = (
                     destination_file_path_unformatted.format(file_name,
@@ -129,27 +129,89 @@ class DefaultImagesCreationConfig(ImageService):
 class IconsFormatConfigStructure:
 
     def __init__(self,
-                 content: str = '',
-                 file_name: str = '',
-                 file_type: str = '',
-                 max_min: List[List[int]] = None or [],
-                 metatag: bool = False,
-                 name_ref: str = '',
-                 non_square_sizes: List[List[int]] = None or [],
-                 square_sizes: List[int] = None or [],
-                 title: str = '',
-                 verbosity: bool = False):
-        self.content = content
-        self.file_name = file_name
-        self.file_type = file_type
-        self.max_min = max_min
-        self.metatag = metatag
-        self.name_ref = name_ref
-        self.non_square_sizes = non_square_sizes
-        self.square_sizes = square_sizes
-        self.title = title
-        self.verbosity = verbosity
+            file_name: str = '',
+            tag_name: str = '',
+            attribute_content: bool = '',
+            attribute_name: str = '',
+            attribute_rel: str = '',
+            attribute_title: str = '',
+            attribute_type: str = '',
+            attribute_special_href: bool = False,
+            attribute_special_sizes: bool = False,
+            sizes_square: List[int] = [],
+            sizes_rectangular: List[List[int]] = []):
 
+        # file name
+        self.file_name = file_name
+
+        # tag name
+        self.tag_name = tag_name
+
+        # normal attributes
+        self.attribute_content = attribute_content
+        self.attribute_name = attribute_name
+        self.attribute_rel = attribute_rel
+        self.attribute_title = attribute_title
+        self.attribute_type = attribute_type
+
+        # special attributes
+        self.attribute_special_href = attribute_special_href
+        self.attribute_special_sizes = attribute_special_sizes
+
+        # sizes
+        self.sizes_square = sizes_square
+        self.sizes_rectangular = sizes_rectangular
+
+"""
+        self.tag_name = tag_name
+        self.attribute_name = attribute_name
+        self.attribute_rel = attribute_rel
+        self.attribute_title = title
+        self.attribute_content = attribute_content
+        self.attribute_href = attribute_href
+        self.attribute_type = attribute_type
+        self.attribute_sizes = attribute_sizes
+        self.sizes_square
+        self.sizes_rectangular
+        # media
+"""
+
+"""
+        # tagname # A: link
+        self.tag_name = tag_name (meta, link)
+
+        # attribute # A: rel
+        # name_ref # A: shortcut icon
+        self.attribute_name = attribute_name
+        self.attribute_rel = attribute_rel
+
+        title # C: title="Microsoft"
+        self.attribute_title = title
+
+        # ref,  # A: href
+        # static_url,  # A: /static/
+        # filename,  # A: favicon-16x16.png
+        self.attribute_content = attribute_content
+        self.attribute_href = attribute_href
+
+        # file_type,  # A: type="image/png"
+        self.attribute_type = attribute_type
+
+        # sizes,  # A: sizes="16x16"
+        self.verbosity = verbosity True
+        sizes = (
+            f"sizes='{size[0]}x{size[1]}' "
+            if 'verbosity' in self.brand[name] else ''
+        )
+
+        self.square_sizes
+        self.non_square_sizes
+        self.max_min_sizes
+
+        # media,  # B: media="screen and (min-device-width: 320px) and ...
+        #self.attribute_media = attribute_media
+
+"""
 
 class DefaultIconsFormatConfig:
     """Class to handle the default icons format configuration
@@ -166,28 +228,20 @@ class DefaultIconsFormatConfig:
                           f"color={self.config.get('background_color', '')}")
 
         default_favicons_png_config = IconsFormatConfigStructure(
+            tag_name='link',
             file_name='favicon',
-            name_ref='icon',
+            attribute_rel='icon',
+            attribute_type='image/png',
+            attribute_special_sizes=True,
+            attribute_special_href=True,
             # https://www.favicon-generator.org/
             # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
             # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-            square_sizes=[16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114, 120,
+            sizes_square=[16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114, 120,
                           128, 144, 150, 152, 167, 180, 192, 195, 196, 228,
                           310],
-            file_type='image/png',
-            verbosity=True,
         )
-        windows_favicon_config = IconsFormatConfigStructure(
-            file_name='ms-icon',
-            metatag=True,
-            name_ref='msapplication-TileImage',
-            square_sizes=[144],
-        )
-        apple_touch_default_config = IconsFormatConfigStructure(
-            file_name='apple-touch-icon',
-            name_ref='apple-touch-icon',
-            square_sizes=[57],
-        )
+        return [ default_favicons_png_config ]
         return [
             # apple touch default
             {

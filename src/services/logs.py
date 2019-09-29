@@ -13,7 +13,7 @@ Classes:
 
 import sys
 
-from src.helpers.strings import Processors
+from src.helpers.strings import ColorProcessor
 
 import textwrap
 
@@ -65,21 +65,22 @@ class SpecialMessages:
         return PRESENTATION_MESSAGE
 
 
-class MessagesHandler(Processors):
+class MessagesHandler:
 
     # important section
 
     def important_stdout(self, message: str = ''):
-        print(self.important_color(message))
+        class_instance = ColorProcessor(message)
+        print(class_instance.important_color())
 
     # error section
 
-    @staticmethod
-    def error_exception(message: str = ''):
+    def error_exception(self, message: str = ''):
         raise Exception(message)
 
     def error_stdout(self, message: str = ''):
-        sys.exit(self.error_color(message))
+        class_instance = ColorProcessor(message)
+        sys.exit(class_instance.error_color())
 
 
 class Logs(MessagesHandler):

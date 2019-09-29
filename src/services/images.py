@@ -18,8 +18,13 @@ class ImageService:
 
     @staticmethod
     def move_svg(destination_file_path, source_file_path):
-        FilesHelper.copy_file(destination_file_path=destination_file_path,
+        class_instance = FilesHelper(destination_file_path=destination_file_path,
                               source_file_path=source_file_path)
+        print(
+            destination_file_path
+        )
+        print(source_file_path)
+        class_instance.copy_file()
 
     @staticmethod
     def format_sizes(icon_brand_config):
@@ -27,10 +32,7 @@ class ImageService:
         square_sizes = [1, 2]
         non_square_sizes = [[1, 2], [3, 4]]
         """
-        square_sizes = icon_brand_config.get('square_sizes', [])
+        square_sizes = getattr(icon_brand_config, 'sizes_square', [])
         square_sizes = [[size, size] for size in square_sizes]
-        non_square_sizes = icon_brand_config.get('non_square_sizes', [])
-        max_min = icon_brand_config.get('max_min', [])
-        if max_min:
-            max_min = [[size[0], size[0]] for size in max_min]
-        return square_sizes + non_square_sizes + max_min
+        rectangular_sizes = getattr(icon_brand_config, 'sizes_rectangular', [])
+        return square_sizes + rectangular_sizes

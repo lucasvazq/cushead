@@ -11,8 +11,8 @@ from os import path
 
 
 class ComplementaryFiles:
-    config: dict
-    icons_config: dict
+    config = {}
+    icons_config = {}
 
     def _browserconfig(self) -> dict:
         """browserconfig.xml content

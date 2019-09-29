@@ -9,13 +9,13 @@ Classes:
     Main(dict, dict, str)
 """
 
-from src.info import get_info
+from src.info import Info
 from src.module.files.complementary_files import ComplementaryFiles
 from src.module.files.base import Base
 from src.module.config.user import UserConfigHandler
 from src.module.config.images import (DefaultIconsFormatConfig,
                                       DefaultImagesCreationConfig)
-from src.helpers.logs import Logs, SpecialMessages
+from src.services.logs import Logs, SpecialMessages
 
 
 class DefaultConfig(DefaultIconsFormatConfig, DefaultImagesCreationConfig):
@@ -44,7 +44,7 @@ class Main(DefaultConfig, Files, UserConfigHandler, Logs, SpecialMessages):
         user_config dict = {}: user settings
         output_path str = '': output folder
     """
-    info = get_info()
+    info = Info.get_info()
 
     def __init__(self, icons_config: dict = {}, user_config: dict = {},
                  output_path: str = ''):

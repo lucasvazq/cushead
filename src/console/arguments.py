@@ -111,6 +111,6 @@ class Argparse(Info, Logs):
         if args.images and not args.default:
             self.error("Can't use --images without -default.")
         if args.config:
-            FilesValidator(file_path=args.config, key='-config').path_is_file()
+            FilesValidator(file_path=args.config, key='-config').path_is_not_directory()
 
         return args

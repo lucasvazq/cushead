@@ -67,6 +67,11 @@ class KeysValidator(Logs):
         self.key = key
         self.value = value
 
+    def all(self):
+        """Run all validations"""
+        self.key_exists()
+        self.key_is_not_void()
+
     def key_exists(self):
         """Check if a key is in a dictionary"""
         if self.key not in self.dictionary:

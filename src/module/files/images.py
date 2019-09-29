@@ -2,22 +2,23 @@
 # -*- coding: utf-8 -*-
 
 from os import path
+from typing import List
 
 from src.helpers.validators import FilesValidator, KeysValidator
 from src.services.images import ImageService
 
 
 class Images(ImageService):
-    icons_config: dict
-    config: dict
+    icons_config: {}
+    config: {}
 
     def _requirements(self, key):
         if key not in self.config:
             return False
-        KeysValidator(key, value=self.config[key]).key_is_not_void()
-        file_path = path.join(self.config.get('main_path', ''),
+        KeysValidator(key=key, value=self.config.get(key, '')).key_is_not_void()
+        file_path = path.join(self.config.get('main_folder_path', ''),
                               self.config[key])
-        FilesValidator(self.config[key], file_path).path_is_file()
+        FilesValidator(file_path=file_path, key=self.config[key]).path_is_not_directory()
         return True
 
     def favicon_png(self):
@@ -26,11 +27,8 @@ class Images(ImageService):
             return head
         for icon_brand_config in self.icons_config.get('favicon_png', []):
             sizes = self.format_sizes(icon_brand_config)
-            file_name = icon_brand_config.get('file_name', '')
             for size in sizes:
-                new_file_name = f"{file_name}-{size[0]}x{size[1]}.png"
-                head.append(self._icons_head_creator(new_file_name,
-                                                     icon_brand_config, size))
+                head.append(self._icons_head_creator(icon_brand_config, size))
         return head
 
     def favicon_ico(self):
@@ -63,57 +61,86 @@ class Images(ImageService):
         ])
         return head
 
-    def _icons_head_creator(self, filename, icon_brand_config, size):
-        min_size = size[1]
-        if 'media' in icon_brand_config:
-            size[1] = size[0]
-        name_ref = icon_brand_config.get('name_ref', '')
-        file_type = (
-            f"type='{icon_brand_config['file_type']}' "
-            if 'file_type' in icon_brand_config else ''
+    def _icons_head_creator(self, icon_brand_config, size: List[int] = [0, 0]):
+        # tag name
+        tag_name = (
+            f"{icon_brand_config.tag_name} "
+            if getattr(icon_brand_config, 'tag_name', '') else ''
         )
-        sizes = (
-            f"sizes='{size[0]}x{size[1]}' "
-            if 'verbosity' in icon_brand_config else ''
+        # content=""
+        attribute_content = (
+            (
+                f"content='{icon_brand_config.attribute_content}' "
+                    .replace('\'', '"')
+            )
+            if getattr(icon_brand_config, 'attribute_content', '') else ''
         )
-        tagname, attribute, ref = (
-            ('meta', 'name', 'content')
-            if 'metatag' in icon_brand_config else
-            ('link', 'rel', 'href')
+        # name=""
+        attribute_name = (
+            (
+                f"name='{icon_brand_config.attribute_name}' "
+                    .replace('\'', '"')
+            )
+            if getattr(icon_brand_config, 'attribute_name', '') else ''
         )
-        title = (
-            f"title='{icon_brand_config['title']}' "
-            if 'title' in icon_brand_config else ''
+        # rel=""
+        attribute_rel = (
+            (
+                f"rel='{icon_brand_config.attribute_rel}' "
+                    .replace('\'', '"')
+            )
+            if getattr(icon_brand_config, 'attribute_rel', '') else ''
         )
-        media = (
-            f"media=(min-device-width: {min_size}px) and "
-            f"(min-device-height: {min_size}px) "
-            if 'media' in icon_brand_config else ''
+        # title=""
+        attribute_title = (
+            (
+                f"title='{icon_brand_config.attribute_title}' "
+                    .replace('\'', '"')
+            )
+            if getattr(icon_brand_config, 'attribute_tittle', '') else ''
         )
-        if 'content' in icon_brand_config:
-            static_url = ''
-            filename = f"content='{icon_brand_config['content']}'"
-        else:
-            static_url = self.config.get('static_url', '')
+        # type=""
+        attribute_type = (
+            (
+                f"type='{icon_brand_config.attribute_type}' "
+                    .replace('\'', '"')
+            )
+            if getattr(icon_brand_config, 'attribute_type', '') else ''
+        )
+        # href=""
+        file_name = getattr(icon_brand_config, 'file_name', '')
+        new_file_name = f"{file_name}-{size[0]}x{size[1]}.png"
+        attribute_special_href = (
+            (
+                "href='{}' ".format(
+                    path.join(
+                        self.config.get('static_url', ''),
+                        new_file_name,
+                    )
+                ).replace('\'', '"')
+            )
+            if getattr(icon_brand_config, 'attribute_special_href', False)
+            else ''
+        )
+        # sizes=""
+        attribute_special_sizes = (
+            (
+                f"sizes='{size[0]}x{size[1]}' "
+                    .replace('\'', '"')
+            )
+            if getattr(icon_brand_config, 'attribute_special_sizes', False)
+            else ''
+        )
 
-        # Keep using format function for better reference to each element of
-        # the formated string
-        # A: <link rel="shortcut icon" type="image/png" sizes="16x16"
-        #    href="/static/favicon-16x16.png" />
-        # B: <link href="apple-touch-startup-image-320x320.png"
-        #    media="screen and (min-device-width: 320px) and ... ..." />
-        # C: <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
-        #    title="Microsoft" />
-        element = "<{} {}='{}' {}{}{}='{}/{}' {}{}/>".format(
-            tagname,  # A: link
-            attribute,  # A: rel
-            name_ref,  # A: shortcut icon
-            file_type,  # A: type="image/png"
-            sizes,  # A: sizes="16x16"
-            ref,  # A: href
-            static_url,  # A: /static
-            filename,  # A: favicon-16x16.png
-            media,  # B: media="screen and (min-device-width: 320px) and ...
-            title,  # C: title="Microsoft"
+        element = (
+            f"<{tag_name}"
+            f"{attribute_content}"
+            f"{attribute_name}"
+            f"{attribute_rel}"
+            f"{attribute_title}"
+            f"{attribute_type}"
+            f"{attribute_special_href}"
+            f"{attribute_special_sizes}"
+            f"/>"
         )
         return element

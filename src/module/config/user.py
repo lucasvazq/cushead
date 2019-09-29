@@ -13,8 +13,8 @@ import textwrap
 
 from src.info import Info
 from src.helpers.assets import Images
-from src.services.logs import Logs
 from src.helpers.validators import KeysValidator
+from src.services.logs import Logs
 
 
 class DefaultUserConfig:
@@ -145,7 +145,7 @@ class UserConfigHandler(Logs):
         # Required values
         required_values = ['static_url']
         for key in required_values:
-            KeysValidator(key, dictionary=settings)
+            KeysValidator(dictionary=settings, key=key).key_exists()
 
         # Sanitize static_url key
         # Prevent:
