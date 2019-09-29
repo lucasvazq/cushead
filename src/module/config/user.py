@@ -3,33 +3,23 @@
 
 """Module used to format default settings dictionary
 
-Relevant Global Variables:
-    IMAGEFILES: list of default images that can be used with user settings
-
 Functions:
     get_values(dict) -> dict
 """
 
 
 from os import path
-from src.info import get_info
 import textwrap
 
-from src.helpers.logs import Logs
+from src.info import Info
+from src.helpers.assets import Images
+from src.services.logs import Logs
 from src.helpers.validators import KeysValidator
-
-
-IMAGEFILES = [
-    'favicon_ico_16px.ico',
-    'favicon_png_1600px.png',
-    'favicon_svg_scalable.svg',
-    'preview_png_500px.png',
-]
 
 
 class DefaultUserConfig:
     """Generate presets"""
-    info = get_info()
+    info = Info.get_info()
 
     @staticmethod
     def default_images():
@@ -37,7 +27,8 @@ class DefaultUserConfig:
         binary_files = []
         realpath = path.join(path.dirname(path.realpath(__file__)),
                              "../../assets")
-        for filename in IMAGEFILES:
+        image_files = Images.images_list()
+        for filename in image_files:
             filepath = path.join(realpath, filename)
             with open(filepath, 'rb') as binary_file:
                 binary_files.append(
@@ -146,8 +137,8 @@ class UserConfigHandler(Logs):
         social_media = default.get('social_media', {})
         progressive_web_app = settings.get('progressive_web_apps', {})
         if 'required' not in settings:
-            self.error(message=("Miss 'required' object and it's required in "
-                                "config file."))
+            self.error("Miss 'required' object and it's required in "
+                       "config file.")
         settings = {**settings['required'], **recommended, **general,
                     **basic, **social_media, **progressive_web_app}
 

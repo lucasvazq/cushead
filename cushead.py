@@ -10,12 +10,12 @@
 
 import sys
 
-from src.info import get_info
+from src.info import Info
 from src.support import Support, Unsupported
 
 # Check python version
 try:
-    INFO = get_info()
+    INFO = Info.get_info()
     Support(INFO).run()
 except Unsupported as exception:
     sys.stdout.write(exception)

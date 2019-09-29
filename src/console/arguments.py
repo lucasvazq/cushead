@@ -3,8 +3,8 @@
 
 """Module used to handle the argparse library
 
-Functions:
-    parse_args(list) -> object
+Classes:
+    Argparse
 """
 
 import textwrap
@@ -12,24 +12,32 @@ import textwrap
 import argparse
 from argparse import Namespace
 
-from src.info import get_info
-from src.helpers.logs import Logs
+from src.info import Info
+from src.helpers.assets import Images
+from src.helpers.strings import Transformators
 from src.helpers.validators import FilesValidator
+from src.services.logs import Logs
 
 
-class Argparse(Logs):
-    """Class used to handle argparse"""
+class Argparse(Info, Logs):
+    """Class used to handle argparse
+
+    Methods:
+        parse_args(list) -> Namespace
+
+    Namespace is an argparse class
+    """
 
     def parse_args(self, args: list) -> Namespace:
         """Argparse implementation
 
-        This function validate the values of the arguments and, if everythings
-        is ok, return object with the arguments as attributes
+        This function validates the values of the arguments and, if everything
+        is ok, return an object with the arguments as attributes
 
         Args:
             args list: The arguments
         """
-        info = get_info()
+        info = self.get_info()
         name = info['package_name']
         parser = argparse.ArgumentParser(
             prog=info['package_name'],
@@ -39,51 +47,48 @@ class Argparse(Logs):
                 Examples:
                 1) Generate default config file with images:
                     {name} -default settings.json --images
-                2) Execute with that config:
+                2) Run that config:
                     {name} -config settings.json""")
         )
 
         # ARGUMENTS
 
-        required = parser.add_argument_group("Required (only one)")
-        options = parser.add_argument_group("Optional (use with Required "
-                                            "arguments)")
+        main_arguments = parser.add_argument_group("Main arguments")
+        complementary_arguments = parser.add_argument_group("Complementary")
 
         # GROUP: required
         # -config
-        required.add_argument(
+        main_arguments.add_argument(
             '-config',
             metavar='FILEPATH',
             dest='config',
             help=(
-                "Path to the config file. "
-                "Read a config file that contains settings related to SEO and "
-                "UX and generate custom files based on that."
+                "Path to a config file in JSON format. "
+                "Read a config file and create the main files based on it."
             )
         )
         # -default
-        required.add_argument(
+        main_arguments.add_argument(
             '-default',
             metavar='FILENAME',
             dest='default',
             help=(
-                "Generate an example config file in JSON format. "
-                "That file contains differents variables that can be "
-                "customized. Can use with --images"
+                "Path to output a default config file. Can use with --images"
             )
         )
         # GROUP: options
         # -images
-        options.add_argument(
+        image_list = Images.images_list()
+        class_instance = Transformators(word_list=image_list)
+        joined_words = class_instance.words_union()
+        complementary_arguments.add_argument(
             '--images',
             dest='images',
             action='store_true',
             help=(
-                "Use with -default. "
-                "Add example images that can be used by the settings "
-                "generated with -config. "
-                "This include: favicon_ico_16px.ico, favicon_png_1600px.png,"
-                "favicon_svg_scalable.svg and presentation_png_500px.png"
+                f"Use with -default. "
+                f"Generate default images that can be used by the settings. "
+                f"This include: {joined_words}"
             )
         )
 
@@ -93,20 +98,19 @@ class Argparse(Logs):
         # Validation
         unrecognized = parser.parse_known_args(args)[1]
         if unrecognized:
-            self.error(message=f"Unrecognized argument {unrecognized[0]}")
+            self.error(f"Unrecognized argument {unrecognized[0]}")
         # Need to recall arguments parser.
         # pylint no-member error in child function
         args = parser.parse_args()
-        print(type(args))
         if not (args.config or args.default):
-            self.error(message=("Miss Required arguments. Use -config or "
-                                "-default"))
+            self.error("Miss Required arguments. Use -config or "
+                       "-default")
         if args.config and args.default:
-            self.error(message=("Can't use -config and -default arguments "
-                                "together."))
+            self.error("Can't use -config and -default arguments "
+                       "together.")
         if args.images and not args.default:
-            self.error(message="Can't use --images without -default.")
+            self.error("Can't use --images without -default.")
         if args.config:
-            FilesValidator(args.config, "-config").path_is_file()
+            FilesValidator(file_path=args.config, key='-config').path_is_file()
 
         return args

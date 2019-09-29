@@ -3,42 +3,192 @@
 
 """Module to handle the images configurations
 
-Classes DefaultIconsFormatConfig
+Classes:
+    DefaultImagesCreationConfig
+    DefaultIconsFormatConfig
 """
 
 from os import path
+from typing import Dict, List, Union
 
 from src.services.images import ImageService
 
 
+class DefaultImagesCreationConfig(ImageService):
+    """Class to handle the default configuration used for images creation
+
+    Methods:
+        default_images_creation_config
+            -> List[Dict[str, Union[List[int], bool, str]]]:
+    """
+    config = {}
+    icons_config = {}
+
+    def _favicon_ico(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+        favicon_ico = self.config.get('favicon_ico', '')
+        if not favicon_ico:
+            return []
+        destination_file_path = path.join(
+            self.config.get('output_folder_path'),
+            'favicon.ico',
+        ),
+        source_file_path = path.join(self.config.get('main_folder_path', ''),
+                                     favicon_ico)
+        return [{
+            'destination_file_path': destination_file_path,
+            'resize': False,
+            'size': [],
+            'source_file_path': source_file_path,
+        }]
+
+    def _favicon_png(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+        images_format = []
+        favicon_png = self.config.get('favicon_png', '')
+        if not favicon_png:
+            return images_format
+        destination_file_path_unformatted = path.join(
+            self.config.get('static_folder_path', ''), "{}-{}x{}.png"
+        )
+        source_file_path = path.join(self.config.get('main_folder_path', ''),
+                                     favicon_png)
+        for brand_icon_config in self.icons_config.get('favicon_png', []):
+            file_name = brand_icon_config.get('file_name', '')
+            for size in self.format_sizes(brand_icon_config):
+                destination_file_path = (
+                    destination_file_path_unformatted.format(file_name,
+                                                             size[0], size[1])
+                )
+                images_format.append({
+                    'destination_file_path': destination_file_path,
+                    'resize': True,
+                    'size': size,
+                    'source_file_path': source_file_path,
+                })
+        return images_format
+
+    def _favicon_svg(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+        favicon_svg = self.config.get('favicon_svg', '')
+        if not favicon_svg:
+            return []
+        destination_file_path = path.join(
+            self.config.get('static_folder_path'),
+            'favicon.svg',
+        )
+        source_file_path = path.join(self.config.get('main_folder_path'),
+                                     favicon_svg)
+        return [{
+            'destination_file_path': destination_file_path,
+            'resize': False,
+            'size': [],
+            'source_file_path': source_file_path,
+        }]
+
+    def _preview_png(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+        preview_png = self.config.get('preview_png', '')
+        if not preview_png:
+            return []
+        destination_file_path = path.join(
+            self.config.get('static_folder_path'),
+            'preview-500x500.png',
+        )
+        source_file_path = path.join(self.config.get('main_folder_path'),
+                                     preview_png)
+        return [{
+            'destination_file_path': destination_file_path,
+            'resize': True,
+            'size': [500, 500],
+            'source_file_path': source_file_path,
+        }]
+
+    def default_images_creation_config(self) \
+            -> List[Dict[str, Union[List[int], bool, str]]]:
+        """Return a list with default images creation configuration
+
+        It's include configurations for the images listed in the assets folder
+
+        Default structure of the dicts in the return is:
+        {
+            'destination_file_path': str,
+            'resize': bool,
+            'size': list,
+            'source_file_path': str,
+        }
+        """
+        images_creation_config = [
+            self._favicon_ico(),
+            self._favicon_png(),
+            self._favicon_svg(),
+            self._preview_png(),
+        ]
+        return [
+            element for group in images_creation_config
+            for element in group
+        ]
+
+
+class IconsFormatConfigStructure:
+
+    def __init__(self,
+                 content: str = '',
+                 file_name: str = '',
+                 file_type: str = '',
+                 max_min: List[List[int]] = None or [],
+                 metatag: bool = False,
+                 name_ref: str = '',
+                 non_square_sizes: List[List[int]] = None or [],
+                 square_sizes: List[int] = None or [],
+                 title: str = '',
+                 verbosity: bool = False):
+        self.content = content
+        self.file_name = file_name
+        self.file_type = file_type
+        self.max_min = max_min
+        self.metatag = metatag
+        self.name_ref = name_ref
+        self.non_square_sizes = non_square_sizes
+        self.square_sizes = square_sizes
+        self.title = title
+        self.verbosity = verbosity
+
+
 class DefaultIconsFormatConfig:
-    config: dict
+    """Class to handle the default icons format configuration
+
+    Methods:
+        default_icons_config
+            -> Dict[str, Dict[str, Union[List[int], bool, str]]]:
+    """
+    config: {}
 
     def _png_icons_config(self):
         yandex_content = (f"logo={self.config.get('static_url', '')}"
                           "/yandex.png, "
                           f"color={self.config.get('background_color', '')}")
+
+        default_favicons_png_config = IconsFormatConfigStructure(
+            file_name='favicon',
+            name_ref='icon',
+            # https://www.favicon-generator.org/
+            # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
+            # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
+            square_sizes=[16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114, 120,
+                          128, 144, 150, 152, 167, 180, 192, 195, 196, 228,
+                          310],
+            file_type='image/png',
+            verbosity=True,
+        )
+        windows_favicon_config = IconsFormatConfigStructure(
+            file_name='ms-icon',
+            metatag=True,
+            name_ref='msapplication-TileImage',
+            square_sizes=[144],
+        )
+        apple_touch_default_config = IconsFormatConfigStructure(
+            file_name='apple-touch-icon',
+            name_ref='apple-touch-icon',
+            square_sizes=[57],
+        )
         return [
-            # default png favicons
-            {
-                'name_ref': 'icon',
-                'file_name': 'favicon',
-                # https://www.favicon-generator.org/
-                # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
-                # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-                'square_sizes': [16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96,
-                                 114, 120, 128, 144, 150, 152, 167, 180, 192,
-                                 195, 196, 228, 310],
-                'type': 'image/png',
-                'verbosity': True,
-            },
-            # windows favicon
-            {
-                'name_ref': 'msapplication-TileImage',
-                'file_name': 'ms-icon',
-                'square_sizes': [144],
-                'metatag': True,
-            },
             # apple touch default
             {
                 'name_ref': 'apple-touch-icon',
@@ -126,7 +276,13 @@ class DefaultIconsFormatConfig:
             'verbosity': True,
         }
 
-    def default_icons_config(self):
+    def default_icons_config(self) \
+            -> Dict[str, Dict[str, Union[List[int], bool, str]]]:
+        """Return a default icons format configuration
+
+        This return includes configs for favicons with png extension and for
+        browserconfig, manifest and opensearch related icons
+        """
         return {
             'favicon_png': self._png_icons_config(),
             'browserconfig': self._browserconfig_icons_config(),
@@ -134,87 +290,3 @@ class DefaultIconsFormatConfig:
             'opensearch': self._opensearch_icons_config(),
         }
 
-
-class DefaultImagesCreationConfig(ImageService):
-    config: dict
-    icons_config: dict
-
-    def _favicon_ico(self):
-        favicon_ico = self.config.get('favicon_ico', '')
-        if not favicon_ico:
-            return []
-        return [{
-            'destination_file_path': path.join(
-                self.config.get('output_folder_path'),
-                'favicon.ico'
-            ),
-            'source_file_path': path.join(
-                self.config.get('main_folder_path', ''),
-                favicon_ico
-            ),
-        }]
-
-    def _favicon_png(self):
-        images_format = []
-        favicon_png = self.config.get('favicon_png', '')
-        if not favicon_png:
-            return images_format
-        source_file_path = path.join(self.config.get('main_folder_path', ''),
-                                     favicon_png)
-        for brand_icon_config in self.icons_config.get('favicon_png', []):
-            file_name = brand_icon_config.get('file_name', '')
-            for size in self.format_sizes(brand_icon_config):
-                destination_file_path = path.join(
-                    self.config.get('static_folder_path', ''),
-                    f"{file_name}-{size[0]}x{size[1]}.png")
-                images_format.append({
-                    'destination_file_path': destination_file_path,
-                    'resize': True,
-                    'size': size,
-                    'source_file_path': source_file_path,
-                })
-        return images_format
-
-    def _favicon_svg(self):
-        favicon_svg = self.config.get('favicon_svg', '')
-        if not favicon_svg:
-            return []
-        return [{
-            'destination_file_path': path.join(
-                self.config.get('static_folder_path'),
-                'favicon.svg'
-            ),
-            'source_file_path': path.join(
-                self.config.get('main_folder_path', ''),
-                favicon_svg
-            ),
-        }]
-
-    def _preview_png(self):
-        preview_png = self.config.get('preview_png', '')
-        if not preview_png:
-            return []
-        return [{
-            'destination_file_path': path.join(
-                self.config.get('static_folder_path'),
-                'preview-500x500.png'
-            ),
-            'resize': True,
-            'size': [500, 500],
-            'source_file_path': path.join(
-                self.config.get('main_folder_path', ''),
-                preview_png
-            )
-        }]
-
-    def default_images_creation_config(self):
-        images_creation_config = [
-            self._favicon_ico(),
-            self._favicon_png(),
-            self._favicon_svg(),
-            self._preview_png(),
-        ]
-        return [
-            element for group in images_creation_config
-            for element in group
-        ]

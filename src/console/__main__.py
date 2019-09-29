@@ -13,21 +13,19 @@ from json.decoder import JSONDecodeError
 from os import path
 
 from src.console.arguments import Argparse
-from src.console.presentation import PRESENTATION_MESSAGE
 from src.helpers.fso import FilesHelper
-from src.helpers.logs import Logs, MessageHandler
 from src.module.__main__ import Main as ModuleMain
 from src.module.config.user import DefaultUserConfig
+from src.services.logs import Logs, MessagesHandler
 
 
-class Main(ModuleMain, Argparse, Logs, DefaultUserConfig):
-    """Class used to handle arguments
+class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
+    """Class used to handle the CLI inputs and outputs
 
     Init:
-        args list: Arguments, example: ['config', 'settings.json'], equivalent
-            to an inputh of '-config settings.json' through the CLI
-
-    At init, the arguments been verified
+        args list: Arguments, example: ['foo', 'bar', 'baz'], equivalent to an
+            input of '-foo bar --baz' through the CLI. Their respective values
+            are defined with argparse package, that executes at init.
 
     Methods:
         run
@@ -37,8 +35,8 @@ class Main(ModuleMain, Argparse, Logs, DefaultUserConfig):
     """
 
     def __init__(self, args):
-        self.error = MessageHandler.error_stdout
-        self.important(PRESENTATION_MESSAGE)
+        self.error = self.error_stdout
+        self.presentation_message()
         self.args = self.parse_args(args)
         user_config, output_path = self._read_config()
         super().__init__(user_config=user_config, output_path=output_path)
@@ -58,20 +56,22 @@ class Main(ModuleMain, Argparse, Logs, DefaultUserConfig):
                 f"Invalid json file format in ({self.args.config})\n"
                 f"FILE PATH: {config_file_fullpath}"
             )
-            self.error(message=exception)
+            self.error(exception)
         output_path = path.dirname(self.args.config)
         return json_dict, output_path
 
     def run(self):
-        """Run actual arguments
+        """Run the current arguments
 
         Check the current arguments and execute the functions that correspond
         to each one
         """
         if self.args.images:
             self.argument_boolean_image()
-        if self.args.config: self.argument_string_config()
-        if self.args.default: self.argument_string_default()
+        if self.args.config:
+            self.argument_string_config()
+        if self.args.default:
+            self.argument_string_default()
 
     # --images
     def argument_boolean_image(self):
@@ -81,18 +81,22 @@ class Main(ModuleMain, Argparse, Logs, DefaultUserConfig):
         for binary_image in binary_images:
             file_name = binary_image['filename']
             destination_path = path.join(destination_folder, file_name)
-            FilesHelper.write_binary(content=binary_image['content'],
-                                     destination_file_path=destination_path)
+            class_instance = FilesHelper(
+                binary_content=binary_image['content'],
+                destination_file_path=destination_path,
+            )
+            class_instance.write_binary_file()
 
     # -config
     def argument_string_config(self):
         """Handle -config argument"""
         all_files = self.all_files()
         for key in all_files:
-            FilesHelper.write_file(
-                content=all_files[key]['content'],
+            class_instance = FilesHelper(
                 destination_file_path=all_files[key]['destination_path'],
+                unicode_content=all_files[key]['content'],
             )
+            class_instance.write_unicode_file()
         for image_config in self.default_images_creation_config():
             if image_config.get('resize', False):
                 self.resize_image(
@@ -110,8 +114,9 @@ class Main(ModuleMain, Argparse, Logs, DefaultUserConfig):
     def argument_string_default(self):
         """Handle -default argument"""
         default_settings = self.default_settings()
-        FilesHelper.write_file(destination_file_path=self.args.default,
-                               content=default_settings)
+        class_instance = FilesHelper(destination_file_path=self.args.default,
+                                     unicode_content=default_settings)
+        class_instance.write_unicode_file()
         fullpath = path.join(os.getcwd(), self.args.default)
         print(f"CONFIG FILE: {self.args.default}\n"
               f"FULL PATH: {fullpath}")

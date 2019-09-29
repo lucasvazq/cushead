@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""Handle logs information
+
+Relevant Global Variables:
+    PRESENTATION_MESSAGE str: The presentation of the package, include a big
+        logo in ASCII and info about the author and the package
+
+Classes:
+    SpecialMessages
+"""
+
+import sys
+
+from src.helpers.strings import Processors
+
+import textwrap
+
+from src.info import Info
+
+
+_INFO = Info.get_info()
+
+# presentation is in /docs/presentation.png
+PRESENTATION_MESSAGE = textwrap.dedent("""\
+       ____  _   _  ____   _   _  _____     _     ____     ____ __   __
+      / ___|| | | |/ ___| | | | || ____|   / \\   |  _ \\   |  _ \\\\ \\ / /
+     | |    | | | |\\___ \\ | |_| ||  _|    / _ \\  | | | |  | |_) |\\ V / 
+     | |___ | |_| | ___) ||  _  || |___  / ___ \\ | |_| |_ |  __/  | |  
+      \\____| \\___/ |____/ |_| |_||_____|/_/   \\_\\|____/(_)|_|     |_|  
+                                 __       _
+                                 _/     /
+                                /    __/
+             UX / SEO         _/  __/           v {}
+                             / __/
+                            / /
+                           /'
+
+    Author: {}
+    Email: {}
+    Page: {}
+    License: {}
+
+    Git: {}
+    Documentation: {}
+    For help run: {} -h
+    """)  # This line is blank
+PRESENTATION_MESSAGE = PRESENTATION_MESSAGE.format(
+    _INFO['package_version'],
+    _INFO['author'],
+    _INFO['email'],
+    _INFO['author_page'],
+    _INFO['license'],
+    _INFO['source'],
+    _INFO['documentation'],
+    _INFO['package_name'],
+)
+
+
+class SpecialMessages:
+
+    @staticmethod
+    def presentation_message():
+        return PRESENTATION_MESSAGE
+
+
+class MessagesHandler(Processors):
+
+    # important section
+
+    def important_stdout(self, message: str = ''):
+        print(self.important_color(message))
+
+    # error section
+
+    @staticmethod
+    def error_exception(message: str = ''):
+        raise Exception(message)
+
+    def error_stdout(self, message: str = ''):
+        sys.exit(self.error_color(message))
+
+
+class Logs(MessagesHandler):
+    error_function = MessagesHandler.error_exception
+    important_function = MessagesHandler.important_stdout
+
+    def important(self, message):
+        self.important_function(message)
+
+    def error(self, message):
+        self.error_function(message)

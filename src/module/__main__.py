@@ -15,7 +15,7 @@ from src.module.files.base import Base
 from src.module.config.user import UserConfigHandler
 from src.module.config.images import (DefaultIconsFormatConfig,
                                       DefaultImagesCreationConfig)
-from src.helpers.logs import Logs
+from src.helpers.logs import Logs, SpecialMessages
 
 
 class DefaultConfig(DefaultIconsFormatConfig, DefaultImagesCreationConfig):
@@ -34,7 +34,7 @@ class Files(Base, ComplementaryFiles):
         return dict(self.full_index(), **self.full_complementary_files())
 
 
-class Main(DefaultConfig, Files, UserConfigHandler, Logs):
+class Main(DefaultConfig, Files, UserConfigHandler, Logs, SpecialMessages):
     """Main class
 
     The entire sub-modules serve this class

@@ -42,7 +42,8 @@ class Base(Head):
             }
         }
 
-    def structure(self, head: list = []) -> str:
+    @staticmethod
+    def structure(head: list = None or []) -> str:
         """Return an html structure
 
         Args:
