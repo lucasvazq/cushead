@@ -18,13 +18,38 @@ class DefaultImagesCreationConfig(ImageService):
     """Class to handle the default configuration used for images creation
 
     Methods:
-        default_images_creation_config
+        default_icons_creation_config
             -> List[Dict[str, Union[List[int], bool, str]]]:
     """
     config = {}
     icons_config = {}
 
-    def _favicon_ico(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+    def _default_png_icons_creation(self, brand) -> List[Dict[str, Union[List[int], bool, str]]]:
+        images_format = []
+        favicon_png = self.config.get('favicon_png', '')
+        if not favicon_png:
+            return images_format
+        destination_file_path_unformatted = path.join(
+            self.config.get('static_folder_path', ''), "{}-{}x{}.png"
+        )
+        source_file_path = path.join(self.config.get('main_folder_path', ''),
+                                     favicon_png)
+        for brand_icon_config in self.icons_config.get(brand, []):
+            file_name = getattr(brand_icon_config, 'file_name', '')
+            for size in self.format_sizes(brand_icon_config):
+                destination_file_path = (
+                    destination_file_path_unformatted.format(file_name,
+                                                             size[0], size[1])
+                )
+                images_format.append({
+                    'destination_file_path': destination_file_path,
+                    'resize': True,
+                    'size': size,
+                    'source_file_path': source_file_path,
+                })
+        return images_format
+
+    def _favicon_ico_icons_creation(self) -> List[Dict[str, Union[List[int], bool, str]]]:
         favicon_ico = self.config.get('favicon_ico', '')
         if not favicon_ico:
             return []
@@ -41,32 +66,10 @@ class DefaultImagesCreationConfig(ImageService):
             'source_file_path': source_file_path,
         }]
 
-    def _favicon_png(self) -> List[Dict[str, Union[List[int], bool, str]]]:
-        images_format = []
-        favicon_png = self.config.get('favicon_png', '')
-        if not favicon_png:
-            return images_format
-        destination_file_path_unformatted = path.join(
-            self.config.get('static_folder_path', ''), "{}-{}x{}.png"
-        )
-        source_file_path = path.join(self.config.get('main_folder_path', ''),
-                                     favicon_png)
-        for brand_icon_config in self.icons_config.get('favicon_png', []):
-            file_name = getattr(brand_icon_config, 'file_name', '')
-            for size in self.format_sizes(brand_icon_config):
-                destination_file_path = (
-                    destination_file_path_unformatted.format(file_name,
-                                                             size[0], size[1])
-                )
-                images_format.append({
-                    'destination_file_path': destination_file_path,
-                    'resize': True,
-                    'size': size,
-                    'source_file_path': source_file_path,
-                })
-        return images_format
+    def _favicon_png_icons_creation(self):
+        self._default_png_icons_creation('favicon_png'),
 
-    def _favicon_svg(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+    def _favicon_svg_icons_creation(self) -> List[Dict[str, Union[List[int], bool, str]]]:
         favicon_svg = self.config.get('favicon_svg', '')
         if not favicon_svg:
             return []
@@ -83,7 +86,7 @@ class DefaultImagesCreationConfig(ImageService):
             'source_file_path': source_file_path,
         }]
 
-    def _preview_png(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+    def _preview_png_icons_creation(self) -> List[Dict[str, Union[List[int], bool, str]]]:
         preview_png = self.config.get('preview_png', '')
         if not preview_png:
             return []
@@ -100,7 +103,16 @@ class DefaultImagesCreationConfig(ImageService):
             'source_file_path': source_file_path,
         }]
 
-    def default_images_creation_config(self) \
+    def _browserconfig_icons_creation(self):
+        self._default_png_icons_creation('browserconfig')
+
+    def _manifest_icons_creation(self):
+        self._default_png_icons_creation('manifest')
+
+    def _opensearch_icons_creation(self):
+        self._default_png_icons_creation('opensearch')
+
+    def default_icons_creation_config(self) \
             -> List[Dict[str, Union[List[int], bool, str]]]:
         """Return a list with default images creation configuration
 
@@ -114,14 +126,18 @@ class DefaultImagesCreationConfig(ImageService):
             'source_file_path': str,
         }
         """
-        images_creation_config = [
-            self._favicon_ico(),
-            self._favicon_png(),
-            self._favicon_svg(),
-            self._preview_png(),
+        icons_creation_config = [
+            self._favicon_png_icons_creation(),
+            self._favicon_ico_icons_creation(),
+            self._favicon_svg_icons_creation(),
+            self._preview_png_icons_creation(),
+
+            self._browserconfig_icons_creation(),
+            self._manifest_icons_creation(),
+            self._opensearch_icons_creation(),
         ]
         return [
-            element for group in images_creation_config
+            element for group in icons_creation_config
             for element in group
         ]
 
@@ -131,15 +147,17 @@ class IconsFormatConfigStructure:
     def __init__(self,
             file_name: str = '',
             tag_name: str = '',
-            attribute_content: bool = '',
+            attribute_content: str = '',
             attribute_name: str = '',
             attribute_rel: str = '',
-            attribute_title: str = '',
             attribute_type: str = '',
+            attribute_special_content: bool = False,
             attribute_special_href: bool = False,
             attribute_special_sizes: bool = False,
-            sizes_square: List[int] = [],
-            sizes_rectangular: List[List[int]] = []):
+            attribute_special_title: str = '',
+            sizes_max_min: List[List[int]] = None or [],
+            sizes_square: List[int] = None or [],
+            sizes_rectangular: List[List[int]] = None or []):
 
         # file name
         self.file_name = file_name
@@ -151,67 +169,19 @@ class IconsFormatConfigStructure:
         self.attribute_content = attribute_content
         self.attribute_name = attribute_name
         self.attribute_rel = attribute_rel
-        self.attribute_title = attribute_title
         self.attribute_type = attribute_type
 
         # special attributes
+        self.attribute_special_content = attribute_special_content
         self.attribute_special_href = attribute_special_href
         self.attribute_special_sizes = attribute_special_sizes
+        self.attribute_special_title = attribute_special_title
 
         # sizes
+        self.sizes_max_min = sizes_max_min
         self.sizes_square = sizes_square
         self.sizes_rectangular = sizes_rectangular
 
-"""
-        self.tag_name = tag_name
-        self.attribute_name = attribute_name
-        self.attribute_rel = attribute_rel
-        self.attribute_title = title
-        self.attribute_content = attribute_content
-        self.attribute_href = attribute_href
-        self.attribute_type = attribute_type
-        self.attribute_sizes = attribute_sizes
-        self.sizes_square
-        self.sizes_rectangular
-        # media
-"""
-
-"""
-        # tagname # A: link
-        self.tag_name = tag_name (meta, link)
-
-        # attribute # A: rel
-        # name_ref # A: shortcut icon
-        self.attribute_name = attribute_name
-        self.attribute_rel = attribute_rel
-
-        title # C: title="Microsoft"
-        self.attribute_title = title
-
-        # ref,  # A: href
-        # static_url,  # A: /static/
-        # filename,  # A: favicon-16x16.png
-        self.attribute_content = attribute_content
-        self.attribute_href = attribute_href
-
-        # file_type,  # A: type="image/png"
-        self.attribute_type = attribute_type
-
-        # sizes,  # A: sizes="16x16"
-        self.verbosity = verbosity True
-        sizes = (
-            f"sizes='{size[0]}x{size[1]}' "
-            if 'verbosity' in self.brand[name] else ''
-        )
-
-        self.square_sizes
-        self.non_square_sizes
-        self.max_min_sizes
-
-        # media,  # B: media="screen and (min-device-width: 320px) and ...
-        #self.attribute_media = attribute_media
-
-"""
 
 class DefaultIconsFormatConfig:
     """Class to handle the default icons format configuration
@@ -223,53 +193,95 @@ class DefaultIconsFormatConfig:
     config: {}
 
     def _png_icons_config(self):
-        yandex_content = (f"logo={self.config.get('static_url', '')}"
-                          "/yandex.png, "
-                          f"color={self.config.get('background_color', '')}")
+        icons = []
 
-        default_favicons_png_config = IconsFormatConfigStructure(
-            tag_name='link',
-            file_name='favicon',
-            attribute_rel='icon',
-            attribute_type='image/png',
-            attribute_special_sizes=True,
-            attribute_special_href=True,
-            # https://www.favicon-generator.org/
-            # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
-            # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-            sizes_square=[16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114, 120,
-                          128, 144, 150, 152, 167, 180, 192, 195, 196, 228,
-                          310],
+        # Order matters
+
+        # Default png favicon
+        # Example:
+        # <link rel="icon" type="image/png" href="/static/favicon-16x16.png" sizes="16x16">
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='link',
+                file_name='favicon',
+                attribute_rel='icon',
+                attribute_type='image/png',
+                attribute_special_sizes=True,
+                attribute_special_href=True,
+                # https://www.favicon-generator.org/
+                # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
+                # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
+                sizes_square=[16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114,
+                              120, 128, 144, 150, 152, 167, 180, 192, 195, 196,
+                              228, 310],
+            )
         )
-        return [ default_favicons_png_config ]
-        return [
-            # apple touch default
-            {
-                'name_ref': 'apple-touch-icon',
-                'file_name': 'apple-touch-icon',
-                'square_sizes': [57],
-            },
-            # apple touch with differents sizes
-            {
-                'name_ref': 'apple-touch-icon',
-                'file_name': 'apple-touch-icon',
-                'square_sizes': [57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
-                                 1024],
-                'verbosity': True,
-            },
-            # apple touch startup image default
-            {
-                'name_ref': 'apple-touch-startup-image',
-                'file_name': 'launch',
-                'square_sizes': [768],
-            },
-            # apple touch startup image with differents sizes
-            {
-                'name_ref': 'apple-touch-startup-image',
-                'file_name': 'launch',
-                # Based on:
+
+        # Microsoft icon
+        # Example:
+        # <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png">
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='meta',
+                file_name='ms-icon',
+                attribute_name='msapplication-TileImage',
+                attribute_special_content=True,
+                sizes_square=[144],
+            )
+        )
+
+        # Apple touch default
+        # Example:
+        # <link rel="apple-touch-icon" href="/static/apple-touch-icon-default-57x57.png">
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='link',
+                file_name='apple-touch-icon',
+                attribute_rel='apple-touch-icon',
+                attribute_special_href=True,
+                sizes_square=[57],
+            )
+        )
+
+        # Apple touch with different sizes
+        # Example:
+        # <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-touch-icon-57x57.png">
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='link',
+                file_name='apple-touch-icon',
+                attribute_rel='apple-touch-icon',
+                attribute_special_href=True,
+                attribute_special_sizes=True,
+                sizes_square=[57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024],
+            )
+        )
+
+        # Apple touch startup default
+        # Example:
+        # ???
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='link',
+                file_name='launch',
+                attribute_rel='apple-touch-startup-image',
+                attribute_special_href=True,
+                sizes_square=[768],
+            )
+        )
+
+        # Apple touch startup with different sizes
+        # Example:
+        # ???
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='link',
+                file_name='launch',
+                attribute_rel='apple-touch-startup-image',
+                attribute_special_href=True,
+                # Based in:
                 # https://css-tricks.com/snippets/css/media-queries-for-standard-devices/
-                'max_min': [
+                sizes_max_min=[
                     [38, 42],
                     [320, 375],
                     [375, 414],
@@ -283,52 +295,73 @@ class DefaultIconsFormatConfig:
                     [1112, 1200],
                     [1200, 1366],
                     [1366, 1600],
-                ],
-            },
-            # Mac fluid icon
-            {
-                'name_ref': 'fluid-icon',
-                'file_name': 'fluidicon',
-                'square_sizes': [512],
-                'title': self.config.get('title', ''),
-            },
-            # yandex browser
-            {
-                'name_ref': 'yandex-tableau-widget',
-                'file_name': 'yandex',
-                'square_sizes': [120],
-                'metatag': True,
-                'content': yandex_content,
-            },
-        ]
+                ]
+            )
+        )
+
+        # Fluid icon
+        # Example:
+        # <link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft">
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='link',
+                file_name='fluid-icon',
+                attribute_rel='fluid-icon',
+                attribute_special_href=True,
+                attribute_special_title=True,
+                sizes_square=[512],
+            )
+        )
+
+        # Yandex browser special icon
+        # Example:
+        # ???
+        background_color = self.config.get('background_color', '')
+        static_url = self.config.get('static_url', '')
+        yandex_content = (f"logo={static_url}"
+                          f"/yandex-120x120.png, "
+                          f"color={background_color}")
+        icons.append(
+            IconsFormatConfigStructure(
+                tag_name='meta',
+                file_name='yandex',
+                attribute_name='yandex-tableau-widget',
+                attribute_content=yandex_content,
+                sizes_square=[120],
+            )
+        )
+
+        return icons
 
     @staticmethod
     def _browserconfig_icons_config():
-        return {
-            'name_ref': 'browserconfig',
-            'file_name': 'ms-icon',
-            'square_sizes': [30, 44, 70, 150, 310],
-            'non_square_sizes': [[310, 150]],
-        }
+        return [
+            IconsFormatConfigStructure(
+                file_name='ms-icon',
+                sizes_square=[30, 44, 70, 150, 310],
+                sizes_rectangular=[[310, 150]],
+            )
+        ]
 
     @staticmethod
     def _manifest_icons_config():
-        return {
-            'name_ref': 'manifest',
-            'filename': 'android-icon',
-            'square_sizes': [36, 48, 72, 96, 144, 192, 256, 384, 512],
-            'file_type': 'image/png',
-            'verbosity': True,
-        }
+        return [
+            IconsFormatConfigStructure(
+                file_name='android-icon',
+                attribute_type='image/png',
+                sizes_square=[36, 48, 72, 96, 144, 192, 256, 384, 512],
+            )
+        ]
 
     @staticmethod
     def _opensearch_icons_config():
-        return {
-            'name_ref': 'opensearch',
-            'filename': 'opensearch',
-            'sqyare_sizes': [16],
-            'verbosity': True,
-        }
+        return [
+            IconsFormatConfigStructure(
+                file_name='opensearch',
+                sizes_square=[16],
+                attribute_type='image/png',
+            )
+        ]
 
     def default_icons_config(self) \
             -> Dict[str, Dict[str, Union[List[int], bool, str]]]:

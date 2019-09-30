@@ -76,7 +76,7 @@ class DefaultUserConfig:
                         'description':      'Technology Solutions',
                         'subject':          'Home Page',
                         'keywords':         'Microsoft, Windows',
-                        'background_color': '#0000FF',
+                        'background_color': '#FFFFFF',
                         'author':           'Lucas Vazquez'
                     }},
                     'social_media': {{

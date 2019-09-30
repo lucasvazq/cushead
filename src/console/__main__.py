@@ -80,10 +80,10 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
         destination_folder = ''.join(self.args.default.split('/')[0:-1])
         for binary_image in binary_images:
             file_name = binary_image['filename']
-            destination_path = path.join(destination_folder, file_name)
+            destination_file_path = path.join(destination_folder, file_name)
             class_instance = FilesHelper(
                 binary_content=binary_image['content'],
-                destination_file_path=destination_path,
+                destination_file_path=destination_file_path,
             )
             class_instance.write_binary_file()
 
@@ -93,8 +93,9 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
         all_files = self.all_files()
         for key in all_files:
             class_instance = FilesHelper(
-                destination_file_path=all_files[key]['destination_path'],
-                unicode_content=all_files[key]['content'],
+                destination_file_path=all_files[key].get(
+                    'destination_file_path', ''),
+                unicode_content=all_files[key].get('content', ''),
             )
             class_instance.write_unicode_file()
         for image_config in self.default_images_creation_config():
@@ -105,7 +106,6 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                     image_config.get('size', []),
                 )
             else:
-                print(image_config)
                 self.move_svg(
                     image_config.get('destination_file_path', ''),
                     image_config.get('source_file_path', ''),

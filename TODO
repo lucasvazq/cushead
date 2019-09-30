@@ -12,3 +12,4 @@ sitemap:
 manifest:
     icons_config['manifest']
     
+MISS: replace '' with "

@@ -9,19 +9,19 @@
 
 # cushead
 
-## IN DEVELOPMENT
-
 **A CLI that help you to improve the SEO and UX of your websites.**
 
 **Works with:** _meta-tags, favicons, manifest, robots, browserconfig, sitemap, opensearch_
 
 **Python Versions:** _>=3.6, <4.0_
 
-**Package Version**: _3.1.8_
+**Package Version**: _*_
 
 **Status:** _Development_
 
 
+
+<!--
 
 
 ## Don't use this, it are under big refaction
@@ -29,6 +29,13 @@
 
 
 
+## Description
+
+This script edits an html file adding some meta-tags and other stuff for
+improving the **SEO** and the **UX** of your website. Also, it generate a lot
+of useful files that are vinculated to that tags or stuff. For example, icons
+for apple devices and manifest.json file. The info and the files generated can
+be set through a config file.
 
 
 
@@ -269,7 +276,6 @@ HTML:
 <html lang="en">
 
 HEAD:
-<!-- Custom head elements -->
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 <meta http-equiv='X-UA-Compatible' content='ie=edge' />
 <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -416,7 +422,6 @@ _(index.html)_
 ```html
 <html lang="en">
   <head>
-    <!-- Custom head elements -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -671,3 +676,4 @@ xx) colorblind thinking (keep in mind the color of menus, lines, borders, shadow
 ## License
 
 **cushead** © 2019 Lucas Vazquez. Released under the [MIT](http://mit-license.org/) License.
+-->

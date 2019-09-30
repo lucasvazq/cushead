@@ -27,18 +27,18 @@ class Base(Head):
 
         1)
             content str: file content
-            destination_path str: path where the file must be  written
+            destination_file_path str: path where the file must be  written
         """
         head = self.full_head()
         index = self.structure(head)
-        destination_path = path.join(
+        destination_file_path = path.join(
             self.config.get('output_folder_path', ''),
             'index.html'
         )
         return {
             'index': {
                 'content': index,
-                'destination_path': destination_path,
+                'destination_file_path': destination_file_path,
             }
         }
 
@@ -61,4 +61,4 @@ class Base(Head):
                 f"{indent}<head>\n"
                 f"{formated_head}"  # Already have newline
                 f"{indent}</head>\n"
-                f"</html>")
+                f"</html>").replace('\'', '"')

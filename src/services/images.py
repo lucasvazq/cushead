@@ -28,11 +28,9 @@ class ImageService:
 
     @staticmethod
     def format_sizes(icon_brand_config):
-        """Structure
-        square_sizes = [1, 2]
-        non_square_sizes = [[1, 2], [3, 4]]
-        """
-        square_sizes = getattr(icon_brand_config, 'sizes_square', [])
-        square_sizes = [[size, size] for size in square_sizes]
-        rectangular_sizes = getattr(icon_brand_config, 'sizes_rectangular', [])
-        return square_sizes + rectangular_sizes
+        sizes_square = getattr(icon_brand_config, 'sizes_square', [])
+        sizes_square = [[size, size] for size in sizes_square]
+        sizes_rectangular = getattr(icon_brand_config, 'sizes_rectangular', [])
+        max_min_sizes = getattr(icon_brand_config, 'sizes_max_min', [])
+        max_min_sizes = [[size[1], size[1]] for size in max_min_sizes]
+        return sizes_square + sizes_rectangular + max_min_sizes

@@ -14,7 +14,7 @@ class ComplementaryFiles:
     config = {}
     icons_config = {}
 
-    def _browserconfig(self) -> dict:
+    def _browserconfig_content(self) -> dict:
         """browserconfig.xml content
         Return the content of browserconfig.xml and the path where must be
         written
@@ -24,48 +24,49 @@ class ComplementaryFiles:
 
         1)
             content str: file content
-            destination_path str: path where the file must be written
+            destination_file_path str: path where the file must be written
         """
-        browserconfig_config = self.icons_config.get('browserconfig', {})
-        icon = browserconfig_config.get('filename', '')
-        square_sizes = browserconfig_config.get('square_sizes', [])
-        non_square_sizes = browserconfig_config.get('non_square_sizes', [])
+        browserconfig_config = self.icons_config.get('browserconfig', [])[0]
+        icon = getattr(browserconfig_config, 'file_name', '')
+        sizes_square = getattr(browserconfig_config, 'sizes_square', [])
+        sizes_rectangular = getattr(browserconfig_config, 'sizes_rectangular',
+                                    [])
         static_url = self.config.get('static_url', '')
         background_color = self.config.get('background_color', '')
         content = ("<?xml version='1.0' encoding='utf-8'?>"
                    "<browserconfig><msapplication><tile>")
         content += ''.join([
-            "<square{0}x{0}logo src='{1}{2}-{0}x{0}.png' />".format(
+            "<square{0}x{0}logo src='{1}/{2}-{0}x{0}.png' />".format(
                 size,
                 static_url,
                 icon
             )
-            for size in square_sizes
+            for size in sizes_square
         ])
         content += ''.join([
-            "<wide{0}x{1}logo src='{2}{3}-{0}x{1}.png' />".format(
+            "<wide{0}x{1}logo src='{2}/{3}-{0}x{1}.png' />".format(
                 size[0],
                 size[1],
                 static_url,
                 icon
             )
-            for size in non_square_sizes
+            for size in sizes_rectangular
         ])
         content += (f"<TileColor>"
                     f"{background_color}"
                     f"</TileColor></tile></msapplication>"
                     f"</browserconfig>")
         content = content.replace('\'', '"')
-        destination_path = path.join(
+        destination_file_path = path.join(
             self.config.get('static_folder_path', ''),
             'browserconfig.xml'
         )
         return {
             'content': content,
-            'destination_path': destination_path,
+            'destination_file_path': destination_file_path,
         }
 
-    def _manifest(self) -> dict:
+    def _manifest_content(self) -> dict:
         """manifest.json content
         Return the content of manifest.json and the path where must be written
 
@@ -74,10 +75,10 @@ class ComplementaryFiles:
 
         1)
             content str: file content
-            destination_path str: path where the file must be written
+            destination_file_path str: path where the file must be written
         """
-        manifest_config = self.icons_config.get('manifest', {})
-        content = dict()
+        manifest_config = self.icons_config.get('manifest', [])[0]
+        content = {}
         content['name'] = self.config.get('title', '')
         content['short_name'] = self.config.get('title', '')
         content['description'] = self.config.get('description', '')
@@ -95,26 +96,26 @@ class ComplementaryFiles:
             {
                 'src': "{0}{1}-{2}x{2}".format(
                     self.config.get('static_url', ''),
-                    manifest_config.get('filename', ''),
+                    getattr(manifest_config, 'file_name', ''),
                     size
                 ),
                 'sizes': f"{size}x{size}",
                 'type': 'image/png',
                 'density': str(size / 48)
             }
-            for size in manifest_config.get('square_sizes', [])
+            for size in getattr(manifest_config, 'sizes_square', [])
         ]
         content = json.dumps(content)
-        destination_path = path.join(
+        destination_file_path = path.join(
             self.config.get('static_folder_path', ''),
             'manifest.json'
         )
         return {
             'content': content,
-            'destination_path': destination_path,
+            'destination_file_path': destination_file_path,
         }
 
-    def _opensearch(self) -> dict:
+    def _opensearch_content(self) -> dict:
         """opensearch.xml content
         Return the content of opensearch.xml and the path where must be written
 
@@ -123,37 +124,43 @@ class ComplementaryFiles:
 
         1)
             content str: file content
-            destination_path str: path where the file must be written
+            destination_file_path str: path where the file must be written
         """
+        opensearch_config = self.icons_config.get('opensearch', [])[0]
+        file_name = getattr(opensearch_config, 'file_name', '')
+        sizes = getattr(opensearch_config, 'sizes_square', [0, 0])
+        file_type = getattr(opensearch_config, 'attribute_type', '')
         static_url = self.config.get('static_url', '')
         title = self.config.get('title', '')
-        url = self.config.get('url', '')
+        url = self.config.get('clean_url', '')
         content = ("<?xml version='1.0' encoding='utf-8'?>"
                    "<OpenSearchDescription xmlns:moz='"
                    "http://www.mozilla.org/2006/browser/search/' "
                    "xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
-                   "</OpenSearchDescription>"
                    "<ShortName>{0}</ShortName>"
                    "<Description>Search {0}</Description>"
                    "<InputEncoding>UTF-8</InputEncoding>"
                    "<Url method='get' type='text/html' "
                    "template='http://www.google.com/search?q="
                    "{{searchTerms}}+site%3A{1}' />"
-                   "<Image height='16' width='16' type='image/png'>"
-                   "{2}/opensearch-16x16.png"
-                   "</Image>")
-        content = content.format(title, url, static_url)
+                   "<Image height='{2}' width='{2}' "
+                   "type='{3}'>"
+                   "{4}/{5}-16x16.png"
+                   "</Image>"
+                   "</OpenSearchDescription>")
+        content = content.format(title, url, sizes[0], file_type, static_url,
+                                 file_name)
         content = content.replace('\'', '"')
-        destination_path = path.join(
+        destination_file_path = path.join(
             self.config.get('static_folder_path', ''),
             'opensearch.xml'
         )
         return {
             'content': content,
-            'destination_path': destination_path,
+            'destination_file_path': destination_file_path,
         }
 
-    def _robots(self) -> dict:
+    def _robots_content(self) -> dict:
         """robots.txt content
         Return the content of robots.txt and the path where must be written
 
@@ -162,29 +169,24 @@ class ComplementaryFiles:
 
         1)
             content str: file content
-            destination_path str: path where the file must be written
+            destination_file_path str: path where the file must be written
         """
         protocol = self.config.get('protocol', '')
         clean_url = self.config.get('clean_url', '')
-        sitemap_reference = (
-            "\n"
-            f"Sitemap: {protocol}"
-            f"{clean_url}/sitemap.xml"
-            if 'sitemap' in self.config else ''
-        )
         content = (f"User-agent: *\n"
                    f"Allow: /\n"
-                   f"{sitemap_reference}")
-        destination_path = path.join(
+                   f"\n"
+                   f"Sitemap: {protocol}{clean_url}/sitemap.xml")
+        destination_file_path = path.join(
             self.config.get('output_folder_path', ''),
             'robots.txt'
         )
         return {
             'content': content,
-            'destination_path': destination_path,
+            'destination_file_path': destination_file_path,
         }
 
-    def _sitemap(self) -> dict:
+    def _sitemap_content(self) -> dict:
         """sitemap.xml content
         Return the content of sitemap.xml and the path where must be
         written
@@ -194,11 +196,11 @@ class ComplementaryFiles:
 
         1)
             content str: file content
-            destination_path str: path where the file must be written
+            destination_file_path str: path where the file must be written
         """
         protocol = self.config.get('protocol', '')
         clean_url = self.config.get('clean_url', '')
-        content = (f"<?xml version='1.0' encoding='uft-8'?>"
+        content = (f"<?xml version='1.0' encoding='utf-8'?>"
                    f"<urlset xmlns="
                    f"'http://www.sitemaps.org/schemas/sitemap/0.9' "
                    f"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
@@ -207,13 +209,13 @@ class ComplementaryFiles:
                    f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
                    f"<url><loc>{protocol}{clean_url}/</loc></url></urlset>")
         content = content.replace('\'', '"')
-        destination_path = path.join(
+        destination_file_path = path.join(
             self.config.get('output_folder_path', ''),
             'sitemap.xml'
         )
         return {
             'content': content,
-            'destination_path': destination_path,
+            'destination_file_path': destination_file_path,
         }
 
     def full_complementary_files(self) -> dict:
@@ -225,13 +227,13 @@ class ComplementaryFiles:
         1)
             Keys are browserconfig, manifest, opensearch, robots and sitemap.
             Each key has of value another dict that has the keys content and
-            destination_path. They represent the content of each complementary
+            destination_file_path. They represent the content of each complementary
             file and the path where there must be written.
         """
         return {
-            'browserconfig': self._browserconfig(),
-            'manifest': self._manifest(),
-            'opensearch': self._opensearch(),
-            'robots': self._robots(),
-            'sitemap': self._sitemap(),
+            'browserconfig': self._browserconfig_content(),
+            'manifest': self._manifest_content(),
+            'opensearch': self._opensearch_content(),
+            'robots': self._robots_content(),
+            'sitemap': self._sitemap_content(),
         }
