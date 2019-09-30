@@ -10,20 +10,21 @@ Classes:
 """
 
 from src.info import Info
-from src.module.files.complementary_files import ComplementaryFiles
-from src.module.files.base import Base
+from src.module.files.complementary_files import ComplementaryFilesCreation
+from src.module.files.base import BaseFileCreation
 from src.module.config.user import UserConfigHandler
-from src.module.config.images import (DefaultIconsFormatConfig,
-                                      DefaultImagesCreationConfig)
+from src.module.config.images import IconsFormatConfig
+from src.module.files.images import ImageFilesCreation
+
 from src.services.logs import Logs, SpecialMessages
 
 
-class DefaultConfig(DefaultIconsFormatConfig, DefaultImagesCreationConfig):
+class Config(IconsFormatConfig):
     """Have the default config classes"""
     pass
 
 
-class Files(Base, ComplementaryFiles):
+class Files(BaseFileCreation, ComplementaryFilesCreation, ImageFilesCreation):
     """Class used to handle the generation of files
 
     Methods:
@@ -34,7 +35,7 @@ class Files(Base, ComplementaryFiles):
         return dict(self.full_index(), **self.full_complementary_files())
 
 
-class Main(DefaultConfig, Files, UserConfigHandler, Logs, SpecialMessages):
+class Main(Config, Files, UserConfigHandler, Logs, SpecialMessages):
     """Main class
 
     The entire sub-modules serve this class

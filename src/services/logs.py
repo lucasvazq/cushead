@@ -67,12 +67,6 @@ class SpecialMessages:
 
 class MessagesHandler:
 
-    # important section
-
-    def important_stdout(self, message: str = ''):
-        class_instance = ColorProcessor(message)
-        print(class_instance.important_color())
-
     # error section
 
     def error_exception(self, message: str = ''):
@@ -82,13 +76,26 @@ class MessagesHandler:
         class_instance = ColorProcessor(message)
         sys.exit(class_instance.error_color())
 
+    # important section
+
+    def important_stdout(self, message: str = ''):
+        class_instance = ColorProcessor(message)
+        sys.stdout.write(class_instance.important_color())
+
+    # normal section
+
+    def normal_stdout(self, message: str = ''):
+        class_instance = ColorProcessor(message + '\n')
+        sys.stdout.write(class_instance.normal_color())
+
 
 class Logs(MessagesHandler):
     error_function = MessagesHandler.error_exception
     important_function = MessagesHandler.important_stdout
 
+    def error(self, message):
+        self.error_function(message)
+
     def important(self, message):
         self.important_function(message)
 
-    def error(self, message):
-        self.error_function(message)

@@ -98,7 +98,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                 unicode_content=all_files[key].get('content', ''),
             )
             class_instance.write_unicode_file()
-        for image_config in self.default_images_creation_config():
+        for image_config in self.get_icons_creation_config():
             if image_config.get('resize', False):
                 self.resize_image(
                     image_config.get('destination_file_path', ''),
@@ -110,6 +110,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                     image_config.get('destination_file_path', ''),
                     image_config.get('source_file_path', ''),
                 )
+        self.normal_stdout('esa')
 
     # -default
     def argument_string_default(self):
@@ -119,5 +120,5 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                                      unicode_content=default_settings)
         class_instance.write_unicode_file()
         fullpath = path.join(os.getcwd(), self.args.default)
-        print(f"CONFIG FILE: {self.args.default}\n"
-              f"FULL PATH: {fullpath}")
+        self.normal_stdout(f"CONFIG FILE: {self.args.default}\n"
+                           f"FULL PATH: {fullpath}")

@@ -8,10 +8,10 @@ Classes:
 
 from os import path
 
-from .head import Head
+from src.module.files.head.base import Head
 
 
-class Base(Head):
+class BaseFileCreation(Head):
     """Class to handle the creation of the main index.html file
 
     Methods:

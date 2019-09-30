@@ -10,7 +10,7 @@ import json
 from os import path
 
 
-class ComplementaryFiles:
+class ComplementaryFilesCreation:
     config = {}
     icons_config = {}
 

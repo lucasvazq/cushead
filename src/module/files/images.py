@@ -1,158 +1,132 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from os import path
-from typing import List
+from typing import Dict, List, Union
 
-from src.helpers.validators import FilesValidator, KeysValidator
 from src.services.images import ImageService
 
 
-class Images(ImageService):
-    icons_config: {}
-    config: {}
+class ImageFilesCreation(ImageService):
+    """Class to handle the default configuration used for images creation
 
-    def _icons_head_creator(self, icon_brand_config, size: List[int] = [0, 0]):
+    Methods:
+        default_icons_creation_config
+            -> List[Dict[str, Union[List[int], bool, str]]]:
+    """
+    config = {}
+    icons_config = {}
 
-        tag_element_list = ['<']
-
-        # tag name, example:
-        # link
-        tag_element_list.append(
-            f"{icon_brand_config.tag_name} "
-            if getattr(icon_brand_config, 'tag_name', '') else ''
+    def _default_png_icons_creation(self, brand) -> List[Dict[str, Union[List[int], bool, str]]]:
+        images_format = []
+        favicon_png = self.config.get('favicon_png', '')
+        if not favicon_png:
+            return images_format
+        destination_file_path_unformatted = path.join(
+            self.config.get('static_folder_path', ''), "{}-{}x{}.png"
         )
+        source_file_path = path.join(self.config.get('main_folder_path', ''),
+                                     favicon_png)
+        for brand_icon_config in self.icons_config.get(brand, []):
+            file_name = getattr(brand_icon_config, 'file_name', '')
+            for size in self.format_sizes(brand_icon_config):
+                destination_file_path = (
+                    destination_file_path_unformatted.format(file_name,
+                                                             size[0], size[1])
+                )
+                images_format.append({
+                    'destination_file_path': destination_file_path,
+                    'resize': True,
+                    'size': size,
+                    'source_file_path': source_file_path,
+                })
+        return images_format
 
-        # content, example:
-        # ???
-        tag_element_list.append(
-            f"content='{icon_brand_config.attribute_content}' "
-            if getattr(icon_brand_config, 'attribute_content', '') else ''
+    def _favicon_ico_icons_creation(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+        favicon_ico = self.config.get('favicon_ico', '')
+        if not favicon_ico:
+            return []
+        destination_file_path = path.join(
+            self.config.get('output_folder_path'),
+            'favicon.ico',
         )
+        source_file_path = path.join(self.config.get('main_folder_path', ''),
+                                     favicon_ico)
+        return [{
+            'destination_file_path': destination_file_path,
+            'resize': False,
+            'size': [],
+            'source_file_path': source_file_path,
+        }]
 
-        # name, example:
-        # name="msapplication-TileImage"
-        tag_element_list.append(
-            f"name='{icon_brand_config.attribute_name}' "
-            if getattr(icon_brand_config, 'attribute_name', '') else ''
+    def _favicon_png_icons_creation(self):
+        return self._default_png_icons_creation('favicon_png')
+
+    def _favicon_svg_icons_creation(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+        favicon_svg = self.config.get('favicon_svg', '')
+        if not favicon_svg:
+            return []
+        destination_file_path = path.join(
+            self.config.get('static_folder_path'),
+            'favicon.svg',
         )
-        
-        # rel, example:
-        # rel="icon"
-        tag_element_list.append(
-            f"rel='{icon_brand_config.attribute_rel}' "
-            if getattr(icon_brand_config, 'attribute_rel', '') else ''
+        source_file_path = path.join(self.config.get('main_folder_path'),
+                                     favicon_svg)
+        return [{
+            'destination_file_path': destination_file_path,
+            'resize': False,
+            'size': [],
+            'source_file_path': source_file_path,
+        }]
+
+    def _preview_png_icons_creation(self) -> List[Dict[str, Union[List[int], bool, str]]]:
+        preview_png = self.config.get('preview_png', '')
+        if not preview_png:
+            return []
+        destination_file_path = path.join(
+            self.config.get('static_folder_path'),
+            'preview-500x500.png',
         )
+        source_file_path = path.join(self.config.get('main_folder_path'),
+                                     preview_png)
+        return [{
+            'destination_file_path': destination_file_path,
+            'resize': True,
+            'size': [500, 500],
+            'source_file_path': source_file_path,
+        }]
 
-        # type, example:
-        # type="image/png"
-        tag_element_list.append(
-            f"type='{icon_brand_config.attribute_type}' "
-            if getattr(icon_brand_config, 'attribute_type', '') else ''
-        )
+    def _browserconfig_icons_creation(self):
+        return self._default_png_icons_creation('browserconfig')
 
-        # Special content and href. Example:
-        # content="/static/ms-icon-144x144.png"
-        # href="/static/favicon-16x16.png"
-        # Both uses file_name and static url path
-        file_name = getattr(icon_brand_config, 'file_name', '')
-        new_file_name = f"{file_name}-{size[0]}x{size[1]}.png"
-        new_file_path = path.join(self.config.get('static_url', ''),
-                                  new_file_name)
-        tag_element_list.append(
-            f"content='{new_file_path}' "
-            if getattr(icon_brand_config, 'attribute_special_content', False)
-            else ''
-        )
-        tag_element_list.append(
-            f"href='{new_file_path}' "
-            if getattr(icon_brand_config, 'attribute_special_href', False)
-            else ''
-        )
+    def _manifest_icons_creation(self):
+        return self._default_png_icons_creation('manifest')
 
-        # Special title, example:
-        # title="Microsoft"
-        title = self.config.get('title', '')
-        tag_element_list.append(
-            f"title='{title}' "
-            if getattr(icon_brand_config, 'attribute_special_title', False)
-            else ''
-        )
+    def _opensearch_icons_creation(self):
+        return self._default_png_icons_creation('opensearch')
 
-        # Special sizes, example:
-        # sizes="16x16"
-        tag_element_list.append(
-            f"sizes='{size[0]}x{size[1]}' "
-            if getattr(icon_brand_config, 'attribute_special_sizes', False)
-            else ''
-        )
+    def get_icons_creation_config(self) \
+            -> List[Dict[str, Union[List[int], bool, str]]]:
+        """Return a list with default images creation configuration
 
-        # media, example:
-        # media="(device-min-width: 38px) and (device-min-height: 38px)"
-        # Uses sizes_max_min
-        min_size = ''
-        for max_min in getattr(icon_brand_config, 'sizes_max_min', []):
-            if size[0] == max_min[1]:
-                min_size = max_min[0]
-        tag_element_list.append(
-            (
-                f"media='(device-min-width: {min_size}px) and "
-                f"(device-min-height: {min_size}px)' "
-            )
-            if getattr(icon_brand_config, 'sizes_max_min', []) else ''
-        )
+        It's include configurations for the images listed in the assets folder
 
-        tag_element_string = ''.join(tag_element_list)
-        tag_element_string = tag_element_string[:-1]
-        tag_element_string += ' />'
-        return tag_element_string
+        Default structure of the dicts in the return is:
+        {
+            'destination_file_path': str,
+            'resize': bool,
+            'size': list,
+            'source_file_path': str,
+        }
+        """
+        icons_creation_config = [
+            self._favicon_ico_icons_creation(),
+            self._favicon_png_icons_creation(),
+            self._favicon_svg_icons_creation(),
+            self._preview_png_icons_creation(),
 
-    def _requirements(self, key):
-        if key not in self.config:
-            return False
-        KeysValidator(key=key, value=self.config.get(key, '')).key_is_not_void()
-        file_path = path.join(self.config.get('main_folder_path', ''),
-                              self.config[key])
-        FilesValidator(file_path=file_path, key=self.config[key]).path_is_not_directory()
-        return True
-
-    def favicon_png(self):
-        head = []
-        if not self._requirements('favicon_png'):
-            return head
-        for icon_brand_config in self.icons_config.get('favicon_png', []):
-            sizes = self.format_sizes(icon_brand_config)
-            for size in sizes:
-                head.append(self._icons_head_creator(icon_brand_config, size))
-        return head
-
-    def favicon_ico(self):
-        head = []
-        if not self._requirements('favicon_ico'):
-            return head
-        head.append(f"<link rel='shortcut icon' "
-                    f"href='/favicon.ico' type='image/x-icon' />")
-        return head
-
-    def favicon_svg(self):
-        head = []
-        if not self._requirements('favicon_svg'):
-            return head
-        color = self.config.get('background_color', '')
-        static_url = self.config.get('static_url', '')
-        head.append(f"<link rel='mask-icon' href='{static_url}/favicon.svg' "
-                    f"color='{color}' />")
-        return head
-
-    def preview_png(self):
-        head = []
-        if not self._requirements('preview_png'):
-            return head
-        # og:image (http), og:image:secure_url (https) and twitter:image
-        image = f"{self.config.get('static_url', '')}/preview-500x500.png"
-        head.extend([
-            f"<meta property='og:image' content='{image}' />",
-            f"<meta property='og:image:secure_url' content='{image}' />",
-            f"<meta name='twitter:image' content='{image}' />",
-        ])
-        return head
+            self._browserconfig_icons_creation(),
+            self._manifest_icons_creation(),
+            self._opensearch_icons_creation(),
+        ]
+        return [
+            element for group in icons_creation_config
+            for element in group
+        ]

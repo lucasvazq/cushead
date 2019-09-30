@@ -35,6 +35,9 @@ class ColorProcessor:
         """Return a string with presentation color"""
         return PRESENTATION_COLOR + self.string + DEFAULT_COLOR
 
+    def normal_color(self) -> str:
+        return self.string
+
 
 class Transformators:
     """Class to handle transformation focused on strings

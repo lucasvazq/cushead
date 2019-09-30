@@ -1,49 +1,7 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
-"""Module to handle the creation of tags that are inside the head tag
-
-Classes:
-    Head
-"""
-
-from .images import Images
-
-
-class Head(Images):
-    """Class to handle the creation of tags that become inside the head tag
-
-    Methods:
-        full_head -> list
-        general -> list
-        basic -> list
-        complementary_files -> list
-        social_media -> list
-    """
-    config: dict
-
-    def full_head(self) -> list:
-        """Return a list of tags related to the config of a website
-
-        It's get the tags from the functions of the class: general, basic,
-        complementary_files, social_media, and from the Parent class:
-        favicon_ico, favicon_png, favicon_svg and preview_png.
-
-        All of the tags are order with their importance
-        """
-        # The order matters
-        head = [
-            self.general(),
-            self.basic(),
-            self.favicon_ico(),
-            self.favicon_png(),
-            self.favicon_svg(),
-            self.preview_png(),
-            self.complementary_files(),
-            self.social_media(),
-        ]
-        return head
-
+class General:
+    config = {}
+    
     def general(self) -> list:
         """Return a list of tags related to the general config of a website"""
         head = []
