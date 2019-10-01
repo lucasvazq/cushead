@@ -23,7 +23,7 @@ class FilesValidator(Logs):
 
     Methods:
         path_exists
-        path_is_file
+        path_is_not_directory
     """
 
     def __init__(self, file_path: str = '', key: str = ''):
@@ -60,6 +60,11 @@ class KeysValidator(Logs):
         dictionary str = ''
         key str = ''
         value str = ''
+
+    Methods:
+        all
+        key_exists
+        key_is_not_void
     """
 
     def __init__(self, dictionary: str = '', key: str = '', value: str = ''):
@@ -75,8 +80,9 @@ class KeysValidator(Logs):
     def key_exists(self):
         """Check if a key is in a dictionary"""
         if self.key not in self.dictionary:
-            self.error(f"Miss '{self.key}' key and it's required in"
-                       f"config file.")
+            self.error(
+                f"Miss '{self.key}' key and it's required in config file."
+            )
 
     def key_is_not_void(self):
         """Check if a key in dictionary is not void"""

@@ -44,9 +44,9 @@ class FilesHelper(FoldersHelper):
 
     Init:
         binary_content bytes = b''
+        unicode_content str = ''
         destination_file_path str = ''
         source_file_path str = ''
-        unicode_content str = ''
 
     Methods:
         copy_file
@@ -59,9 +59,9 @@ class FilesHelper(FoldersHelper):
 
     def __init__(self,
                  binary_content: bytes = b'',
+                 unicode_content: str = '',
                  destination_file_path: str = '',
-                 source_file_path: str = '',
-                 unicode_content: str = ''):
+                 source_file_path: str = ''):
         self.binary_content = binary_content
         self.unicode_content = unicode_content
         self.destination_file_path = destination_file_path

@@ -14,7 +14,7 @@ from argparse import Namespace
 
 from src.info import Info
 from src.helpers.assets import Images
-from src.helpers.strings import Transformators
+from src.helpers.strings import Transformator
 from src.helpers.validators import FilesValidator
 from src.services.logs import Logs
 
@@ -79,7 +79,7 @@ class Argparse(Info, Logs):
         # GROUP: options
         # -images
         image_list = Images.images_list()
-        class_instance = Transformators(word_list=image_list)
+        class_instance = Transformator(word_list=image_list)
         joined_words = class_instance.words_union()
         complementary_arguments.add_argument(
             '--images',
@@ -103,14 +103,18 @@ class Argparse(Info, Logs):
         # pylint no-member error in child function
         args = parser.parse_args()
         if not (args.config or args.default):
-            self.error("Miss Required arguments. Use -config or "
-                       "-default")
+            self.error(
+                "Miss Required arguments. Use -config or -default"
+            )
         if args.config and args.default:
-            self.error("Can't use -config and -default arguments "
-                       "together.")
+            self.error(
+                "Can't use -config and -default arguments together."
+            )
         if args.images and not args.default:
             self.error("Can't use --images without -default.")
         if args.config:
-            FilesValidator(file_path=args.config, key='-config').path_is_not_directory()
+            class_instance = FilesValidator(file_path=args.config,
+                                            key='-config')
+            class_instance.path_is_not_directory()
 
         return args

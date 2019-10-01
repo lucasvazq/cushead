@@ -13,3 +13,4 @@ manifest:
     icons_config['manifest']
     
 MISS: replace '' with "
+MISS: replace ' />' with '>'

@@ -4,8 +4,8 @@
 """Module to handle string transformation
 
 Classes:
-    Processors
-    Transformators
+    ColorProcessor
+    Transformator
 """
 
 from typing import List
@@ -20,6 +20,7 @@ class ColorProcessor:
         string str = ''
 
     Methods:
+        default_color -> str
         error_color -> str
         presentation_color -> str
     """
@@ -27,45 +28,46 @@ class ColorProcessor:
     def __init__(self, string: str = ''):
         self.string = string
 
+    def default_color(self) -> str:
+        """Return a string with the default color"""
+        return self.string
+
     def error_color(self) -> str:
         """Return a string with error color"""
         return ERROR_COLOR + self.string + DEFAULT_COLOR
 
-    def important_color(self) -> str:
+    def presentation_color(self) -> str:
         """Return a string with presentation color"""
         return PRESENTATION_COLOR + self.string + DEFAULT_COLOR
 
-    def normal_color(self) -> str:
-        return self.string
 
-
-class Transformators:
-    """Class to handle transformation focused on strings
+class Transformator:
+    """Class to handle transformations focused on strings
 
     Init:
-        word_list List[str] = None or []
+        string_list List[str] = None or []
 
     Methods:
-        words_union -> str
+        string_list_union -> str
     """
 
-    def __init__(self, word_list: List[str] = None or []):
-        self.word_list = word_list
+    def __init__(self, string_list: List[str] = None or []):
+        self.string_list = string_list
 
-    def words_union(self) -> str:
-        """Join a word list into a sentence
+    def string_list_union(self) -> str:
+        """Join a str list into a sentence
 
         Example:
             input = ['foo', 'bar', 'baz', 'etc']
             output = 'foo, bar, baz and etc'
         """
-        conactenated_words = ''.join(
+        conactenated_strings = ''.join(
             [
-                word + (
-                    ", " if word in self.word_list[:-2] else (
-                        " and " if word == self.word_list[-2] else ""
+                string + (
+                    ", " if string in self.string_list[:-2] else (
+                        " and " if string == self.string_list[-2] else ""
                     )
-                ) for word in self.word_list
+                ) for string in self.string_list
             ]
         )
-        return conactenated_words
+        return conactenated_strings
