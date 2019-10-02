@@ -14,3 +14,4 @@ manifest:
     
 MISS: replace '' with "
 MISS: replace ' />' with '>'
+output_file_name_size_verbosity > output_file_name_new_size_verbosity

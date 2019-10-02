@@ -169,4 +169,9 @@ class UserConfigHandler(Logs):
             settings['output_folder_path'],
             settings['static_folder_path']
         )
+
+        settings['favicon_png'] = path.join(
+            '',
+            settings['favicon_png'],
+        )
         return settings

@@ -79,8 +79,8 @@ class Argparse(Info, Logs):
         # GROUP: options
         # -images
         image_list = Images.images_list()
-        class_instance = Transformator(word_list=image_list)
-        joined_words = class_instance.words_union()
+        class_instance = Transformator(string_list=image_list)
+        joined_words = class_instance.string_list_union()
         complementary_arguments.add_argument(
             '--images',
             dest='images',

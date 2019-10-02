@@ -80,13 +80,13 @@ class MessagesHandler:
 
     def important_stdout(self, message: str = ''):
         class_instance = ColorProcessor(message)
-        sys.stdout.write(class_instance.important_color())
+        sys.stdout.write(class_instance.presentation_color())
 
     # normal section
 
     def normal_stdout(self, message: str = ''):
         class_instance = ColorProcessor(message + '\n')
-        sys.stdout.write(class_instance.normal_color())
+        sys.stdout.write(class_instance.default_color())
 
 
 class Logs(MessagesHandler):

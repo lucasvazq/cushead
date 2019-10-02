@@ -11,6 +11,12 @@ Classes:
 from os import path
 from typing import Dict, List, Union
 
+class imageO:
+    def __init__(self,
+                 file_name: str = '',
+                 size: List[int] = None or []):
+        self.file_name = file_name
+        self.size = size
 
 class ImageFormatConfig:
     """Class to define attributes of a png image
@@ -88,6 +94,33 @@ class ImageFormatConfig:
         self.attribute_special_sizes = attribute_special_sizes
         self.attribute_special_title = attribute_special_title
 
+        self.dom = self._format0()
+
+    def _get_sizes(self):
+        sizes_square = [[size, size] for size in self.sizes_square]
+        sizes_rectangular = self.sizes_rectangular
+        sizes_max_min = [[size[1], size[1]] for size in self.sizes_max_min]
+        return sizes_square + sizes_rectangular + sizes_max_min
+
+    def _format0(self):
+        """Return file name, sizes, dest, source resize"""
+        output_file_names = []
+        output_file_name = self.output_file_name
+        if self.sizes_mantain:
+            return [
+                imageO(
+                    file_name=output_file_name,
+                )
+            ]
+        elif self.output_file_name_size_verbosity:
+            for size in self._get_sizes():
+                class_instance = imageO(
+                    file_name=f"{output_file_name}-{size[0]}x{size[1]}",
+                    size=size,
+                )
+                output_file_names.append(class_instance)
+        return output_file_names
+
 
 class IconsFormatConfig:
     """Class to handle the default icons format configuration
@@ -100,10 +133,12 @@ class IconsFormatConfig:
 
     def _favicon_ico_icons_config(self):
         favicon_ico = self.config.get('favicon_ico', '')
+        output_folder_path = self.config.get('output_folder_path', '')
         return [
             # <link rel='shortcut icon' href='/favicon.ico' type='image/x-icon' />
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='favicon',
+                output_folder_path=output_folder_path,
                 source_file_path=favicon_ico,
                 sizes_mantain=True,
                 tag_name='link',
@@ -125,7 +160,7 @@ class IconsFormatConfig:
         # Example:
         # <link rel="icon" type="image/png" href="/static/favicon-16x16.png" sizes="16x16">
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='favicon',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -149,7 +184,7 @@ class IconsFormatConfig:
         # Example:
         # <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png">
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='ms-icon',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -166,7 +201,7 @@ class IconsFormatConfig:
         # Example:
         # <link rel="apple-touch-icon" href="/static/apple-touch-icon-default-57x57.png">
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='apple-touch-icon',
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -182,7 +217,7 @@ class IconsFormatConfig:
         # Example:
         # <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-touch-icon-57x57.png">
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='apple-touch-icon',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -201,7 +236,7 @@ class IconsFormatConfig:
         # Example:
         # ???
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='launch',
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -217,7 +252,7 @@ class IconsFormatConfig:
         # Example:
         # ???
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='launch',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -250,7 +285,7 @@ class IconsFormatConfig:
         # Example:
         # <link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft">
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='fluid-icon',
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -272,7 +307,7 @@ class IconsFormatConfig:
             f"logo={static_url}/yandex.png, color={background_color}"
         )
         icons.append(
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='yandex',
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -291,11 +326,11 @@ class IconsFormatConfig:
         static_folder_path = self.config.get('static_folder_path', '')
         static_url = self.config.get('static_url', '')
         return [
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='mask-icon',
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_svg,
-                sizes_maintain=True,
+                sizes_mantain=True,
                 url_path=static_url,
             )
         ]
@@ -305,7 +340,7 @@ class IconsFormatConfig:
         static_folder_path = self.config.get('static_folder_path', '')
         static_url = self.config.get('static_url', '')
         return [
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='preview',
                 output_folder_path=static_folder_path,
                 source_file_path=preview_png,
@@ -318,7 +353,7 @@ class IconsFormatConfig:
         favicon_png = self.config.get('favicon_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
         return [
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='ms-icon',
                 output_file_name_size_verbosity=True,
                 output_folder_path = static_folder_path,
@@ -332,7 +367,7 @@ class IconsFormatConfig:
         favicon_png = self.config.get('favicon_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
         return [
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='android-icon',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -346,7 +381,7 @@ class IconsFormatConfig:
         favicon_png = self.config.get('favicon_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
         return [
-            IconsFormatConfig(
+            ImageFormatConfig(
                 output_file_name='opensearch',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,

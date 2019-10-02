@@ -4,20 +4,6 @@ from typing import Dict, List, Union
 from src.services.images import ImageService
 
 
-class imageO:
-    def __init__(self,
-                 file_name: str = '',
-                 resize: bool = False,
-                 sizes: List[int] = None or [],
-                 destination_file_path: str = '',
-                 source_file_path: str = ''):
-        self.file_name = file_name
-        self.resize = resize
-        self.sizes = sizes
-        self.destination_file_path = destination_file_path
-        self.source_file_path = source_file_path
-
-
 class ImageFilesCreation(ImageService):
     """Class to handle the default configuration used for images creation
 
@@ -56,6 +42,18 @@ class ImageFilesCreation(ImageService):
                 })
         return file_names
                 
+    def _wasabi(self):
+        files = []
+        for x in self.icons_config:
+            for y in self.icons_config[x]:
+                for z in y.dom:
+                    files.append({
+                        'file_name': z.file_name,
+                        'size': z.size,
+                        'output_folder_path': y.output_folder_path,
+                        'source_file_path': y.source_file_path,
+                    })
+        return files
 
     def _creation(self, brand) -> List[Dict[str, Union[List[int], bool, str]]]:
         images_format = []
@@ -186,17 +184,7 @@ class ImageFilesCreation(ImageService):
         }
         """
         icons_creation_config2 = [
-            self._creation()
-        ]
-        icons_creation_config = [
-            self._favicon_ico_icons_creation(),
-            self._favicon_png_icons_creation(),
-            self._favicon_svg_icons_creation(),
-            self._preview_png_icons_creation(),
-
-            self._browserconfig_icons_creation(),
-            self._manifest_icons_creation(),
-            self._opensearch_icons_creation(),
+            self._wasabi()
         ]
         return [
             element for group in icons_creation_config2

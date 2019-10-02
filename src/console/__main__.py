@@ -99,15 +99,20 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
             )
             class_instance.write_unicode_file()
         for image_config in self.get_icons_creation_config():
-            if image_config.get('resize', False):
+            wasa = path.join(
+                image_config.get('output_folder_path', ''),
+                image_config.get('file_name', ''),
+            )
+            if image_config.get('sizes', False):
                 self.resize_image(
-                    image_config.get('destination_file_path', ''),
+                    wasa,
                     image_config.get('source_file_path', ''),
                     image_config.get('size', []),
                 )
             else:
+                print(image_config.get('source_file_path', ''))
                 self.move_svg(
-                    image_config.get('destination_file_path', ''),
+                    wasa,
                     image_config.get('source_file_path', ''),
                 )
         self.normal_stdout('esa')
