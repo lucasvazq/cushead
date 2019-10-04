@@ -100,6 +100,7 @@ class ImageFormatConfig:
         self.attribute_special_sizes = attribute_special_sizes
         self.attribute_special_title = attribute_special_title
 
+        self.output_extension = path.splitext(self.source_file_path)[1]
         self.formated = self._output_formater()
 
     def _get_sizes(self):
@@ -111,21 +112,21 @@ class ImageFormatConfig:
     def _output_formater(self):
         """Return file name, sizes, dest, source resize"""
         output_file_names = []
-        output_file_name = self.output_file_name
-        if self.attribute_property: print('YAH!!')
         if self.sizes_mantain:
-            if self.attribute_property: print('YAH!!???????????')
+            file_nam = self.output_file_name + self.output_extension
             return [
                 FileAttributes(
-                    file_name=output_file_name,
+                    file_name=file_nam,
                 )
             ]
         elif self.output_file_name_size_verbosity:
-            if self.attribute_property: print('YAH!_----!')
+            output_file_name = self.output_file_name
             for size in self._get_sizes():
+                file_nam = f"{output_file_name}-{size[0]}x{size[1]}"
+                file_nam += self.output_extension
                 output_file_names.append(
                     FileAttributes(
-                        file_name=f"{output_file_name}-{size[0]}x{size[1]}",
+                        file_name=file_nam,
                         size=size,
                     )
                 )
@@ -152,6 +153,7 @@ class IconsFormatConfig:
                 source_file_path=favicon_ico,
                 sizes_mantain=True,
                 head_output=True,
+                url_path='/',
                 tag_name='link',
                 attribute_rel='icon',
                 attribute_type='image/x-icon',
@@ -197,7 +199,7 @@ class IconsFormatConfig:
         # <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png">
         icons.append(
             ImageFormatConfig(
-                output_file_name='ms-icon444',
+                output_file_name='ms-icon',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -384,6 +386,39 @@ class IconsFormatConfig:
                 attribute_special_content=True,
             )
         )
+
+        # <meta property='og:image:secure_url' content='/static/preview-500x500.png' />
+        head.append(
+            ImageFormatConfig(
+                output_file_name='preview',
+                output_folder_path=static_folder_path,
+                output_file_name_size_verbosity=True,
+                source_file_path=preview_png,
+                sizes_square=[500],
+                head_output=True,
+                url_path=static_url,
+                tag_name='meta',
+                attribute_property='og:image:secure_url',
+                attribute_special_content=True,
+            )
+        )
+
+        # <meta name='twitter:image' content='/static/preview-500x500.png' />
+        head.append(
+            ImageFormatConfig(
+                output_file_name='preview',
+                output_folder_path=static_folder_path,
+                output_file_name_size_verbosity=True,
+                source_file_path=preview_png,
+                sizes_square=[500],
+                head_output=True,
+                url_path=static_url,
+                tag_name='meta',
+                attribute_name='twitter:image',
+                attribute_special_content=True,
+            )
+        )
+
         return head
 
     def _browserconfig_icons_config(self):

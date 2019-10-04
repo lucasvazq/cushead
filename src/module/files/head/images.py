@@ -60,8 +60,8 @@ class Images(ImageService):
         # property, example:
         # ???
         tag_element_list.append(
-            f"property='{icon_brand_config.attribute_property}'"
-            if getattr(icon_brand_config, 'property', '') else ''
+            f"property='{icon_brand_config.attribute_property}' "
+            if getattr(icon_brand_config, 'attribute_property', '') else ''
         )
 
         # name, example:
@@ -142,65 +142,12 @@ class Images(ImageService):
 
         return tag_element_string
 
-    def _requirements(self, key):
-        if key not in self.config:
-            return False
-        KeysValidator(key=key, value=self.config.get(key, '')).key_is_not_void()
-        file_path = self.config[key]
-        FilesValidator(file_path=file_path, key=self.config[key]).path_is_not_directory()
-        return True
-
     def wazuncho(self):
         head = []
         for group in self.icons_config:
             for brand in self.icons_config[group]:
-                if group=='preview_png':
-                    print('======================================')
-                    print(self.icons_config[group])
                 for sizes in brand.formated:
-                    if group=='preview_png':
-                        print('======================================')
-                        print(sizes)
-                    head.append(self._icons_head_creator(brand, sizes.file_name, sizes.size))
-        return head
-
-    def favicon_ico(self):
-        head = []
-        if not self._requirements('favicon_ico'):
-            return head
-        head.append(f"<link rel='shortcut icon' "
-                    f"href='/favicon.ico' type='image/x-icon' />")
-        return head
-
-    def favicon_png(self):
-        head = []
-        if not self._requirements('favicon_png'):
-            return head
-        for icon_brand_config in self.icons_config.get('favicon_png', []):
-            sizes = self.format_sizes(icon_brand_config)
-            for size in sizes:
-                head.append(self._icons_head_creator(icon_brand_config, size))
-        return head
-
-    def favicon_svg(self):
-        head = []
-        if not self._requirements('favicon_svg'):
-            return head
-        color = self.config.get('background_color', '')
-        static_url = self.config.get('static_url', '')
-        head.append(f"<link rel='mask-icon' href='{static_url}/favicon.svg' "
-                    f"color='{color}' />")
-        return head
-
-    def preview_png(self):
-        head = []
-        if not self._requirements('preview_png'):
-            return head
-        # og:image (http), og:image:secure_url (https) and twitter:image
-        image = f"{self.config.get('static_url', '')}/preview-500x500.png"
-        head.extend([
-            f"<meta property='og:image' content='{image}' />",
-            f"<meta property='og:image:secure_url' content='{image}' />",
-            f"<meta name='twitter:image' content='{image}' />",
-        ])
+                    head_element = self._icons_head_creator(brand, sizes.file_name, sizes.size)
+                    if head_element:
+                        head.append(head_element)
         return head
