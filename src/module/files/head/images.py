@@ -12,7 +12,25 @@ class Images(ImageService):
     icons_config: {}
     config: {}
 
-    def _icons_head_creator(self, icon_brand_config, size: List[int] = [0, 0]):
+    def _icons_head_creator(self, icon_brand_config, filenam, size: List[int] = [0, 0]):
+
+        if not getattr(icon_brand_config, 'head_output', False):
+            return None
+
+        # order matter for legibility
+        # tag
+        # rel
+        # name
+        # property
+        # special_content
+        # special_href
+        # content
+        # type
+        # sizes
+        # color
+        # title
+        # media
+
 
         tag_element_list = ['<']
 
@@ -23,11 +41,27 @@ class Images(ImageService):
             if getattr(icon_brand_config, 'tag_name', '') else ''
         )
 
+        # color, example:
+        # ???
+        if icon_brand_config.attribute_rel == 'mask-icon':
+            print(icon_brand_config.__dict__)
+        tag_element_list.append(
+            f"color='{icon_brand_config.attribute_color}' "
+            if getattr(icon_brand_config, 'attribute_color', '') else ''
+        )
+
         # content, example:
         # ???
         tag_element_list.append(
             f"content='{icon_brand_config.attribute_content}' "
             if getattr(icon_brand_config, 'attribute_content', '') else ''
+        )
+
+        # property, example:
+        # ???
+        tag_element_list.append(
+            f"property='{icon_brand_config.attribute_property}'"
+            if getattr(icon_brand_config, 'property', '') else ''
         )
 
         # name, example:
@@ -55,10 +89,8 @@ class Images(ImageService):
         # content="/static/ms-icon-144x144.png"
         # href="/static/favicon-16x16.png"
         # Both uses file_name and static url path
-        file_name = getattr(icon_brand_config, 'file_name', '')
-        new_file_name = f"{file_name}-{size[0]}x{size[1]}.png"
-        new_file_path = path.join(self.config.get('static_url', ''),
-                                  new_file_name)
+        url_path = getattr(icon_brand_config, 'url_path', '')
+        new_file_path = path.join(url_path, filenam)
         tag_element_list.append(
             f"content='{new_file_path}' "
             if getattr(icon_brand_config, 'attribute_special_content', False)
@@ -67,6 +99,14 @@ class Images(ImageService):
         tag_element_list.append(
             f"href='{new_file_path}' "
             if getattr(icon_brand_config, 'attribute_special_href', False)
+            else ''
+        )
+
+        # Special sizes, example:
+        # sizes="16x16"
+        tag_element_list.append(
+            f"sizes='{size[0]}x{size[1]}' "
+            if getattr(icon_brand_config, 'attribute_special_sizes', False)
             else ''
         )
 
@@ -79,14 +119,7 @@ class Images(ImageService):
             else ''
         )
 
-        # Special sizes, example:
-        # sizes="16x16"
-        tag_element_list.append(
-            f"sizes='{size[0]}x{size[1]}' "
-            if getattr(icon_brand_config, 'attribute_special_sizes', False)
-            else ''
-        )
-
+        # IN REVISION
         # media, example:
         # media="(device-min-width: 38px) and (device-min-height: 38px)"
         # Uses sizes_max_min
@@ -104,17 +137,32 @@ class Images(ImageService):
 
         tag_element_string = ''.join(tag_element_list)
         tag_element_string = tag_element_string[:-1]
+        
         tag_element_string += ' />'
+
         return tag_element_string
 
     def _requirements(self, key):
         if key not in self.config:
             return False
         KeysValidator(key=key, value=self.config.get(key, '')).key_is_not_void()
-        file_path = path.join(self.config.get('main_folder_path', ''),
-                              self.config[key])
+        file_path = self.config[key]
         FilesValidator(file_path=file_path, key=self.config[key]).path_is_not_directory()
         return True
+
+    def wazuncho(self):
+        head = []
+        for group in self.icons_config:
+            for brand in self.icons_config[group]:
+                if group=='preview_png':
+                    print('======================================')
+                    print(self.icons_config[group])
+                for sizes in brand.formated:
+                    if group=='preview_png':
+                        print('======================================')
+                        print(sizes)
+                    head.append(self._icons_head_creator(brand, sizes.file_name, sizes.size))
+        return head
 
     def favicon_ico(self):
         head = []

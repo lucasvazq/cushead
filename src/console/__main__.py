@@ -110,7 +110,6 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                     image_config.get('size', []),
                 )
             else:
-                print(image_config.get('source_file_path', ''))
                 self.move_svg(
                     wasa,
                     image_config.get('source_file_path', ''),

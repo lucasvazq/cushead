@@ -131,6 +131,9 @@ class UserConfigHandler(Logs):
             return {}
         # Construct config
         recommended = settings.get('recommended', {})
+
+
+
         default = settings.get('default', {})
         general = default.get('general', {})
         basic = default.get('basic', {})
@@ -170,8 +173,20 @@ class UserConfigHandler(Logs):
             settings['static_folder_path']
         )
 
+        settings['favicon_ico'] = path.join(
+            settings['main_folder_path'],
+            settings['favicon_ico'],
+        )
         settings['favicon_png'] = path.join(
-            '',
+            settings['main_folder_path'],
             settings['favicon_png'],
+        )
+        settings['favicon_svg'] = path.join(
+            settings['main_folder_path'],
+            settings['favicon_svg'],
+        )
+        settings['preview_png'] = path.join(
+            settings['main_folder_path'],
+            settings['preview_png'],
         )
         return settings

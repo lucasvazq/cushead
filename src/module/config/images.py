@@ -11,12 +11,12 @@ Classes:
 from os import path
 from typing import Dict, List, Union
 
-class imageO:
-    def __init__(self,
-                 file_name: str = '',
-                 size: List[int] = None or []):
+
+class FileAttributes:
+    def __init__(self, file_name: str = '', size: List[int] = None or []):
         self.file_name = file_name
         self.size = size
+
 
 class ImageFormatConfig:
     """Class to define attributes of a png image
@@ -55,10 +55,13 @@ class ImageFormatConfig:
                  sizes_square: List[int] = None or [],
                  sizes_rectangular: List[List[int]] = None or [],
                  sizes_mantain: bool = False,
+                 head_output: bool = False,
                  url_path: str = '',
                  tag_name: str = '',
+                 attribute_color: str = '',
                  attribute_content: str = '',
                  attribute_name: str = '',
+                 attribute_property: str = '',
                  attribute_rel: str = '',
                  attribute_type: str = '',
                  attribute_special_content: bool = False,
@@ -81,11 +84,14 @@ class ImageFormatConfig:
         # head elements
 
         # general
+        self.head_output = head_output
         self.url_path = url_path
         self.tag_name = tag_name
         # normal attributes
+        self.attribute_color = attribute_color
         self.attribute_content = attribute_content
         self.attribute_name = attribute_name
+        self.attribute_property = attribute_property
         self.attribute_rel = attribute_rel
         self.attribute_type = attribute_type
         # special attributes
@@ -94,7 +100,7 @@ class ImageFormatConfig:
         self.attribute_special_sizes = attribute_special_sizes
         self.attribute_special_title = attribute_special_title
 
-        self.dom = self._format0()
+        self.formated = self._output_formater()
 
     def _get_sizes(self):
         sizes_square = [[size, size] for size in self.sizes_square]
@@ -102,23 +108,27 @@ class ImageFormatConfig:
         sizes_max_min = [[size[1], size[1]] for size in self.sizes_max_min]
         return sizes_square + sizes_rectangular + sizes_max_min
 
-    def _format0(self):
+    def _output_formater(self):
         """Return file name, sizes, dest, source resize"""
         output_file_names = []
         output_file_name = self.output_file_name
+        if self.attribute_property: print('YAH!!')
         if self.sizes_mantain:
+            if self.attribute_property: print('YAH!!???????????')
             return [
-                imageO(
+                FileAttributes(
                     file_name=output_file_name,
                 )
             ]
         elif self.output_file_name_size_verbosity:
+            if self.attribute_property: print('YAH!_----!')
             for size in self._get_sizes():
-                class_instance = imageO(
-                    file_name=f"{output_file_name}-{size[0]}x{size[1]}",
-                    size=size,
+                output_file_names.append(
+                    FileAttributes(
+                        file_name=f"{output_file_name}-{size[0]}x{size[1]}",
+                        size=size,
+                    )
                 )
-                output_file_names.append(class_instance)
         return output_file_names
 
 
@@ -141,6 +151,7 @@ class IconsFormatConfig:
                 output_folder_path=output_folder_path,
                 source_file_path=favicon_ico,
                 sizes_mantain=True,
+                head_output=True,
                 tag_name='link',
                 attribute_rel='icon',
                 attribute_type='image/x-icon',
@@ -171,6 +182,7 @@ class IconsFormatConfig:
                 sizes_square=[16, 24, 32, 48, 57, 60, 64, 70, 72, 76, 96, 114,
                               120, 128, 144, 150, 152, 167, 180, 192, 195, 196,
                               228, 310],
+                head_output=True,
                 url_path=static_url,
                 tag_name='link',
                 attribute_rel='icon',
@@ -185,11 +197,12 @@ class IconsFormatConfig:
         # <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png">
         icons.append(
             ImageFormatConfig(
-                output_file_name='ms-icon',
+                output_file_name='ms-icon444',
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[144],
+                head_output=True,
                 url_path=static_url,
                 tag_name='meta',
                 attribute_name='msapplication-TileImage',
@@ -206,6 +219,7 @@ class IconsFormatConfig:
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[57],
+                head_output=True,
                 url_path=static_url,
                 tag_name='link',
                 attribute_rel='apple-touch-icon',
@@ -224,6 +238,7 @@ class IconsFormatConfig:
                 source_file_path=favicon_png,
                 sizes_square=[57, 60, 72, 76, 114, 120, 144, 152, 167, 180,
                               1024],
+                head_output=True,
                 url_path=static_url,
                 tag_name='link',
                 attribute_rel='apple-touch-icon',
@@ -241,6 +256,7 @@ class IconsFormatConfig:
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[768],
+                head_output=True,
                 url_path=static_url,
                 tag_name='link',
                 attribute_rel='apple-touch-startup-image',
@@ -274,6 +290,7 @@ class IconsFormatConfig:
                     [1200, 1366],
                     [1366, 1600],
                 ],
+                head_output=True,
                 url_path=static_url,
                 tag_name='link',
                 attribute_rel='apple-touch-startup-image',
@@ -290,6 +307,7 @@ class IconsFormatConfig:
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[512],
+                head_output=True,
                 url_path=static_url,
                 tag_name='link',
                 attribute_rel='fluid-icon',
@@ -312,6 +330,7 @@ class IconsFormatConfig:
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[120],
+                head_output=True,
                 url_path=static_url,
                 tag_name='meta',
                 attribute_name='yandex-tableau-widget',
@@ -322,32 +341,50 @@ class IconsFormatConfig:
         return icons
 
     def _favicon_svg_icons_config(self):
+        background_color = self.config.get('background_color')
         favicon_svg = self.config.get('favicon_svg', '')
         static_folder_path = self.config.get('static_folder_path', '')
         static_url = self.config.get('static_url', '')
+        ### <link color="blue" rel="mask-icon" href="/static/favicon.svg"
         return [
             ImageFormatConfig(
                 output_file_name='mask-icon',
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_svg,
                 sizes_mantain=True,
+                head_output=True,
                 url_path=static_url,
+                tag_name='link',
+                attribute_color=background_color,
+                attribute_rel='mask-icon',
+                attribute_special_href=True,
             )
         ]
 
     def _preview_png_icons_config(self):
+        # ???
+        # HAVE THREE INSTANCES
         preview_png = self.config.get('preview_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
         static_url = self.config.get('static_url', '')
-        return [
+        head = []
+
+        # <meta property='og:image' content='/static/preview-500x500.png' />
+        head.append(
             ImageFormatConfig(
                 output_file_name='preview',
                 output_folder_path=static_folder_path,
+                output_file_name_size_verbosity=True,
                 source_file_path=preview_png,
                 sizes_square=[500],
+                head_output=True,
                 url_path=static_url,
+                tag_name='meta',
+                attribute_property='og:image',
+                attribute_special_content=True,
             )
-        ]
+        )
+        return head
 
     def _browserconfig_icons_config(self):
         favicon_png = self.config.get('favicon_png', '')
@@ -399,11 +436,13 @@ class IconsFormatConfig:
         browserconfig, manifest and opensearch related icons
         """
         return {
+            # direct head
             'favicon_ico': self._favicon_ico_icons_config(),
             'favicon_png': self._favicon_png_icons_config(),
             'favicon_svg': self._favicon_svg_icons_config(),
             'preview_png': self._preview_png_icons_config(),
 
+            # indirect head
             'browserconfig': self._browserconfig_icons_config(),
             'manifest': self._manifest_icons_config(),
             'opensearch': self._opensearch_icons_config(),

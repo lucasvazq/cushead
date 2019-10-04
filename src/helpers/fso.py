@@ -72,7 +72,6 @@ class FilesHelper(FoldersHelper):
     def copy_file(self):
         """Copy file"""
         FilesValidator(file_path=self.source_file_path).path_is_not_directory()
-        print('jijazo')
         self.create_folder()
         copyfile(self.source_file_path, self.destination_file_path)
 

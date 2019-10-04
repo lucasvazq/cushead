@@ -21,7 +21,7 @@ class Head(General, Images):
         complementary_files -> list
         social_media -> list
     """
-    config: dict
+    config = {}
 
     def full_head(self) -> list:
         """Return a list of tags related to the config of a website
@@ -34,6 +34,7 @@ class Head(General, Images):
         """
         # The order matters
         head = [
+            """
             self.general(),
             self.basic(),
             self.favicon_ico(),
@@ -42,5 +43,10 @@ class Head(General, Images):
             self.preview_png(),
             self.complementary_files(),
             self.social_media(),
+            """
         ]
-        return head
+        wasa = [
+            self.wazuncho()
+        ]
+        print(wasa)
+        return wasa
