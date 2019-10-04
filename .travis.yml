@@ -7,8 +7,7 @@ notifications:
 cache: pip
 install:
   - pip install codecov
-  - python3 setup.py install
   - python3 -m pip install coverage
 script:
-  - python3 -m coverage run ./test/test.py
+  - python3 -m coverage run .cushead.py -config testing/set.json
   - codecov
