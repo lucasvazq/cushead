@@ -25,7 +25,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
     """Class used to handle the CLI inputs and outputs
 
     Init:
-        args list or None = None: Arguments, example: ['foo', 'bar', 'baz'],
+        args Union[list, None] = None: Arguments, example: ['foo', 'bar', 'baz'],
             equivalent to an input of '-foo bar --baz' through the CLI.
             Their respective values are defined with argparse package,
             that executes at init.

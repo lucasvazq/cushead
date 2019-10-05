@@ -13,37 +13,44 @@ from typing import Dict, List, Union
 
 
 class FileAttributes:
-    def __init__(self, file_name: str = '', size: List[int] = None or []):
+    """Class to handle the a file objects attribute
+    
+    Init:
+        file_name str = ''
+        size Union[list, None] = None
+    """
+    def __init__(self,
+                 file_name: str = '',
+                 size: Union[List[int], None] = None):
         self.file_name = file_name
-        self.size = size
+        self.size = size or []
 
 
 class ImageFormatConfig:
     """Class to define attributes of a png image
 
     Init:
-        # basic element
-        file_name str = '': output file name
-
-        # head elements
-
-        # basic
-        tag_name str = ''
-        # normal attributes
-        attribute_content str = ''
-        attribute_name str = ''
-        attribute_rel str = ''
-        attribute_type str = ''
-        # special attributes
-        attribute_special_content: bool = False,
-        attribute_special_href: bool = False,
-        attribute_special_sizes: bool = False,
-        attribute_special_title: bool = False,
-
-        # file sizes
-        sizes_max_min: List[List[int]] = None or [],
-        sizes_square: List[int] = None or [],
-        sizes_rectangular: List[List[int]] = None or []):
+        output_file_name str = ''
+        output_file_name_size_verbosity bool = False
+        output_folder_path str = ''
+        source_file_path str = ''
+        sizes_max_min: Union[List[int], None] = None
+        sizes_square: Union[List[int], None] = None
+        sizes_rectangular: Union[List[int], None] = None
+        sizes_mantain: bool = False
+        head_output: bool = False
+        url_path: str = ''
+        tag_name: str = ''
+        attribute_color: str = ''
+        attribute_content: str = ''
+        attribute_name: str = ''
+        attribute_property: str = ''
+        attribute_rel: str = ''
+        attribute_type: str = ''
+        attribute_special_content: bool = False
+        attribute_special_href: bool = False
+        attribute_special_sizes: bool = False
+        attribute_special_title: bool = False
     """
 
     def __init__(self,
@@ -51,9 +58,9 @@ class ImageFormatConfig:
                  output_file_name_size_verbosity: bool = False,
                  output_folder_path: str = '',
                  source_file_path: str = '',
-                 sizes_max_min: List[List[int]] = None or [],
-                 sizes_square: List[int] = None or [],
-                 sizes_rectangular: List[List[int]] = None or [],
+                 sizes_max_min: Union[List[int], None] = None,
+                 sizes_square: Union[List[int], None] = None,
+                 sizes_rectangular: Union[List[int], None] = None,
                  sizes_mantain: bool = False,
                  head_output: bool = False,
                  url_path: str = '',
@@ -76,9 +83,9 @@ class ImageFormatConfig:
         # source
         self.source_file_path = source_file_path
         # sizes
-        self.sizes_max_min = sizes_max_min
-        self.sizes_square = sizes_square
-        self.sizes_rectangular = sizes_rectangular
+        self.sizes_max_min = sizes_max_min or []
+        self.sizes_square = sizes_square or []
+        self.sizes_rectangular = sizes_rectangular or []
         self.sizes_mantain = sizes_mantain
 
         # head elements
@@ -103,13 +110,13 @@ class ImageFormatConfig:
         self.output_extension = path.splitext(self.source_file_path)[1]
         self.formated = self._output_formater()
 
-    def _get_sizes(self):
+    def _get_sizes(self) -> list:
         sizes_square = [[size, size] for size in self.sizes_square]
         sizes_rectangular = self.sizes_rectangular
         sizes_max_min = [[size[1], size[1]] for size in self.sizes_max_min]
         return sizes_square + sizes_rectangular + sizes_max_min
 
-    def _output_formater(self):
+    def _output_formater(self) -> List[FileAttributes]:
         """Return file name, sizes, dest, source resize"""
         output_file_names = []
         if self.sizes_mantain:
@@ -149,11 +156,10 @@ class IconsFormatConfig:
 
     Methods:
         default_icons_config
-            -> Dict[str, Dict[str, Union[List[int], bool, str]]]:
     """
     config: {}
 
-    def _favicon_ico_icons_config(self):
+    def _favicon_ico_icons_config(self) -> List[ImageFormatConfig]:
         favicon_ico = self.config.get('favicon_ico', '')
         output_folder_path = self.config.get('output_folder_path', '')
         return [
@@ -173,7 +179,7 @@ class IconsFormatConfig:
             )
         ]
 
-    def _favicon_png_icons_config(self):
+    def _favicon_png_icons_config(self) -> List[ImageFormatConfig]:
         icons = []
         favicon_png = self.config.get('favicon_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
@@ -360,7 +366,7 @@ class IconsFormatConfig:
 
         return icons
 
-    def _favicon_svg_icons_config(self):
+    def _favicon_svg_icons_config(self) -> List[ImageFormatConfig]:
         background_color = self.config.get('background_color')
         favicon_svg = self.config.get('favicon_svg', '')
         static_folder_path = self.config.get('static_folder_path', '')
@@ -381,7 +387,7 @@ class IconsFormatConfig:
             )
         ]
 
-    def _preview_png_icons_config(self):
+    def _preview_png_icons_config(self) -> List[ImageFormatConfig]:
         # ???
         # HAVE THREE INSTANCES
         preview_png = self.config.get('preview_png', '')
@@ -440,7 +446,7 @@ class IconsFormatConfig:
 
         return head
 
-    def _browserconfig_icons_config(self):
+    def _browserconfig_icons_config(self) -> List[ImageFormatConfig]:
         favicon_png = self.config.get('favicon_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
         return [
@@ -454,7 +460,7 @@ class IconsFormatConfig:
             )
         ]
 
-    def _manifest_icons_config(self):
+    def _manifest_icons_config(self) -> List[ImageFormatConfig]:
         favicon_png = self.config.get('favicon_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
         return [
@@ -468,7 +474,7 @@ class IconsFormatConfig:
             )
         ]
 
-    def _opensearch_icons_config(self):
+    def _opensearch_icons_config(self) -> List[ImageFormatConfig]:
         favicon_png = self.config.get('favicon_png', '')
         static_folder_path = self.config.get('static_folder_path', '')
         return [
@@ -482,8 +488,7 @@ class IconsFormatConfig:
             )
         ]
 
-    def default_icons_config(self) \
-            -> Dict[str, List[ImageFormatConfig]]:
+    def default_icons_config(self) -> Dict[str, List[ImageFormatConfig]]:
         """Return a default icons format configuration
 
         This return includes configs for favicons with png extension and for

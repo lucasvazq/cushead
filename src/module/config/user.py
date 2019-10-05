@@ -3,13 +3,14 @@
 
 """Module used to format default settings dictionary
 
-Functions:
-    get_values(dict) -> dict
+Classes:
+    DefaultUserConfig
+    UserConfigHandler
 """
 
-
-from os import path
 import textwrap
+from os import path
+from typing import Dict, List, Union
 
 from src.info import Info
 from src.helpers.assets import Images
@@ -18,11 +19,16 @@ from src.services.logs import Logs
 
 
 class DefaultUserConfig:
-    """Generate presets"""
+    """Generate presets
+    
+    Methods:
+        @staticmethod default_images
+        default_settings
+    """
     info = Info.get_info()
 
     @staticmethod
-    def default_images():
+    def default_images() -> List[Dict[str, str]]:
         """Generate images files to attach to the preset settings"""
         binary_files = []
         realpath = path.join(path.dirname(path.realpath(__file__)),
@@ -39,7 +45,7 @@ class DefaultUserConfig:
                 )
         return binary_files
 
-    def default_settings(self):
+    def default_settings(self) -> str:
         """Generate config file in indented JSON format"""
         settings = textwrap.dedent(f"""\
             {{
@@ -113,7 +119,9 @@ class DefaultUserConfig:
 
 class UserConfigHandler(Logs):
 
-    def transform(self, settings: dict, main_path: str) -> dict:
+    def transform(self,
+                  user_settings: Union[dict, None] = None,
+                  main_path: str = '') -> dict:
         """Format default settings to a dict for this package classes
 
         Format default settings dictionary into a dictionary that the classes
@@ -121,13 +129,14 @@ class UserConfigHandler(Logs):
 
         Args:
             settings dict: Pass a default settings dict format
+            main_path: base path folder
 
         Returns:
             dict: config that the classes under this module can use
 
         """
-        if not settings:
-            return {}
+        settings = user_settings or {}
+
         # Construct config
         recommended = settings.get('recommended', {})
         default = settings.get('default', {})
