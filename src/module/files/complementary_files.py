@@ -27,7 +27,7 @@ class ComplementaryFilesCreation:
             destination_file_path str: path where the file must be written
         """
         browserconfig_config = self.icons_config.get('browserconfig', [])[0]
-        icon = getattr(browserconfig_config, 'file_name', '')
+        icon = getattr(browserconfig_config, 'output_file_name', '')
         sizes_square = getattr(browserconfig_config, 'sizes_square', [])
         sizes_rectangular = getattr(browserconfig_config, 'sizes_rectangular',
                                     [])
@@ -94,9 +94,9 @@ class ComplementaryFilesCreation:
         content['related_applications'] = self.config.get('applications', '')
         content['icons'] = [
             {
-                'src': "{0}{1}-{2}x{2}".format(
+                'src': "{0}/{1}-{2}x{2}".format(
                     self.config.get('static_url', ''),
-                    getattr(manifest_config, 'file_name', ''),
+                    getattr(manifest_config, 'output_file_name', ''),
                     size
                 ),
                 'sizes': f"{size}x{size}",
@@ -127,7 +127,7 @@ class ComplementaryFilesCreation:
             destination_file_path str: path where the file must be written
         """
         opensearch_config = self.icons_config.get('opensearch', [])[0]
-        file_name = getattr(opensearch_config, 'file_name', '')
+        file_name = getattr(opensearch_config, 'output_file_name', '')
         sizes = getattr(opensearch_config, 'sizes_square', [0, 0])
         file_type = getattr(opensearch_config, 'attribute_type', '')
         static_url = self.config.get('static_url', '')

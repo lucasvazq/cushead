@@ -42,8 +42,7 @@ class BaseFileCreation(Head):
             }
         }
 
-    @staticmethod
-    def structure(head: list = None or []) -> str:
+    def structure(self, head: list = None or []) -> str:
         """Return an html structure
 
         Args:
@@ -57,7 +56,8 @@ class BaseFileCreation(Head):
             for conjunt in head
             for tag in conjunt
         ])
-        return (f"<html>\n"
+        language = self.config.get('language', '')
+        return (f"<html lang='{language}'>\n"
                 f"{indent}<head>\n"
                 f"{formated_head}"  # Already have newline
                 f"{indent}</head>\n"

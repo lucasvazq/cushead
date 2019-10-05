@@ -71,7 +71,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
             full_path = path.join(os.getcwd(), self.args.config)
             self.error_log(
                 f"Invalid json file format in ({self.args.config})\n"
-                f"FILE PATH: {full_path}"
+                f"FILE PATH: {full_path}\n"
             )
 
         main_path = path.dirname(self.args.config)
@@ -120,7 +120,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                 image_config.get('output_folder_path', ''),
                 image_config.get('file_name', ''),
             )
-            if image_config.get('sizes', False):
+            if image_config.get('size', False):
                 self.resize_image(
                     wasa,
                     image_config.get('source_file_path', ''),

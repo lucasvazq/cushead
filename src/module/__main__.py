@@ -48,6 +48,6 @@ class Main(Config, Files, UserConfigHandler, Logs, SpecialMessages):
     info = Info.get_info()
 
     def __init__(self, icons_config: dict = {}, user_config: dict = {},
-                 output_path: str = ''):
-        self.config = self.transform(user_config, output_path)
+                 main_path: str = ''):
+        self.config = self.transform(user_config, main_path)
         self.icons_config = icons_config or self.default_icons_config()

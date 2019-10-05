@@ -44,8 +44,7 @@ class DefaultUserConfig:
         settings = textwrap.dedent(f"""\
             {{
                 'comment':  {{
-                    'About':            '{('Config file used by python '
-                                           'cushead CLI')}',
+                    'About':            'Config file used by python CUSHEAD',
                     'Format':           'JSON',
                     'Git':              '{self.info['source']}',
                     'Documentation':    '{self.info['documentation']}'
@@ -114,7 +113,7 @@ class DefaultUserConfig:
 
 class UserConfigHandler(Logs):
 
-    def transform(self, settings: dict, output_path: str) -> dict:
+    def transform(self, settings: dict, main_path: str) -> dict:
         """Format default settings to a dict for this package classes
 
         Format default settings dictionary into a dictionary that the classes
@@ -163,7 +162,7 @@ class UserConfigHandler(Logs):
 
         # Make paths
         # Define the main path as the passed throught -file argument
-        settings['main_folder_path'] = output_path
+        settings['main_folder_path'] = main_path
         settings['output_folder_path'] = path.join(
             settings['main_folder_path'],
             'output'

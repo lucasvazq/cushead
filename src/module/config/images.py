@@ -114,11 +114,11 @@ class ImageFormatConfig:
         output_file_names = []
         if self.sizes_mantain:
             file_nam = self.output_file_name + self.output_extension
-            return [
+            output_file_names.append(
                 FileAttributes(
                     file_name=file_nam,
                 )
-            ]
+            )
         elif self.output_file_name_size_verbosity:
             output_file_name = self.output_file_name
             for size in self._get_sizes():
@@ -127,6 +127,17 @@ class ImageFormatConfig:
                 output_file_names.append(
                     FileAttributes(
                         file_name=file_nam,
+                        size=size,
+                    )
+                )
+        else:
+            # Probably it is only one, but with _get_sizes we get the size
+            # wherever they come from: square_sizes, max_min or rectangular
+            for size in self._get_sizes():
+                output_file_names.append(
+                    FileAttributes(
+                        file_name=self.output_file_name +
+                            self.output_extension,
                         size=size,
                     )
                 )
@@ -313,6 +324,7 @@ class IconsFormatConfig:
             ImageFormatConfig(
                 output_file_name='fluid-icon',
                 output_folder_path=static_folder_path,
+                output_file_name_size_verbosity=True,
                 source_file_path=favicon_png,
                 sizes_square=[512],
                 head_output=True,
