@@ -3,9 +3,19 @@
 
 """Handle supported situations"""
 
+import os
 import sys
 
-from .console import DEFAULT_COLOR, ERROR_COLOR
+
+(DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR) = (
+    ('', '', '')
+    if os.name == 'nt' else
+    (
+        '\033[0;0m',  # DEFAULT
+        '\033[1;31m',  # ERROR: Red
+        '\033[1;34m'  # PRESENTATION: Blue
+    )
+)
 
 
 class Messages:
