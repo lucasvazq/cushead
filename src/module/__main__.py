@@ -52,5 +52,5 @@ class Main(Config, Files, UserConfigHandler, Logs, SpecialMessages):
                  icons_config: Union[dict, None] = None,
                  user_config: Union[dict, None] = None,
                  main_path: str = ''):
-        self.config = self.transform(user_config, main_path)
+        self.config = self.transform(user_config or {}, main_path)
         self.icons_config = icons_config or self.default_icons_config()

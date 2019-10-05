@@ -59,6 +59,11 @@ PRESENTATION_MESSAGE = PRESENTATION_MESSAGE.format(
 
 
 class SpecialMessages:
+    """Special messages class
+
+    Methods:
+        @staticmethod presentation_message
+    """
 
     @staticmethod
     def presentation_message():
@@ -66,6 +71,14 @@ class SpecialMessages:
 
 
 class MessagesHandler:
+    """Handle different types of outputs
+
+    Methods:
+        @staticmethod default_stdout
+        @staticmethod error_exception
+        @staticmethod error_stdout
+        @staticmethod presentation_stdout
+    """
 
     # default section
 
@@ -94,13 +107,20 @@ class MessagesHandler:
 
 
 class Logs(MessagesHandler):
+    """Different output handler for different situations
+    
+    Methods:
+        default_log
+        error_log
+        presentation_log
+    """
 
-    def default_log(self, message):
+    def default_log(self, message: str = ''):
         self.default_stdout(message)
 
-    def error_log(self, message):
+    def error_log(self, message: str = ''):
         self.error_exception(message)
 
-    def presentation_log(self, message):
+    def presentation_log(self, message: str = ''):
         self.presentation_stdout(message)
 
