@@ -1,0 +1,7 @@
+# probot-auto-merge
+# https://github.com/bobvanderlinden/probot-auto-merge
+
+requiredLabels:
+- merge
+
+reportStatus : true
