@@ -7,6 +7,8 @@ Classes:
     Head
 """
 
+from typing import List
+
 from src.module.files.head.images import Images
 from src.module.files.head.general import General
 
@@ -15,15 +17,11 @@ class Head(General, Images):
     """Class to handle the creation of tags that become inside the head tag
 
     Methods:
-        full_head -> list
-        general -> list
-        basic -> list
-        complementary_files -> list
-        social_media -> list
+        full_head
     """
     config = {}
 
-    def full_head(self) -> list:
+    def full_head(self) -> List[List[str]]:
         """Return a list of tags related to the config of a website
 
         It's get the tags from the functions of the class: general, basic,
