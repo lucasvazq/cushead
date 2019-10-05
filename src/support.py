@@ -1,7 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Handle supported situations"""
+"""Handle supported situations
+
+Classes:
+    Messages
+"""
+
+
+# Keep old style format
+
 
 import os
 import sys
@@ -19,11 +27,15 @@ import sys
 
 
 class Messages:
-    """Generate unsupported messages"""
+    """Generate unsupported messages
+    
+    Methods:
+        unsupported_installation
+        unsupported_run
+    """
     support_string_format = {}
 
-    def unsupported_title(self):
-        """Generate unsupported title presentation"""
+    def _unsupported_title(self):
         title = "Unsupported Python version"
         title_length = len(title)
         title_frame = "=" * title_length
@@ -88,7 +100,7 @@ class Support(Messages):
         """Check if current version is supported"""
         if self.current_python < self.min_python or \
                 self.current_python > self.max_python:
-            title = self.unsupported_title()
+            title = self._unsupported_title()
             exception = (
                 ERROR_COLOR
                 + title

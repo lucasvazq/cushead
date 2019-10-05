@@ -8,6 +8,8 @@ Relevant Global Variables:
         logo in ASCII and info about the author and the package
 
 Classes:
+    MessagesHandler
+    Logs
     SpecialMessages
 """
 
@@ -56,18 +58,6 @@ PRESENTATION_MESSAGE = PRESENTATION_MESSAGE.format(
     _INFO['documentation'],
     _INFO['package_name'],
 )
-
-
-class SpecialMessages:
-    """Special messages class
-
-    Methods:
-        @staticmethod presentation_message
-    """
-
-    @staticmethod
-    def presentation_message():
-        return PRESENTATION_MESSAGE
 
 
 class MessagesHandler:
@@ -124,3 +114,14 @@ class Logs(MessagesHandler):
     def presentation_log(self, message: str = ''):
         self.presentation_stdout(message)
 
+
+class SpecialMessages:
+    """Special messages class
+
+    Methods:
+        @staticmethod presentation_message
+    """
+
+    @staticmethod
+    def presentation_message():
+        return PRESENTATION_MESSAGE
