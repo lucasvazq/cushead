@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Module to handle the creation of image files
+
+Classes:
+    ImageFilesCreation
+"""
+
 from typing import Dict, List, Union
 
 from src.services.images import ImageService
@@ -8,12 +18,11 @@ class ImageFilesCreation(ImageService):
 
     Methods:
         default_icons_creation_config
-            -> List[Dict[str, Union[List[int], bool, str]]]:
     """
     config = {}
     icons_config = {}
 
-    def _creation(self):
+    def _creation(self) -> Dict[str, Union[str, List[int]]]:
         files = []
         for group in self.icons_config:
             for brand in self.icons_config[group]:
@@ -27,7 +36,7 @@ class ImageFilesCreation(ImageService):
         return files
 
     def get_icons_creation_config(self) \
-            -> List[Dict[str, Union[List[int], bool, str]]]:
+            -> List[Dict[str, Union[str, List[int]]]]:
         """Return a list with default images creation configuration
 
         It's include configurations for the images listed in the assets folder

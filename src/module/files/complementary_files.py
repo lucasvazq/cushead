@@ -1,20 +1,53 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Module to handle the creation of files that aren't the index.html or images
 
 Classes:
-    ComplementaryFiles
+    ComplementaryFilesCreation
 """
 
 import json
 from os import path
+from typing import Dict
 
 
 class ComplementaryFilesCreation:
+    """Class to generate complementary files tags
+
+    Methods:
+        full_complementary_files
+        browserconfig_content
+        manifest_content
+        opensearch_content
+        robots_content
+        sitemap_content
+    """
     config = {}
     icons_config = {}
 
-    def _browserconfig_content(self) -> dict:
+    def full_complementary_files(self) -> Dict[str, Dict[str, str]]:
+        """Return all complementary files structure with their path
+
+        Return
+            dict: 1
+
+        1)
+            Keys are browserconfig, manifest, opensearch, robots and sitemap.
+            Each key has of value another dict that has the keys content and
+            destination_file_path. They represent the content of each
+            complementary file and the path where there must be written.
+        """
+        return {
+            'browserconfig': self.browserconfig_content(),
+            'manifest': self.manifest_content(),
+            'opensearch': self.opensearch_content(),
+            'robots': self.robots_content(),
+            'sitemap': self.sitemap_content(),
+        }
+
+
+    def browserconfig_content(self) -> Dict[str, str]:
         """browserconfig.xml content
         Return the content of browserconfig.xml and the path where must be
         written
@@ -66,7 +99,7 @@ class ComplementaryFilesCreation:
             'destination_file_path': destination_file_path,
         }
 
-    def _manifest_content(self) -> dict:
+    def manifest_content(self) -> Dict[str, str]:
         """manifest.json content
         Return the content of manifest.json and the path where must be written
 
@@ -115,7 +148,7 @@ class ComplementaryFilesCreation:
             'destination_file_path': destination_file_path,
         }
 
-    def _opensearch_content(self) -> dict:
+    def opensearch_content(self) -> Dict[str, str]:
         """opensearch.xml content
         Return the content of opensearch.xml and the path where must be written
 
@@ -160,7 +193,7 @@ class ComplementaryFilesCreation:
             'destination_file_path': destination_file_path,
         }
 
-    def _robots_content(self) -> dict:
+    def robots_content(self) -> Dict[str, str]:
         """robots.txt content
         Return the content of robots.txt and the path where must be written
 
@@ -186,7 +219,7 @@ class ComplementaryFilesCreation:
             'destination_file_path': destination_file_path,
         }
 
-    def _sitemap_content(self) -> dict:
+    def sitemap_content(self) -> Dict[str, str]:
         """sitemap.xml content
         Return the content of sitemap.xml and the path where must be
         written
@@ -216,24 +249,4 @@ class ComplementaryFilesCreation:
         return {
             'content': content,
             'destination_file_path': destination_file_path,
-        }
-
-    def full_complementary_files(self) -> dict:
-        """Return all complementary files structure with their path
-
-        Return
-            dict: 1
-
-        1)
-            Keys are browserconfig, manifest, opensearch, robots and sitemap.
-            Each key has of value another dict that has the keys content and
-            destination_file_path. They represent the content of each
-            complementary file and the path where there must be written.
-        """
-        return {
-            'browserconfig': self._browserconfig_content(),
-            'manifest': self._manifest_content(),
-            'opensearch': self._opensearch_content(),
-            'robots': self._robots_content(),
-            'sitemap': self._sitemap_content(),
         }
