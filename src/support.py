@@ -80,7 +80,12 @@ class Messages:
 
 
 class Support(Messages):
-    """Handle situations"""
+    """Handle situations
+    
+    Methods:
+        install
+        run
+    """
 
     def __init__(self, info):
         self.current_python = sys.version_info[:2]
