@@ -71,7 +71,7 @@ class MessagesHandler:
 
     @staticmethod
     def default_stdout(message: str = ''):
-        class_instance = ColorProcessor(message)
+        class_instance = ColorProcessor(message + '\n')
         sys.stdout.write(class_instance.default_color())
 
     # error section
@@ -89,7 +89,7 @@ class MessagesHandler:
 
     @staticmethod
     def presentation_stdout(message: str = ''):
-        class_instance = ColorProcessor(message)
+        class_instance = ColorProcessor(message + '\n')
         sys.stdout.write(class_instance.presentation_color())
 
 

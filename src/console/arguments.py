@@ -25,18 +25,13 @@ class Argparse(Info, Logs):
 
     Methods:
         parse_args
-
-    Namespace is an argparse class
     """
 
     def parse_args(self, args: Union[list, None] = None) -> Namespace:
         """Argparse implementation
 
-        This function validates the values of the arguments and, if everything
-        is ok, return an object with the arguments as attributes
-
-        Args:
-            args Union[list, None] = None: The arguments
+        This function validates the values of arguments and, if everything is
+        ok, return an object with the arguments as attributes
         """
         list_args = args or []
 
