@@ -8,6 +8,7 @@ Classes:
 """
 
 import textwrap
+from typing import Union
 
 import argparse
 from argparse import Namespace
@@ -23,12 +24,12 @@ class Argparse(Info, Logs):
     """Class used to handle argparse
 
     Methods:
-        parse_args(list) -> Namespace
+        parse_args
 
     Namespace is an argparse class
     """
 
-    def parse_args(self, args: list) -> Namespace:
+    def parse_args(self, args: Union[list, None] = None) -> Namespace:
         """Argparse implementation
 
         This function validates the values of the arguments and, if everything

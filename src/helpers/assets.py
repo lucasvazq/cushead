@@ -15,7 +15,7 @@ class Images:
     """Handle the images of the assets
 
     Methods:
-        @staticmethod images_list -> List[str]
+        @staticmethod images_list
     """
 
     @staticmethod
