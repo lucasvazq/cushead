@@ -36,8 +36,10 @@ class Argparse(Info, Logs):
         is ok, return an object with the arguments as attributes
 
         Args:
-            args list: The arguments
+            args Union[list, None] = None: The arguments
         """
+        list_args = args or []
+
         info = self.get_info()
         name = info['package_name']
         parser = argparse.ArgumentParser(
@@ -97,26 +99,26 @@ class Argparse(Info, Logs):
         parser.set_defaults(images=False)
 
         # Validation
-        unrecognized = parser.parse_known_args(args)[1]
+        unrecognized = parser.parse_known_args(list_args)[1]
         if unrecognized:
             self.error_log(f"Unrecognized argument {unrecognized[0]}")
         # Need to recall arguments parser.
         # pylint no-member error in child function
-        args = parser.parse_args()
-        if not (args.config or args.default):
+        parsed_args = parser.parse_args(list_args)
+        if not (parsed_args.config or parsed_args.default):
             self.error_log(
                 "Miss Required arguments. Use -config or -default"
             )
-        if args.config and args.default:
+        if parsed_args.config and parsed_args.default:
             self.error_log(
                 "Can't use -config and -default arguments together."
             )
-        if args.images and not args.default:
+        if parsed_args.images and not parsed_args.default:
             self.error_log("Can't use --images without -default.")
-        if args.config:
-            validator = FilesValidator(file_path=args.config, key='-config')
+        if parsed_args.config:
+            validator = FilesValidator(file_path=parsed_args.config, key='-config')
             validation = validator.path_is_not_directory()
             if validation:
                 self.error_log(validation)
 
-        return args
+        return parsed_args

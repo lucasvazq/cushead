@@ -40,8 +40,9 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
     """
 
     def __init__(self, args: Union[list, None] = None):
+        list_args = args or []
         self.presentation_log(self.presentation_message())
-        self.args = self.parse_args(args)
+        self.args = self.parse_args(list_args)
         user_config, main_path = self.read_user_config()
         super().__init__(user_config=user_config, main_path=main_path)
 

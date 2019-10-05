@@ -8,7 +8,7 @@ Classes:
     Transformator
 """
 
-from typing import List
+from typing import List, Union
 
 from src.support import DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR
 
@@ -45,14 +45,14 @@ class Transformator:
     """Class to handle transformations focused on strings
 
     Init:
-        string_list List[str] = None or []
+        string_list Union[List[str], None] = None
 
     Methods:
-        string_list_union -> str
+        string_list_union
     """
 
-    def __init__(self, string_list: List[str] = None or []):
-        self.string_list = string_list
+    def __init__(self, string_list: Union[List[str], None] = None):
+        self.string_list = string_list or []
 
     def string_list_union(self) -> str:
         """Join a str list into a sentence
