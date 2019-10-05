@@ -1,21 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Module to handle image tags
+
+Classes:
+    Images
+"""
+
 from os import path
-from typing import List
+from typing import List, Union
 
 from src.services.images import ImageService
 
 
 class Images(ImageService):
+    """Module to handle image tags
+    
+    Methods:
+        wazuncho
+    """
     icons_config: {}
     config: {}
 
-    def _icons_head_creator(self, icon_brand_config, filenam, size: List[int] =
-            [0, 0]):
+    def _icons_head_creator(self, icon_brand_config, filenam,
+                            size: Union[List[int], None] = None):
 
         if not getattr(icon_brand_config, 'head_output', False):
             return None
+
+        size = size or [0, 0]
 
         # order matter for legibility
         # tag
@@ -139,7 +152,7 @@ class Images(ImageService):
 
         return tag_element_string
 
-    def wazuncho(self):
+    def wazuncho(self) -> List[str]:
         head = []
         for group in self.icons_config:
             for brand in self.icons_config[group]:

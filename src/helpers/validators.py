@@ -10,6 +10,7 @@ Classes:
 
 import os
 from os import path
+from typing import Union
 
 
 class FilesValidator:
@@ -55,7 +56,7 @@ class KeysValidator:
     """Handle keys related validations
 
     Init:
-        dictionary str = ''
+        dictionary Union[dict, None] = None
         key str = ''
         value str = ''
 
@@ -65,8 +66,9 @@ class KeysValidator:
         key_is_not_void
     """
 
-    def __init__(self, dictionary: dict = {}, key: str = '', value: str = ''):
-        self.dictionary = dictionary
+    def __init__(self, dictionary: Union[dict, None] = None, key: str = '',
+                 value: str = ''):
+        self.dictionary = dictionary or {}
         self.key = key
         self.value = value
 
@@ -77,9 +79,7 @@ class KeysValidator:
     def key_exists(self):
         """Check if a key is in a dictionary"""
         if self.key not in self.dictionary:
-            return (
-                f"Miss '{self.key}' key and it's required in config file."
-            )
+            return f"Miss '{self.key}' key and it's required in config file."
 
     def key_is_not_void(self):
         """Check if a key in dictionary is not void"""

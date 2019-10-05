@@ -1,5 +1,21 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""Module to handle the creation of no image related tags
+
+Classes:
+    General
+"""
 
 class General:
+    """Generate general tags
+    
+    Methods:
+        general
+        basic
+        complementary_files
+        social_medi
+    """
     config = {}
     
     def general(self) -> list:

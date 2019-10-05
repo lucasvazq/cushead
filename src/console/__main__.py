@@ -4,13 +4,14 @@
 """Main console module
 
 Classes:
-    Main(list)
+    Main
 """
 
 import json
 import os
 from json.decoder import JSONDecodeError
 from os import path
+from typing import Tuple, Union
 
 from src.console.arguments import Argparse
 from src.helpers.fso import FilesHelper
@@ -24,34 +25,28 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
     """Class used to handle the CLI inputs and outputs
 
     Init:
-        args list: Arguments, example: ['foo', 'bar', 'baz'], equivalent to an
-            input of '-foo bar --baz' through the CLI. Their respective values
-            are defined with argparse package, that executes at init.
+        args Union[list, None] = None: Arguments, example: ['foo', 'bar', 'baz'],
+            equivalent to an input of '-foo bar --baz' through the CLI.
+            Their respective values are defined with argparse package,
+            that executes at init.
 
     Methods:
+        read_user_config
         run
         argument_boolean_image
         argument_string_config
         argument_string_default
     """
 
-    def __init__(self, args):
+    def __init__(self, args: Union[list, None] = None):
+        self.error_log = lambda message: self.error_stdout(message)
         self.presentation_log(self.presentation_message())
-        self.args = self.parse_args(args)
+        self.args = self.parse_args(args or [])
         user_config, main_path = self.read_user_config()
         super().__init__(user_config=user_config, main_path=main_path)
 
-    def error_log(self, message):
-        """Overwrite parent 'Log' class 'error_log' method"""
-        self.error_stdout(message)
-
-    def read_user_config(self):
-        """Read user config and validate them
-
-        Return:
-            dict: user config in dict format
-            str: the folder path of the config file
-        """
+    def read_user_config(self) -> Tuple[dict, str]:
+        """Read user config and validate them"""
         json_dict = {}
         main_path = ''
 

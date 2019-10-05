@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Module to handle the creation of the main index.html file
 
 Classes:
-    Base
+    BaseFileCreation
 """
 
 from os import path
+from typing import Dict, List, Union
 
 from src.module.files.head.base import Head
 
@@ -15,11 +17,11 @@ class BaseFileCreation(Head):
     """Class to handle the creation of the main index.html file
 
     Methods:
-        full_index() -> dict
-        structure(head: list = []) -> str
+        full_index
+        structure
     """
 
-    def full_index(self) -> dict:
+    def full_index(self) -> Dict[str, Dict[str, str]]:
         """Create full index.html structure with head tag included
 
         Return
@@ -42,14 +44,9 @@ class BaseFileCreation(Head):
             }
         }
 
-    def structure(self, head: list = None or []) -> str:
-        """Return an html structure
-
-        Args:
-            head list (default = []): tags elements that conform the head of an
-                html structure
-
-        """
+    def structure(self, list_head: Union[List[List[str]], None] = None) -> str:
+        head = list_head or []
+        """Return an html structure"""
         indent = "    "  # 4 spaces
         formated_head = ''.join([
             f"{indent*2}{tag}\n"
