@@ -98,23 +98,24 @@ class Argparse(Info, Logs):
         # Validation
         unrecognized = parser.parse_known_args(args)[1]
         if unrecognized:
-            self.error(f"Unrecognized argument {unrecognized[0]}")
+            self.error_log(f"Unrecognized argument {unrecognized[0]}")
         # Need to recall arguments parser.
         # pylint no-member error in child function
         args = parser.parse_args()
         if not (args.config or args.default):
-            self.error(
+            self.error_log(
                 "Miss Required arguments. Use -config or -default"
             )
         if args.config and args.default:
-            self.error(
+            self.error_log(
                 "Can't use -config and -default arguments together."
             )
         if args.images and not args.default:
-            self.error("Can't use --images without -default.")
+            self.error_log("Can't use --images without -default.")
         if args.config:
-            class_instance = FilesValidator(file_path=args.config,
-                                            key='-config')
-            class_instance.path_is_not_directory()
+            validator = FilesValidator(file_path=args.config, key='-config')
+            validation = validator.path_is_not_directory()
+            if validation:
+                self.error_log(validation)
 
         return args

@@ -18,8 +18,9 @@ class ImageService:
 
     @staticmethod
     def move_svg(destination_file_path, source_file_path):
-        class_instance = FilesHelper(destination_file_path=destination_file_path,
-                              source_file_path=source_file_path)
+        class_instance = FilesHelper(destination_file_path=
+                                     destination_file_path,
+                                     source_file_path=source_file_path)
         class_instance.copy_file()
 
     @staticmethod

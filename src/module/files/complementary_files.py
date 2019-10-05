@@ -78,7 +78,7 @@ class ComplementaryFilesCreation:
             destination_file_path str: path where the file must be written
         """
         manifest_config = self.icons_config.get('manifest', [])[0]
-        content = {}
+        content = dict()
         content['name'] = self.config.get('title', '')
         content['short_name'] = self.config.get('title', '')
         content['description'] = self.config.get('description', '')
@@ -227,8 +227,8 @@ class ComplementaryFilesCreation:
         1)
             Keys are browserconfig, manifest, opensearch, robots and sitemap.
             Each key has of value another dict that has the keys content and
-            destination_file_path. They represent the content of each complementary
-            file and the path where there must be written.
+            destination_file_path. They represent the content of each
+            complementary file and the path where there must be written.
         """
         return {
             'browserconfig': self._browserconfig_content(),

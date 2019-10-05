@@ -34,19 +34,10 @@ class Head(General, Images):
         """
         # The order matters
         head = [
-            """
             self.general(),
             self.basic(),
-            self.favicon_ico(),
-            self.favicon_png(),
-            self.favicon_svg(),
-            self.preview_png(),
+            self.wazuncho(),
             self.complementary_files(),
             self.social_media(),
-            """
         ]
-        wasa = [
-            self.wazuncho()
-        ]
-        print(wasa)
-        return wasa
+        return head

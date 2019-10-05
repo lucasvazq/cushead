@@ -61,13 +61,10 @@ class Transformator:
             input = ['foo', 'bar', 'baz', 'etc']
             output = 'foo, bar, baz and etc'
         """
-        conactenated_strings = ''.join(
-            [
-                string + (
-                    ", " if string in self.string_list[:-2] else (
-                        " and " if string == self.string_list[-2] else ""
-                    )
-                ) for string in self.string_list
-            ]
-        )
-        return conactenated_strings
+        return ''.join([
+            string + (
+                ", " if string in self.string_list[:-2] else (
+                    " and " if string == self.string_list[-2] else ''
+                )
+            ) for string in self.string_list
+        ])

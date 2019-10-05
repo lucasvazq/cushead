@@ -1,4 +1,3 @@
-from os import path
 from typing import Dict, List, Union
 
 from src.services.images import ImageService
@@ -13,7 +12,6 @@ class ImageFilesCreation(ImageService):
     """
     config = {}
     icons_config = {}
-
 
     def _creation(self):
         files = []

@@ -14,6 +14,7 @@ from os import path
 
 from src.console.arguments import Argparse
 from src.helpers.fso import FilesHelper
+from src.helpers.validators import FilesValidator
 from src.module.__main__ import Main as ModuleMain
 from src.module.config.user import DefaultUserConfig
 from src.services.logs import Logs, MessagesHandler
@@ -35,30 +36,46 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
     """
 
     def __init__(self, args):
-        self.error = self.error_stdout
-        self.important_stdout(self.presentation_message())
+        self.presentation_log(self.presentation_message())
         self.args = self.parse_args(args)
-        user_config, output_path = self._read_config()
-        super().__init__(user_config=user_config, output_path=output_path)
+        user_config, main_path = self.read_user_config()
+        super().__init__(user_config=user_config, main_path=main_path)
 
-    def _read_config(self):
+    def error_log(self, message):
+        """Overwrite parent 'Log' class 'error_log' method"""
+        self.error_stdout(message)
+
+    def read_user_config(self):
+        """Read user config and validate them
+
+        Return:
+            dict: user config in dict format
+            str: the folder path of the config file
+        """
         json_dict = {}
-        output_path = ''
+        main_path = ''
+
         if not self.args.config:
-            return json_dict, output_path
+            return json_dict, main_path
+
+        validator = FilesValidator(file_path=self.args.config, key='-config')
+        validation = validator.all()
+        if validation:
+            self.error_log(validation)
+
         with open(self.args.config, 'r') as file_instance:
             file_string = file_instance.read()
         try:
             json_dict = json.loads(file_string)
         except JSONDecodeError:
-            config_file_fullpath = path.join(os.getcwd(), self.args.config)
-            exception = (
+            full_path = path.join(os.getcwd(), self.args.config)
+            self.error_log(
                 f"Invalid json file format in ({self.args.config})\n"
-                f"FILE PATH: {config_file_fullpath}"
+                f"FILE PATH: {full_path}"
             )
-            self.error(exception)
-        output_path = path.dirname(self.args.config)
-        return json_dict, output_path
+
+        main_path = path.dirname(self.args.config)
+        return json_dict, main_path
 
     def run(self):
         """Run the current arguments
@@ -81,23 +98,23 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
         for binary_image in binary_images:
             file_name = binary_image['filename']
             destination_file_path = path.join(destination_folder, file_name)
-            class_instance = FilesHelper(
+            folder_instance = FilesHelper(
                 binary_content=binary_image['content'],
                 destination_file_path=destination_file_path,
             )
-            class_instance.write_binary_file()
+            folder_instance.write_binary_file()
 
     # -config
     def argument_string_config(self):
         """Handle -config argument"""
         all_files = self.all_files()
         for key in all_files:
-            class_instance = FilesHelper(
+            folder_instance = FilesHelper(
                 destination_file_path=all_files[key].get(
                     'destination_file_path', ''),
                 unicode_content=all_files[key].get('content', ''),
             )
-            class_instance.write_unicode_file()
+            folder_instance.write_unicode_file()
         for image_config in self.get_icons_creation_config():
             wasa = path.join(
                 image_config.get('output_folder_path', ''),
@@ -114,7 +131,6 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                     wasa,
                     image_config.get('source_file_path', ''),
                 )
-        self.normal_stdout('esa')
 
     # -default
     def argument_string_default(self):
@@ -124,5 +140,7 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
                                      unicode_content=default_settings)
         class_instance.write_unicode_file()
         fullpath = path.join(os.getcwd(), self.args.default)
-        self.normal_stdout(f"CONFIG FILE: {self.args.default}\n"
-                           f"FULL PATH: {fullpath}")
+        self.default_log(
+            f"CONFIG FILE: {self.args.default}\n"
+            f"FULL PATH: {fullpath}"
+        )

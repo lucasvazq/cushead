@@ -146,7 +146,8 @@ class IconsFormatConfig:
         favicon_ico = self.config.get('favicon_ico', '')
         output_folder_path = self.config.get('output_folder_path', '')
         return [
-            # <link rel='shortcut icon' href='/favicon.ico' type='image/x-icon' />
+            # <link rel='shortcut icon' href='/favicon.ico'
+            # type='image/x-icon' />
             ImageFormatConfig(
                 output_file_name='favicon',
                 output_folder_path=output_folder_path,
@@ -171,7 +172,8 @@ class IconsFormatConfig:
 
         # Default png favicon
         # Example:
-        # <link rel="icon" type="image/png" href="/static/favicon-16x16.png" sizes="16x16">
+        # <link rel="icon" type="image/png" href="/static/favicon-16x16.png"
+        # sizes="16x16">
         icons.append(
             ImageFormatConfig(
                 output_file_name='favicon',
@@ -196,7 +198,8 @@ class IconsFormatConfig:
 
         # Microsoft icon
         # Example:
-        # <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png">
+        # <meta name="msapplication-TileImage"
+        # content="/static/ms-icon-144x144.png">
         icons.append(
             ImageFormatConfig(
                 output_file_name='ms-icon',
@@ -214,7 +217,8 @@ class IconsFormatConfig:
 
         # Apple touch default
         # Example:
-        # <link rel="apple-touch-icon" href="/static/apple-touch-icon-default-57x57.png">
+        # <link rel="apple-touch-icon"
+        # href="/static/apple-touch-icon-default-57x57.png">
         icons.append(
             ImageFormatConfig(
                 output_file_name='apple-touch-icon',
@@ -231,7 +235,8 @@ class IconsFormatConfig:
 
         # Apple touch with different sizes
         # Example:
-        # <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-touch-icon-57x57.png">
+        # <link rel="apple-touch-icon" sizes="57x57"
+        # href="/static/apple-touch-icon-57x57.png">
         icons.append(
             ImageFormatConfig(
                 output_file_name='apple-touch-icon',
@@ -302,7 +307,8 @@ class IconsFormatConfig:
 
         # Fluid icon
         # Example:
-        # <link rel="fluid-icon" href="/static/fluidicon-512x512.png" title="Microsoft">
+        # <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+        # title="Microsoft">
         icons.append(
             ImageFormatConfig(
                 output_file_name='fluid-icon',
@@ -347,7 +353,7 @@ class IconsFormatConfig:
         favicon_svg = self.config.get('favicon_svg', '')
         static_folder_path = self.config.get('static_folder_path', '')
         static_url = self.config.get('static_url', '')
-        ### <link color="blue" rel="mask-icon" href="/static/favicon.svg"
+        # <link color="blue" rel="mask-icon" href="/static/favicon.svg"
         return [
             ImageFormatConfig(
                 output_file_name='mask-icon',
@@ -387,7 +393,8 @@ class IconsFormatConfig:
             )
         )
 
-        # <meta property='og:image:secure_url' content='/static/preview-500x500.png' />
+        # <meta property='og:image:secure_url'
+        # content='/static/preview-500x500.png' />
         head.append(
             ImageFormatConfig(
                 output_file_name='preview',
@@ -464,7 +471,7 @@ class IconsFormatConfig:
         ]
 
     def default_icons_config(self) \
-            -> Dict[str, Dict[str, Union[List[int], bool, str]]]:
+            -> Dict[str, List[ImageFormatConfig]]:
         """Return a default icons format configuration
 
         This return includes configs for favicons with png extension and for

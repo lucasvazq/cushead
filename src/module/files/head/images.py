@@ -4,7 +4,6 @@
 from os import path
 from typing import List
 
-from src.helpers.validators import FilesValidator, KeysValidator
 from src.services.images import ImageService
 
 
@@ -12,7 +11,8 @@ class Images(ImageService):
     icons_config: {}
     config: {}
 
-    def _icons_head_creator(self, icon_brand_config, filenam, size: List[int] = [0, 0]):
+    def _icons_head_creator(self, icon_brand_config, filenam, size: List[int] =
+            [0, 0]):
 
         if not getattr(icon_brand_config, 'head_output', False):
             return None
@@ -31,8 +31,7 @@ class Images(ImageService):
         # title
         # media
 
-
-        tag_element_list = ['<']
+        tag_element_list = list('<')
 
         # tag name, example:
         # link
@@ -43,8 +42,6 @@ class Images(ImageService):
 
         # color, example:
         # ???
-        if icon_brand_config.attribute_rel == 'mask-icon':
-            print(icon_brand_config.__dict__)
         tag_element_list.append(
             f"color='{icon_brand_config.attribute_color}' "
             if getattr(icon_brand_config, 'attribute_color', '') else ''
@@ -70,7 +67,7 @@ class Images(ImageService):
             f"name='{icon_brand_config.attribute_name}' "
             if getattr(icon_brand_config, 'attribute_name', '') else ''
         )
-        
+
         # rel, example:
         # rel="icon"
         tag_element_list.append(
@@ -137,7 +134,7 @@ class Images(ImageService):
 
         tag_element_string = ''.join(tag_element_list)
         tag_element_string = tag_element_string[:-1]
-        
+
         tag_element_string += ' />'
 
         return tag_element_string
@@ -147,7 +144,9 @@ class Images(ImageService):
         for group in self.icons_config:
             for brand in self.icons_config[group]:
                 for sizes in brand.formated:
-                    head_element = self._icons_head_creator(brand, sizes.file_name, sizes.size)
+                    head_element = self._icons_head_creator(brand,
+                                                            sizes.file_name,
+                                                            sizes.size)
                     if head_element:
                         head.append(head_element)
         return head

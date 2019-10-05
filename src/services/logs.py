@@ -67,35 +67,40 @@ class SpecialMessages:
 
 class MessagesHandler:
 
+    # default section
+
+    @staticmethod
+    def default_stdout(message: str = ''):
+        class_instance = ColorProcessor(message)
+        sys.stdout.write(class_instance.default_color())
+
     # error section
 
-    def error_exception(self, message: str = ''):
+    @staticmethod
+    def error_exception(message: str = ''):
         raise Exception(message)
 
-    def error_stdout(self, message: str = ''):
+    @staticmethod
+    def error_stdout(message: str = ''):
         class_instance = ColorProcessor(message)
         sys.exit(class_instance.error_color())
 
-    # important section
+    # presentation section
 
-    def important_stdout(self, message: str = ''):
+    @staticmethod
+    def presentation_stdout(message: str = ''):
         class_instance = ColorProcessor(message)
         sys.stdout.write(class_instance.presentation_color())
 
-    # normal section
-
-    def normal_stdout(self, message: str = ''):
-        class_instance = ColorProcessor(message + '\n')
-        sys.stdout.write(class_instance.default_color())
-
 
 class Logs(MessagesHandler):
-    error_function = MessagesHandler.error_exception
-    important_function = MessagesHandler.important_stdout
 
-    def error(self, message):
-        self.error_function(message)
+    def default_log(self, message):
+        self.default_stdout(message)
 
-    def important(self, message):
-        self.important_function(message)
+    def error_log(self, message):
+        self.error_exception(message)
+
+    def presentation_log(self, message):
+        self.presentation_stdout(message)
 

@@ -131,16 +131,13 @@ class UserConfigHandler(Logs):
             return {}
         # Construct config
         recommended = settings.get('recommended', {})
-
-
-
         default = settings.get('default', {})
         general = default.get('general', {})
         basic = default.get('basic', {})
         social_media = default.get('social_media', {})
         progressive_web_app = settings.get('progressive_web_apps', {})
         if 'required' not in settings:
-            self.error("Miss 'required' object and it's required in "
+            self.error_log("Miss 'required' object and it's required in "
                        "config file.")
         settings = {**settings['required'], **recommended, **general,
                     **basic, **social_media, **progressive_web_app}
@@ -148,7 +145,10 @@ class UserConfigHandler(Logs):
         # Required values
         required_values = ['static_url']
         for key in required_values:
-            KeysValidator(dictionary=settings, key=key).key_exists()
+            validator = KeysValidator(dictionary=settings, key=key)
+            validate = validator.key_exists()
+            if validate:
+                self.error_log(validate)
 
         # Sanitize static_url key
         # Prevent:

@@ -111,5 +111,3 @@ class Support(Messages):
 class Unsupported(Exception):
     """Used to raise an exception related to an unsupported versions problem"""
     pass
-
-
