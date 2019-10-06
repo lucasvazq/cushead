@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Handle supported situations
 
 Classes:
     Messages
 """
-
 # Keep old style format
-
-
 import os
 import sys
 
