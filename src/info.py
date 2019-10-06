@@ -3,7 +3,9 @@
 
 """Informative module"""
 
+
 # Keep the old style format
+
 
 # Used for setup and main script
 __package_name__ = "cushead"
@@ -30,21 +32,26 @@ __maintainer__ = "Lucas Vazquez"
 __status__ = "Production"
 
 
-def get_info():
-    """Return the info"""
-    info = {
-        'package_name': __package_name__,
-        'package_version': __package_version__,
-        'source': __source__,
-        'documentation': __documentation__,
-        'python_min_version': __python_min_version__,
-        'python_max_version': __python_max_version__,
-        'required_packages': __required_packages__,
-        'author': __author__,
-        'author_page': __author_page__,
-        'email': __email__,
-        'description': __description__,
-        'license': __license__,
-        'keywords': __keywords__
-    }
-    return info
+class Info:
+
+    @staticmethod
+    def get_info():
+        """Return the info"""
+        return {
+            'package_name': __package_name__,
+            'package_version': __package_version__,
+            'source': __source__,
+            'documentation': __documentation__,
+            'python_min_version': __python_min_version__,
+            'python_max_version': __python_max_version__,
+            'required_packages': __required_packages__,
+            'author': __author__,
+            'author_page': __author_page__,
+            'email': __email__,
+            'description': __description__,
+            'license': __license__,
+            'keywords': __keywords__,
+            'copyright': __copyright__,
+            'maintainer': __maintainer__,
+            'status': __status__,
+        }

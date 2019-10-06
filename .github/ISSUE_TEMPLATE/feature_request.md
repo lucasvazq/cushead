@@ -1,17 +1,13 @@
 ---
 name: Feature request
 about: New feature or request
-title: ''
+title: 'ISSUE: '
 labels: 'enhancement'
 assignees: 'lucasvazq'
 ---
 
-# FEATURE
-
-**Priority**: <1-5>
-
-**Description**
+## Description
 Description of the feature
 
-**Files**
-Attach files or provide code with titles separated in block
+## Complements
+[//]: # (Attach necessary files for the feature or provide code with titles separated in block)

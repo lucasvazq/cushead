@@ -1,35 +1,27 @@
 ---
 name: Bug report
 about: Something isn't working
-title: ''
+title: 'ISSUE: '
 labels: 'bug'
 assignees: 'lucasvazq'
 ---
 
-# BUG
-
-**Priority**: <1-5>
-
 ## Description
-Description of the feature
+Description of the bug
 
 ## Reproduce
-
-Steps to reproduce the behavior:
-
-1) Foo
-2) Bar
-3) Etc
+[//]: # (Steps to reproduce the bug)
 
 ## Input
-Attach files or provide description of the inputs or code with titles separated in block
+[//]: # (Attach files or provide description of the inputs or code with titles separated in block)
 
 ## Output
 
 ### Actual output
-Attach files or provide description of the output (except the console logs) or code with titles separated in block
+[//]: # (Attach files or provide description of the output, except for the console logs, or code with titles separated in block)
 
 ### Expected output
-Expected behavior
+[//]: # (Expected behavior)
 
 ### Error logs
+[//]: # (Paste the error logs inside code blocks)

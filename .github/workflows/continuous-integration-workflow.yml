@@ -1,0 +1,5 @@
+# Github workflow
+# https://help.github.com/es/articles/configuring-a-workflow
+
+name: Greet Everyone
+# This workflow is triggered on pushes to the repository.

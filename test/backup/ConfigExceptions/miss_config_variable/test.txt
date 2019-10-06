@@ -1,9 +1,0 @@
-"""
-Python syntax
-cushead config file
-Git: https://github.com/lucasvazq/cushead
-Documentation: https://github.com/lucasvazq/cushead/blob/master/README.md
-"""
-
-# Don't delete or change the name of this variable
-

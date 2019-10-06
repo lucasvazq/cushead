@@ -1,17 +1,15 @@
 ---
 name: Fix
 about: Something need to be fixed or improved
-title: ''
+title: 'ISSUE: '
 labels: 'fix'
 assignees: 'lucasvazq'
 ---
+## Description
+Description of the fix
 
-# FIX
+## Related Files
+[//]: # (Related files to the fix)
 
-**Priority**: <1-5>
-
-**Description**
-Description
-
-**Files**
-Attach files or provide code with titles separated in block
+## Complements
+[//]: # (Attach necessary files for the fix or provide code with titles separated in block)
