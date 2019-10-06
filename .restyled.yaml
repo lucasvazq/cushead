@@ -1,0 +1,59 @@
+- enabled: true
+  name: autopep8
+  image: restyled/restyler-autopep8:v1.4.4
+  command:
+  - autopep8
+  - "--in-place"
+  arguments: []
+  include:
+  - "**/*.py"
+  interpreters:
+  - python
+  supports_arg_sep: true
+  supports_multiple_paths: true
+  documentation:
+  - https://github.com/hhatto/autopep8
+- enabled: true
+  name: black
+  image: restyled/restyler-black:v19.3b0
+  command:
+  - black
+  arguments: []
+  include:
+  - "**/*.py"
+  interpreters:
+  - python
+  supports_arg_sep: true
+  supports_multiple_paths: true
+  documentation:
+  - https://github.com/python/black
+- enabled: true
+  name: reorder-python-imports
+  image: restyled/restyler-reorder-python-imports:v1.6.0
+  command:
+  - reorder-python-imports
+  - "--exit-zero-even-if-changed"
+  arguments: []
+  include:
+  - "**/*.py"
+  interpreters:
+  - python
+  supports_arg_sep: true
+  supports_multiple_paths: true
+  documentation:
+  - https://github.com/asottile/reorder_python_imports
+- enabled: true
+  name: yapf
+  image: restyled/restyler-yapf:v0.27.0
+  command:
+  - yapf
+  - "--in-place"
+  arguments: []
+  include:
+  - "**/*.py"
+  interpreters:
+  - python
+  supports_arg_sep: true
+  supports_multiple_paths: true
+  documentation:
+  - https://github.com/google/yapf
