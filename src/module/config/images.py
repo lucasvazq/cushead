@@ -20,7 +20,9 @@ class FileAttributes:
         size Union[list, None] = None
     """
 
-    def __init__(self, file_name: str = "", size: Union[List[int], None] = None):
+    def __init__(self,
+                 file_name: str = "",
+                 size: Union[List[int], None] = None):
         self.file_name = file_name
         self.size = size or []
 
@@ -53,28 +55,28 @@ class ImageFormatConfig:
     """
 
     def __init__(
-        self,
-        output_file_name: str = "",
-        output_file_name_size_verbosity: bool = False,
-        output_folder_path: str = "",
-        source_file_path: str = "",
-        sizes_max_min: Union[List[int], None] = None,
-        sizes_square: Union[List[int], None] = None,
-        sizes_rectangular: Union[List[int], None] = None,
-        sizes_mantain: bool = False,
-        head_output: bool = False,
-        url_path: str = "",
-        tag_name: str = "",
-        attribute_color: str = "",
-        attribute_content: str = "",
-        attribute_name: str = "",
-        attribute_property: str = "",
-        attribute_rel: str = "",
-        attribute_type: str = "",
-        attribute_special_content: bool = False,
-        attribute_special_href: bool = False,
-        attribute_special_sizes: bool = False,
-        attribute_special_title: bool = False,
+            self,
+            output_file_name: str = "",
+            output_file_name_size_verbosity: bool = False,
+            output_folder_path: str = "",
+            source_file_path: str = "",
+            sizes_max_min: Union[List[int], None] = None,
+            sizes_square: Union[List[int], None] = None,
+            sizes_rectangular: Union[List[int], None] = None,
+            sizes_mantain: bool = False,
+            head_output: bool = False,
+            url_path: str = "",
+            tag_name: str = "",
+            attribute_color: str = "",
+            attribute_content: str = "",
+            attribute_name: str = "",
+            attribute_property: str = "",
+            attribute_rel: str = "",
+            attribute_type: str = "",
+            attribute_special_content: bool = False,
+            attribute_special_href: bool = False,
+            attribute_special_sizes: bool = False,
+            attribute_special_title: bool = False,
     ):
 
         # output file name
@@ -128,17 +130,18 @@ class ImageFormatConfig:
             for size in self._get_sizes():
                 file_nam = f"{output_file_name}-{size[0]}x{size[1]}"
                 file_nam += self.output_extension
-                output_file_names.append(FileAttributes(file_name=file_nam, size=size))
+                output_file_names.append(
+                    FileAttributes(file_name=file_nam, size=size))
         else:
             # Probably it is only one, but with _get_sizes we get the size
             # wherever they come from: square_sizes, max_min or rectangular
             for size in self._get_sizes():
                 output_file_names.append(
                     FileAttributes(
-                        file_name=self.output_file_name + self.output_extension,
+                        file_name=self.output_file_name +
+                        self.output_extension,
                         size=size,
-                    )
-                )
+                    ))
         return output_file_names
 
 
@@ -225,8 +228,7 @@ class IconsFormatConfig:
                 attribute_type="image/png",
                 attribute_special_sizes=True,
                 attribute_special_href=True,
-            )
-        )
+            ))
 
         # Microsoft icon
         # Example:
@@ -244,8 +246,7 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_name="msapplication-TileImage",
                 attribute_special_content=True,
-            )
-        )
+            ))
 
         # Apple touch default
         # Example:
@@ -262,8 +263,7 @@ class IconsFormatConfig:
                 tag_name="link",
                 attribute_rel="apple-touch-icon",
                 attribute_special_href=True,
-            )
-        )
+            ))
 
         # Apple touch with different sizes
         # Example:
@@ -275,15 +275,16 @@ class IconsFormatConfig:
                 output_file_name_size_verbosity=True,
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
-                sizes_square=[57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024],
+                sizes_square=[
+                    57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024
+                ],
                 head_output=True,
                 url_path=static_url,
                 tag_name="link",
                 attribute_rel="apple-touch-icon",
                 attribute_special_href=True,
                 attribute_special_sizes=True,
-            )
-        )
+            ))
 
         # Apple touch startup default
         # Example:
@@ -299,8 +300,7 @@ class IconsFormatConfig:
                 tag_name="link",
                 attribute_rel="apple-touch-startup-image",
                 attribute_special_href=True,
-            )
-        )
+            ))
 
         # Apple touch startup with different sizes
         # Example:
@@ -333,8 +333,7 @@ class IconsFormatConfig:
                 tag_name="link",
                 attribute_rel="apple-touch-startup-image",
                 attribute_special_href=True,
-            )
-        )
+            ))
 
         # Fluid icon
         # Example:
@@ -353,8 +352,7 @@ class IconsFormatConfig:
                 attribute_rel="fluid-icon",
                 attribute_special_href=True,
                 attribute_special_title=True,
-            )
-        )
+            ))
 
         # Yandex browser special icon
         # Example:
@@ -373,8 +371,7 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_name="yandex-tableau-widget",
                 attribute_content=yandex_content,
-            )
-        )
+            ))
 
         return icons
 
@@ -420,8 +417,7 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_property="og:image",
                 attribute_special_content=True,
-            )
-        )
+            ))
 
         # <meta property='og:image:secure_url'
         # content='/static/preview-500x500.png' />
@@ -437,8 +433,7 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_property="og:image:secure_url",
                 attribute_special_content=True,
-            )
-        )
+            ))
 
         # <meta name='twitter:image' content='/static/preview-500x500.png' />
         head.append(
@@ -453,8 +448,7 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_name="twitter:image",
                 attribute_special_content=True,
-            )
-        )
+            ))
 
         return head
 
