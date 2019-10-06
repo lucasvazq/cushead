@@ -14,11 +14,12 @@ from typing import Dict, List, Union
 
 class FileAttributes:
     """Class to handle the a file objects attribute
-    
+
     Init:
         file_name str = ''
         size Union[list, None] = None
     """
+
     def __init__(self,
                  file_name: str = '',
                  size: Union[List[int], None] = None):
@@ -144,7 +145,7 @@ class ImageFormatConfig:
                 output_file_names.append(
                     FileAttributes(
                         file_name=self.output_file_name +
-                            self.output_extension,
+                        self.output_extension,
                         size=size,
                     )
                 )
@@ -453,7 +454,7 @@ class IconsFormatConfig:
             ImageFormatConfig(
                 output_file_name='ms-icon',
                 output_file_name_size_verbosity=True,
-                output_folder_path = static_folder_path,
+                output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[30, 44, 70, 150, 310],
                 sizes_rectangular=[[310, 150]],
@@ -487,6 +488,7 @@ class IconsFormatConfig:
                 attribute_type='image/png',
             )
         ]
+
     def default_icons_config(self) -> Dict[str, List[ImageFormatConfig]]:
         """Return a default icons format configuration
 
