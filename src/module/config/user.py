@@ -7,7 +7,6 @@ Classes:
     DefaultUserConfig
     UserConfigHandler
 """
-
 import textwrap
 from os import path
 from typing import Dict, List, Union
