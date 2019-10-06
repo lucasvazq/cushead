@@ -487,7 +487,6 @@ class IconsFormatConfig:
                 attribute_type='image/png',
             )
         ]
-
     def default_icons_config(self) -> Dict[str, List[ImageFormatConfig]]:
         """Return a default icons format configuration
 
