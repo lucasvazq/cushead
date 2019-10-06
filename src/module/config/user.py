@@ -20,7 +20,7 @@ from src.services.logs import Logs
 
 class DefaultUserConfig:
     """Generate presets
-    
+
     Methods:
         @staticmethod default_images
         default_settings
@@ -146,7 +146,7 @@ class UserConfigHandler(Logs):
         progressive_web_app = settings.get('progressive_web_apps', {})
         if 'required' not in settings:
             self.error_log("Miss 'required' object and it's required in "
-                       "config file.")
+                           "config file.")
         settings = {**settings['required'], **recommended, **general,
                     **basic, **social_media, **progressive_web_app}
 
@@ -158,7 +158,8 @@ class UserConfigHandler(Logs):
             if validate:
                 self.error_log(validate)
 
-        a = 11111111111111111111111111111111 + 11111111111111111111111111 + 1111111111111111111 + 1111111111111111111111 + """wasa"""
+        a = 11111111111111111111111111111111 + 11111111111111111111111111 + \
+            1111111111111111111 + 1111111111111111111111 + """wasa"""
 
         # Sanitize static_url key
         # Prevent:
