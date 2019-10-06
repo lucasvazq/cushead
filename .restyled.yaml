@@ -1,0 +1,55 @@
+# Restyled.io application
+# https://restyled.io/
+
+# Enable
+enabled: true
+
+# Push the style fixes directly to the original PR
+auto: false
+
+# Any files to download into the project directory before restyling
+remote_files: []
+
+# Open Restyle PR
+pull_requests: true
+
+# Leave comments on the original PR linking to the Restyle PR
+comments: true
+
+# Set commit statuses on the original PR
+statuses:
+
+  # Red status in the case of differences found
+  differences: true
+
+  # Green status in the case of no differences found
+  no_differences: true
+
+  # Red status if we encounter errors restyling
+  error: true
+
+# Request review on the Restyle PR
+# Possible values:
+#   author: From the author of the original PR
+#   owner: From the owner of the repository
+request_review: none
+
+# Add labels to any created Restyle PRs
+labels: []
+
+# Labels to ignore
+#
+# PRs with any of these labels will be ignored by Restyled.
+ignore_labels: none
+
+# Which restylers to run
+restylers:
+
+  # Python
+  - autopep8
+  - black
+  - reorder-python-imports
+  - yapf
+
+# Version of the set of Restylers to run
+restylers_version: "20190910"
