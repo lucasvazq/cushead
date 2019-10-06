@@ -1,3 +1,4 @@
+---
 - enabled: true
   name: autopep8
   image: restyled/restyler-autopep8:v1.4.4
