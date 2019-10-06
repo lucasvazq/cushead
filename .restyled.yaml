@@ -1,60 +1,124 @@
----
-- enabled: true
-  name: autopep8
-  image: restyled/restyler-autopep8:v1.4.4
-  command:
+# Default Restyler Configuration
+#
+# Overall notes:
+#
+# - All keys are optional and default as shown
+# - The entire config can also be just a list of values, which will be
+#   interpreted as specifying the restylers key
+#
+####
+
+# Do anything at all?
+enabled: true
+
+# Patterns to exclude from all Restylers
+#
+# By default, we ignore directories that are often checked-in but rarely
+# represent project code. This glob is slightly complicated to match paths
+# within directories of these names appearing at any depth.
+#
+# This behavior can be disabled in your project with:
+#
+#   exclude: []
+#
+exclude:
+  - "**/node_modules/**/*"
+  - "**/vendor/**/*"
+
+# Push the style fixes directly to the original PR
+#
+# This setting implies pull_requests: false for origin PRs, and has no effect on
+# forked PRs (since we can't push to those).
+#
+auto: false
+
+# Download remote files before restyling
+#
+# Example:
+#
+#   remote_files:
+#     - url: https://raw.github.com/.../hlint.yaml
+#       path: .hlint.yaml
+#
+# Files must be publicly accessible.
+#
+remote_files: []
+
+# Open Restyle PRs?
+pull_requests: true
+
+# Leave comments on the original PR linking to the Restyle PR?
+comments: false
+
+# Set commit statuses on the original PR?
+statuses:
+  # Red status in the case of differences found
+  differences: true
+  # Green status in the case of no differences found
+  no_differences: true
+  # Red status if we encounter errors restyling
+  error: true
+
+# Request review on the Restyle PR?
+#
+# Possible values:
+#
+#   author: From the author of the original PR
+#   owner: From the owner of the repository
+#
+# One value will apply to origin and forked PRs, but you can also specify
+# separate values.
+#
+request_review: none
+
+# Add labels to any created Restyle PRs
+#
+# These can be used to tell other automation to avoid our PRs.
+#
+labels: []
+
+# Labels to ignore
+#
+# PRs with any of these labels will be ignored by Restyled.
+#
+ignore_labels:
+  - restyled-ignore
+
+# Which restylers to run
+#
+# See restyled-io/restylers repository for their defaults.
+#
+restylers:
+  - astyle
   - autopep8
-  - "--in-place"
-  arguments: []
-  include:
-  - "**/*.py"
-  interpreters:
-  - python
-  supports_arg_sep: true
-  supports_multiple_paths: true
-  documentation:
-  - https://github.com/hhatto/autopep8
-- enabled: true
-  name: black
-  image: restyled/restyler-black:v19.3b0
-  command:
   - black
-  arguments: []
-  include:
-  - "**/*.py"
-  interpreters:
-  - python
-  supports_arg_sep: true
-  supports_multiple_paths: true
-  documentation:
-  - https://github.com/python/black
-- enabled: true
-  name: reorder-python-imports
-  image: restyled/restyler-reorder-python-imports:v1.6.0
-  command:
+  # - brittany
+  - dfmt
+  - elm-format
+  # - google-java-format
+  # - hindent
+  # - hlint
+  # - jdt
+  - pg_format
+  - php-cs-fixer
+  - prettier
+  - prettier-markdown
+  - prettier-yaml
+  - prettier-ruby
   - reorder-python-imports
-  - "--exit-zero-even-if-changed"
-  arguments: []
-  include:
-  - "**/*.py"
-  interpreters:
-  - python
-  supports_arg_sep: true
-  supports_multiple_paths: true
-  documentation:
-  - https://github.com/asottile/reorder_python_imports
-- enabled: true
-  name: yapf
-  image: restyled/restyler-yapf:v0.27.0
-  command:
+  - rubocop
+  - rustfmt
+  - shellharden
+  - shfmt
+  - stylish-haskell
+  - terraform
   - yapf
-  - "--in-place"
-  arguments: []
-  include:
-  - "**/*.py"
-  interpreters:
-  - python
-  supports_arg_sep: true
-  supports_multiple_paths: true
-  documentation:
-  - https://github.com/google/yapf
+
+# Version of the set of Restylers to run
+#
+# This should correspond to a ref on the restyled-io/restylers repository,
+# usually it's a tag that is a date of when that set was released. You could
+# re-specify the default in your own config if you prefer to avoid update
+# surprises.
+#
+restylers_version: "20190910"
