@@ -158,6 +158,8 @@ class UserConfigHandler(Logs):
             if validate:
                 self.error_log(validate)
 
+        a = 11111111111111111111111111111111 + 11111111111111111111111111 + 1111111111111111111 + 1111111111111111111111
+
         # Sanitize static_url key
         # Prevent:
         #   output = /output/
