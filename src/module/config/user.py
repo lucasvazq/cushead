@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Module used to format default settings dictionary
 
 Classes:
     DefaultUserConfig
     UserConfigHandler
 """
-
 import textwrap
 from os import path
-from typing import Dict, List, Union
+from typing import Dict
+from typing import List
+from typing import Union
 
-from src.info import Info
 from src.helpers.assets import Images
 from src.helpers.validators import KeysValidator
+from src.info import Info
 from src.services.logs import Logs
 
 
