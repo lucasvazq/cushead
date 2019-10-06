@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Module to handle the images configurations
 
 Classes:
     IconsFormatConfigStructure
     IconsFormatConfig
 """
-
 from os import path
-from typing import Dict, List, Union
+from typing import Dict
+from typing import List
+from typing import Union
 
 
 class FileAttributes:
