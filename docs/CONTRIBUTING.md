@@ -40,13 +40,66 @@ The formatters used by the application are:
 
 - yapf
 
-An external application, **Codacy** must check the quality of your code
+Others application, are doing some checks too:
+
+- travis-ci: Check if script run correctly
+
+- codacy: Verify the quality of code
+
+- guardrails: Search security problems
 
 In addition, the person in charge of manually reviewing the code, will apply a review with the code verifiers: **flake8** and **pylint**
-The docstring used follows the Google style for Python code
-Comments must be in english
+
+Also, the docstring used need to follows the Google Style and comments must be in english
+
+Note: The test part, and the requirement to meet 100% with coverage is not required. This we do every so often, not in each PR
 
 ## Labels
+
+### Status #cfcfcf
+
+- approved
+- wip
+- wontfix
+- dont merge
+- merge
+
+### High priority #000000
+
+- bug
+- security
+- master
+
+### Comunity #0366D6
+
+- discusion
+- question
+- good first issue
+- help wanted
+
+### Type #d11f5a
+
+- dependencies
+- documentation
+- enhancement
+- fix
+- review
+
+## Special #C6FF91
+
+- hacktoberfest
+
+### General labels
+
+- approved: 
+
+# remove:
+cool
+
+
+### Issues labels
+
+### PR labels
 
 ## Reviews
 
