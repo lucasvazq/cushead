@@ -70,43 +70,43 @@ Steps
 
 <details>
 
-<summary>Labels</summary>
+<summary>Labels list</summary>
 
-#### Status
+> #### Status
+> 
+> Color: ![#cfcfcf][color_1]
+> 
+> Issues:
+> 
+> - approved: Can work on it
+> 
+> PR:
+> 
+> - don't merge: Don't merge the PR
+> 
+> - merge: Merge the PR
 
-Color: ![#cfcfcf][color_1]
+> #### High priority
+> 
+> Color: ![#000000][color_2]
+> 
+> - bug: Something doesn't work as expected
+> 
+> - security: Security issue
+> 
+> - master: Something that occurs in master branch
 
-Issues:
-
-- approved: Can work on it
-
-PR:
-
-- don't merge: Don't merge the PR
-
-- merge: Merge the PR
-
-#### High priority
-
-Color: ![#000000][color_2]
-
-- bug: Something doesn't work as expected
-
-- security: Security issue
-
-- master: Something that occurs in master branch
-
-#### Comunity
-
-Color: ![#0366d6][color_3]
-
-- discusion: Debate about something
-
-- question: Question
-
-- good first issue: To attract new contributors
-
-- help wanted: Help is needed or to attract new contributors
+> #### Comunity
+> 
+> Color: ![#0366d6][color_3]
+> 
+> - discusion: Debate about something
+> 
+> - question: Question
+> 
+> - good first issue: To attract new contributors
+> 
+> - help wanted: Help is needed or to attract new contributors
 
 > #### Type
 >
@@ -121,12 +121,12 @@ Color: ![#0366d6][color_3]
 > - fix: Something need to be fixed or improved
 >
 > - review: Proposes analysis
->
-#### Special
 
-Color: ![#94e582][color_5]
-
-- hacktoberfest: https://hacktoberfest.digitalocean.com/
+> #### Special
+> 
+> Color: ![#94e582][color_5]
+> 
+> - hacktoberfest: https://hacktoberfest.digitalocean.com/
 
 </details>
 
