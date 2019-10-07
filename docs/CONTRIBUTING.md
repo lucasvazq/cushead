@@ -108,21 +108,21 @@ Color: ![#0366d6][color_3]
 
 - help wanted: Help is needed or to attract new contributors
 
-#### Type
-
-Color: ![#d11f5a][color_4]
-
-- dependencies: Update a dependency
-
-- documentation: Documentation development
-
-- enhancement: New feature
-
-- fix: Something need to be fixed or improved
-
-- review: Proposes analysis
-
-### Special
+> #### Type
+>
+> Color: ![#d11f5a][color_4]
+>
+> - dependencies: Update a dependency
+>
+> - documentation: Documentation development
+>
+> - enhancement: New feature
+>
+> - fix: Something need to be fixed or improved
+>
+> - review: Proposes analysis
+>
+#### Special
 
 Color: ![#94e582][color_5]
 
