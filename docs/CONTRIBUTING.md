@@ -1,91 +1,59 @@
-# Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. 
+3040/5000
+## Introduction
 
-Please note we have a code of conduct, please follow it in all your interactions with the project.
+You can contribute to this repository in multiple ways: making issues that detect problems or describe new features, creating PR or simply responding comments.
+All kinds of positive interaction, which adds to the project, will be considered as a contribution.
 
-## Pull Request Process
+Here is a [list][1] provided by github, to which we cling, which defines the different types of contributors:
 
-1. Ensure any install or build dependencies are removed before the end of the layer when doing a 
-   build.
-2. Update the README.md with details of changes to the interface, this includes new environment 
-   variables, exposed ports, useful file locations and container parameters.
-3. Increase the version numbers in any examples files and the README.md to the new version that this
-   Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
-4. Pull Requests will be merged by a maintainer.
+- **Author**: The person / s or organization that created the project
 
-## Code of Conduct
+- **Owner**: The person / s who has administrative ownership over the organization or repository (not always the same as the original author)
 
-### Our Pledge
+ - **Maintainers**: Contributors who are responsible for driving the vision and managing the organizational aspects of the project (They may also be authors or owners of the project.)
 
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.
+ - **Contributors**: Everyone who has contributed something back to the project
 
-### Our Standards
+ - **Community Members**: People who use the project. They might be active in conversations or express their opinion on the project’s direction
 
-Examples of behavior that contributes to creating a positive environment
-include:
+## Issue Creation:
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+If you think there is something in the repository that needs to be changed, or if it needs to be added, create an Issue describing the problem.
+You can also use it to ask questions or open discussion topics.
+Always try to comply with the template provided.
 
-Examples of unacceptable behavior by participants include:
+Depending on the type of problem you are defining, different types of labels will be applied. These are going to refer to the type of problem that you are posing and serve to indicate the steps to be followed by the developers or the rest of the community.
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+## Pull Request:
 
-### Our Responsibilities
+Pull requests imply a change in our repository. It can be in the documentation, as in some configuration or the main code. The source code of this repository, being made in python, we try to apply certain style rules.
 
-Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
+When you create a PR, if you have modified any .py file, an application called restyled.io will try to review your contribution with 4 code review packages. Leave a message and make a new PR indicating the steps to follow to meet the required styles.
+The formatters used by the application are:
 
-Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
+- autopep8
 
-### Scope
+- black
 
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.
+- reorder-python-imports
 
-### Enforcement
+- yapf
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team. All complaints will be reviewed and 
-investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.
+An external application, **Codacy** must check the quality of your code
 
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
+In addition, the person in charge of manually reviewing the code, will apply a review with the code verifiers: **flake8** and **pylint**
+The docstring used follows the Google style for Python code
+Comments must be in english
 
-### Attribution
+## Labels
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at [http://contributor-covenant.org/version/1/4][version]
+## Reviews
 
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+## Community participation
+
+All interaction with the community must be respectful and with the intention of adding value. The project promotes any type of non-offensive vocabulary. The use of English language is recommended because it is the most universal, a question asked and answered in English has the possibility of having more scope than if it is answered in another language
+
+
+
+[1]: https://opensource.guide/how-to-contribute/#anatomy-of-an-open-source-project
