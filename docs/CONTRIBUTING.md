@@ -1,6 +1,4 @@
-
-3040/5000
-## Introduction
+# Introduction
 
 You can contribute to this repository in multiple ways: making issues that detect problems or describe new features,
 creating PR or simply responding comments.
@@ -20,6 +18,13 @@ as the original author)
 
  - **Community Members**: People who use the project. They might be active in conversations or express their opinion on
  the project’s direction
+
+## Language
+
+All interaction with the community must be respectful and with the intention of adding value. The project promotes any
+type of non-offensive vocabulary. The use of English language is recommended because it is the most universal, a
+question asked and answered in English has the possibility of having more scope than if it is answered in another
+language.
 
 ## Workflow
 
@@ -70,8 +75,9 @@ Steps
 
 <details>
 
-<summary>Labels list</summary>
+<summary><b>Labels list</b></summary>
 
+>
 > #### Status
 > 
 > Color: ![#cfcfcf][color_1]
@@ -85,7 +91,9 @@ Steps
 > - don't merge: Don't merge the PR
 > 
 > - merge: Merge the PR
+>
 
+>
 > #### High priority
 > 
 > Color: ![#000000][color_2]
@@ -95,7 +103,9 @@ Steps
 > - security: Security issue
 > 
 > - master: Something that occurs in master branch
+>
 
+>
 > #### Comunity
 > 
 > Color: ![#0366d6][color_3]
@@ -107,7 +117,9 @@ Steps
 > - good first issue: To attract new contributors
 > 
 > - help wanted: Help is needed or to attract new contributors
+>
 
+>
 > #### Type
 >
 > Color: ![#d11f5a][color_4]
@@ -121,12 +133,15 @@ Steps
 > - fix: Something need to be fixed or improved
 >
 > - review: Proposes analysis
+>
 
+>
 > #### Special
 > 
 > Color: ![#94e582][color_5]
 > 
 > - hacktoberfest: https://hacktoberfest.digitalocean.com/
+>
 
 </details>
 
@@ -177,13 +192,6 @@ each PR
 ## Merge
 
 Automatic merge with label 'merge' by the application [probot-auto-merge][3]
-
-## Comments
-
-All interaction with the community must be respectful and with the intention of adding value. The project promotes any
-type of non-offensive vocabulary. The use of English language is recommended because it is the most universal, a
-question asked and answered in English has the possibility of having more scope than if it is answered in another
-language.
 
 [1]: https://opensource.guide/how-to-contribute/#anatomy-of-an-open-source-project
 [2]: https://restyled.io
