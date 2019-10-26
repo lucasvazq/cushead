@@ -3,7 +3,7 @@ certifi==2019.9.11
 chardet==3.0.4
 idna==2.8
 isort==4.3.21
-lazy-object-proxy==1.4.2
+lazy-object-proxy==1.4.3
 mccabe==0.6.1
 Pillow==6.2.1
 pylint==2.4.3
