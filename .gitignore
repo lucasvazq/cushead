@@ -1,4 +1,8 @@
 venv/
 *.pyc
-.idea
+
 .vscode
+
+# IDEs
+.idea/
+.theia/
