@@ -48,17 +48,17 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
     def read_user_config(self) -> Tuple[dict, str]:
         """Read user config and validate them"""
         json_dict = {}
-        main_path = ''
+        main_path = ""
 
         if not self.args.config:
             return json_dict, main_path
 
-        validator = FilesValidator(file_path=self.args.config, key='-config')
+        validator = FilesValidator(file_path=self.args.config, key="-config")
         validation = validator.all()
         if validation:
             self.error_log(validation)
 
-        with open(self.args.config, 'r') as file_instance:
+        with open(self.args.config, "r") as file_instance:
             file_string = file_instance.read()
         try:
             json_dict = json.loads(file_string)
@@ -89,12 +89,12 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
     def argument_boolean_image(self):
         """Handle --images argument"""
         binary_images = self.default_images()
-        destination_folder = ''.join(self.args.default.split('/')[0:-1])
+        destination_folder = "".join(self.args.default.split("/")[0:-1])
         for binary_image in binary_images:
-            file_name = binary_image['filename']
+            file_name = binary_image["filename"]
             destination_file_path = path.join(destination_folder, file_name)
             folder_instance = FilesHelper(
-                binary_content=binary_image['content'],
+                binary_content=binary_image["content"],
                 destination_file_path=destination_file_path,
             )
             folder_instance.write_binary_file()
@@ -105,37 +105,31 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
         all_files = self.all_files()
         for key in all_files:
             folder_instance = FilesHelper(
-                destination_file_path=all_files[key].get(
-                    'destination_file_path', ''),
-                unicode_content=all_files[key].get('content', ''),
+                destination_file_path=all_files[key].get("destination_file_path", ""),
+                unicode_content=all_files[key].get("content", ""),
             )
             folder_instance.write_unicode_file()
         for image_config in self.get_icons_creation_config():
             wasa = path.join(
-                image_config.get('output_folder_path', ''),
-                image_config.get('file_name', ''),
+                image_config.get("output_folder_path", ""),
+                image_config.get("file_name", ""),
             )
-            if image_config.get('size', False):
+            if image_config.get("size", False):
                 self.resize_image(
                     wasa,
-                    image_config.get('source_file_path', ''),
-                    image_config.get('size', []),
+                    image_config.get("source_file_path", ""),
+                    image_config.get("size", []),
                 )
             else:
-                self.move_svg(
-                    wasa,
-                    image_config.get('source_file_path', ''),
-                )
+                self.move_svg(wasa, image_config.get("source_file_path", ""))
 
     # -default
     def argument_string_default(self):
         """Handle -default argument"""
         default_settings = self.default_settings()
-        class_instance = FilesHelper(destination_file_path=self.args.default,
-                                     unicode_content=default_settings)
+        class_instance = FilesHelper(
+            destination_file_path=self.args.default, unicode_content=default_settings
+        )
         class_instance.write_unicode_file()
         fullpath = path.join(os.getcwd(), self.args.default)
-        self.default_log(
-            f"CONFIG FILE: {self.args.default}\n"
-            f"FULL PATH: {fullpath}"
-        )
+        self.default_log(f"CONFIG FILE: {self.args.default}\n" f"FULL PATH: {fullpath}")
