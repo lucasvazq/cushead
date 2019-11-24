@@ -1,6 +1,4 @@
-
-3040/5000
-## Introduction
+# Introduction
 
 You can contribute to this repository in multiple ways: making issues that detect problems or describe new features,
 creating PR or simply responding comments.
@@ -20,6 +18,13 @@ as the original author)
 
  - **Community Members**: People who use the project. They might be active in conversations or express their opinion on
  the project’s direction
+
+## Language
+
+All interaction with the community must be respectful and with the intention of adding value. The project promotes any
+type of non-offensive vocabulary. The use of English language is recommended because it is the most universal, a
+question asked and answered in English has the possibility of having more scope than if it is answered in another
+language.
 
 ## Workflow
 
@@ -70,63 +75,73 @@ Steps
 
 <details>
 
-<summary>Labels</summary>
+<summary><b>Labels list</b></summary>
 
-#### Status
+>
+> #### Status
+> 
+> Color: ![#cfcfcf][color_1]
+> 
+> Issues:
+> 
+> - approved: Can work on it
+> 
+> PR:
+> 
+> - don't merge: Don't merge the PR
+> 
+> - merge: Merge the PR
+>
 
-Color: ![#cfcfcf][color_1]
+>
+> #### High priority
+> 
+> Color: ![#000000][color_2]
+> 
+> - bug: Something doesn't work as expected
+> 
+> - security: Security issue
+> 
+> - master: Something that occurs in master branch
+>
 
-Issues:
+>
+> #### Comunity
+> 
+> Color: ![#0366d6][color_3]
+> 
+> - discusion: Debate about something
+> 
+> - question: Question
+> 
+> - good first issue: To attract new contributors
+> 
+> - help wanted: Help is needed or to attract new contributors
+>
 
-- approved: Can work on it
+>
+> #### Type
+>
+> Color: ![#d11f5a][color_4]
+>
+> - dependencies: Update a dependency
+>
+> - documentation: Documentation development
+>
+> - enhancement: New feature
+>
+> - fix: Something need to be fixed or improved
+>
+> - review: Proposes analysis
+>
 
-PR:
-
-- don't merge: Don't merge the PR
-
-- merge: Merge the PR
-
-#### High priority
-
-Color: ![#000000][color_2]
-
-- bug: Something doesn't work as expected
-
-- security: Security issue
-
-- master: Something that occurs in master branch
-
-#### Comunity
-
-Color: ![#0366d6][color_3]
-
-- discusion: Debate about something
-
-- question: Question
-
-- good first issue: To attract new contributors
-
-- help wanted: Help is needed or to attract new contributors
-
-#### Type
-
-Color: ![#d11f5a][color_4]
-
-- dependencies: Update a dependency
-
-- documentation: Documentation development
-
-- enhancement: New feature
-
-- fix: Something need to be fixed or improved
-
-- review: Proposes analysis
-
-### Special
-
-Color: ![#94e582][color_5]
-
-- hacktoberfest: https://hacktoberfest.digitalocean.com/
+>
+> #### Special
+> 
+> Color: ![#94e582][color_5]
+> 
+> - hacktoberfest: https://hacktoberfest.digitalocean.com/
+>
 
 </details>
 
@@ -178,13 +193,6 @@ each PR
 
 Automatic merge with label 'merge' by the application [probot-auto-merge][3]
 
-## Comments
-
-All interaction with the community must be respectful and with the intention of adding value. The project promotes any
-type of non-offensive vocabulary. The use of English language is recommended because it is the most universal, a
-question asked and answered in English has the possibility of having more scope than if it is answered in another
-language.
-
 [1]: https://opensource.guide/how-to-contribute/#anatomy-of-an-open-source-project
 [2]: https://restyled.io
 [3]: https://github.com/apps/probot-auto-merge
@@ -194,3 +202,8 @@ language.
 [color_3]: https://placehold.it/15/0366d6/000000?text=+
 [color_4]: https://placehold.it/15/d11f5a/000000?text=+
 [color_5]: https://placehold.it/15/94e582/000000?text=+
+
+```
+flake8
+3.7.8 (dlint: 0.9.0, flake8-annotations-complexity: 0.0.2, flake8-bandit: 2.1.2, flake8-broken-line: 0.1.1, flake8-bugbear: 19.8.0, flake8-comprehensions: <cached_property.cached_property object at 0x7fc75f90df10>, flake8-darglint: 0.4.1, flake8-debugger: 3.1.0, flake8-docstrings: 1.5.0, pydocstyle: 4.0.1, flake8-eradicate: 0.2.3, flake8-executable: 2.0.3, flake8-print: 3.1.1, flake8-string-format: 0.2.3, flake8_builtins: 1.4.1, flake8_coding: 1.3.2, flake8_commas: 2.0.0, flake8_isort: 2.3, flake8_pep3101: 1.2.1, flake8_quotes: 2.1.0, logging-format: 0.6.0, mccabe: 0.6.1, naming: 0.8.2, pycodestyle: 2.5.0, pyflakes: 2.1.1, radon: 2.4.0, rst-docstrings: 0.0.11, wemake-python-styleguide: 0.12.5) CPython 3.7.5rc1 on Linux
+```

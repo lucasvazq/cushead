@@ -69,7 +69,7 @@ class ComplementaryFilesCreation:
         content = ("<?xml version='1.0' encoding='utf-8'?>"
                    "<browserconfig><msapplication><tile>")
         content += ''.join([
-            "<square{0}x{0}logo src='{1}/{2}-{0}x{0}.png' />".format(
+            "<square{0}x{0}logo src='{1}/{2}-{0}x{0}.png'>".format(
                 size,
                 static_url,
                 icon
@@ -77,7 +77,7 @@ class ComplementaryFilesCreation:
             for size in sizes_square
         ])
         content += ''.join([
-            "<wide{0}x{1}logo src='{2}/{3}-{0}x{1}.png' />".format(
+            "<wide{0}x{1}logo src='{2}/{3}-{0}x{1}.png'>".format(
                 size[0],
                 size[1],
                 static_url,
@@ -161,28 +161,26 @@ class ComplementaryFilesCreation:
         """
         opensearch_config = self.icons_config.get('opensearch', [])[0]
         file_name = getattr(opensearch_config, 'output_file_name', '')
-        sizes = getattr(opensearch_config, 'sizes_square', [0, 0])
+        size = getattr(opensearch_config, 'sizes_square', [0])[0]
         file_type = getattr(opensearch_config, 'attribute_type', '')
         static_url = self.config.get('static_url', '')
         title = self.config.get('title', '')
         url = self.config.get('clean_url', '')
-        content = ("<?xml version='1.0' encoding='utf-8'?>"
-                   "<OpenSearchDescription xmlns:moz='"
-                   "http://www.mozilla.org/2006/browser/search/' "
-                   "xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
-                   "<ShortName>{0}</ShortName>"
-                   "<Description>Search {0}</Description>"
-                   "<InputEncoding>UTF-8</InputEncoding>"
-                   "<Url method='get' type='text/html' "
-                   "template='http://www.google.com/search?q="
-                   "{{searchTerms}}+site%3A{1}' />"
-                   "<Image height='{2}' width='{2}' "
-                   "type='{3}'>"
-                   "{4}/{5}-16x16.png"
-                   "</Image>"
-                   "</OpenSearchDescription>")
-        content = content.format(title, url, sizes[0], file_type, static_url,
-                                 file_name)
+        content = (f"<?xml version='1.0' encoding='utf-8'?>"
+                   f"<OpenSearchDescription xmlns:moz='"
+                   f"http://www.mozilla.org/2006/browser/search/' "
+                   f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
+                   f"<ShortName>{title}</ShortName>"
+                   f"<Description>Search {title}</Description>"
+                   f"<InputEncoding>UTF-8</InputEncoding>"
+                   f"<Url method='get' type='text/html' "
+                   f"template='http://www.google.com/search?q="
+                   f"{{searchTerms}}+site%3A{url}' />"
+                   f"<Image height='{size}' width='{size}' "
+                   f"type='{file_type}'>"
+                   f"{static_url}/{file_name}-16x16.png"
+                   f"</Image>"
+                   f"</OpenSearchDescription>")
         content = content.replace('\'', '"')
         destination_file_path = path.join(
             self.config.get('static_folder_path', ''),

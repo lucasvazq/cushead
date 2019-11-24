@@ -24,21 +24,21 @@ class General:
         # content-type
         string = self.config.get('content-type', '')
         head.append(f"<meta http-equiv='Content-Type' "
-                    f"content='{string}' />")
+                    f"content='{string}'>")
         # X-UA-Compatible
         string = self.config.get('X-UA-Compatible', '')
         head.append(f"<meta http-equiv='X-UA-Compatible' "
-                    f"content='{string}' />")
+                    f"content='{string}'>")
         # viewport
         string = self.config.get('viewport', '')
-        head.append(f"<meta name='viewport' content='{string}' />")
+        head.append(f"<meta name='viewport' content='{string}'>")
         # locale
         string = self.config.get('language', '')
         head.append(f"<meta http-equiv='Content-Language' "
-                    f"content='{string}' />")
+                    f"content='{string}'>")
         # robots
         string = self.config.get('robots', '')
-        head.append(f"<meta name='robots' content='{string}' />")
+        head.append(f"<meta name='robots' content='{string}'>")
         # apple
         head.extend([
             "<meta name='apple-mobile-web-app-capable' content='yes'>",
@@ -54,28 +54,28 @@ class General:
         string = self.config.get('title', '')
         head.extend([
             f"<title>{string}</title>",
-            f"<meta name='application-name' content='{string}' />",
+            f"<meta name='application-name' content='{string}'>",
             f"<meta name='apple-mobile-web-app-title' "
-            f"content='{string}' />",
+            f"content='{string}'>",
         ])
         # description
         string = self.config.get('description', '')
-        head.append(f"<meta name='description' content='{string}' />")
+        head.append(f"<meta name='description' content='{string}'>")
         # subject
         string = self.config.get('subject', '')
-        head.append(f"<meta name='subject' content='{string}' />")
+        head.append(f"<meta name='subject' content='{string}'>")
         # keywords
         string = self.config.get('keywords', '')
-        head.append(f"<meta name='keywords' content='{string}' />")
+        head.append(f"<meta name='keywords' content='{string}'>")
         # theme-color and msapplication-TileColor
         string = self.config.get('background_color', '')
         head.extend([
-            f"<meta name='theme-color' content='{string}' />",
-            f"<meta name='msapplication-TileColor' content='{string}' />",
+            f"<meta name='theme-color' content='{string}'>",
+            f"<meta name='msapplication-TileColor' content='{string}'>",
         ])
         # author
         string = self.config.get('author', '')
-        head.append(f"<meta name='author' content='{string}' />")
+        head.append(f"<meta name='author' content='{string}'>")
         return head
 
     def complementary_files(self) -> list:
@@ -85,15 +85,15 @@ class General:
         return [
             # browserconfig.xml
             (f"<meta name='msapplication-config' "
-             f"content='{static_url}/browserconfig.xml' />"),
+             f"content='{static_url}/browserconfig.xml'>"),
             # manifest.json
             (f"<link rel='manifest' href='{static_url}"
-             f"/manifest.json' />"),
+             f"/manifest.json'>"),
             # opensearch.xml
             (f"<link rel='search' "
              f"type='application/opensearchdescription+xml' "
              f"title='{title}' href='{static_url}"
-             f"/opensearch.xml' />"),
+             f"/opensearch.xml'>"),
         ]
 
     def social_media(self) -> list:
@@ -104,7 +104,7 @@ class General:
 
         # fb:app_id
         string = self.config.get('facebook_app_id', '')
-        head.append(f"<meta porperty='fb:app_id' content='{string}' />")
+        head.append(f"<meta porperty='fb:app_id' content='{string}'>")
         # og:locale
         language = self.config.get('language', '')
         territory = (
@@ -112,26 +112,26 @@ class General:
             if 'territory' in self.config else ''
         )
         string = language + territory
-        head.append(f"<meta property='og:locale' content='{string}' />")
+        head.append(f"<meta property='og:locale' content='{string}'>")
         # og:type
         # Only allow website type for simplicity
-        head.append("<meta property='og:type' content='website' />")
+        head.append("<meta property='og:type' content='website'>")
         # og:url, Likes and Shared are stored under this url
         string = self.config.get('protocol', '')
         string += self.config.get('clean_url', '')
-        head.append(f"<meta property='og:url' content='{string}' />")
+        head.append(f"<meta property='og:url' content='{string}'>")
         # og:site_name
         string = self.config.get('title', '')
-        head.append(f"<meta property='og:site_name' content='{string}' />")
+        head.append(f"<meta property='og:site_name' content='{string}'>")
         # og:title
         string = self.config.get('title', '')
-        head.append(f"<meta property='og:title' content='{string}' />")
+        head.append(f"<meta property='og:title' content='{string}'>")
         # og:description
         string = self.config.get('description', '')
-        head.append(f"<meta property='og:description' content='{string}' />")
+        head.append(f"<meta property='og:description' content='{string}'>")
         # og:image:type
         # Only allow png type for simplicity
-        head.append("<meta property='og:image:type' content='image/png' />")
+        head.append("<meta property='og:image:type' content='image/png'>")
         # og:image:alt and twitter:image:alt
         title = self.config.get('title', '')
         description = self.config.get('description', '')
@@ -142,8 +142,8 @@ class General:
         )
         string = title + connector + description
         head.extend([
-            f"<meta property='og:image:alt' content='{string}' />",
-            f"<meta name='twitter:image:alt' content='{string}' />",
+            f"<meta property='og:image:alt' content='{string}'>",
+            f"<meta name='twitter:image:alt' content='{string}'>",
         ])
 
         # TWITTER
@@ -153,19 +153,19 @@ class General:
 
         # twitter:card
         # Only allow summary type for simplicity
-        head.append("<meta name='twitter:card' content='summary' />")
+        head.append("<meta name='twitter:card' content='summary'>")
         # twitter:site
         string = self.config.get('twitter_user_@', '')
-        head.append(f"<meta name='twitter:site' content='{string}' />")
+        head.append(f"<meta name='twitter:site' content='{string}'>")
         # twitter:title
         string = self.config.get('title', '')
-        head.append(f"<meta name='twitter:title' content='{string}' />")
+        head.append(f"<meta name='twitter:title' content='{string}'>")
         # twitter:description
         string = self.config.get('description', '')
-        head.append(f"<meta name='twitter:description' content='{string}' />")
+        head.append(f"<meta name='twitter:description' content='{string}'>")
         # tw:creator
         string = self.config.get('twitter_user_id', '')
         head.append(f"<meta property='twitter:creator:id' "
-                    f"content='{string}' />")
+                    f"content='{string}'>")
 
         return head
