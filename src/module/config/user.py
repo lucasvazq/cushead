@@ -143,8 +143,9 @@ class UserConfigHandler(Logs):
         social_media = default.get("social_media", {})
         progressive_web_app = settings.get("progressive_web_apps", {})
         if "required" not in settings:
-            self.error_log("Miss 'required' object and it's required in "
-                           "config file.")
+            self.error_log(
+                "Miss 'required' object and it's required in config file."
+            )
         settings = {
             **settings["required"],
             **recommended,
