@@ -133,7 +133,10 @@ class UserConfigHandler(Logs):
             dict: config that the classes under this module can use
 
         """
-        settings = user_settings or {}
+        if not user_settings:
+            return None
+        settings = user_settings
+
 
         # Construct config
         recommended = settings.get("recommended", {})
@@ -143,8 +146,9 @@ class UserConfigHandler(Logs):
         social_media = default.get("social_media", {})
         progressive_web_app = settings.get("progressive_web_apps", {})
         if "required" not in settings:
-            self.error_log("Miss 'required' object and it's required in "
-                           "config file.")
+            self.error_log(
+                "Miss 'required' object and it's required in config file."
+            )
         settings = {
             **settings["required"],
             **recommended,

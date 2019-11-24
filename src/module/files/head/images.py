@@ -147,8 +147,7 @@ class Images(ImageService):
 
         tag_element_string = ''.join(tag_element_list)
         tag_element_string = tag_element_string[:-1]
-
-        tag_element_string += ' />'
+        tag_element_string += '>'
 
         return tag_element_string
 

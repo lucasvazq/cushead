@@ -42,16 +42,12 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
         self.error_log = lambda message: self.error_stdout(message)
         self.presentation_log(self.presentation_message())
         self.args = self.parse_args(args or [])
-        user_config, main_path = self.read_user_config()
-        super().__init__(user_config=user_config, main_path=main_path)
 
     def read_user_config(self) -> Tuple[dict, str]:
         """Read user config and validate them"""
-        json_dict = {}
-        main_path = ""
 
         if not self.args.config:
-            return json_dict, main_path
+            return None, None
 
         validator = FilesValidator(file_path=self.args.config, key="-config")
         validation = validator.all()
@@ -60,8 +56,10 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
 
         with open(self.args.config, "r") as file_instance:
             file_string = file_instance.read()
+
+        json_dict = {}
         try:
-            json_dict = json.loads(file_string)
+            json_dict.update(json.loads(file_string))
         except JSONDecodeError:
             full_path = path.join(os.getcwd(), self.args.config)
             self.error_log(
@@ -102,6 +100,8 @@ class Main(ModuleMain, Argparse, DefaultUserConfig, Logs, MessagesHandler):
     # -config
     def argument_string_config(self):
         """Handle -config argument"""
+        user_config, main_path = self.read_user_config()
+        super().__init__(user_config=user_config, main_path=main_path)
         all_files = self.all_files()
         for key in all_files:
             folder_instance = FilesHelper(
