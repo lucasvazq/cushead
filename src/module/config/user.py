@@ -133,10 +133,7 @@ class UserConfigHandler(Logs):
             dict: config that the classes under this module can use
 
         """
-        if not user_settings:
-            return None
-        settings = user_settings
-
+        settings = user_settings or {}
 
         # Construct config
         recommended = settings.get("recommended", {})
