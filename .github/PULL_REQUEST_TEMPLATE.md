@@ -1,14 +1,12 @@
-<!-- The title of your PR must follow the format "PR: Issue <issue number>: <short description>" -->
+<!-- The title of your PR must follow the format "PR: Issue <issue number>: <issue title>" -->
 <!-- If your PR isn't related to an issue, use this format: "PR: <short description>" -->
 
-<!-- Make sure to replace anything in angle brackets ( < > ) -->
+Fixes: #
 
-# Description
-<Completely/Partly> fixes: #<issue_that_PR_solves>
+# Description <!-- (Remove this section if there is nothing to comment on.) -->
 
-<anything else you'd like to add>
+<!-- Leave here some comment if you'd like -->
 
-# Steps to Test <!-- (Remove this section if it is not applicable.) -->
-1. <step>
-2. <step>
-3. <step>
+# How to Test <!-- (Remove this section if it is not applicable.) -->
+
+<!-- Tests description or steps -->
