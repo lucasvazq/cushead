@@ -32,21 +32,22 @@ class DefaultUserConfig:
     def default_images() -> List[Dict[str, str]]:
         """Generate images files to attach to the preset settings"""
         binary_files = []
-        realpath = path.join(path.dirname(path.realpath(__file__)),
-                             "../../assets")
+        realpath = path.join(
+            path.dirname(path.realpath(__file__)), "../../assets"
+        )
         image_files = Images.images_list()
         for filename in image_files:
             filepath = path.join(realpath, filename)
             with open(filepath, "rb") as binary_file:
-                binary_files.append({
-                    "filename": filename,
-                    "content": binary_file.read()
-                })
+                binary_files.append(
+                    {"filename": filename, "content": binary_file.read()}
+                )
         return binary_files
 
     def default_settings(self) -> str:
         """Generate config file in indented JSON format"""
-        settings = textwrap.dedent(f"""\
+        settings = textwrap.dedent(
+            f"""\
             {{
                 'comment':  {{
                     'About':            'Config file used by python CUSHEAD',
@@ -111,15 +112,16 @@ class DefaultUserConfig:
                         }}
                     ]
                 }}
-            }}""")
+            }}"""
+        )
         settings = settings.replace("'", '"')
         return settings
 
 
 class UserConfigHandler(Logs):
-    def transform(self,
-                  user_settings: Union[dict, None] = None,
-                  main_path: str = "") -> dict:
+    def transform(
+        self, user_settings: Union[dict, None] = None, main_path: str = ""
+    ) -> dict:
         """Format default settings to a dict for this package classes
 
         Format default settings dictionary into a dictionary that the classes
@@ -179,16 +181,22 @@ class UserConfigHandler(Logs):
         # Define the main path as the passed throught -file argument
         settings["main_folder_path"] = main_path
         settings["output_folder_path"] = path.join(
-            settings["main_folder_path"], "output")
+            settings["main_folder_path"], "output"
+        )
         settings["static_folder_path"] = path.join(
-            settings["output_folder_path"], settings["static_folder_path"])
+            settings["output_folder_path"], settings["static_folder_path"]
+        )
 
-        settings["favicon_ico"] = path.join(settings["main_folder_path"],
-                                            settings["favicon_ico"])
-        settings["favicon_png"] = path.join(settings["main_folder_path"],
-                                            settings["favicon_png"])
-        settings["favicon_svg"] = path.join(settings["main_folder_path"],
-                                            settings["favicon_svg"])
-        settings["preview_png"] = path.join(settings["main_folder_path"],
-                                            settings["preview_png"])
+        settings["favicon_ico"] = path.join(
+            settings["main_folder_path"], settings["favicon_ico"]
+        )
+        settings["favicon_png"] = path.join(
+            settings["main_folder_path"], settings["favicon_png"]
+        )
+        settings["favicon_svg"] = path.join(
+            settings["main_folder_path"], settings["favicon_svg"]
+        )
+        settings["preview_png"] = path.join(
+            settings["main_folder_path"], settings["preview_png"]
+        )
         return settings
