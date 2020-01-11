@@ -116,7 +116,6 @@ class ComplementaryFilesCreation:
         content["scope"] = self.config.get("scope", "")
         content["display"] = self.config.get("display", "")
         content["platform"] = self.config.get("platform", "")
-        content["related_applications"] = self.config.get("applications", "")
         content["icons"] = [{
             "src":
             "{0}/{1}-{2}x{2}".format(
