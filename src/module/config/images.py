@@ -6,6 +6,7 @@ Classes:
     IconsFormatConfigStructure
     IconsFormatConfig
 """
+import collections
 from os import path
 from typing import Dict
 from typing import List
@@ -27,7 +28,7 @@ class FileAttributes:
         self.size = size or []
 
 
-class ImageFormatConfig:
+class ImageFormater:
     """Class to define attributes of a png image
 
     Init:
@@ -111,7 +112,7 @@ class ImageFormatConfig:
         self.attribute_special_title = attribute_special_title
 
         self.output_extension = path.splitext(self.source_file_path)[1]
-        self.formated = self._output_formater()
+        self.formated = self.output_formater()
 
     def _get_sizes(self) -> list:
         sizes_square = [[size, size] for size in self.sizes_square]
@@ -155,13 +156,105 @@ class IconsFormatConfig:
     config = {}
     icons_config = {}
 
-    def _favicon_ico_icons_config(self) -> List[ImageFormatConfig]:
-        favicon_ico = self.config.get("favicon_ico", "")
-        output_folder_path = self.config.get("output_folder_path", "")
+    def __init__(self, image_format_config_dict: dict = None):
+        self.image_format_config_dict = (image_format_config_dict
+                                         or self.image_format_config())
+
+    def _favicon_ico_icons_config(self) -> List[ImageFormater]:
+
         return [
             # <link rel='shortcut icon' href='/favicon.ico'
             # type='image/x-icon'>
-            ImageFormatConfig(
+            self.image_format_config_dict["favicon_ico"]
+        ]
+
+    def _favicon_png_icons_config(self) -> List[ImageFormater]:
+        # Order matters
+        return [
+            # Default png favicon
+            # Example:
+            # <link rel="icon" type="image/png" href="/static/favicon-16x16.png"
+            # sizes="16x16">
+            self.image_format_config_dict["favicon_16x16_png"],
+            # Microsoft icon
+            # Example:
+            # <meta name="msapplication-TileImage"
+            # content="/static/ms-icon-144x144.png">
+            self.image_format_config_dict["ms_icon"],
+            # Apple touch default
+            # Example:
+            # <link rel="apple-touch-icon"
+            # href="/static/apple-touch-icon-default-57x57.png">
+            self.image_format_config_dict["apple_touch_icon_default"],
+            # Apple touch with different sizes
+            # Example:
+            # <link rel="apple-touch-icon" sizes="57x57"
+            # href="/static/apple-touch-icon-57x57.png">
+            self.image_format_config_dict["apple_touch_icon"],
+            # Apple touch startup default
+            # Example:
+            # ???
+            self.image_format_config_dict["apple_touch_startup_image"],
+            # Apple touch startup with different sizes
+            # Example:
+            # ???
+            self.image_format_config_dict[
+                "apple_touch_startup_image_media_queries"],
+            # Fluid icon
+            # Example:
+            # <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
+            # title="Microsoft">
+            self.image_format_config_dict["fluid-icon"],
+            # Yandex browser special icon
+            # Example:
+            # ???
+            self.image_format_config_dict["yandex"],
+        ]
+
+    def _favicon_svg_icons_config(self) -> List[ImageFormater]:
+        return [
+            # <link color="blue" rel="mask-icon" href="/static/favicon.svg"
+            self.image_format_config_dict["mask-icon"]
+        ]
+
+    def _preview_png_icons_config(self) -> List[ImageFormater]:
+        return [
+            # <meta property='og:image' content='/static/preview-500x500.png'>
+            self.image_format_config_dict["preview_og"],
+            # <meta property='og:image:secure_url'
+            # content='/static/preview-500x500.png'>
+            self.image_format_config_dict["preview_og_secure_url"],
+            # <meta name='twitter:image' content='/static/preview-500x500.png'>
+            self.image_format_config_dict["preview_twitter"],
+        ]
+
+    def _browserconfig_icons_config(self) -> List[ImageFormater]:
+        return [self.image_format_config_dict["browserconfig"]]
+
+    def _manifest_icons_config(self) -> List[ImageFormater]:
+        return [self.image_format_config_dict["manifest"]]
+
+    def _opensearch_icons_config(self) -> List[ImageFormater]:
+        return [self.image_format_config_dict["opensearch"]]
+
+    def image_format_config(self) -> dict:
+        """Dictionary preloaded with custom data"""
+
+        favicon_ico = self.config.get("favicon_ico", "")
+        favicon_png = self.config.get("favicon_png", "")
+        favicon_svg = self.config.get("favicon_svg", "")
+        preview_png = self.config.get("preview_png", "")
+        output_folder_path = self.config.get("output_folder_path", "")
+        static_folder_path = self.config.get("static_folder_path", "")
+        static_url = self.config.get("static_url", "")
+        background_color = self.config.get("background_color", "")
+        yandex_content = (f"logo={static_url}/yandex.png, "
+                          f"color={background_color}")
+
+        return {
+            # favicon ico
+            "favicon_ico":
+            ImageFormater(
                 output_file_name="favicon",
                 output_folder_path=output_folder_path,
                 source_file_path=favicon_ico,
@@ -172,23 +265,10 @@ class IconsFormatConfig:
                 attribute_rel="icon",
                 attribute_type="image/x-icon",
                 attribute_special_href=True,
-            )
-        ]
-
-    def _favicon_png_icons_config(self) -> List[ImageFormatConfig]:
-        icons = []
-        favicon_png = self.config.get("favicon_png", "")
-        static_folder_path = self.config.get("static_folder_path", "")
-        static_url = self.config.get("static_url", "")
-
-        # Order matters
-
-        # Default png favicon
-        # Example:
-        # <link rel="icon" type="image/png" href="/static/favicon-16x16.png"
-        # sizes="16x16">
-        icons.append(
-            ImageFormatConfig(
+            ),
+            # favicon png
+            "favicon_16x16_png":
+            ImageFormater(
                 output_file_name="favicon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -229,14 +309,9 @@ class IconsFormatConfig:
                 attribute_type="image/png",
                 attribute_special_sizes=True,
                 attribute_special_href=True,
-            ))
-
-        # Microsoft icon
-        # Example:
-        # <meta name="msapplication-TileImage"
-        # content="/static/ms-icon-144x144.png">
-        icons.append(
-            ImageFormatConfig(
+            ),
+            "ms_icon":
+            ImageFormater(
                 output_file_name="ms-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -247,14 +322,9 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_name="msapplication-TileImage",
                 attribute_special_content=True,
-            ))
-
-        # Apple touch default
-        # Example:
-        # <link rel="apple-touch-icon"
-        # href="/static/apple-touch-icon-default-57x57.png">
-        icons.append(
-            ImageFormatConfig(
+            ),
+            "apple_touch_icon_default":
+            ImageFormater(
                 output_file_name="apple-touch-icon",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -264,20 +334,25 @@ class IconsFormatConfig:
                 tag_name="link",
                 attribute_rel="apple-touch-icon",
                 attribute_special_href=True,
-            ))
-
-        # Apple touch with different sizes
-        # Example:
-        # <link rel="apple-touch-icon" sizes="57x57"
-        # href="/static/apple-touch-icon-57x57.png">
-        icons.append(
-            ImageFormatConfig(
+            ),
+            "apple_touch_icon":
+            ImageFormater(
                 output_file_name="apple-touch-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[
-                    57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024
+                    57,
+                    60,
+                    72,
+                    76,
+                    114,
+                    120,
+                    144,
+                    152,
+                    167,
+                    180,
+                    1024,
                 ],
                 head_output=True,
                 url_path=static_url,
@@ -285,13 +360,9 @@ class IconsFormatConfig:
                 attribute_rel="apple-touch-icon",
                 attribute_special_href=True,
                 attribute_special_sizes=True,
-            ))
-
-        # Apple touch startup default
-        # Example:
-        # ???
-        icons.append(
-            ImageFormatConfig(
+            ),
+            "apple_touch_startup_image":
+            ImageFormater(
                 output_file_name="launch",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -301,13 +372,9 @@ class IconsFormatConfig:
                 tag_name="link",
                 attribute_rel="apple-touch-startup-image",
                 attribute_special_href=True,
-            ))
-
-        # Apple touch startup with different sizes
-        # Example:
-        # ???
-        icons.append(
-            ImageFormatConfig(
+            ),
+            "apple_touch_startup_image_media_queries":
+            ImageFormater(
                 output_file_name="launch",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -334,14 +401,9 @@ class IconsFormatConfig:
                 tag_name="link",
                 attribute_rel="apple-touch-startup-image",
                 attribute_special_href=True,
-            ))
-
-        # Fluid icon
-        # Example:
-        # <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
-        # title="Microsoft">
-        icons.append(
-            ImageFormatConfig(
+            ),
+            "fluid-icon":
+            ImageFormater(
                 output_file_name="fluid-icon",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -353,16 +415,9 @@ class IconsFormatConfig:
                 attribute_rel="fluid-icon",
                 attribute_special_href=True,
                 attribute_special_title=True,
-            ))
-
-        # Yandex browser special icon
-        # Example:
-        # ???
-        background_color = self.config.get("background_color", "")
-        static_url = self.config.get("static_url", "")
-        yandex_content = f"logo={static_url}/yandex.png, color={background_color}"
-        icons.append(
-            ImageFormatConfig(
+            ),
+            "yandex":
+            ImageFormater(
                 output_file_name="yandex",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -372,18 +427,10 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_name="yandex-tableau-widget",
                 attribute_content=yandex_content,
-            ))
-
-        return icons
-
-    def _favicon_svg_icons_config(self) -> List[ImageFormatConfig]:
-        background_color = self.config.get("background_color")
-        favicon_svg = self.config.get("favicon_svg", "")
-        static_folder_path = self.config.get("static_folder_path", "")
-        static_url = self.config.get("static_url", "")
-        # <link color="blue" rel="mask-icon" href="/static/favicon.svg"
-        return [
-            ImageFormatConfig(
+            ),
+            # favicon svg
+            "mask-icon":
+            ImageFormater(
                 output_file_name="mask-icon",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_svg,
@@ -394,20 +441,10 @@ class IconsFormatConfig:
                 attribute_color=background_color,
                 attribute_rel="mask-icon",
                 attribute_special_href=True,
-            )
-        ]
-
-    def _preview_png_icons_config(self) -> List[ImageFormatConfig]:
-        # ???
-        # HAVE THREE INSTANCES
-        preview_png = self.config.get("preview_png", "")
-        static_folder_path = self.config.get("static_folder_path", "")
-        static_url = self.config.get("static_url", "")
-        head = []
-
-        # <meta property='og:image' content='/static/preview-500x500.png'>
-        head.append(
-            ImageFormatConfig(
+            ),
+            # preview png
+            "preview_og":
+            ImageFormater(
                 output_file_name="preview",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -418,12 +455,9 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_property="og:image",
                 attribute_special_content=True,
-            ))
-
-        # <meta property='og:image:secure_url'
-        # content='/static/preview-500x500.png'>
-        head.append(
-            ImageFormatConfig(
+            ),
+            "preview_og_secure_url":
+            ImageFormater(
                 output_file_name="preview",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -434,11 +468,9 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_property="og:image:secure_url",
                 attribute_special_content=True,
-            ))
-
-        # <meta name='twitter:image' content='/static/preview-500x500.png'>
-        head.append(
-            ImageFormatConfig(
+            ),
+            "preview_twitter":
+            ImageFormater(
                 output_file_name="preview",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -449,65 +481,47 @@ class IconsFormatConfig:
                 tag_name="meta",
                 attribute_name="twitter:image",
                 attribute_special_content=True,
-            ))
-
-        return head
-
-    def _browserconfig_icons_config(self) -> List[ImageFormatConfig]:
-        favicon_png = self.config.get("favicon_png", "")
-        static_folder_path = self.config.get("static_folder_path", "")
-        return [
-            ImageFormatConfig(
+            ),
+            "browserconfig":
+            ImageFormater(
                 output_file_name="ms-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[30, 44, 70, 150, 310],
                 sizes_rectangular=[[310, 150]],
-            )
-        ]
-
-    def _manifest_icons_config(self) -> List[ImageFormatConfig]:
-        favicon_png = self.config.get("favicon_png", "")
-        static_folder_path = self.config.get("static_folder_path", "")
-        return [
-            ImageFormatConfig(
+            ),
+            "manifest":
+            ImageFormater(
                 output_file_name="android-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[36, 48, 72, 96, 144, 192, 256, 384, 512],
                 attribute_type="image/png",
-            )
-        ]
-
-    def _opensearch_icons_config(self) -> List[ImageFormatConfig]:
-        favicon_png = self.config.get("favicon_png", "")
-        static_folder_path = self.config.get("static_folder_path", "")
-        return [
-            ImageFormatConfig(
+            ),
+            "opensearch":
+            ImageFormater(
                 output_file_name="opensearch",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[16],
                 attribute_type="image/png",
-            )
-        ]
+            ),
+        }
 
-    def default_icons_config(self) -> Dict[str, List[ImageFormatConfig]]:
+    def default_icons_config(self) -> Dict[str, List[ImageFormater]]:
         """Return a default icons format configuration
 
         This return includes configs for favicons with png extension and for
         browserconfig, manifest and opensearch related icons
         """
         return {
-            # direct head
             "favicon_ico": self._favicon_ico_icons_config(),
             "favicon_png": self._favicon_png_icons_config(),
             "favicon_svg": self._favicon_svg_icons_config(),
             "preview_png": self._preview_png_icons_config(),
-            # indirect head
             "browserconfig": self._browserconfig_icons_config(),
             "manifest": self._manifest_icons_config(),
             "opensearch": self._opensearch_icons_config(),

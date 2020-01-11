@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Module to handle the creation of tags that are inside the head tag
 
 Classes:
     Head
 """
-
 from typing import List
 
-from src.module.files.head.images import Images
 from src.module.files.head.general import General
+from src.module.files.head.images import Images
 
 
 class Head(General, Images):
@@ -19,6 +17,7 @@ class Head(General, Images):
     Methods:
         full_head
     """
+
     config = {}
 
     def full_head(self) -> List[List[str]]:
@@ -37,5 +36,6 @@ class Head(General, Images):
             self.wazuncho(),
             self.complementary_files(),
             self.social_media(),
+            self.jsonld(),
         ]
         return head
