@@ -23,6 +23,7 @@ class General:
     image_format_config_dict = {}
 
     def general(self) -> List[str]:
+        # DONE
         """Return a list of tags related to the general config of a website"""
         head = []
         # content-type
@@ -51,6 +52,7 @@ class General:
         return head
 
     def basic(self) -> List[str]:
+        # DONE
         """Return a list of tags related to a basic and standart seo"""
         head = []
         # title
@@ -82,6 +84,7 @@ class General:
         return head
 
     def complementary_files(self) -> List[str]:
+        # DONE
         """Return a list with tags related to complementary files"""
         static_url = self.config.get("static_url", "")
         title = self.config.get("title", "")
@@ -100,6 +103,7 @@ class General:
         ]
 
     def social_media(self) -> List[str]:
+        # DONE
         """Return a list with tags related to social media"""
         head = []
 
@@ -169,6 +173,7 @@ class General:
         return head
 
     def json_ld(self) -> List[str]:
+        # DONE
         protocol = self.config.get("protocol", "")
         clean_url = self.config.get("clean_url", "")
         static_url = self.config.get("static_url", "")

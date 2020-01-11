@@ -14,6 +14,7 @@ from src.module.files.head.base import Head
 
 
 class BaseFileCreation(Head):
+    # DONE
     """Class to handle the creation of the main index.html file
 
     Methods:
@@ -22,6 +23,7 @@ class BaseFileCreation(Head):
     """
 
     def full_index(self) -> Dict[str, Dict[str, str]]:
+        # DONE
         """Create full index.html structure with head tag included
 
         Return
@@ -43,6 +45,7 @@ class BaseFileCreation(Head):
         }
 
     def structure(self, list_head: Union[List[List[str]], None] = None) -> str:
+        # DONE
         head = list_head or []
         """Return an html structure"""
         indent = "    "  # 4 spaces
