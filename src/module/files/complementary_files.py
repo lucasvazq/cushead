@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Module to handle the creation of files that aren't the index.html or images
 
 Classes:
     ComplementaryFilesCreation
 """
-
 import json
 from os import path
 from typing import Dict
