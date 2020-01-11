@@ -29,5 +29,5 @@ def main():
     Main(sys.argv[1:]).run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
