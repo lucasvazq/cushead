@@ -62,43 +62,30 @@ class ComplementaryFilesCreation:
             browserconfig_config = browserconfig_config[0]
         icon = getattr(browserconfig_config, "output_file_name", "")
         sizes_square = getattr(browserconfig_config, "sizes_square", [])
-        sizes_rectangular = getattr(
-            browserconfig_config, "sizes_rectangular", []
-        )
+        sizes_rectangular = getattr(browserconfig_config, "sizes_rectangular",
+                                    [])
         static_url = self.config.get("static_url", "")
         background_color = self.config.get("background_color", "")
-        content = (
-            "<?xml version='1.0' encoding='utf-8'?>"
-            "<browserconfig>"
-            "<msapplication>"
-            "<tile>"
-        )
-        content += "".join(
-            [
-                "<square{0}x{0}logo src='{1}/{2}-{0}x{0}.png'/>".format(
-                    size, static_url, icon
-                )
-                for size in sizes_square
-            ]
-        )
-        content += "".join(
-            [
-                "<wide{0}x{1}logo src='{2}/{3}-{0}x{1}.png'/>".format(
-                    size[0], size[1], static_url, icon
-                )
-                for size in sizes_rectangular
-            ]
-        )
-        content += (
-            f"<TileColor>{background_color}</TileColor>"
-            f"</tile>"
-            f"</msapplication>"
-            f"</browserconfig>"
-        )
+        content = ("<?xml version='1.0' encoding='utf-8'?>"
+                   "<browserconfig>"
+                   "<msapplication>"
+                   "<tile>")
+        content += "".join([
+            "<square{0}x{0}logo src='{1}/{2}-{0}x{0}.png'/>".format(
+                size, static_url, icon) for size in sizes_square
+        ])
+        content += "".join([
+            "<wide{0}x{1}logo src='{2}/{3}-{0}x{1}.png'/>".format(
+                size[0], size[1], static_url, icon)
+            for size in sizes_rectangular
+        ])
+        content += (f"<TileColor>{background_color}</TileColor>"
+                    f"</tile>"
+                    f"</msapplication>"
+                    f"</browserconfig>")
         content = content.replace("'", '"')
         destination_file_path = path.join(
-            self.config.get("static_folder_path", ""), "browserconfig.xml"
-        )
+            self.config.get("static_folder_path", ""), "browserconfig.xml")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -130,23 +117,23 @@ class ComplementaryFilesCreation:
         content["display"] = self.config.get("display", "")
         content["platform"] = self.config.get("platform", "")
         content["related_applications"] = self.config.get("applications", "")
-        content["icons"] = [
-            {
-                "src": "{0}/{1}-{2}x{2}".format(
-                    self.config.get("static_url", ""),
-                    getattr(manifest_config, "output_file_name", ""),
-                    size,
-                ),
-                "sizes": f"{size}x{size}",
-                "type": "image/png",
-                "density": str(size / 48),
-            }
-            for size in getattr(manifest_config, "sizes_square", [])
-        ]
+        content["icons"] = [{
+            "src":
+            "{0}/{1}-{2}x{2}".format(
+                self.config.get("static_url", ""),
+                getattr(manifest_config, "output_file_name", ""),
+                size,
+            ),
+            "sizes":
+            f"{size}x{size}",
+            "type":
+            "image/png",
+            "density":
+            str(size / 48),
+        } for size in getattr(manifest_config, "sizes_square", [])]
         content = json.dumps(content)
         destination_file_path = path.join(
-            self.config.get("static_folder_path", ""), "manifest.json"
-        )
+            self.config.get("static_folder_path", ""), "manifest.json")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -170,27 +157,24 @@ class ComplementaryFilesCreation:
         static_url = self.config.get("static_url", "")
         title = self.config.get("title", "")
         url = self.config.get("clean_url", "")
-        content = (
-            f"<?xml version='1.0' encoding='utf-8'?>"
-            f"<OpenSearchDescription xmlns:moz='"
-            f"http://www.mozilla.org/2006/browser/search/' "
-            f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
-            f"<ShortName>{title}</ShortName>"
-            f"<Description>Search {title}</Description>"
-            f"<InputEncoding>UTF-8</InputEncoding>"
-            f"<Url method='get' type='text/html' "
-            f"template='http://www.google.com/search?q="
-            f"{{searchTerms}}+site%3A{url}'/>"
-            f"<Image height='{size}' width='{size}' "
-            f"type='{file_type}'>"
-            f"{static_url}/{file_name}-16x16.png"
-            f"</Image>"
-            f"</OpenSearchDescription>"
-        )
+        content = (f"<?xml version='1.0' encoding='utf-8'?>"
+                   f"<OpenSearchDescription xmlns:moz='"
+                   f"http://www.mozilla.org/2006/browser/search/' "
+                   f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>"
+                   f"<ShortName>{title}</ShortName>"
+                   f"<Description>Search {title}</Description>"
+                   f"<InputEncoding>UTF-8</InputEncoding>"
+                   f"<Url method='get' type='text/html' "
+                   f"template='http://www.google.com/search?q="
+                   f"{{searchTerms}}+site%3A{url}'/>"
+                   f"<Image height='{size}' width='{size}' "
+                   f"type='{file_type}'>"
+                   f"{static_url}/{file_name}-16x16.png"
+                   f"</Image>"
+                   f"</OpenSearchDescription>")
         content = content.replace("'", '"')
         destination_file_path = path.join(
-            self.config.get("static_folder_path", ""), "opensearch.xml"
-        )
+            self.config.get("static_folder_path", ""), "opensearch.xml")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -209,15 +193,12 @@ class ComplementaryFilesCreation:
         """
         protocol = self.config.get("protocol", "")
         clean_url = self.config.get("clean_url", "")
-        content = (
-            f"User-agent: *\n"
-            f"Allow: /\n"
-            f"\n"
-            f"Sitemap: {protocol}{clean_url}/sitemap.xml"
-        )
+        content = (f"User-agent: *\n"
+                   f"Allow: /\n"
+                   f"\n"
+                   f"Sitemap: {protocol}{clean_url}/sitemap.xml")
         destination_file_path = path.join(
-            self.config.get("output_folder_path", ""), "robots.txt"
-        )
+            self.config.get("output_folder_path", ""), "robots.txt")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -237,21 +218,18 @@ class ComplementaryFilesCreation:
         """
         protocol = self.config.get("protocol", "")
         clean_url = self.config.get("clean_url", "")
-        content = (
-            f"<?xml version='1.0' encoding='utf-8'?>"
-            f"<urlset xmlns="
-            f"'http://www.sitemaps.org/schemas/sitemap/0.9' "
-            f"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-            f"xsi:schemaLocation="
-            f"'http://www.sitemaps.org/schemas/sitemap/0.9 "
-            f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
-            f"<url><loc>{protocol}{clean_url}/</loc></url>"
-            f"</urlset>"
-        )
+        content = (f"<?xml version='1.0' encoding='utf-8'?>"
+                   f"<urlset xmlns="
+                   f"'http://www.sitemaps.org/schemas/sitemap/0.9' "
+                   f"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                   f"xsi:schemaLocation="
+                   f"'http://www.sitemaps.org/schemas/sitemap/0.9 "
+                   f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
+                   f"<url><loc>{protocol}{clean_url}/</loc></url>"
+                   f"</urlset>")
         content = content.replace("'", '"')
         destination_file_path = path.join(
-            self.config.get("output_folder_path", ""), "sitemap.xml"
-        )
+            self.config.get("output_folder_path", ""), "sitemap.xml")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
