@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Module to handle the creation of the main index.html file
 
 Classes:
     BaseFileCreation
 """
-
 from os import path
-from typing import Dict, List, Union
+from typing import Dict
+from typing import List
+from typing import Union
 
 from src.module.files.head.base import Head
 
