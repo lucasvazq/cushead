@@ -157,7 +157,9 @@ class IconsFormatConfig:
     icons_config = {}
 
     def __init__(self, image_format_config_dict: dict = None):
-        self.image_format_config_dict = image_format_config_dict or self.image_format_config()
+        self.image_format_config_dict = (
+            image_format_config_dict or self.image_format_config()
+        )
 
     def _favicon_ico_icons_config(self) -> List[ImageFormater]:
 
@@ -202,7 +204,9 @@ class IconsFormatConfig:
             # Apple touch startup with different sizes
             # Example:
             # ???
-            self.image_format_config_dict["apple_touch_startup_image_media_queries"],
+            self.image_format_config_dict[
+                "apple_touch_startup_image_media_queries"
+            ],
 
             # Fluid icon
             # Example:
@@ -255,7 +259,10 @@ class IconsFormatConfig:
         static_folder_path = self.config.get("static_folder_path", "")
         static_url = self.config.get("static_url", "")
         background_color = self.config.get("background_color", "")
-        yandex_content = f"logo={static_url}/yandex.png, color={background_color}"
+        yandex_content = (
+            f"logo={static_url}/yandex.png, "
+            f"color={background_color}"
+        )
 
         return {
             # favicon ico

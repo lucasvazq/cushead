@@ -59,4 +59,4 @@ class BaseFileCreation(Head):
                 f"{formated_head}"  # Already have newline
                 f"{indent}</head>\n"
                 f"<body></body>"
-                f"</html>").replace('\'', '"')
+                f"</html>").replace('\'', "\"")

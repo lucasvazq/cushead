@@ -59,7 +59,9 @@ class ComplementaryFilesCreation:
             content str: file content
             destination_file_path str: path where the file must be written
         """
-        browserconfig_config = self.icons_config.get('browserconfig', [])[0]
+        browserconfig_config = self.icons_config.get('browserconfig', [])
+        if browserconfig_config:
+            browserconfig_config = browserconfig_config[0]
         icon = getattr(browserconfig_config, 'output_file_name', '')
         sizes_square = getattr(browserconfig_config, 'sizes_square', [])
         sizes_rectangular = getattr(browserconfig_config, 'sizes_rectangular',
@@ -91,7 +93,7 @@ class ComplementaryFilesCreation:
                     f"</tile>"
                     f"</msapplication>"
                     f"</browserconfig>")
-        content = content.replace('\'', '"')
+        content = content.replace('\'', "\"")
         destination_file_path = path.join(
             self.config.get('static_folder_path', ''),
             'browserconfig.xml'
@@ -183,7 +185,7 @@ class ComplementaryFilesCreation:
                    f"{static_url}/{file_name}-16x16.png"
                    f"</Image>"
                    f"</OpenSearchDescription>")
-        content = content.replace('\'', '"')
+        content = content.replace('\'', "\"")
         destination_file_path = path.join(
             self.config.get('static_folder_path', ''),
             'opensearch.xml'
@@ -242,7 +244,7 @@ class ComplementaryFilesCreation:
                    f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
                    f"<url><loc>{protocol}{clean_url}/</loc></url>"
                    f"</urlset>")
-        content = content.replace('\'', '"')
+        content = content.replace('\'', "\"")
         destination_file_path = path.join(
             self.config.get('output_folder_path', ''),
             'sitemap.xml'
