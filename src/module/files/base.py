@@ -58,4 +58,5 @@ class BaseFileCreation(Head):
                 f"{indent}<head>\n"
                 f"{formated_head}"  # Already have newline
                 f"{indent}</head>\n"
+                f"<body></body>"
                 f"</html>").replace('\'', '"')

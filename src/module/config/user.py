@@ -71,8 +71,8 @@ class DefaultUserConfig:
                                                'initial-scale=1')}',
                         'language':         'en',
                         'territory':        'US',
-                        'clean_url':        'microsoft.com',
                         'protocol':         'https://',
+                        'clean_url':        'microsoft.com',
                         'robots':           'index, follow'
                     }},
                     'basic': {{
@@ -170,9 +170,10 @@ class UserConfigHandler(Logs):
         #   output + static_url = /static/ [root/static/]
         if settings["static_url"][0] == "/":
             settings["static_folder_path"] = settings["static_url"][1:]
-        # HEre, prevent //
+        # Prevent //
         if settings["static_url"][-1] == "/":
             settings["static_url"] = settings["static_url"][:-1]
+        # Static url = "static" , not "static/"
 
         # Make paths
         # Define the main path as the passed throught -file argument

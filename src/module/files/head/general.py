@@ -17,6 +17,7 @@ class General:
         social_medi
     """
     config = {}
+    image_format_config_dict = {}
     
     def general(self) -> list:
         """Return a list of tags related to the general config of a website"""
@@ -169,3 +170,53 @@ class General:
                     f"content='{string}'>")
 
         return head
+
+    def json_ld(self) -> list:
+
+        protocol = self.config.get('protocol', '')
+        clean_url = self.config.get('clean_url', '')
+        static_url = self.config.get('static_url', '')
+        description = self.config.get('description', '')
+
+        website_url = f"{protocol}{clean_url}"
+
+        json_ld_dict = {
+            "@context": "http://schema.org/",
+            "@type": "Organization",
+            "@id": website_url,
+            "url": website_url,
+            "slogan": description,
+            "description": description,
+        }
+
+        if static_url:
+            if static_url[0] == "/":
+                static_slash = ""
+            else:
+                static_slash = "/"
+                static_url_full_path = f"{protocol}{clean_url}{static_slash}{static_url}"
+
+            preview_png = self.image_format_config_dict.get("preview_og")._output_formater()[0]
+            json_ld_dict.update({
+                "logo": f"{static_url_full_path}/{preview_png}",
+                "image": f"{static_url_full_path}/{preview_png}",
+            })
+
+        # convert json to string json
+
+        "<script type='application/ld+json'></script>"
+
+
+        return [(f"<script type='application/ld+json'>"
+                 f"{{"
+                 f"'@context': 'http://schema.org/',"
+                 f"'@type': 'Organization',"
+                 f"'@id': '{protocol}{clean_url}',"
+                 f"'url': '{protocol}{clean_url}',"
+                 f"'logo': '{favicon_png}',"
+                 f"'image': '{favicon_png}',"
+                 f"'slogan': '{description}',"
+                 f"'description': '{description}'"
+                 f"}}"
+                 f"</script>")]
+

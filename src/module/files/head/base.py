@@ -37,5 +37,6 @@ class Head(General, Images):
             self.wazuncho(),
             self.complementary_files(),
             self.social_media(),
+            self.jsonld(),
         ]
         return head

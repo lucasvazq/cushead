@@ -67,9 +67,11 @@ class ComplementaryFilesCreation:
         static_url = self.config.get('static_url', '')
         background_color = self.config.get('background_color', '')
         content = ("<?xml version='1.0' encoding='utf-8'?>"
-                   "<browserconfig><msapplication><tile>")
+                   "<browserconfig>"
+                   "<msapplication>"
+                   "<tile>")
         content += ''.join([
-            "<square{0}x{0}logo src='{1}/{2}-{0}x{0}.png'>".format(
+            "<square{0}x{0}logo src='{1}/{2}-{0}x{0}.png'/>".format(
                 size,
                 static_url,
                 icon
@@ -77,7 +79,7 @@ class ComplementaryFilesCreation:
             for size in sizes_square
         ])
         content += ''.join([
-            "<wide{0}x{1}logo src='{2}/{3}-{0}x{1}.png'>".format(
+            "<wide{0}x{1}logo src='{2}/{3}-{0}x{1}.png'/>".format(
                 size[0],
                 size[1],
                 static_url,
@@ -85,9 +87,9 @@ class ComplementaryFilesCreation:
             )
             for size in sizes_rectangular
         ])
-        content += (f"<TileColor>"
-                    f"{background_color}"
-                    f"</TileColor></tile></msapplication>"
+        content += (f"<TileColor>{background_color}</TileColor>"
+                    f"</tile>"
+                    f"</msapplication>"
                     f"</browserconfig>")
         content = content.replace('\'', '"')
         destination_file_path = path.join(
@@ -175,7 +177,7 @@ class ComplementaryFilesCreation:
                    f"<InputEncoding>UTF-8</InputEncoding>"
                    f"<Url method='get' type='text/html' "
                    f"template='http://www.google.com/search?q="
-                   f"{{searchTerms}}+site%3A{url}' />"
+                   f"{{searchTerms}}+site%3A{url}'/>"
                    f"<Image height='{size}' width='{size}' "
                    f"type='{file_type}'>"
                    f"{static_url}/{file_name}-16x16.png"
@@ -238,7 +240,8 @@ class ComplementaryFilesCreation:
                    f"xsi:schemaLocation="
                    f"'http://www.sitemaps.org/schemas/sitemap/0.9 "
                    f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
-                   f"<url><loc>{protocol}{clean_url}/</loc></url></urlset>")
+                   f"<url><loc>{protocol}{clean_url}/</loc></url>"
+                   f"</urlset>")
         content = content.replace('\'', '"')
         destination_file_path = path.join(
             self.config.get('output_folder_path', ''),
