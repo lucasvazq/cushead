@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
+from typing import List
+
 """Module to handle the creation of no image related tags
 
 Classes:
@@ -19,7 +22,7 @@ class General:
     config = {}
     image_format_config_dict = {}
     
-    def general(self) -> list:
+    def general(self) -> List[str]:
         """Return a list of tags related to the general config of a website"""
         head = []
         # content-type
@@ -48,7 +51,7 @@ class General:
         ])
         return head
 
-    def basic(self) -> list:
+    def basic(self) -> List[str]:
         """Return a list of tags related to a basic and standart seo"""
         head = []
         # title
@@ -79,7 +82,7 @@ class General:
         head.append(f"<meta name='author' content='{string}'>")
         return head
 
-    def complementary_files(self) -> list:
+    def complementary_files(self) -> List[str]:
         """Return a list with tags related to complementary files"""
         static_url = self.config.get('static_url', '')
         title = self.config.get('title', '')
@@ -97,7 +100,7 @@ class General:
              f"/opensearch.xml'>"),
         ]
 
-    def social_media(self) -> list:
+    def social_media(self) -> List[str]:
         """Return a list with tags related to social media"""
         head = []
 
@@ -171,15 +174,12 @@ class General:
 
         return head
 
-    def json_ld(self) -> list:
-
+    def json_ld(self) -> List[str]:
         protocol = self.config.get('protocol', '')
         clean_url = self.config.get('clean_url', '')
         static_url = self.config.get('static_url', '')
         description = self.config.get('description', '')
-
         website_url = f"{protocol}{clean_url}"
-
         json_ld_dict = {
             "@context": "http://schema.org/",
             "@type": "Organization",
@@ -188,35 +188,15 @@ class General:
             "slogan": description,
             "description": description,
         }
-
         if static_url:
             if static_url[0] == "/":
                 static_slash = ""
             else:
                 static_slash = "/"
                 static_url_full_path = f"{protocol}{clean_url}{static_slash}{static_url}"
-
             preview_png = self.image_format_config_dict.get("preview_og")._output_formater()[0]
             json_ld_dict.update({
                 "logo": f"{static_url_full_path}/{preview_png}",
                 "image": f"{static_url_full_path}/{preview_png}",
             })
-
-        # convert json to string json
-
-        "<script type='application/ld+json'></script>"
-
-
-        return [(f"<script type='application/ld+json'>"
-                 f"{{"
-                 f"'@context': 'http://schema.org/',"
-                 f"'@type': 'Organization',"
-                 f"'@id': '{protocol}{clean_url}',"
-                 f"'url': '{protocol}{clean_url}',"
-                 f"'logo': '{favicon_png}',"
-                 f"'image': '{favicon_png}',"
-                 f"'slogan': '{description}',"
-                 f"'description': '{description}'"
-                 f"}}"
-                 f"</script>")]
-
+        return [f"<script type='application/ld+json'>{json.dumps(json_ld_dict)}</script>"]
