@@ -95,21 +95,7 @@ class DefaultUserConfig:
                     'orientation':      'landscape',
                     'scope':            '/',
                     'display':          'browser',
-                    'platform':        'web',
-                    'applications':     [
-                        {{
-                            'platform':     'play',
-                            'url':          '{('https://play.google.com/store/'
-                                               'apps/details?id=com.example'
-                                               '.app')}',
-                            'id':           'com.example.app'
-                        }},
-                        {{
-                            'platform':     'itunes',
-                            'url':          '{('https://itunes.apple.com/app/'
-                                            'example-app/id123456')}'
-                        }}
-                    ]
+                    'platform':        'web'
                 }}
             }}""")
         settings = settings.replace("'", '"')
