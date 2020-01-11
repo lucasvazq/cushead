@@ -19,6 +19,7 @@ class Head(General, Images):
     Methods:
         full_head
     """
+
     config = {}
 
     def full_head(self) -> List[List[str]]:

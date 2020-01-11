@@ -21,9 +21,9 @@ class FileAttributes:
         size Union[list, None] = None
     """
 
-    def __init__(self,
-                 file_name: str = "",
-                 size: Union[List[int], None] = None):
+    def __init__(
+        self, file_name: str = "", size: Union[List[int], None] = None
+    ):
         self.file_name = file_name
         self.size = size or []
 
@@ -56,28 +56,28 @@ class ImageFormater:
     """
 
     def __init__(
-            self,
-            output_file_name: str = "",
-            output_file_size_verbosity: bool = False,
-            output_folder_path: str = "",
-            source_file_path: str = "",
-            sizes_max_min: Union[List[int], None] = None,
-            sizes_square: Union[List[int], None] = None,
-            sizes_rectangular: Union[List[int], None] = None,
-            sizes_mantain: bool = False,
-            head_output: bool = False,
-            url_path: str = "",
-            tag_name: str = "",
-            attribute_color: str = "",
-            attribute_content: str = "",
-            attribute_name: str = "",
-            attribute_property: str = "",
-            attribute_rel: str = "",
-            attribute_type: str = "",
-            attribute_special_content: bool = False,
-            attribute_special_href: bool = False,
-            attribute_special_sizes: bool = False,
-            attribute_special_title: bool = False,
+        self,
+        output_file_name: str = "",
+        output_file_size_verbosity: bool = False,
+        output_folder_path: str = "",
+        source_file_path: str = "",
+        sizes_max_min: Union[List[int], None] = None,
+        sizes_square: Union[List[int], None] = None,
+        sizes_rectangular: Union[List[int], None] = None,
+        sizes_mantain: bool = False,
+        head_output: bool = False,
+        url_path: str = "",
+        tag_name: str = "",
+        attribute_color: str = "",
+        attribute_content: str = "",
+        attribute_name: str = "",
+        attribute_property: str = "",
+        attribute_rel: str = "",
+        attribute_type: str = "",
+        attribute_special_content: bool = False,
+        attribute_special_href: bool = False,
+        attribute_special_sizes: bool = False,
+        attribute_special_title: bool = False,
     ):
 
         # output file name
@@ -132,17 +132,19 @@ class ImageFormater:
                 file_nam = f"{output_file_name}-{size[0]}x{size[1]}"
                 file_nam += self.output_extension
                 output_file_names.append(
-                    FileAttributes(file_name=file_nam, size=size))
+                    FileAttributes(file_name=file_nam, size=size)
+                )
         else:
             # Probably it is only one, but with _get_sizes we get the size
             # wherever they come from: square_sizes, max_min or rectangular
             for size in self._get_sizes():
                 output_file_names.append(
                     FileAttributes(
-                        file_name=self.output_file_name +
-                        self.output_extension,
+                        file_name=self.output_file_name
+                        + self.output_extension,
                         size=size,
-                    ))
+                    )
+                )
         return output_file_names
 
 
@@ -177,43 +179,36 @@ class IconsFormatConfig:
             # <link rel="icon" type="image/png" href="/static/favicon-16x16.png"
             # sizes="16x16">
             self.image_format_config_dict["favicon_16x16_png"],
-
             # Microsoft icon
             # Example:
             # <meta name="msapplication-TileImage"
             # content="/static/ms-icon-144x144.png">
             self.image_format_config_dict["ms_icon"],
-
             # Apple touch default
             # Example:
             # <link rel="apple-touch-icon"
             # href="/static/apple-touch-icon-default-57x57.png">
             self.image_format_config_dict["apple_touch_icon_default"],
-
             # Apple touch with different sizes
             # Example:
             # <link rel="apple-touch-icon" sizes="57x57"
             # href="/static/apple-touch-icon-57x57.png">
             self.image_format_config_dict["apple_touch_icon"],
-
             # Apple touch startup default
             # Example:
             # ???
             self.image_format_config_dict["apple_touch_startup_image"],
-
             # Apple touch startup with different sizes
             # Example:
             # ???
             self.image_format_config_dict[
                 "apple_touch_startup_image_media_queries"
             ],
-
             # Fluid icon
             # Example:
             # <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
             # title="Microsoft">
             self.image_format_config_dict["fluid-icon"],
-
             # Yandex browser special icon
             # Example:
             # ???
@@ -230,11 +225,9 @@ class IconsFormatConfig:
         return [
             # <meta property='og:image' content='/static/preview-500x500.png'>
             self.image_format_config_dict["preview_og"],
-
             # <meta property='og:image:secure_url'
             # content='/static/preview-500x500.png'>
             self.image_format_config_dict["preview_og_secure_url"],
-
             # <meta name='twitter:image' content='/static/preview-500x500.png'>
             self.image_format_config_dict["preview_twitter"],
         ]
@@ -260,8 +253,7 @@ class IconsFormatConfig:
         static_url = self.config.get("static_url", "")
         background_color = self.config.get("background_color", "")
         yandex_content = (
-            f"logo={static_url}/yandex.png, "
-            f"color={background_color}"
+            f"logo={static_url}/yandex.png, " f"color={background_color}"
         )
 
         return {
@@ -278,7 +270,6 @@ class IconsFormatConfig:
                 attribute_type="image/x-icon",
                 attribute_special_href=True,
             ),
-
             # favicon png
             "favicon_16x16_png": ImageFormater(
                 output_file_name="favicon",
@@ -351,7 +342,17 @@ class IconsFormatConfig:
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
                 sizes_square=[
-                    57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024
+                    57,
+                    60,
+                    72,
+                    76,
+                    114,
+                    120,
+                    144,
+                    152,
+                    167,
+                    180,
+                    1024,
                 ],
                 head_output=True,
                 url_path=static_url,
@@ -423,7 +424,6 @@ class IconsFormatConfig:
                 attribute_name="yandex-tableau-widget",
                 attribute_content=yandex_content,
             ),
-
             # favicon svg
             "mask-icon": ImageFormater(
                 output_file_name="mask-icon",
@@ -437,7 +437,6 @@ class IconsFormatConfig:
                 attribute_rel="mask-icon",
                 attribute_special_href=True,
             ),
-
             # preview png
             "preview_og": ImageFormater(
                 output_file_name="preview",
@@ -475,7 +474,6 @@ class IconsFormatConfig:
                 attribute_name="twitter:image",
                 attribute_special_content=True,
             ),
-
             "browserconfig": ImageFormater(
                 output_file_name="ms-icon",
                 output_file_size_verbosity=True,
@@ -484,7 +482,6 @@ class IconsFormatConfig:
                 sizes_square=[30, 44, 70, 150, 310],
                 sizes_rectangular=[[310, 150]],
             ),
-
             "manifest": ImageFormater(
                 output_file_name="android-icon",
                 output_file_size_verbosity=True,
@@ -493,7 +490,6 @@ class IconsFormatConfig:
                 sizes_square=[36, 48, 72, 96, 144, 192, 256, 384, 512],
                 attribute_type="image/png",
             ),
-
             "opensearch": ImageFormater(
                 output_file_name="opensearch",
                 output_file_size_verbosity=True,
