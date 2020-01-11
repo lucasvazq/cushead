@@ -18,7 +18,7 @@ try:
     INFO = Info.get_info()
     Support(INFO).run()
 except Unsupported as exception:
-    sys.stdout.write(exception)
+    sys.stdout.write(str(exception))
     sys.exit()
 
 from src.console.__main__ import Main
