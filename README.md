@@ -4,7 +4,7 @@
 [![PyPI version](https://badge.fury.io/py/cushead.svg)](https://badge.fury.io/py/cushead)
 
 <div align="center">
-  <img src="./docs/logo.png" alt="cushead logo">
+  <img src="./docs/logo_with_version.png" alt="cushead logo">
 </div>
 
 # CUSHEAD
