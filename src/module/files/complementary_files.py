@@ -46,7 +46,6 @@ class ComplementaryFilesCreation:
             'sitemap': self.sitemap_content(),
         }
 
-
     def browserconfig_content(self) -> Dict[str, str]:
         """browserconfig.xml content
         Return the content of browserconfig.xml and the path where must be

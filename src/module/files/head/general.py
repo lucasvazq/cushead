@@ -10,9 +10,10 @@ Classes:
     General
 """
 
+
 class General:
     """Generate general tags
-    
+
     Methods:
         general
         basic
@@ -21,7 +22,7 @@ class General:
     """
     config = {}
     image_format_config_dict = {}
-    
+
     def general(self) -> List[str]:
         """Return a list of tags related to the general config of a website"""
         head = []
@@ -194,7 +195,8 @@ class General:
             else:
                 static_slash = "/"
                 static_url_full_path = f"{protocol}{clean_url}{static_slash}{static_url}"
-            preview_png = self.image_format_config_dict.get("preview_og")._output_formater()[0]
+            preview_png = self.image_format_config_dict.get(
+                "preview_og")._output_formater()[0]
             json_ld_dict.update({
                 "logo": f"{static_url_full_path}/{preview_png}",
                 "image": f"{static_url_full_path}/{preview_png}",
