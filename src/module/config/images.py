@@ -14,6 +14,7 @@ from typing import Union
 
 
 class FileAttributes:
+    # DONE
     """Class to handle the a file objects attribute
 
     Init:
@@ -29,6 +30,7 @@ class FileAttributes:
 
 
 class ImageFormater:
+    # DONE
     """Class to define attributes of a png image
 
     Init:
@@ -147,6 +149,7 @@ class ImageFormater:
 
 
 class IconsFormatConfig:
+    # DONE
     """Class to handle the default icons format configuration
 
     Methods:

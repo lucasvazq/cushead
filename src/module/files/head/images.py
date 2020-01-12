@@ -24,6 +24,7 @@ class Images(ImageService):
 
     def _icons_head_creator(self, icon_brand_config, filenam,
                             size: Union[List[int], None] = None):
+        # DONE
 
         if not getattr(icon_brand_config, 'head_output', False):
             return None
@@ -152,6 +153,7 @@ class Images(ImageService):
         return tag_element_string
 
     def wazuncho(self) -> List[str]:
+        # DONE
         head = []
         for group in self.icons_config:
             for brand in self.icons_config[group]:

@@ -12,6 +12,7 @@ from src.module.files.head.images import Images
 
 
 class Head(General, Images):
+    # DONE
     """Class to handle the creation of tags that become inside the head tag
 
     Methods:
