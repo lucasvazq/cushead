@@ -23,17 +23,17 @@ class IndexGenerator(images.Images):
         head = []
 
         # content-type
-        head.append(f"<meta http-equiv='Content-Type' content='{self.config["content-type"]}'>")
+        head.append(f"<meta http-equiv='Content-Type' content='{self.config['content-type']}'>")
         # X-UA-Compatible
         head.append(f"<meta http-equiv='X-UA-Compatible' "
-                    f"content='{self.config["X-UA-Compatible"]}'>")
+                    f"content='{self.config['X-UA-Compatible']}'>")
         # viewport
-        head.append(f"<meta name='viewport' content='{self.config["viewport"]}'>")
+        head.append(f"<meta name='viewport' content='{self.config['viewport']}'>")
         # locale
         head.append(f"<meta http-equiv='Content-Language' "
-                    f"content='{self.config["language"]}'>")
+                    f"content='{self.config['language']}'>")
         # robots
-        head.append(f"<meta name='robots' content='{self.config["robots"]}'>")
+        head.append(f"<meta name='robots' content='{self.config['robots']}'>")
         # apple
         head.extend([
             "<meta name='apple-mobile-web-app-capable' content='yes'>",
@@ -43,19 +43,19 @@ class IndexGenerator(images.Images):
     
         # title
         head.extend([
-            f"<title>{self.config["title"]}</title>",
-            f"<meta name='application-name' content='{self.config["title"]}'>",
-            f"<meta name='apple-mobile-web-app-title' "
-            f"content='{self.config["title"]}'>",
+            f"<title>{self.config['title']}</title>",
+            f"<meta name='application-name' content='{self.config['title']}'>",
+            ("<meta name='apple-mobile-web-app-title' "
+            f"content='{self.config['title']}'>"),
         ])
         # description
-        head.append(f"<meta name='description' content='{self.config["description"]}'>")
+        head.append(f"<meta name='description' content='{self.config['description']}'>")
         # subject
-        head.append(f"<meta name='subject' content='{self.config["subject"]}'>")
+        head.append(f"<meta name='subject' content='{self.config['subject']}'>")
         # theme-color and msapplication-TileColor
         head.extend([
-            f"<meta name='theme-color' content='{self.config["background_color"]}'>",
-            f"<meta name='msapplication-TileColor' content='{self.config["background_color"]}'>",
+            f"<meta name='theme-color' content='{self.config['background_color']}'>",
+            f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
         ])
         # author
         head.append(f"<meta name='author' content='{self.config["author"]}'>")
@@ -69,9 +69,9 @@ class IndexGenerator(images.Images):
                     head.append(head_element)
     
         # browserconfig.xml
-        head.append(f"<meta name='msapplication-config' content='{self.config["static_url"]}/browserconfig.xml'>")
+        head.append(f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>")
         # manifest.json
-        head.append(f"<link rel='manifest' href='{self.config["static_url"]}/manifest.json'>")
+        head.append(f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>")
         # opensearch.xml
         head.append(
             f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config["title"]}' href='{self.config["static_url"]}/opensearch.xml'>"
