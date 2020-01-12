@@ -133,9 +133,10 @@ class IndexGenerator(images.Images):
         )
 
         # convert to string adding indent
+        head_content =  f"{helpers.INDETATION * 2}".join([f"{tag}\n" for tag in head])
         return (
             f"{helpers.INDETATION}<head>\n"
-            f"{helpers.INDETATION * 2}".join([f"{tag}\n" for tag in head])
+            f"{head_content}"
             f"{helpers.INDETATION}</head>"
         ).replace("'", '"')
 
