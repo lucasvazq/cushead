@@ -119,12 +119,12 @@ class IndexGenerator(images.Images):
         json_ld = helpers.indent_dict({
             '@context': 'http://schema.org/',
             '@type': 'Organization',
-            '@id': f'{self.config['protocol']}{self.config['clean_url']}',
-            'url': f'{self.config['protocol']}{self.config['clean_url']}',
-            'slogan': f'{self.config['description']}',
-            'description': f'{self.config['description']}',
-            'logo': f'{self.config['protocol']}{self.config['clean_url']}/static/{image_name}',
-            'image': f'{self.config['protocol']}{self.config['clean_url']}/static/{image_name}',
+            '@id': f"{self.config['protocol']}{self.config['clean_url']}",
+            'url': f"{self.config['protocol']}{self.config['clean_url']}",
+            'slogan': f"{self.config['description']}",
+            'description': f"{self.config['description']}",
+            'logo': f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
+            'image': f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
         }, 1))
         head.append(
             "<script type='application/ld+json'>\n"

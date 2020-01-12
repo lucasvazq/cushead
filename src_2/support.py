@@ -76,7 +76,7 @@ class Messages:
     def unsupported_execution(self):
         """Generate unsupported message for the run script attempt"""
         string = (
-            self._unsupported_title()
+            f"{self._unsupported_title()}"
             "but you're trying to run it with Python "
             "{current_major}.{current_minor}\n"
             "Try running:\n"
