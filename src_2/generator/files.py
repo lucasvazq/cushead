@@ -58,7 +58,7 @@ class IndexGenerator(images.Images):
             f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
         ])
         # author
-        head.append(f"<meta name='author' content='{self.config["author"]}'>")
+        head.append(f"<meta name='author' content='{self.config['author']}'>")
 
         # images
         # se puede optimizar: for brand in self.icons_config.items() o algo así
@@ -74,13 +74,13 @@ class IndexGenerator(images.Images):
         head.append(f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>")
         # opensearch.xml
         head.append(
-            f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config["title"]}' href='{self.config["static_url"]}/opensearch.xml'>"
+            f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>"
         )
 
         # fb:app_id
-        head.append(f"<meta porperty='fb:app_id' content='{self.config["facebook_app_id"]}'>")
+        head.append(f"<meta porperty='fb:app_id' content='{self.config['facebook_app_id']}'>")
         # og:locale
-        head.append(f"<meta property='og:locale' content='{self.config["language"]}_{self.config["territory"]}'>")
+        head.append(f"<meta property='og:locale' content='{self.config['language']}_{self.config['territory']}'>")
         # og:type
         # Only allow website type for simplicity
         head.append("<meta property='og:type' content='website'>")
@@ -89,42 +89,42 @@ class IndexGenerator(images.Images):
         string += self.config.get("clean_url", "")
         head.append(f"<meta property='og:url' content='{string}'>")
         # og:site_name
-        head.append(f"<meta property='og:site_name' content='{self.config["title"]}'>")
+        head.append(f"<meta property='og:site_name' content='{self.config['title']}'>")
         # og:title
-        head.append(f"<meta property='og:title' content='{self.config["title"]}'>")
+        head.append(f"<meta property='og:title' content='{self.config['title']}'>")
         # og:description
-        head.append(f"<meta property='og:description' content='{self.config["description"]}'>")
+        head.append(f"<meta property='og:description' content='{self.config['description']}'>")
         # og:image:type
         # Only allow png type for simplicity
         head.append("<meta property='og:image:type' content='image/png'>")
         # og:image:alt
-        head.append(f"<meta property='og:image:alt' content='{self.config["title"]} - {self.config["description"]}'>")
+        head.append(f"<meta property='og:image:alt' content='{self.config['title']} - {self.config['description']}'>")
 
         # twitter:card
         # Only allow summary type for simplicity
         head.append("<meta name='twitter:card' content='summary'>")
         # twitter:site
-        head.append(f"<meta name='twitter:site' content='{self.config["twitter_user_@"]}'>")
+        head.append(f"<meta name='twitter:site' content='{self.config['twitter_user_@']}'>")
         # twitter:title
-        head.append(f"<meta name='twitter:title' content='{self.config["title"]}'>")
+        head.append(f"<meta name='twitter:title' content='{self.config['title']}'>")
         # twitter:description
-        head.append(f"<meta name='twitter:description' content='{self.config["description"]}'>")
+        head.append(f"<meta name='twitter:description' content='{self.config['description']}'>")
         # tw:creator
         head.append(f"<meta property='twitter:creator:id' "
-                    f"content='{self.config["twitter_user_id"]}'>")
+                    f"content='{self.config['twitter_user_id']}'>")
         # tw:image:alt
-        head.append(f"<meta name='twitter:image:alt' content='{self.config["title"]} - {self.config["description"]}'>")
+        head.append(f"<meta name='twitter:image:alt' content='{self.config['title']} - {self.config['description']}'>")
 
         image_name = self.image_format_config_dict["preview_og"]._output_formater[0].file_name
         json_ld = helpers.indent_dict({
             '@context': 'http://schema.org/'
             '@type': 'Organization'
-            '@id': f'{self.config["protocol"]}{self.config["clean_url"]}'
-            'url': f'{self.config["protocol"]}{self.config["clean_url"]}'
-            'slogan': f'{self.config["description"]}'
-            'description': f'{self.config["description"]}'
-            'logo': f'{self.config["protocol"]}{self.config["clean_url"]}/static/{image_name}'
-            'image': f'{self.config["protocol"]}{self.config["clean_url"]}/static/{image_name}'
+            '@id': f'{self.config['protocol']}{self.config['clean_url']}'
+            'url': f'{self.config['protocol']}{self.config['clean_url']}'
+            'slogan': f'{self.config['description']}'
+            'description': f'{self.config['description']}'
+            'logo': f'{self.config['protocol']}{self.config['clean_url']}/static/{image_name}'
+            'image': f'{self.config['protocol']}{self.config['clean_url']}/static/{image_name}'
         }, 1))
         head.append(
             "<script type='application/ld+json'>\n"
