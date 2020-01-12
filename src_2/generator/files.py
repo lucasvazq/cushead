@@ -180,7 +180,7 @@ class ComplementaryFilesGenerator:
         ])
         content += "".join([(f"{helpers.INDETATION * 3}"
         f"<wide{size[0]}x{size[1]}logo "
-                             f"src='{self.config["static_url"]}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
+                             f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
         )
             for size in sizes_rectangular
         ])
