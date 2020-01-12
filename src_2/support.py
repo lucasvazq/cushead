@@ -18,9 +18,9 @@ import sys
     ('', '', '')
     if os.name == 'nt' else
     (
-        '\033[0;0m',  # DEFAULT
-        '\033[1;31m',  # ERROR: Red
-        '\033[1;34m'  # PRESENTATION: Blue
+        '\033[0;0m',
+        '\033[1;31m',
+        '\033[1;34m',
     )
 )
 
