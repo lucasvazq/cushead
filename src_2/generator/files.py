@@ -174,7 +174,7 @@ class ComplementaryFilesGenerator:
             (
                 f"{helpers.INDETATION * 3}"
                 f"<square{size}x{size}logo "
-                f"src='{self.config["static_url"]}/{icon_name}-{size}x{size}.png'/>\n"
+                f"src='{self.config['static_url']}/{icon_name}-{size}x{size}.png'/>\n"
             )
             for size in sizes_square
         ])
@@ -184,7 +184,7 @@ class ComplementaryFilesGenerator:
         )
             for size in sizes_rectangular
         ])
-        content += f"{helpers.INDETATION * 3}<TileColor>{self.config["background_color"]}</TileColor>\n"
+        content += f"{helpers.INDETATION * 3}<TileColor>{self.config['background_color']}</TileColor>\n"
         content += (
                     f"{helpers.INDETATION * 2}</tile>\n"
                     f"{helpers.INDETATION}</msapplication>\n"
@@ -220,7 +220,7 @@ class ComplementaryFilesGenerator:
         content["icons"] = [
             {
                 "src":
-                f"{self.config["static_url"]}/{manifest_config.output_file_name}-{size}x{size}"
+                f"{self.config['static_url']}/{manifest_config.output_file_name}-{size}x{size}"
                 "sizes":
                 f"{size}x{size}",
                 "type": "image/png",
@@ -249,15 +249,15 @@ class ComplementaryFilesGenerator:
                    f"{helpers.INDETATION}<OpenSearchDescription xmlns:moz='"
                    f"http://www.mozilla.org/2006/browser/search/' "
                    f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>\n"
-                   f"{helpers.INDETATION * 2}<ShortName>{self.config["title"]}</ShortName>\n"
-                   f"{helpers.INDETATION * 2}<Description>Search {self.config["title"]}</Description>\n"
+                   f"{helpers.INDETATION * 2}<ShortName>{self.config['title']}</ShortName>\n"
+                   f"{helpers.INDETATION * 2}<Description>Search {self.config['title']}</Description>\n"
                    f"{helpers.INDETATION * 2}<InputEncoding>UTF-8</InputEncoding>\n"
                    f"{helpers.INDETATION * 2}<Url method='get' type='text/html' "
                    f"template='http://www.google.com/search?q="
-                   f"{{searchTerms}}+site%3A{self.config["clean_url"]}'/>\n"
+                   f"{{searchTerms}}+site%3A{self.config['clean_url']}'/>\n"
                    f"{helpers.INDETATION * 2}<Image height='{size}' width='{size}' "
-                   f"type='{opensearch_config["attribute_type"]}'>"
-                   f"{self.config["static_url"]}/{opensearch.output_file_name}-16x16.png" # Output file name doesnt give already the sizes?
+                   f"type='{opensearch_config['attribute_type']}'>"
+                   f"{self.config['static_url']}/{opensearch.output_file_name}-16x16.png" # Output file name doesnt give already the sizes?
                    f"</Image>\n"
                    f"</OpenSearchDescription>")
         return content.replace("'", '"')
