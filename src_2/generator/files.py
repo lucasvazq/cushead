@@ -220,7 +220,7 @@ class ComplementaryFilesGenerator:
         content["icons"] = [
             {
                 "src":
-                f"{self.config['static_url']}/{manifest_config.output_file_name}-{size}x{size}"
+                f"{self.config['static_url']}/{manifest_config.output_file_name}-{size}x{size}",
                 "sizes":
                 f"{size}x{size}",
                 "type": "image/png",
