@@ -58,7 +58,7 @@ class Messages:
     def unsupported_installation(self):
         """Generate unsupported message for the installation attempt"""
         string = (
-            self._unsupported_title()
+            f"{self._unsupported_title()}"
             "but you're trying to install it with Python "
             "{current_major}.{current_minor}\n"
             "Make sure you have pip and setuptools updated, then try again.\n"
