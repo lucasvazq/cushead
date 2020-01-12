@@ -125,7 +125,7 @@ class IndexGenerator(images.Images):
             'description': f"{self.config['description']}",
             'logo': f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
             'image': f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
-        }, 1))
+        }, 1)
         head.append(
             "<script type='application/ld+json'>\n"
             f"{json_ld}\n"

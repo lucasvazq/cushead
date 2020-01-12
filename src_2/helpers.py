@@ -8,7 +8,15 @@ def write_output(file_name, destionation_path, content):
 
 
 def indent_dict(dictionary, base_indentation_level):
-    indented_content = ",\n".join([f"{INDENTATION * (base_indentation_level + 1)}'{key}': '{value}'" for key, values in dictionary])}
+    """
+    indented_content = []
+    for key, value in dictionary:
+        indented_content.append(
+            f"{INDENTATION * (base_indentation_level + 1)}'{key}': '{value}'"
+        )
+    indented_content = ",\n".join(indented_content)
+    """
+    indented_content = ",\n".join([f"{INDENTATION * (base_indentation_level + 1)}'{key}': '{value}'" for key, value in dictionary])}
     return (
         f"{INDENTATION * base_indentation_level}{{\n"
         f"{indented_content}\n"
