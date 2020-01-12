@@ -1,8 +1,3 @@
-
-def generate_default_config(output_path):
-    pass
-
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """Module to handle the images configurations
@@ -16,6 +11,10 @@ from os import path
 from typing import Dict
 from typing import List
 from typing import Union
+
+
+def generate_default_config(output_path):
+    pass
 
 
 class FileAttributes:
