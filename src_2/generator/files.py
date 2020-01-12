@@ -13,7 +13,7 @@ class IndexGenerator(images.Images):
 
     def index_base(self):
         return (
-            f"<html lang='{self.config["language"]}'>\n"
+            f"<html lang='{self.config['language']}'>\n"
             f"{self.index_head()}\n"
             f"{self.index_body()}\n"
             "</html>"
