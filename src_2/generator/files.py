@@ -1,5 +1,5 @@
-from src import helpers
-from src.generator import images
+from src_2 import helpers
+from src_2.generator import images
 
 
 class IndexGenerator(images.Images):
@@ -40,7 +40,7 @@ class IndexGenerator(images.Images):
             ("<meta name='apple-mobile-web-app-status-bar-style' "
              "content='black-translucent'>"),
         ])
-    
+
         # title
         head.extend([
             f"<title>{self.config['title']}</title>",
@@ -67,7 +67,7 @@ class IndexGenerator(images.Images):
                 head_element = self.icons_head_creator(brand, sizes.file_name, sizes.size)
                 if head_element:
                     head.append(head_element)
-    
+
         # browserconfig.xml
         head.append(f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>")
         # manifest.json
@@ -257,7 +257,7 @@ class ComplementaryFilesGenerator:
                    f"{{searchTerms}}+site%3A{self.config['clean_url']}'/>\n"
                    f"{helpers.INDETATION * 2}<Image height='{size}' width='{size}' "
                    f"type='{opensearch_config['attribute_type']}'>"
-                   f"{self.config['static_url']}/{opensearch.output_file_name}-16x16.png" # Output file name doesnt give already the sizes?
+                   f"{self.config['static_url']}/{opensearch.output_file_name}-16x16.png"  # Output file name doesnt give already the sizes?
                    f"</Image>\n"
                    f"</OpenSearchDescription>")
         return content.replace("'", '"')
@@ -333,6 +333,6 @@ class FilesGenerator(IndexGenerator, ComplementaryFilesGenerator, ImagesGenerato
     def generate_non_media_files(self):
         self.generate_index()
         self.generate_complementary_files()
-    
+
     def generate_media_files(self):
         self.generate_images_files()

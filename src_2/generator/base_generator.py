@@ -1,6 +1,6 @@
 
-from src.configuration import configuration
-from src.generator import files
+from src_2.configuration import configuration
+from src_2.generator import files
 
 class BaseGenerator(configuration.IconsFormatConfig, files.FilesGenerator):
     def __init__(self, config):
