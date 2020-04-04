@@ -135,7 +135,7 @@ class Logs(MessagesHandler):
         self.default_stdout(message)
 
     def error_log(self, message: str = ""):
-        self.error_exception(message)
+        self.error_stdout(message)
 
     def presentation_log(self, message: str = ""):
         self.presentation_stdout(message)

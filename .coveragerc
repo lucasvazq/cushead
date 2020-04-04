@@ -3,6 +3,13 @@ branch = True
 source = ./
 omit =
     *__init__*
+    cushead.py
+    setup.py
+    src/support.py
+
+[report]
+exclude_lines =
+	pragma: no cover
 
 [html]
 directory = coverage_html_report
