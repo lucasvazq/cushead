@@ -12,22 +12,19 @@ class IndexGenerator(src.base.generator.images.Images):
         self.image_format_config_dict = image_format_config_dict
 
     def generate_index(self):
-        return [
-            {
-                "content": self.index_base(),
-                "destination_file_path": os.path.join(
-                    self.config.get("output_folder_path", ""), "index.html"
-                ),
-            }
-        ]
+        return [{
+            "content":
+            self.index_base(),
+            "destination_file_path":
+            os.path.join(self.config.get("output_folder_path", ""),
+                         "index.html"),
+        }]
 
     def index_base(self):
-        return (
-            f"<html lang='{self.config['language']}'>\n"
-            f"{self.index_head()}\n"
-            f"{self.index_body()}\n"
-            "</html>"
-        ).replace("'", '"')
+        return (f"<html lang='{self.config['language']}'>\n"
+                f"{self.index_head()}\n"
+                f"{self.index_body()}\n"
+                "</html>").replace("'", '"')
 
     def index_head(self):
         head = []
@@ -37,58 +34,42 @@ class IndexGenerator(src.base.generator.images.Images):
             f"<meta http-equiv='Content-Type' content='{self.config['content-type']}'>"
         )
         # X-UA-Compatible
-        head.append(
-            f"<meta http-equiv='X-UA-Compatible' "
-            f"content='{self.config['X-UA-Compatible']}'>"
-        )
+        head.append(f"<meta http-equiv='X-UA-Compatible' "
+                    f"content='{self.config['X-UA-Compatible']}'>")
         # viewport
         head.append(
-            f"<meta name='viewport' content='{self.config['viewport']}'>"
-        )
+            f"<meta name='viewport' content='{self.config['viewport']}'>")
         # locale
-        head.append(
-            f"<meta http-equiv='Content-Language' "
-            f"content='{self.config['language']}'>"
-        )
+        head.append(f"<meta http-equiv='Content-Language' "
+                    f"content='{self.config['language']}'>")
         # robots
         head.append(f"<meta name='robots' content='{self.config['robots']}'>")
         # apple
-        head.extend(
-            [
-                "<meta name='apple-mobile-web-app-capable' content='yes'>",
-                (
-                    "<meta name='apple-mobile-web-app-status-bar-style' "
-                    "content='black-translucent'>"
-                ),
-            ]
-        )
+        head.extend([
+            "<meta name='apple-mobile-web-app-capable' content='yes'>",
+            ("<meta name='apple-mobile-web-app-status-bar-style' "
+             "content='black-translucent'>"),
+        ])
 
         # title
-        head.extend(
-            [
-                f"<title>{self.config['title']}</title>",
-                f"<meta name='application-name' content='{self.config['title']}'>",
-                (
-                    "<meta name='apple-mobile-web-app-title' "
-                    f"content='{self.config['title']}'>"
-                ),
-            ]
-        )
+        head.extend([
+            f"<title>{self.config['title']}</title>",
+            f"<meta name='application-name' content='{self.config['title']}'>",
+            ("<meta name='apple-mobile-web-app-title' "
+             f"content='{self.config['title']}'>"),
+        ])
         # description
         head.append(
             f"<meta name='description' content='{self.config['description']}'>"
         )
         # subject
         head.append(
-            f"<meta name='subject' content='{self.config['subject']}'>"
-        )
+            f"<meta name='subject' content='{self.config['subject']}'>")
         # theme-color and msapplication-TileColor
-        head.extend(
-            [
-                f"<meta name='theme-color' content='{self.config['background_color']}'>",
-                f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
-            ]
-        )
+        head.extend([
+            f"<meta name='theme-color' content='{self.config['background_color']}'>",
+            f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
+        ])
         # author
         head.append(f"<meta name='author' content='{self.config['author']}'>")
 
@@ -97,8 +78,7 @@ class IndexGenerator(src.base.generator.images.Images):
             for brand in image_type:
                 for sizes in brand.formated:
                     head_element = self.icons_head_creator(
-                        brand, sizes.file_name, sizes.size
-                    )
+                        brand, sizes.file_name, sizes.size)
                     if head_element:
                         head.append(head_element)
 
@@ -132,12 +112,10 @@ class IndexGenerator(src.base.generator.images.Images):
         head.append(f"<meta property='og:url' content='{string}'>")
         # og:site_name
         head.append(
-            f"<meta property='og:site_name' content='{self.config['title']}'>"
-        )
+            f"<meta property='og:site_name' content='{self.config['title']}'>")
         # og:title
         head.append(
-            f"<meta property='og:title' content='{self.config['title']}'>"
-        )
+            f"<meta property='og:title' content='{self.config['title']}'>")
         # og:description
         head.append(
             f"<meta property='og:description' content='{self.config['description']}'>"
@@ -159,55 +137,52 @@ class IndexGenerator(src.base.generator.images.Images):
         )
         # twitter:title
         head.append(
-            f"<meta name='twitter:title' content='{self.config['title']}'>"
-        )
+            f"<meta name='twitter:title' content='{self.config['title']}'>")
         # twitter:description
         head.append(
             f"<meta name='twitter:description' content='{self.config['description']}'>"
         )
         # tw:creator
-        head.append(
-            f"<meta property='twitter:creator:id' "
-            f"content='{self.config['twitter_user_id']}'>"
-        )
+        head.append(f"<meta property='twitter:creator:id' "
+                    f"content='{self.config['twitter_user_id']}'>")
         # tw:image:alt
         head.append(
             f"<meta name='twitter:image:alt' content='{self.config['title']} - {self.config['description']}'>"
         )
 
-        image_name = (
-            self.image_format_config_dict["preview_og"]
-            ._output_formater()[0]
-            .file_name
-        )
+        image_name = (self.image_format_config_dict["preview_og"].
+                      _output_formater()[0].file_name)
         json_ld = src.helpers.indent_dict(
             {
-                "@context": "http://schema.org/",
-                "@type": "Organization",
-                "@id": f"{self.config['protocol']}{self.config['clean_url']}",
-                "url": f"{self.config['protocol']}{self.config['clean_url']}",
-                "slogan": f"{self.config['description']}",
-                "description": f"{self.config['description']}",
-                "logo": f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
-                "image": f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
+                "@context":
+                "http://schema.org/",
+                "@type":
+                "Organization",
+                "@id":
+                f"{self.config['protocol']}{self.config['clean_url']}",
+                "url":
+                f"{self.config['protocol']}{self.config['clean_url']}",
+                "slogan":
+                f"{self.config['description']}",
+                "description":
+                f"{self.config['description']}",
+                "logo":
+                f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
+                "image":
+                f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
             },
             2,
         )
-        head.append(
-            "<script type='application/ld+json'>\n"
-            f"{json_ld}\n"
-            f"{src.helpers.INDENTATION* 2 }</script>"
-        )
+        head.append("<script type='application/ld+json'>\n"
+                    f"{json_ld}\n"
+                    f"{src.helpers.INDENTATION* 2 }</script>")
 
         # convert to string adding indent
         head_content = f"{src.helpers.INDENTATION * 2}".join(
-            [f"{tag}\n" for tag in head]
-        )
-        return (
-            f"{src.helpers.INDENTATION}<head>\n"
-            f"{src.helpers.INDENTATION * 2}{head_content}"
-            f"{src.helpers.INDENTATION}</head>"
-        ).replace("'", '"')
+            [f"{tag}\n" for tag in head])
+        return (f"{src.helpers.INDENTATION}<head>\n"
+                f"{src.helpers.INDENTATION * 2}{head_content}"
+                f"{src.helpers.INDENTATION}</head>").replace("'", '"')
 
     def index_body(self):
         return f"{src.helpers.INDENTATION}<body></body>"
@@ -234,41 +209,26 @@ class ComplementaryFilesGenerator:
         icon_name = browserconfig_config.output_file_name
         sizes_square = browserconfig_config.sizes_square
         sizes_rectangular = browserconfig_config.sizes_rectangular
-        content = (
-            "<?xml version='1.0' encoding='utf-8'?>\n"
-            "<browserconfig>\n"
-            f"{src.helpers.INDENTATION}<msapplication>\n"
-            f"{src.helpers.INDENTATION * 2}<tile>\n"
-        )
-        content += "".join(
-            [
-                (
-                    f"{src.helpers.INDENTATION * 3}"
-                    f"<square{size}x{size}logo "
-                    f"src='{self.config['static_url']}/{icon_name}-{size}x{size}.png'/>\n"
-                )
-                for size in sizes_square
-            ]
-        )
-        content += "".join(
-            [
-                (
-                    f"{src.helpers.INDENTATION * 3}"
-                    f"<wide{size[0]}x{size[1]}logo "
-                    f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
-                )
-                for size in sizes_rectangular
-            ]
-        )
+        content = ("<?xml version='1.0' encoding='utf-8'?>\n"
+                   "<browserconfig>\n"
+                   f"{src.helpers.INDENTATION}<msapplication>\n"
+                   f"{src.helpers.INDENTATION * 2}<tile>\n")
+        content += "".join([(
+            f"{src.helpers.INDENTATION * 3}"
+            f"<square{size}x{size}logo "
+            f"src='{self.config['static_url']}/{icon_name}-{size}x{size}.png'/>\n"
+        ) for size in sizes_square])
+        content += "".join([(
+            f"{src.helpers.INDENTATION * 3}"
+            f"<wide{size[0]}x{size[1]}logo "
+            f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
+        ) for size in sizes_rectangular])
         content += f"{src.helpers.INDENTATION * 3}<TileColor>{self.config['background_color']}</TileColor>\n"
-        content += (
-            f"{src.helpers.INDENTATION * 2}</tile>\n"
-            f"{src.helpers.INDENTATION}</msapplication>\n"
-            "</browserconfig>"
-        )
+        content += (f"{src.helpers.INDENTATION * 2}</tile>\n"
+                    f"{src.helpers.INDENTATION}</msapplication>\n"
+                    "</browserconfig>")
         destination_file_path = os.path.join(
-            self.config.get("static_folder_path", ""), "browserconfig.xml"
-        )
+            self.config.get("static_folder_path", ""), "browserconfig.xml")
         return {
             "content": content.replace("'", '"'),
             "destination_file_path": destination_file_path,
@@ -299,18 +259,15 @@ class ComplementaryFilesGenerator:
         content["scope"] = self.config["scope"]
         content["display"] = self.config["display"]
         content["platform"] = self.config["platform"]
-        content["icons"] = [
-            {
-                "src": f"{self.config['static_url']}/{manifest_config.output_file_name}-{size}x{size}",
-                "sizes": f"{size}x{size}",
-                "type": "image/png",
-                "density": str(size / 48),
-            }
-            for size in manifest_config.sizes_square
-        ]
+        content["icons"] = [{
+            "src":
+            f"{self.config['static_url']}/{manifest_config.output_file_name}-{size}x{size}",
+            "sizes": f"{size}x{size}",
+            "type": "image/png",
+            "density": str(size / 48),
+        } for size in manifest_config.sizes_square]
         destination_file_path = os.path.join(
-            self.config.get("static_folder_path", ""), "manifest.json"
-        )
+            self.config.get("static_folder_path", ""), "manifest.json")
         return {
             "content": src.helpers.indent_dict(content, 0).replace("'", '"'),
             "destination_file_path": destination_file_path,
@@ -346,11 +303,9 @@ class ComplementaryFilesGenerator:
             # Output file name doesnt give already the sizes?
             f"{self.config['static_url']}/{opensearch_config.output_file_name}-16x16.png"
             f"</Image>\n"
-            f"</OpenSearchDescription>"
-        )
+            f"</OpenSearchDescription>")
         destination_file_path = os.path.join(
-            self.config.get("static_folder_path", ""), "opensearch.xml"
-        )
+            self.config.get("static_folder_path", ""), "opensearch.xml")
         return {
             "content": content.replace("'", '"'),
             "destination_file_path": destination_file_path,
@@ -369,15 +324,12 @@ class ComplementaryFilesGenerator:
         """
         protocol = self.config.get("protocol", "")
         clean_url = self.config.get("clean_url", "")
-        content = (
-            f"User-agent: *\n"
-            f"Allow: /\n"
-            f"\n"
-            f"Sitemap: {protocol}{clean_url}/sitemap.xml"
-        )
+        content = (f"User-agent: *\n"
+                   f"Allow: /\n"
+                   f"\n"
+                   f"Sitemap: {protocol}{clean_url}/sitemap.xml")
         destination_file_path = os.path.join(
-            self.config.get("output_folder_path", ""), "robots.txt"
-        )
+            self.config.get("output_folder_path", ""), "robots.txt")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -397,21 +349,18 @@ class ComplementaryFilesGenerator:
         """
         protocol = self.config.get("protocol", "")
         clean_url = self.config.get("clean_url", "")
-        content = (
-            f"<?xml version='1.0' encoding='utf-8'?>"
-            f"<urlset xmlns="
-            f"'http://www.sitemaps.org/schemas/sitemap/0.9' "
-            f"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-            f"xsi:schemaLocation="
-            f"'http://www.sitemaps.org/schemas/sitemap/0.9 "
-            f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
-            f"<url><loc>{protocol}{clean_url}/</loc></url>"
-            f"</urlset>"
-        )
+        content = (f"<?xml version='1.0' encoding='utf-8'?>"
+                   f"<urlset xmlns="
+                   f"'http://www.sitemaps.org/schemas/sitemap/0.9' "
+                   f"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                   f"xsi:schemaLocation="
+                   f"'http://www.sitemaps.org/schemas/sitemap/0.9 "
+                   f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
+                   f"<url><loc>{protocol}{clean_url}/</loc></url>"
+                   f"</urlset>")
         content = content.replace("'", '"')
         destination_file_path = os.path.join(
-            self.config.get("output_folder_path", ""), "sitemap.xml"
-        )
+            self.config.get("output_folder_path", ""), "sitemap.xml")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -432,25 +381,22 @@ class ImagesGenerator:
         self.config = config
         self.icons_config = icons_config
 
-    def _creation(
-        self
-    ) -> typing.Dict[str, typing.Union[str, typing.List[int]]]:
+    def _creation(self
+                  ) -> typing.Dict[str, typing.Union[str, typing.List[int]]]:
         files = []
         for image_type in self.icons_config.values():
             for brand in image_type:
                 for size_format in brand.formated:
-                    files.append(
-                        {
-                            "file_name": size_format.file_name,
-                            "size": size_format.size,
-                            "output_folder_path": brand.output_folder_path,
-                            "source_file_path": brand.source_file_path,
-                        }
-                    )
+                    files.append({
+                        "file_name": size_format.file_name,
+                        "size": size_format.size,
+                        "output_folder_path": brand.output_folder_path,
+                        "source_file_path": brand.source_file_path,
+                    })
         return files
 
     def get_icons_creation_config(
-        self
+            self
     ) -> typing.List[typing.Dict[str, typing.Union[str, typing.List[int]]]]:
         """Return a list with default images creation configuration
 
@@ -470,9 +416,8 @@ class ImagesGenerator:
         ]
 
 
-class FilesGenerator(
-    IndexGenerator, ComplementaryFilesGenerator, ImagesGenerator
-):
+class FilesGenerator(IndexGenerator, ComplementaryFilesGenerator,
+                     ImagesGenerator):
     def generate_non_media_files(self):
         return self.generate_index() + self.generate_complementary_files()
 

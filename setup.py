@@ -19,9 +19,8 @@ except src.support.Unsupported as exception:
 with open("README.md", "r") as fh:
     _LONG_DESCRIPTION = fh.read()
 _PYTHON_REQUIRES = ">={}.{}, <{}.{}"
-_PYTHON_REQUIRES = _PYTHON_REQUIRES.format(
-    *(_INFO["python_min_version"] + _INFO["python_max_version"])
-)
+_PYTHON_REQUIRES = _PYTHON_REQUIRES.format(*(_INFO["python_min_version"] +
+                                             _INFO["python_max_version"]))
 setuptools.setup(
     name=_INFO["package_name"],
     version=_INFO["package_version"],
