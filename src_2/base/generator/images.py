@@ -1,11 +1,16 @@
+import os
+import typing
+
+
 class Images:
     """Module to handle image tags"""
 
-    def __init__(self, config):
+    def __init__(self, config, icons_config):
         self.config = config
+        self.icons_config = icons_config
 
     def icons_head_creator(self, icon_brand_config, filenam,
-                            size: Union[List[int], None] = None):
+                           size: typing.Union[typing.List[int], None] = None):
 
         if not getattr(icon_brand_config, 'head_output', False):
             return None
@@ -82,7 +87,7 @@ class Images:
         # href="/static/favicon-16x16.png"
         # Both uses file_name and static url path
         url_path = getattr(icon_brand_config, 'url_path', '')
-        new_file_path = path.join(url_path, filenam)
+        new_file_path = os.path.join(url_path, filenam)
         tag_element_list.append(
             f"content='{new_file_path}' "
             if getattr(icon_brand_config, 'attribute_special_content', False)
@@ -132,3 +137,38 @@ class Images:
         tag_element_string += '>'
 
         return tag_element_string
+
+    def _creation(self) -> typing.Dict[str, typing.Union[str, typing.List[int]]]:
+        files = []
+        for group in self.icons_config:
+            for brand in self.icons_config[group]:
+                for size_format in brand.formated:
+                    files.append({
+                        'file_name': size_format.file_name,
+                        'size': size_format.size,
+                        'output_folder_path': brand.output_folder_path,
+                        'source_file_path': brand.source_file_path,
+                    })
+        return files
+
+    def get_icons_creation_config(self) \
+            -> typing.List[typing.Dict[str, typing.Union[str, typing.List[int]]]]:
+        """Return a list with default images creation configuration
+
+        It's include configurations for the images listed in the assets folder
+
+        Default structure of the dicts in the return is:
+        {
+            'destination_file_path': str,
+            'resize': bool,
+            'size': list,
+            'source_file_path': str,
+        }
+        """
+        icons_creation_config = [
+            self._creation()
+        ]
+        return [
+            element for group in icons_creation_config
+            for element in group
+        ]

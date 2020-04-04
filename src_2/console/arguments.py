@@ -2,12 +2,12 @@ import argparse
 import textwrap
 import typing
 
-from src_2 import helpers
-from src_2 import info
-from src_2.services import logs
+import src_2.info
+import src_2.base.logs
+import src_2.helpers
 
 
-class Argparse(info.Info, logs.Logs):
+class Argparse(src_2.info.Info, src_2.base.logs.Logs):
     """Class used to handle argparse
 
     Methods:
@@ -66,8 +66,8 @@ class Argparse(info.Info, logs.Logs):
         )
         # GROUP: options
         # -images
-        images_list = helpers.images_list()
-        joined_words = helpers.string_list_union(images_list)
+        images_list = src_2.helpers.images_list()
+        joined_words = src_2.helpers.string_list_union(images_list)
         complementary_arguments.add_argument(
             "--images",
             dest="images",
@@ -90,7 +90,7 @@ class Argparse(info.Info, logs.Logs):
         # pylint no-member error in child function
         parsed_args = parser.parse_args(args)
         if not (parsed_args.config or parsed_args.default):
-            self.error_log("Miss Required arguments. Use -config or -default")
+            self.error_log("Miss Required arguments. Use -config or -default. Use -h for help")
         if parsed_args.config and parsed_args.default:
             self.error_log(
                 "Can't use -config and -default arguments together."

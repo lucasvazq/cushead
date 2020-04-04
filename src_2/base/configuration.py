@@ -6,11 +6,14 @@ Classes:
     IconsFormatConfigStructure
     IconsFormatConfig
 """
-import collections
-from os import path
-from typing import Dict
-from typing import List
-from typing import Union
+import os
+
+import typing
+import textwrap
+
+import src_2.helpers
+import src_2.base.logs
+import src_2.info
 
 
 def generate_default_config(output_path):
@@ -27,7 +30,7 @@ class FileAttributes:
 
     def __init__(self,
                  file_name: str = "",
-                 size: Union[List[int], None] = None):
+                 size: typing.Union[typing.List[int], None] = None):
         self.file_name = file_name
         self.size = size or []
 
@@ -65,9 +68,9 @@ class ImageFormater:
             output_file_size_verbosity: bool = False,
             output_folder_path: str = "",
             source_file_path: str = "",
-            sizes_max_min: Union[List[int], None] = None,
-            sizes_square: Union[List[int], None] = None,
-            sizes_rectangular: Union[List[int], None] = None,
+            sizes_max_min: typing.Union[typing.List[int], None] = None,
+            sizes_square: typing.Union[typing.List[int], None] = None,
+            sizes_rectangular: typing.Union[typing.List[int], None] = None,
             sizes_mantain: bool = False,
             head_output: bool = False,
             url_path: str = "",
@@ -114,7 +117,7 @@ class ImageFormater:
         self.attribute_special_sizes = attribute_special_sizes
         self.attribute_special_title = attribute_special_title
 
-        self.output_extension = path.splitext(self.source_file_path)[1]
+        self.output_extension = os.path.splitext(self.source_file_path)[1]
         self.formated = self.output_formater()
 
     def _get_sizes(self) -> list:
@@ -123,7 +126,7 @@ class ImageFormater:
         sizes_max_min = [[size[1], size[1]] for size in self.sizes_max_min]
         return sizes_square + sizes_rectangular + sizes_max_min
 
-    def _output_formater(self) -> List[FileAttributes]:
+    def _output_formater(self) -> typing.List[FileAttributes]:
         """Return file name, sizes, dest, source resize"""
         output_file_names = []
         if self.sizes_mantain:
@@ -161,7 +164,7 @@ class IconsFormatConfig:
         self.image_format_config_dict = image_format_config()
         self.icons_config = get_icons_config()
 
-    def favicon_ico_icons_config(self) -> List[ImageFormater]:
+    def favicon_ico_icons_config(self) -> typing.List[ImageFormater]:
 
         return [
             # <link rel='shortcut icon' href='/favicon.ico'
@@ -169,7 +172,7 @@ class IconsFormatConfig:
             self.image_format_config_dict["favicon_ico"]
         ]
 
-    def favicon_png_icons_config(self) -> List[ImageFormater]:
+    def favicon_png_icons_config(self) -> typing.List[ImageFormater]:
 
         # Order matters
         return [
@@ -220,13 +223,13 @@ class IconsFormatConfig:
             self.image_format_config_dict["yandex"],
         ]
 
-    def favicon_svg_icons_config(self) -> List[ImageFormater]:
+    def favicon_svg_icons_config(self) -> typing.List[ImageFormater]:
         return [
             # <link color="blue" rel="mask-icon" href="/static/favicon.svg"
             self.image_format_config_dict["mask-icon"]
         ]
 
-    def preview_png_icons_config(self) -> List[ImageFormater]:
+    def preview_png_icons_config(self) -> typing.List[ImageFormater]:
         return [
             # <meta property='og:image' content='/static/preview-500x500.png'>
             self.image_format_config_dict["preview_og"],
@@ -237,13 +240,13 @@ class IconsFormatConfig:
             self.image_format_config_dict["preview_twitter"],
         ]
 
-    def browserconfig_icons_config(self) -> List[ImageFormater]:
+    def browserconfig_icons_config(self) -> typing.List[ImageFormater]:
         return [self.image_format_config_dict["browserconfig"]]
 
-    def manifest_icons_config(self) -> List[ImageFormater]:
+    def manifest_icons_config(self) -> typing.List[ImageFormater]:
         return [self.image_format_config_dict["manifest"]]
 
-    def opensearch_icons_config(self) -> List[ImageFormater]:
+    def opensearch_icons_config(self) -> typing.List[ImageFormater]:
         return [self.image_format_config_dict["opensearch"]]
 
     def image_format_config(self) -> dict:
@@ -525,7 +528,7 @@ class IconsFormatConfig:
             ),
         }
 
-    def get_icons_config(self) -> Dict[str, List[ImageFormater]]:
+    def get_icons_config(self) -> typing.Dict[str, typing.List[ImageFormater]]:
         """Return a default icons format configuration
 
         This return includes configs for favicons with png extension and for
@@ -540,3 +543,155 @@ class IconsFormatConfig:
             "manifest": self.manifest_icons_config(),
             "opensearch": self.opensearch_icons_config(),
         }
+
+
+def default_images() -> typing.List[typing.Dict[str, str]]:
+    """Generate images files to attach to the preset settings"""
+    binary_files = []
+    realpath = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                            "../assets")
+    image_files = src_2.helpers.images_list()
+    for filename in image_files:
+        filepath = os.path.join(realpath, filename)
+        with open(filepath, "rb") as binary_file:
+            binary_files.append({
+                "filename": filename,
+                "content": binary_file.read()
+            })
+    return binary_files
+
+
+class UserConfigHandler(src_2.base.logs.Logs):
+    def transform(self,
+                  user_settings: typing.Union[dict, None] = None,
+                  main_path: str = "") -> dict:
+        """Format default settings to a dict for this package classes
+
+        Format default settings dictionary into a dictionary that the classes
+        under this package can understand
+
+        Args:
+            settings dict: Pass a default settings dict format
+            main_path: base path folder
+
+        Returns:
+            dict: config that the classes under this module can use
+
+        """
+        settings = user_settings or {}
+
+        # Construct config
+        recommended = settings.get("recommended", {})
+        default = settings.get("default", {})
+        general = default.get("general", {})
+        basic = default.get("basic", {})
+        social_media = default.get("social_media", {})
+        progressive_web_app = settings.get("progressive_web_apps", {})
+        if "required" not in settings:
+            self.error_log(
+                "Miss 'required' object and it's required in config file.")
+        settings = {
+            **settings["required"],
+            **recommended,
+            **general,
+            **basic,
+            **social_media,
+            **progressive_web_app,
+        }
+
+        # Required values
+        required_values = ["static_url"]
+        for key in required_values:
+            if error := src_2.helpers.key_exists(settings, key):
+                self.error_log(error)
+
+        # Sanitize static_url key
+        # Prevent:
+        #   output = /output/
+        #   static_url = /static/
+        #   output + static_url = /static/ [root/static/]
+        if settings["static_url"][0] == "/":
+            settings["static_folder_path"] = settings["static_url"][1:]
+        # Prevent //
+        if settings["static_url"][-1] == "/":
+            settings["static_url"] = settings["static_url"][:-1]
+        # Static url = "static" , not "static/"
+
+        # Make paths
+        # Define the main path as the passed throught -file argument
+        settings["main_folder_path"] = main_path
+        settings["output_folder_path"] = os.path.join(
+            settings["main_folder_path"], "output")
+        settings["static_folder_path"] = os.path.join(
+            settings["output_folder_path"], settings["static_folder_path"])
+
+        settings["favicon_ico"] = os.path.join(settings["main_folder_path"],
+                                               settings["favicon_ico"])
+        settings["favicon_png"] = os.path.join(settings["main_folder_path"],
+                                               settings["favicon_png"])
+        settings["favicon_svg"] = os.path.join(settings["main_folder_path"],
+                                               settings["favicon_svg"])
+        settings["preview_png"] = os.path.join(settings["main_folder_path"],
+                                               settings["preview_png"])
+        return settings
+
+
+def default_settings() -> str:
+    """Generate config file in indented JSON format"""
+
+    info = src_2.info.Info.get_info()
+
+    settings = textwrap.dedent(f"""\
+        {{
+            'comment':  {{
+                'About':            'Config file used by python CUSHEAD',
+                'Format':           'JSON',
+                'Git':              '{info['source']}',
+                'Documentation':    '{info['documentation']}'
+            }},
+            'required': {{
+                'static_url':       '/static/'
+            }},
+            'recommended': {{
+                'favicon_ico':      './favicon_ico_16px.ico',
+                'favicon_png':      './favicon_png_1600px.png',
+                'favicon_svg':      './favicon_svg_scalable.svg',
+                'preview_png':      './preview_png_500px.png'
+            }},
+            'default': {{
+                'general': {{
+                    'content-type':     'text/html; charset=utf-8',
+                    'X-UA-Compatible':  'ie=edge',
+                    'viewport':         '{('width=device-width, '
+                                           'initial-scale=1')}',
+                    'language':         'en',
+                    'territory':        'US',
+                    'protocol':         'https://',
+                    'clean_url':        'microsoft.com',
+                    'robots':           'index, follow'
+                }},
+                'basic': {{
+                    'title':            'Microsoft',
+                    'description':      'Technology Solutions',
+                    'subject':          'Home Page',
+                    'keywords':         'Microsoft, Windows',
+                    'background_color': '#FFFFFF',
+                    'author':           'Lucas Vazquez'
+                }},
+                'social_media': {{
+                    'facebook_app_id':  '123456',
+                    'twitter_user_@':   '@Microsoft',
+                    'twitter_user_id':  '123456'
+                }}
+            }},
+            'progressive_web_apps': {{
+                'dir':              'ltr',
+                'start_url':        '/',
+                'orientation':      'landscape',
+                'scope':            '/',
+                'display':          'browser',
+                'platform':         'web'
+            }}
+        }}""")
+    settings = settings.replace("'", '"')
+    return settings

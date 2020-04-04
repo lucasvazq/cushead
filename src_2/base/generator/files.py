@@ -1,15 +1,18 @@
-from src_2 import helpers
-from src_2.generator import images
+import os
+import typing
+
+import src_2.helpers
+import src_2.base.generator.images
 
 
-class IndexGenerator(images.Images):
+class IndexGenerator(src_2.base.generator.images.Images):
 
     def __init__(self, config, icons_config):
         self.config = config
         self.icons_config = icons_config
 
     def generate_index(self):
-        helpers.write_output('index.html', self.config["output"], self.index_base())
+        src_2.helpers.write_output('index.html', self.config["output"], self.index_base())
 
     def index_base(self):
         return (
@@ -45,8 +48,10 @@ class IndexGenerator(images.Images):
         head.extend([
             f"<title>{self.config['title']}</title>",
             f"<meta name='application-name' content='{self.config['title']}'>",
-            ("<meta name='apple-mobile-web-app-title' "
-            f"content='{self.config['title']}'>"),
+            (
+                "<meta name='apple-mobile-web-app-title' "
+                f"content='{self.config['title']}'>"
+            ),
         ])
         # description
         head.append(f"<meta name='description' content='{self.config['description']}'>")
@@ -116,7 +121,7 @@ class IndexGenerator(images.Images):
         head.append(f"<meta name='twitter:image:alt' content='{self.config['title']} - {self.config['description']}'>")
 
         image_name = self.image_format_config_dict["preview_og"]._output_formater[0].file_name
-        json_ld = helpers.indent_dict({
+        json_ld = src_2.helpers.indent_dict({
             '@context': 'http://schema.org/',
             '@type': 'Organization',
             '@id': f"{self.config['protocol']}{self.config['clean_url']}",
@@ -133,15 +138,15 @@ class IndexGenerator(images.Images):
         )
 
         # convert to string adding indent
-        head_content =  f"{helpers.INDETATION * 2}".join([f"{tag}\n" for tag in head])
+        head_content = f"{src_2.helpers.INDETATION * 2}".join([f"{tag}\n" for tag in head])
         return (
-            f"{helpers.INDETATION}<head>\n"
+            f"{src_2.helpers.INDETATION}<head>\n"
             f"{head_content}"
-            f"{helpers.INDETATION}</head>"
+            f"{src_2.helpers.INDETATION}</head>"
         ).replace("'", '"')
 
     def index_body():
-        return f"{helpers.INDETATION}<body></body>"
+        return f"{src_2.helpers.INDETATION}<body></body>"
 
 
 class ComplementaryFilesGenerator:
@@ -150,7 +155,7 @@ class ComplementaryFilesGenerator:
         self.config = config
         self.icons_config = icons_config
 
-    def complementary_browserconfig(self) -> Dict[str, str]:
+    def complementary_browserconfig(self) -> typing.Dict[str, str]:
         """browserconfig.xml content
         Return the content of browserconfig.xml and the path where must be
         written
@@ -168,31 +173,33 @@ class ComplementaryFilesGenerator:
         sizes_rectangular = browserconfig_config.sizes_rectangular
         content = ("<?xml version='1.0' encoding='utf-8'?>\n"
                    "<browserconfig>\n"
-                   f"{helpers.INDETATION}<msapplication>\n"
-                   f"{helpers.INDETATION * 2}<tile>\n")
+                   f"{src_2.helpers.INDETATION}<msapplication>\n"
+                   f"{src_2.helpers.INDETATION * 2}<tile>\n")
         content += "".join([
             (
-                f"{helpers.INDETATION * 3}"
+                f"{src_2.helpers.INDETATION * 3}"
                 f"<square{size}x{size}logo "
                 f"src='{self.config['static_url']}/{icon_name}-{size}x{size}.png'/>\n"
             )
             for size in sizes_square
         ])
-        content += "".join([(f"{helpers.INDETATION * 3}"
-        f"<wide{size[0]}x{size[1]}logo "
-                             f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
-        )
+        content += "".join([
+            (
+                f"{src_2.helpers.INDETATION * 3}"
+                f"<wide{size[0]}x{size[1]}logo "
+                f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
+            )
             for size in sizes_rectangular
         ])
-        content += f"{helpers.INDETATION * 3}<TileColor>{self.config['background_color']}</TileColor>\n"
+        content += f"{src_2.helpers.INDETATION * 3}<TileColor>{self.config['background_color']}</TileColor>\n"
         content += (
-                    f"{helpers.INDETATION * 2}</tile>\n"
-                    f"{helpers.INDETATION}</msapplication>\n"
-                    "</browserconfig>")
+            f"{src_2.helpers.INDETATION * 2}</tile>\n"
+            f"{src_2.helpers.INDETATION}</msapplication>\n"
+            "</browserconfig>"
+        )
         return content.replace("'", '"')
 
-
-    def complementary_manifest(self) -> Dict[str, str]:
+    def complementary_manifest(self) -> typing.Dict[str, str]:
         """manifest.json content
         Return the content of manifest.json and the path where must be written
 
@@ -229,9 +236,9 @@ class ComplementaryFilesGenerator:
             }
             for size in manifest_config.sizes_square
         ]
-        return helpers.indent_dict(content, 0)
+        return src_2.helpers.indent_dict(content, 0)
 
-    def complementary_opensearch(self) -> Dict[str, str]:
+    def complementary_opensearch(self) -> typing.Dict[str, str]:
         """opensearch.xml content
         Return the content of opensearch.xml and the path where must be written
 
@@ -246,23 +253,23 @@ class ComplementaryFilesGenerator:
         size = opensearch_config.sizes_square[0]
         # crear una lista en vez de este string "content"
         content = (f"<?xml version='1.0' encoding='utf-8'?>\n"
-                   f"{helpers.INDETATION}<OpenSearchDescription xmlns:moz='"
+                   f"{src_2.helpers.INDETATION}<OpenSearchDescription xmlns:moz='"
                    f"http://www.mozilla.org/2006/browser/search/' "
                    f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>\n"
-                   f"{helpers.INDETATION * 2}<ShortName>{self.config['title']}</ShortName>\n"
-                   f"{helpers.INDETATION * 2}<Description>Search {self.config['title']}</Description>\n"
-                   f"{helpers.INDETATION * 2}<InputEncoding>UTF-8</InputEncoding>\n"
-                   f"{helpers.INDETATION * 2}<Url method='get' type='text/html' "
+                   f"{src_2.helpers.INDETATION * 2}<ShortName>{self.config['title']}</ShortName>\n"
+                   f"{src_2.helpers.INDETATION * 2}<Description>Search {self.config['title']}</Description>\n"
+                   f"{src_2.helpers.INDETATION * 2}<InputEncoding>UTF-8</InputEncoding>\n"
+                   f"{src_2.helpers.INDETATION * 2}<Url method='get' type='text/html' "
                    f"template='http://www.google.com/search?q="
                    f"{{searchTerms}}+site%3A{self.config['clean_url']}'/>\n"
-                   f"{helpers.INDETATION * 2}<Image height='{size}' width='{size}' "
+                   f"{src_2.helpers.INDETATION * 2}<Image height='{size}' width='{size}' "
                    f"type='{opensearch_config['attribute_type']}'>"
-                   f"{self.config['static_url']}/{opensearch.output_file_name}-16x16.png"  # Output file name doesnt give already the sizes?
+                   f"{self.config['static_url']}/{opensearch_config['output_file_name']}-16x16.png"  # Output file name doesnt give already the sizes?
                    f"</Image>\n"
                    f"</OpenSearchDescription>")
         return content.replace("'", '"')
 
-    def robots_content(self) -> Dict[str, str]:
+    def robots_content(self) -> typing.Dict[str, str]:
         """robots.txt content
         Return the content of robots.txt and the path where must be written
 
@@ -279,14 +286,14 @@ class ComplementaryFilesGenerator:
                    f"Allow: /\n"
                    f"\n"
                    f"Sitemap: {protocol}{clean_url}/sitemap.xml")
-        destination_file_path = path.join(
+        destination_file_path = os.path.join(
             self.config.get("output_folder_path", ""), "robots.txt")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
         }
 
-    def sitemap_content(self) -> Dict[str, str]:
+    def sitemap_content(self) -> typing.Dict[str, str]:
         """sitemap.xml content
         Return the content of sitemap.xml and the path where must be
         written
@@ -310,7 +317,7 @@ class ComplementaryFilesGenerator:
                    f"<url><loc>{protocol}{clean_url}/</loc></url>"
                    f"</urlset>")
         content = content.replace("'", '"')
-        destination_file_path = path.join(
+        destination_file_path = os.path.join(
             self.config.get("output_folder_path", ""), "sitemap.xml")
         return {
             "content": content,

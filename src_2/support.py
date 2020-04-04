@@ -27,7 +27,7 @@ import sys
 
 class Messages:
     """Generate unsupported messages
-    
+
     Methods:
         unsupported_installation
         unsupported_run
@@ -88,7 +88,7 @@ class Messages:
 
 class Support(Messages):
     """Handle situations
-    
+
     Methods:
         install
         run

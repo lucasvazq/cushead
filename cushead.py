@@ -7,24 +7,23 @@
 """Main script"""
 import sys
 
-from src.info import Info
-from src.support import Support
-from src.support import Unsupported
+import src_2.info
+import src_2.support
+
 
 # Check python version
 try:
-    INFO = Info.get_info()
-    Support(INFO).run()
-except Unsupported as exception:
+    INFO = src_2.info.Info.get_info()
+    src_2.support.Support(INFO).check_for_execution()
+except src_2.support.Unsupported as exception:
     sys.stdout.write(str(exception))
     sys.exit()
-
-from src.console.__main__ import Main
+else:
+    import src_2.console.console
 
 
 def main():
-    """Main function"""
-    Main(sys.argv[1:]).run()
+    src_2.console.console.Console(sys.argv[1:]).run()
 
 
 if __name__ == "__main__":
