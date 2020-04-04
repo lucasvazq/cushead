@@ -13,9 +13,9 @@ script:
   - python3 -m coverage run cushead.py -default test/test.json --images
   - python3 -m coverage run cushead.py -config test/test.json
   # bad
-  - python3 -m coverage run cushead.py
-  - python3 -m coverage run cushead.py -default
-  - python3 -m coverage run cushead.py -config
-  - python3 -m coverage run cushead.py -config test/test.json --images
-  - python3 -m coverage run cushead.py .
+  - python3 -m coverage run cushead.py || echo "assert exit 1" || echo exit 1
+  - python3 -m coverage run cushead.py -default || echo "assert exit 1" || echo exit 1
+  - python3 -m coverage run cushead.py -config || echo "assert exit 1" || echo exit 1
+  - python3 -m coverage run cushead.py -config test/test.json --images || echo "assert exit 1" || echo exit 1
+  - python3 -m coverage run cushead.py . || echo "assert exit 1" || echo exit 1
   - codecov
