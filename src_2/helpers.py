@@ -3,8 +3,8 @@ import os
 import shutil
 import typing
 
-import resizeimage
-import PIL
+import resizeimage.resizeimage
+import PIL.Image
 
 
 INDENTATION = " " * 4
@@ -26,7 +26,7 @@ def indent_dict(dictionary, base_indentation_level):
     #indented_content = ",\n".join([f"{INDENTATION * (base_indentation_level + 1)}'{key}': '{value}'" for key, value in dictionary])}
 
     indented_content = []
-    for key, value in dictionary:
+    for key, value in dictionary.items():
         indentation = INDENTATION * (base_indentation_level + 1)
         indented_content.append(
             f"{indentation}'{key}': '{value}'"
@@ -124,11 +124,7 @@ def copy_file(source_file_path, destination_file_path):
     shutil.copyfile(source_file_path, destination_file_path)
 
 
-def move_svg(destination_file_path, source_file_path):
-    copy_file(source_file_path, destination_file_path)
-
-
-def resize_image(destination_file_path, source_file_path, size):
+def resize_image(source_file_path, destination_file_path, size):
     with open(source_file_path, 'rb') as file_instance, \
             PIL.Image.open(file_instance) as image_instance:
         cover = resizeimage.resizeimage.resize_contain(image_instance, [size[0], size[1]])

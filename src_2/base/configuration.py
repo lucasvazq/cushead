@@ -118,7 +118,7 @@ class ImageFormater:
         self.attribute_special_title = attribute_special_title
 
         self.output_extension = os.path.splitext(self.source_file_path)[1]
-        self.formated = self.output_formater()
+        self.formated = self._output_formater()
 
     def _get_sizes(self) -> list:
         sizes_square = [[size, size] for size in self.sizes_square]
@@ -161,10 +161,10 @@ class IconsFormatConfig:
 
     def __init__(self, config):
         self.config = config
-        self.image_format_config_dict = image_format_config()
-        self.icons_config = get_icons_config()
+        self.image_format_config_dict = self._image_format_config()
+        self.icons_config = self.get_icons_config()
 
-    def favicon_ico_icons_config(self) -> typing.List[ImageFormater]:
+    def _favicon_ico_icons_config(self) -> typing.List[ImageFormater]:
 
         return [
             # <link rel='shortcut icon' href='/favicon.ico'
@@ -172,7 +172,7 @@ class IconsFormatConfig:
             self.image_format_config_dict["favicon_ico"]
         ]
 
-    def favicon_png_icons_config(self) -> typing.List[ImageFormater]:
+    def _favicon_png_icons_config(self) -> typing.List[ImageFormater]:
 
         # Order matters
         return [
@@ -223,13 +223,13 @@ class IconsFormatConfig:
             self.image_format_config_dict["yandex"],
         ]
 
-    def favicon_svg_icons_config(self) -> typing.List[ImageFormater]:
+    def _favicon_svg_icons_config(self) -> typing.List[ImageFormater]:
         return [
             # <link color="blue" rel="mask-icon" href="/static/favicon.svg"
             self.image_format_config_dict["mask-icon"]
         ]
 
-    def preview_png_icons_config(self) -> typing.List[ImageFormater]:
+    def _preview_png_icons_config(self) -> typing.List[ImageFormater]:
         return [
             # <meta property='og:image' content='/static/preview-500x500.png'>
             self.image_format_config_dict["preview_og"],
@@ -240,16 +240,16 @@ class IconsFormatConfig:
             self.image_format_config_dict["preview_twitter"],
         ]
 
-    def browserconfig_icons_config(self) -> typing.List[ImageFormater]:
+    def _browserconfig_icons_config(self) -> typing.List[ImageFormater]:
         return [self.image_format_config_dict["browserconfig"]]
 
-    def manifest_icons_config(self) -> typing.List[ImageFormater]:
+    def _manifest_icons_config(self) -> typing.List[ImageFormater]:
         return [self.image_format_config_dict["manifest"]]
 
-    def opensearch_icons_config(self) -> typing.List[ImageFormater]:
+    def _opensearch_icons_config(self) -> typing.List[ImageFormater]:
         return [self.image_format_config_dict["opensearch"]]
 
-    def image_format_config(self) -> dict:
+    def _image_format_config(self) -> dict:
         """Dictionary preloaded with custom data"""
 
         favicon_ico = self.config.get("favicon_ico", "")
@@ -535,13 +535,13 @@ class IconsFormatConfig:
         browserconfig, manifest and opensearch related icons
         """
         return {
-            "favicon_ico": self.favicon_ico_icons_config(),
-            "favicon_png": self.favicon_png_icons_config(),
-            "favicon_svg": self.favicon_svg_icons_config(),
-            "preview_png": self.preview_png_icons_config(),
-            "browserconfig": self.browserconfig_icons_config(),
-            "manifest": self.manifest_icons_config(),
-            "opensearch": self.opensearch_icons_config(),
+            "favicon_ico": self._favicon_ico_icons_config(),
+            "favicon_png": self._favicon_png_icons_config(),
+            "favicon_svg": self._favicon_svg_icons_config(),
+            "preview_png": self._preview_png_icons_config(),
+            "browserconfig": self._browserconfig_icons_config(),
+            "manifest": self._manifest_icons_config(),
+            "opensearch": self._opensearch_icons_config(),
         }
 
 
@@ -563,7 +563,7 @@ def default_images() -> typing.List[typing.Dict[str, str]]:
 
 class UserConfigHandler(src_2.base.logs.Logs):
     def transform(self,
-                  user_settings: typing.Union[dict, None] = None,
+                  settings: typing.Union[dict, None] = None,
                   main_path: str = "") -> dict:
         """Format default settings to a dict for this package classes
 
@@ -578,7 +578,6 @@ class UserConfigHandler(src_2.base.logs.Logs):
             dict: config that the classes under this module can use
 
         """
-        settings = user_settings or {}
 
         # Construct config
         recommended = settings.get("recommended", {})
@@ -602,7 +601,7 @@ class UserConfigHandler(src_2.base.logs.Logs):
         # Required values
         required_values = ["static_url"]
         for key in required_values:
-            if error := src_2.helpers.key_exists(settings, key):
+            if error := src_2.helpers.key_exists(key, settings):
                 self.error_log(error)
 
         # Sanitize static_url key

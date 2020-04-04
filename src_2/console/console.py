@@ -10,10 +10,11 @@ Classes:
 import json
 import os
 import typing
+import collections
 
 import src_2.console.arguments
 import src_2.base.logs
-import src_2.base.generator
+import src_2.base.generator.base_generator
 import src_2.base.configuration
 import src_2.helpers
 
@@ -43,9 +44,9 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
         """Read user config and validate them"""
         file_path = self.args.config
         key = "-config"
-        if error := path_is_not_directory(file_path, key):
+        if error := src_2.helpers.path_is_not_directory(file_path, key):
             self.error_log(error)
-        if error := path_exists(file_path, key):
+        if error := src_2.helpers.path_exists(file_path, key):
             self.error_log(error)
 
         with open(self.args.config, "r") as file_instance:
@@ -63,6 +64,43 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
 
         main_path = os.path.dirname(self.args.config)
         return json_dict, main_path
+
+    def _create_files(self, files_to_create):
+        created_files = collections.defaultdict(list)
+        for file in files_to_create['text_files']:
+            content = file['content']
+            destination_file_path = file['destination_file_path']
+            src_2.helpers.write_unicode_file(content, destination_file_path)
+            created_files[os.path.normpath(os.path.dirname(destination_file_path))].append(os.path.basename(destination_file_path))
+
+        for file in files_to_create['image_files']:
+            source_file_path = file['source_file_path']
+            destination_file_path = os.path.join(file['output_folder_path'], file['file_name'])
+            created_files[os.path.normpath(file['output_folder_path'])].append(file['file_name'])
+
+            if file['size']:
+                src_2.helpers.resize_image(
+                    file['source_file_path'],
+                    destination_file_path,
+                    file['size'],
+                )
+            else:
+                src_2.helpers.copy_file(
+                    file['source_file_path'],
+                    destination_file_path,
+                )
+
+        self.default_log(
+            'GENERATED FILES:\n\n'
+            f'{os.getcwd()}'
+        )
+        last_item_created_files = next(reversed(created_files))
+        for output_folder_path in created_files:
+            folder_conector, folder_extension = ('`', ' ') if output_folder_path == last_item_created_files else ('|', '|')
+            self.default_log(f' {folder_conector}-- {output_folder_path}')
+            for file in created_files[output_folder_path]:
+                file_conector = '`' if file == created_files[output_folder_path][-1] else '|'
+                self.default_log(f' {folder_extension}    {file_conector}-- {file}')
 
     def run(self):
         """Run the current arguments
@@ -91,30 +129,16 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
     # -config
     def argument_string_config(self):
         """Handle -config argument"""
-        user_config, main_path = self.read_user_config()
+        user_config, main_path = self._read_user_config()
         if not user_config and not main_path:
             self.error_log('FALTA USER CONFIG')
 
-        self.config = src_2.base.configuration.UserConfigHandler.transform(user_config, main_path)
-        self.icons_config = self.default_icons_config()
+        config = src_2.base.configuration.UserConfigHandler().transform(user_config, main_path)
+        icons_formater = src_2.base.configuration.IconsFormatConfig(config)
+        image_format_config_dict = icons_formater.image_format_config_dict
+        icons_config = icons_formater.get_icons_config()
 
-        src_2.base.generator.BaseGenerator(self.config).all_files()
-
-        for key in all_files:
-            src_2.helpers.write_unicode_file(all_files[key].get("destination_file_path", ""), all_files[key].get("content", ""))
-        for image_config in src_2.base.generator.images.Images(self.config, self.icons_config).get_icons_creation_config():
-            destination_file_path = os.path.join(
-                image_config.get("output_folder_path", ""),
-                image_config.get("file_name", ""),
-            )
-            if image_config.get("size", False):
-                src_2.helpers.resize_image(
-                    destination_file_path,
-                    image_config.get("source_file_path", ""),
-                    image_config.get("size", []),
-                )
-            else:
-                src_2.helpers.move_svg(destination_file_path, image_config.get("source_file_path", ""))
+        self._create_files(src_2.base.generator.base_generator.BaseGenerator(config, icons_config, image_format_config_dict).generate())
 
     # -default
     def argument_string_default(self):
