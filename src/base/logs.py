@@ -37,11 +37,6 @@ class ColorProcessor:
         """Return a string with the default color"""
         return self.string
 
-    def error_color(self) -> str:
-        """Return a string with error color"""
-        return (src.support.ERROR_COLOR + self.string +
-                src.support.DEFAULT_COLOR)
-
     def presentation_color(self) -> str:
         """Return a string with presentation color"""
         return (src.support.PRESENTATION_COLOR + self.string +
@@ -106,13 +101,9 @@ class MessagesHandler:
     # error section
 
     @staticmethod
-    def error_exception(message: str = ""):
-        raise Exception(message)
-
-    @staticmethod
     def error_stdout(message: str = ""):
         class_instance = ColorProcessor(message)
-        sys.exit(class_instance.error_color())
+        sys.exit(class_instance.default_color())
 
     # presentation section
 

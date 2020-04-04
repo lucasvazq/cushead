@@ -5,17 +5,21 @@ notifications:
   email: false
 cache: pip
 install:
-  - pip install codecov
-  - python3 -m pip install coverage
   - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
 script:
-  # success
-  - python3 -m coverage run cushead.py -default test/test.json --images
-  - python3 -m coverage run cushead.py -config test/test.json
-  # bad
-  - python3 -m coverage run cushead.py
-  - python3 -m coverage run cushead.py -default
-  - python3 -m coverage run cushead.py -config
-  - python3 -m coverage run cushead.py -config test/test.json --images
-  - python3 -m coverage run cushead.py .
+  # Test correct usage
+  - python3 -m coverage run -a cushead.py -default test/test.json --images
+  - python3 -m coverage run -a cushead.py -config test/test.json
+  - python3 -m coverage run -a cushead.py -h
+  # Test bad usage
+  - assertError=0; errorAmounts=0;
+  - function testErrors() { $* || let "assertError+=1"; let "testsAmount+=1"; }
+  - testErrors python3 -m coverage run -a cushead.py
+  - testErrors python3 -m coverage run -a cushead.py .
+  - testErrors python3 -m coverage run -a cushead.py -default
+  - testErrors python3 -m coverage run -a cushead.py -config
+  - testErrors python3 -m coverage run -a cushead.py -config .
+  - testErrors python3 -m coverage run -a cushead.py -config test/test.json --images
+  - if [[ "assertError" -eq "testsAmount" ]]; then echo "All errors pass tests"; else exit 1; fi;
   - codecov
