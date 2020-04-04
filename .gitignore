@@ -1,11 +1,11 @@
--venv/
--__pycache__/
--*.pyc
--
--
--# IDE
--.vscode
--.idea/
--.theia/
--
--.coverage
+venv/
+__pycache__/
+*.pyc
+
+
+# IDE
+.vscode
+.idea/
+.theia/
+
+.coverage
