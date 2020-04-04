@@ -6,7 +6,6 @@ import typing
 import PIL.Image
 import resizeimage.resizeimage
 
-
 INDENTATION = " " * 4
 
 
