@@ -30,12 +30,14 @@ class IndexGenerator(src_2.base.generator.images.Images):
         head = []
 
         # content-type
-        head.append(f"<meta http-equiv='Content-Type' content='{self.config['content-type']}'>")
+        head.append(
+            f"<meta http-equiv='Content-Type' content='{self.config['content-type']}'>")
         # X-UA-Compatible
         head.append(f"<meta http-equiv='X-UA-Compatible' "
                     f"content='{self.config['X-UA-Compatible']}'>")
         # viewport
-        head.append(f"<meta name='viewport' content='{self.config['viewport']}'>")
+        head.append(
+            f"<meta name='viewport' content='{self.config['viewport']}'>")
         # locale
         head.append(f"<meta http-equiv='Content-Language' "
                     f"content='{self.config['language']}'>")
@@ -58,9 +60,11 @@ class IndexGenerator(src_2.base.generator.images.Images):
             ),
         ])
         # description
-        head.append(f"<meta name='description' content='{self.config['description']}'>")
+        head.append(
+            f"<meta name='description' content='{self.config['description']}'>")
         # subject
-        head.append(f"<meta name='subject' content='{self.config['subject']}'>")
+        head.append(
+            f"<meta name='subject' content='{self.config['subject']}'>")
         # theme-color and msapplication-TileColor
         head.extend([
             f"<meta name='theme-color' content='{self.config['background_color']}'>",
@@ -73,23 +77,28 @@ class IndexGenerator(src_2.base.generator.images.Images):
         for image_type in self.icons_config.values():
             for brand in image_type:
                 for sizes in brand.formated:
-                    head_element = self.icons_head_creator(brand, sizes.file_name, sizes.size)
+                    head_element = self.icons_head_creator(
+                        brand, sizes.file_name, sizes.size)
                     if head_element:
                         head.append(head_element)
 
         # browserconfig.xml
-        head.append(f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>")
+        head.append(
+            f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>")
         # manifest.json
-        head.append(f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>")
+        head.append(
+            f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>")
         # opensearch.xml
         head.append(
             f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>"
         )
 
         # fb:app_id
-        head.append(f"<meta porperty='fb:app_id' content='{self.config['facebook_app_id']}'>")
+        head.append(
+            f"<meta porperty='fb:app_id' content='{self.config['facebook_app_id']}'>")
         # og:locale
-        head.append(f"<meta property='og:locale' content='{self.config['language']}_{self.config['territory']}'>")
+        head.append(
+            f"<meta property='og:locale' content='{self.config['language']}_{self.config['territory']}'>")
         # og:type
         # Only allow website type for simplicity
         head.append("<meta property='og:type' content='website'>")
@@ -98,33 +107,42 @@ class IndexGenerator(src_2.base.generator.images.Images):
         string += self.config.get("clean_url", "")
         head.append(f"<meta property='og:url' content='{string}'>")
         # og:site_name
-        head.append(f"<meta property='og:site_name' content='{self.config['title']}'>")
+        head.append(
+            f"<meta property='og:site_name' content='{self.config['title']}'>")
         # og:title
-        head.append(f"<meta property='og:title' content='{self.config['title']}'>")
+        head.append(
+            f"<meta property='og:title' content='{self.config['title']}'>")
         # og:description
-        head.append(f"<meta property='og:description' content='{self.config['description']}'>")
+        head.append(
+            f"<meta property='og:description' content='{self.config['description']}'>")
         # og:image:type
         # Only allow png type for simplicity
         head.append("<meta property='og:image:type' content='image/png'>")
         # og:image:alt
-        head.append(f"<meta property='og:image:alt' content='{self.config['title']} - {self.config['description']}'>")
+        head.append(
+            f"<meta property='og:image:alt' content='{self.config['title']} - {self.config['description']}'>")
 
         # twitter:card
         # Only allow summary type for simplicity
         head.append("<meta name='twitter:card' content='summary'>")
         # twitter:site
-        head.append(f"<meta name='twitter:site' content='{self.config['twitter_user_@']}'>")
+        head.append(
+            f"<meta name='twitter:site' content='{self.config['twitter_user_@']}'>")
         # twitter:title
-        head.append(f"<meta name='twitter:title' content='{self.config['title']}'>")
+        head.append(
+            f"<meta name='twitter:title' content='{self.config['title']}'>")
         # twitter:description
-        head.append(f"<meta name='twitter:description' content='{self.config['description']}'>")
+        head.append(
+            f"<meta name='twitter:description' content='{self.config['description']}'>")
         # tw:creator
         head.append(f"<meta property='twitter:creator:id' "
                     f"content='{self.config['twitter_user_id']}'>")
         # tw:image:alt
-        head.append(f"<meta name='twitter:image:alt' content='{self.config['title']} - {self.config['description']}'>")
+        head.append(
+            f"<meta name='twitter:image:alt' content='{self.config['title']} - {self.config['description']}'>")
 
-        image_name = self.image_format_config_dict["preview_og"]._output_formater()[0].file_name
+        image_name = self.image_format_config_dict["preview_og"]._output_formater()[
+            0].file_name
         json_ld = src_2.helpers.indent_dict({
             '@context': 'http://schema.org/',
             '@type': 'Organization',
@@ -142,7 +160,8 @@ class IndexGenerator(src_2.base.generator.images.Images):
         )
 
         # convert to string adding indent
-        head_content = f"{src_2.helpers.INDENTATION * 2}".join([f"{tag}\n" for tag in head])
+        head_content = f"{src_2.helpers.INDENTATION * 2}".join(
+            [f"{tag}\n" for tag in head])
         return (
             f"{src_2.helpers.INDENTATION}<head>\n"
             f"{src_2.helpers.INDENTATION * 2}{head_content}"
@@ -201,7 +220,8 @@ class ComplementaryFilesGenerator:
             f"{src_2.helpers.INDENTATION}</msapplication>\n"
             "</browserconfig>"
         )
-        destination_file_path = os.path.join(self.config.get("static_folder_path", ""), "browserconfig.xml")
+        destination_file_path = os.path.join(self.config.get(
+            "static_folder_path", ""), "browserconfig.xml")
         return {
             "content": content.replace("'", '"'),
             "destination_file_path": destination_file_path,
@@ -244,7 +264,8 @@ class ComplementaryFilesGenerator:
             }
             for size in manifest_config.sizes_square
         ]
-        destination_file_path = os.path.join(self.config.get("static_folder_path", ""), "manifest.json")
+        destination_file_path = os.path.join(
+            self.config.get("static_folder_path", ""), "manifest.json")
         return {
             "content": src_2.helpers.indent_dict(content, 0).replace("'", '"'),
             "destination_file_path": destination_file_path,
@@ -276,10 +297,12 @@ class ComplementaryFilesGenerator:
                    f"{{searchTerms}}+site%3A{self.config['clean_url']}'/>\n"
                    f"{src_2.helpers.INDENTATION}<Image height='{size}' width='{size}' "
                    f"type='{opensearch_config.attribute_type}'>"
-                   f"{self.config['static_url']}/{opensearch_config.output_file_name}-16x16.png"  # Output file name doesnt give already the sizes?
+                   # Output file name doesnt give already the sizes?
+                   f"{self.config['static_url']}/{opensearch_config.output_file_name}-16x16.png"
                    f"</Image>\n"
                    f"</OpenSearchDescription>")
-        destination_file_path = os.path.join(self.config.get("static_folder_path", ""), "opensearch.xml")
+        destination_file_path = os.path.join(self.config.get(
+            "static_folder_path", ""), "opensearch.xml")
         return {
             "content": content.replace("'", '"'),
             "destination_file_path": destination_file_path,
@@ -302,7 +325,8 @@ class ComplementaryFilesGenerator:
                    f"Allow: /\n"
                    f"\n"
                    f"Sitemap: {protocol}{clean_url}/sitemap.xml")
-        destination_file_path = os.path.join(self.config.get("output_folder_path", ""), "robots.txt")
+        destination_file_path = os.path.join(
+            self.config.get("output_folder_path", ""), "robots.txt")
         return {
             "content": content,
             "destination_file_path": destination_file_path,

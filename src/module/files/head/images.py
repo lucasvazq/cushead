@@ -15,7 +15,7 @@ from src.services.images import ImageService
 
 class Images(ImageService):
     """Module to handle image tags
-    
+
     Methods:
         wazuncho
     """

@@ -23,12 +23,13 @@ def indent_dict(dictionary, base_indentation_level):
         )
     indented_content = ",\n".join(indented_content)
     """
-    #indented_content = ",\n".join([f"{INDENTATION * (base_indentation_level + 1)}'{key}': '{value}'" for key, value in dictionary])}
+    # indented_content = ",\n".join([f"{INDENTATION * (base_indentation_level + 1)}'{key}': '{value}'" for key, value in dictionary])}
 
     indented_content = []
     for key, value in dictionary.items():
         indentation = INDENTATION * (base_indentation_level + 1)
-        value_representation = f"'{value}'" if isinstance(value, str) else value
+        value_representation = f"'{value}'" if isinstance(
+            value, str) else value
         indented_content.append(
             f"{indentation}'{key}': {value_representation}"
         )
@@ -130,7 +131,8 @@ def copy_file(source_file_path, destination_file_path):
 def resize_image(source_file_path, destination_file_path, size):
     with open(source_file_path, 'rb') as file_instance, \
             PIL.Image.open(file_instance) as image_instance:
-        cover = resizeimage.resizeimage.resize_contain(image_instance, [size[0], size[1]])
+        cover = resizeimage.resizeimage.resize_contain(
+            image_instance, [size[0], size[1]])
         cover.save(destination_file_path, image_instance.format)
 
 

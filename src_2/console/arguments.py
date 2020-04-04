@@ -90,7 +90,8 @@ class Argparse(src_2.base.logs.Logs):
         # pylint no-member error in child function
         parsed_args = parser.parse_args(args)
         if not (parsed_args.config or parsed_args.default):
-            self.error_log("Miss Required arguments. Use -config or -default. Use -h for help")
+            self.error_log(
+                "Miss Required arguments. Use -config or -default. Use -h for help")
         if parsed_args.config and parsed_args.default:
             self.error_log(
                 "Can't use -config and -default arguments together."
@@ -98,7 +99,8 @@ class Argparse(src_2.base.logs.Logs):
         if parsed_args.images and not parsed_args.default:
             self.error_log("Can't use --images without -default.")
         if parsed_args.config:
-            error = src_2.helpers.path_is_not_directory(parsed_args.config, '-config')
+            error = src_2.helpers.path_is_not_directory(
+                parsed_args.config, '-config')
             if error:
                 self.error_log(error)
 
