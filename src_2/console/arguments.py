@@ -14,7 +14,9 @@ class Argparse(src_2.base.logs.Logs):
         parse_args
     """
 
-    def parse_args(self, args: typing.Union[list, None] = None) -> argparse.Namespace:
+    def parse_args(
+        self, args: typing.Union[list, None] = None
+    ) -> argparse.Namespace:
         """Argparse implementation
 
         This function validates the values of arguments and, if everything is
@@ -91,7 +93,8 @@ class Argparse(src_2.base.logs.Logs):
         parsed_args = parser.parse_args(args)
         if not (parsed_args.config or parsed_args.default):
             self.error_log(
-                "Miss Required arguments. Use -config or -default. Use -h for help")
+                "Miss Required arguments. Use -config or -default. Use -h for help"
+            )
         if parsed_args.config and parsed_args.default:
             self.error_log(
                 "Can't use -config and -default arguments together."
@@ -100,7 +103,8 @@ class Argparse(src_2.base.logs.Logs):
             self.error_log("Can't use --images without -default.")
         if parsed_args.config:
             error = src_2.helpers.path_is_not_directory(
-                parsed_args.config, '-config')
+                parsed_args.config, "-config"
+            )
             if error:
                 self.error_log(error)
 

@@ -36,7 +36,8 @@ class BaseFileCreation(Head):
         head = self.full_head()
         index = self.structure(head)
         destination_file_path = path.join(
-            self.config.get("output_folder_path", ""), "index.html")
+            self.config.get("output_folder_path", ""), "index.html"
+        )
         return {
             "index": {
                 "content": index,
@@ -50,11 +51,14 @@ class BaseFileCreation(Head):
         """Return an html structure"""
         indent = "    "  # 4 spaces
         formated_head = "".join(
-            [f"{indent*2}{tag}\n" for conjunt in head for tag in conjunt])
+            [f"{indent*2}{tag}\n" for conjunt in head for tag in conjunt]
+        )
         language = self.config.get("language", "")
-        return (f"<html lang='{language}'>\n"
-                f"{indent}<head>\n"
-                f"{formated_head}"  # Already have newline
-                f"{indent}</head>\n"
-                f"<body></body>"
-                f"</html>").replace("'", '"')
+        return (
+            f"<html lang='{language}'>\n"
+            f"{indent}<head>\n"
+            f"{formated_head}"  # Already have newline
+            f"{indent}</head>\n"
+            f"<body></body>"
+            f"</html>"
+        ).replace("'", '"')

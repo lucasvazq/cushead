@@ -28,8 +28,9 @@ def indent_dict(dictionary, base_indentation_level):
     indented_content = []
     for key, value in dictionary.items():
         indentation = INDENTATION * (base_indentation_level + 1)
-        value_representation = f"'{value}'" if isinstance(
-            value, str) else value
+        value_representation = (
+            f"'{value}'" if isinstance(value, str) else value
+        )
         indented_content.append(
             f"{indentation}'{key}': {value_representation}"
         )
@@ -46,14 +47,16 @@ def indent_dict(dictionary, base_indentation_level):
 def images_list() -> typing.List[str]:
     """Returns a list of image file names that are in assets"""
     return [
-        'favicon_ico_16px.ico',
-        'favicon_png_1600px.png',
-        'favicon_svg_scalable.svg',
-        'preview_png_500px.png',
+        "favicon_ico_16px.ico",
+        "favicon_png_1600px.png",
+        "favicon_svg_scalable.svg",
+        "preview_png_500px.png",
     ]
 
 
-def string_list_union(string_list: typing.Union[typing.List[str], None] = None) -> str:
+def string_list_union(
+    string_list: typing.Union[typing.List[str], None] = None
+) -> str:
     """Return a str list joined into a sentence
 
     Example:
@@ -61,16 +64,20 @@ def string_list_union(string_list: typing.Union[typing.List[str], None] = None) 
         output = 'foo, bar, baz and etc'
     """
     string_list = string_list or []
-    return ''.join([
-        string + (
-            ", " if string in string_list[:-2] else (
-                " and " if string == string_list[-2] else ''
+    return "".join(
+        [
+            string
+            + (
+                ", "
+                if string in string_list[:-2]
+                else (" and " if string == string_list[-2] else "")
             )
-        ) for string in string_list
-    ])
+            for string in string_list
+        ]
+    )
 
 
-def path_exists(file_path: str = '', key: str = ''):
+def path_exists(file_path: str = "", key: str = ""):
     """Check if path exists"""
     full_path = os.path.join(os.getcwd(), file_path)
     if not os.path.exists(file_path):
@@ -81,7 +88,7 @@ def path_exists(file_path: str = '', key: str = ''):
         )
 
 
-def path_is_not_directory(file_path: str = '', key: str = ''):
+def path_is_not_directory(file_path: str = "", key: str = ""):
     full_path = os.path.join(os.getcwd(), file_path)
     if not os.path.isfile(file_path):
         return (
@@ -102,22 +109,22 @@ def create_folder(destination_file_path):
 def write_binary_file(binary_content, destination_file_path):
     """Write binary file"""
     create_folder(destination_file_path)
-    with open(destination_file_path, 'wb') as file_instance:
+    with open(destination_file_path, "wb") as file_instance:
         file_instance.write(binary_content)
 
 
 def write_unicode_file(unicode_content, destination_file_path):
     """Write unicode file"""
     create_folder(destination_file_path)
-    with open(destination_file_path, 'w') as file_instance:
+    with open(destination_file_path, "w") as file_instance:
         file_instance.write(unicode_content)
 
 
 def format_sizes(icon_brand_config):
-    sizes_square = getattr(icon_brand_config, 'sizes_square', [])
+    sizes_square = getattr(icon_brand_config, "sizes_square", [])
     sizes_square = [[size, size] for size in sizes_square]
-    sizes_rectangular = getattr(icon_brand_config, 'sizes_rectangular', [])
-    max_min_sizes = getattr(icon_brand_config, 'sizes_max_min', [])
+    sizes_rectangular = getattr(icon_brand_config, "sizes_rectangular", [])
+    max_min_sizes = getattr(icon_brand_config, "sizes_max_min", [])
     max_min_sizes = [[size[1], size[1]] for size in max_min_sizes]
     return sizes_square + sizes_rectangular + max_min_sizes
 
@@ -129,10 +136,12 @@ def copy_file(source_file_path, destination_file_path):
 
 
 def resize_image(source_file_path, destination_file_path, size):
-    with open(source_file_path, 'rb') as file_instance, \
-            PIL.Image.open(file_instance) as image_instance:
+    with open(source_file_path, "rb") as file_instance, PIL.Image.open(
+        file_instance
+    ) as image_instance:
         cover = resizeimage.resizeimage.resize_contain(
-            image_instance, [size[0], size[1]])
+            image_instance, [size[0], size[1]]
+        )
         cover.save(destination_file_path, image_instance.format)
 
 
