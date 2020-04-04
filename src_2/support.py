@@ -14,15 +14,7 @@ import os
 import sys
 
 
-DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR = (
-    ('', '', '')
-    if os.name == 'nt' else
-    (
-        '\033[0;0m',
-        '\033[1;31m',
-        '\033[1;34m',
-    )
-)
+DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR = ('', '', '') if os.name == 'nt' else ('\033[0;0m', '\033[1;31m', '\033[1;34m')
 
 
 class Messages:
