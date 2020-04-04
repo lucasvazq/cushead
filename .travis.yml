@@ -20,6 +20,5 @@ script:
   - python3 -m coverage run -a cushead.py -config || let="assertError+=1"
   - python3 -m coverage run -a cushead.py -config . --images || let="assertError+=1"
   - python3 -m coverage run -a cushead.py -config . || let="assertError+=1"
-  - if [[ "assertError" -eq 6 ]]; then echo "All errors pass tests"; else exit 1; fi
-
+  - if [[ "assertError" -eq 6 ]]; then echo "All errors pass tests"; else echo $assertError; fi
   - codecov
