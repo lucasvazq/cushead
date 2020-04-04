@@ -90,14 +90,14 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
                 )
             else:
                 src.helpers.copy_file(file["source_file_path"],
-                                        destination_file_path)
+                                      destination_file_path)
 
         self.default_log("GENERATED FILES:\n\n" f"{os.getcwd()}")
         last_item_created_files = next(reversed(created_files))
         for output_folder_path in created_files:
             folder_conector, folder_extension = ((
                 "`", " ") if output_folder_path == last_item_created_files else
-                                                 ("|", "|"))
+                ("|", "|"))
             self.default_log(f" {folder_conector}-- {output_folder_path}")
             for file in created_files[output_folder_path]:
                 file_conector = ("`" if
@@ -129,7 +129,7 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
             file_name = binary_image["filename"]
             destination_file_path = os.path.join(destination_folder, file_name)
             src.helpers.write_binary_file(binary_image["content"],
-                                            destination_file_path)
+                                          destination_file_path)
 
     # -config
     def argument_string_config(self):
