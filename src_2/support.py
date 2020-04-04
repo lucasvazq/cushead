@@ -14,7 +14,7 @@ import os
 import sys
 
 
-(DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR) = (
+DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR = (
     ('', '', '')
     if os.name == 'nt' else
     (
