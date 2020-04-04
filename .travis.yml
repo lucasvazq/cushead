@@ -1,7 +1,5 @@
 language: python
 python:
-  - "3.6"
-  - "3.7"
   - "3.8"
 notifications:
   email: false
@@ -11,6 +9,13 @@ install:
   - python3 -m pip install coverage
   - pip install -r requirements.txt
 script:
-  - python3 -m converage run cushead.py -default test/test.json --images
+  # success
+  - python3 -m coverage run cushead.py -default test/test.json --images
   - python3 -m coverage run cushead.py -config test/test.json
+  # bad
+  - python3 -m coverage run cushead.py
+  - python3 -m coverage run cushead.py -default
+  - python3 -m coverage run cushead.py -config
+  - python3 -m coverage run cushead.py -config test/test.json --images
+  - python3 -m coverage run cushead.py .
   - codecov

@@ -6,11 +6,8 @@ import typing
 import PIL.Image
 import resizeimage.resizeimage
 
+
 INDENTATION = " " * 4
-
-
-def write_output(file_name, destination_path, content):
-    pass
 
 
 def indent_dict(dictionary, base_indentation_level):
