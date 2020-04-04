@@ -1,11 +1,11 @@
 import os
 import typing
 
-import src_2.base.generator.images
-import src_2.helpers
+import src.base.generator.images
+import src.helpers
 
 
-class IndexGenerator(src_2.base.generator.images.Images):
+class IndexGenerator(src.base.generator.images.Images):
     def __init__(self, config, icons_config, image_format_config_dict):
         self.config = config
         self.icons_config = icons_config
@@ -152,7 +152,7 @@ class IndexGenerator(src_2.base.generator.images.Images):
 
         image_name = (self.image_format_config_dict["preview_og"].
                       _output_formater()[0].file_name)
-        json_ld = src_2.helpers.indent_dict(
+        json_ld = src.helpers.indent_dict(
             {
                 "@context":
                 "http://schema.org/",
@@ -175,17 +175,17 @@ class IndexGenerator(src_2.base.generator.images.Images):
         )
         head.append("<script type='application/ld+json'>\n"
                     f"{json_ld}\n"
-                    f"{src_2.helpers.INDENTATION* 2 }</script>")
+                    f"{src.helpers.INDENTATION* 2 }</script>")
 
         # convert to string adding indent
-        head_content = f"{src_2.helpers.INDENTATION * 2}".join(
+        head_content = f"{src.helpers.INDENTATION * 2}".join(
             [f"{tag}\n" for tag in head])
-        return (f"{src_2.helpers.INDENTATION}<head>\n"
-                f"{src_2.helpers.INDENTATION * 2}{head_content}"
-                f"{src_2.helpers.INDENTATION}</head>").replace("'", '"')
+        return (f"{src.helpers.INDENTATION}<head>\n"
+                f"{src.helpers.INDENTATION * 2}{head_content}"
+                f"{src.helpers.INDENTATION}</head>").replace("'", '"')
 
     def index_body(self):
-        return f"{src_2.helpers.INDENTATION}<body></body>"
+        return f"{src.helpers.INDENTATION}<body></body>"
 
 
 class ComplementaryFilesGenerator:
@@ -211,21 +211,21 @@ class ComplementaryFilesGenerator:
         sizes_rectangular = browserconfig_config.sizes_rectangular
         content = ("<?xml version='1.0' encoding='utf-8'?>\n"
                    "<browserconfig>\n"
-                   f"{src_2.helpers.INDENTATION}<msapplication>\n"
-                   f"{src_2.helpers.INDENTATION * 2}<tile>\n")
+                   f"{src.helpers.INDENTATION}<msapplication>\n"
+                   f"{src.helpers.INDENTATION * 2}<tile>\n")
         content += "".join([(
-            f"{src_2.helpers.INDENTATION * 3}"
+            f"{src.helpers.INDENTATION * 3}"
             f"<square{size}x{size}logo "
             f"src='{self.config['static_url']}/{icon_name}-{size}x{size}.png'/>\n"
         ) for size in sizes_square])
         content += "".join([(
-            f"{src_2.helpers.INDENTATION * 3}"
+            f"{src.helpers.INDENTATION * 3}"
             f"<wide{size[0]}x{size[1]}logo "
             f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
         ) for size in sizes_rectangular])
-        content += f"{src_2.helpers.INDENTATION * 3}<TileColor>{self.config['background_color']}</TileColor>\n"
-        content += (f"{src_2.helpers.INDENTATION * 2}</tile>\n"
-                    f"{src_2.helpers.INDENTATION}</msapplication>\n"
+        content += f"{src.helpers.INDENTATION * 3}<TileColor>{self.config['background_color']}</TileColor>\n"
+        content += (f"{src.helpers.INDENTATION * 2}</tile>\n"
+                    f"{src.helpers.INDENTATION}</msapplication>\n"
                     "</browserconfig>")
         destination_file_path = os.path.join(
             self.config.get("static_folder_path", ""), "browserconfig.xml")
@@ -269,7 +269,7 @@ class ComplementaryFilesGenerator:
         destination_file_path = os.path.join(
             self.config.get("static_folder_path", ""), "manifest.json")
         return {
-            "content": src_2.helpers.indent_dict(content, 0).replace("'", '"'),
+            "content": src.helpers.indent_dict(content, 0).replace("'", '"'),
             "destination_file_path": destination_file_path,
         }
 
@@ -292,13 +292,13 @@ class ComplementaryFilesGenerator:
             f"<OpenSearchDescription xmlns:moz='"
             f"http://www.mozilla.org/2006/browser/search/' "
             f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>\n"
-            f"{src_2.helpers.INDENTATION}<ShortName>{self.config['title']}</ShortName>\n"
-            f"{src_2.helpers.INDENTATION}<Description>Search {self.config['title']}</Description>\n"
-            f"{src_2.helpers.INDENTATION}<InputEncoding>UTF-8</InputEncoding>\n"
-            f"{src_2.helpers.INDENTATION}<Url method='get' type='text/html' "
+            f"{src.helpers.INDENTATION}<ShortName>{self.config['title']}</ShortName>\n"
+            f"{src.helpers.INDENTATION}<Description>Search {self.config['title']}</Description>\n"
+            f"{src.helpers.INDENTATION}<InputEncoding>UTF-8</InputEncoding>\n"
+            f"{src.helpers.INDENTATION}<Url method='get' type='text/html' "
             f"template='http://www.google.com/search?q="
             f"{{searchTerms}}+site%3A{self.config['clean_url']}'/>\n"
-            f"{src_2.helpers.INDENTATION}<Image height='{size}' width='{size}' "
+            f"{src.helpers.INDENTATION}<Image height='{size}' width='{size}' "
             f"type='{opensearch_config.attribute_type}'>"
             # Output file name doesnt give already the sizes?
             f"{self.config['static_url']}/{opensearch_config.output_file_name}-16x16.png"

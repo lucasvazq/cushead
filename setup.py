@@ -5,14 +5,14 @@ import sys
 
 import setuptools
 
-import src_2.info
-import src_2.support
+import src.info
+import src.support
 
 # Check python version
 try:
-    _INFO = src_2.info.get_info()
-    src_2.support.Support(_INFO).check_for_installation()
-except src_2.support.Unsupported as exception:
+    _INFO = src.info.get_info()
+    src.support.Support(_INFO).check_for_installation()
+except src.support.Unsupported as exception:
     sys.stdout.write(exception)
     sys.exit()
 

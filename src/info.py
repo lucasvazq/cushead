@@ -10,7 +10,7 @@ __documentation__ = "https://github.com/lucasvazq/{}/blob/master/README.md".form
     __package_name__)
 __python_min_version__ = (3, 5)
 __python_max_version__ = (4, 0)
-__required_packages__ = ["argparse", "python-resize-image", "Pillow"]
+__required_packages__ = ["python-resize-image", "Pillow"]
 __author__ = "Lucas Vazquez"
 __author_page__ = "https://github.com/lucasvazq"
 __email__ = "lucas5zvazquez@gmail.com"

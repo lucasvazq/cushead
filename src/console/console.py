@@ -10,14 +10,14 @@ import json
 import os
 import typing
 
-import src_2.base.configuration
-import src_2.base.generator.base_generator
-import src_2.base.logs
-import src_2.console.arguments
-import src_2.helpers
+import src.base.configuration
+import src.base.generator.base_generator
+import src.base.logs
+import src.console.arguments
+import src.helpers
 
 
-class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
+class Console(src.console.arguments.Argparse, src.base.logs.Logs):
     """Class used to handle the CLI inputs and outputs
 
     Init:
@@ -35,7 +35,7 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
     """
 
     def __init__(self, args: typing.Union[list, None] = None):
-        self.presentation_log(src_2.base.logs.PRESENTATION_MESSAGE)
+        self.presentation_log(src.base.logs.PRESENTATION_MESSAGE)
         self.args = self.parse_args(args or [])
 
     def _read_user_config(self) -> typing.Tuple[dict, str]:
@@ -43,11 +43,11 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
         file_path = self.args.config
         key = "-config"
         # :=
-        error = src_2.helpers.path_is_not_directory(file_path, key)
+        error = src.helpers.path_is_not_directory(file_path, key)
         if error:
             self.error_log(error)
         # :=
-        error = src_2.helpers.path_exists(file_path, key)
+        error = src.helpers.path_exists(file_path, key)
         if error:
             self.error_log(error)
 
@@ -71,7 +71,7 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
         for file in files_to_create["text_files"]:
             content = file["content"]
             destination_file_path = file["destination_file_path"]
-            src_2.helpers.write_unicode_file(content, destination_file_path)
+            src.helpers.write_unicode_file(content, destination_file_path)
             created_files[os.path.normpath(
                 os.path.dirname(destination_file_path))].append(
                     os.path.basename(destination_file_path))
@@ -83,13 +83,13 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
                 file["file_name"])
 
             if file["size"]:
-                src_2.helpers.resize_image(
+                src.helpers.resize_image(
                     file["source_file_path"],
                     destination_file_path,
                     file["size"],
                 )
             else:
-                src_2.helpers.copy_file(file["source_file_path"],
+                src.helpers.copy_file(file["source_file_path"],
                                         destination_file_path)
 
         self.default_log("GENERATED FILES:\n\n" f"{os.getcwd()}")
@@ -122,13 +122,13 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
     # --images
     def argument_boolean_image(self):
         """Handle --images argument"""
-        src_2.helpers.create_folder(self.args.default)
-        binary_images = src_2.base.configuration.default_images()
+        src.helpers.create_folder(self.args.default)
+        binary_images = src.base.configuration.default_images()
         destination_folder = os.path.dirname(self.args.default)
         for binary_image in binary_images:
             file_name = binary_image["filename"]
             destination_file_path = os.path.join(destination_folder, file_name)
-            src_2.helpers.write_binary_file(binary_image["content"],
+            src.helpers.write_binary_file(binary_image["content"],
                                             destination_file_path)
 
     # -config
@@ -138,21 +138,21 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
         if not user_config and not main_path:
             self.error_log("FALTA USER CONFIG")
 
-        config = src_2.base.configuration.UserConfigHandler().transform(
+        config = src.base.configuration.UserConfigHandler().transform(
             user_config, main_path)
-        icons_formater = src_2.base.configuration.IconsFormatConfig(config)
+        icons_formater = src.base.configuration.IconsFormatConfig(config)
         image_format_config_dict = icons_formater.image_format_config_dict
         icons_config = icons_formater.get_icons_config()
 
         self._create_files(
-            src_2.base.generator.base_generator.BaseGenerator(
+            src.base.generator.base_generator.BaseGenerator(
                 config, icons_config, image_format_config_dict).generate())
 
     # -default
     def argument_string_default(self):
         """Handle -default argument"""
-        default_settings = src_2.base.configuration.default_settings()
-        src_2.helpers.write_unicode_file(default_settings, self.args.default)
+        default_settings = src.base.configuration.default_settings()
+        src.helpers.write_unicode_file(default_settings, self.args.default)
         fullpath = os.path.join(os.getcwd(), self.args.default)
         self.default_log(f"CONFIG FILE: {self.args.default}\n"
                          f"FULL PATH: {fullpath}")

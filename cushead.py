@@ -4,18 +4,18 @@
 import importlib
 import sys
 
-import src_2.info
-import src_2.support
+import src.info
+import src.support
 
 # Check python version
 try:
-    _INFO = src_2.info.get_info()
-    src_2.support.Support(_INFO).check_for_execution()
-except src_2.support.Unsupported as exception:
+    _INFO = src.info.get_info()
+    src.support.Support(_INFO).check_for_execution()
+except src.support.Unsupported as exception:
     sys.stdout.write(str(exception))
     sys.exit()
 else:
-    console = importlib.import_module("src_2.console.console")
+    console = importlib.import_module("src.console.console")
 
 
 def main():
