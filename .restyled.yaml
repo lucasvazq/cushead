@@ -32,7 +32,7 @@ statuses:
 # Possible values:
 #   author: From the author of the original PR
 #   owner: From the owner of the repository
-request_review: none
+request_review: owner
 
 # Add labels to any created Restyle PRs
 labels: []

@@ -1,73 +1,61 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# Disable modules import order on Pylint because it generate a warning
-# Thats warning is ok, but need to call some functions before call rest of
-# methods for check the python version and generate a custom alert message to
-# the user.
-# pylint: disable=C0413
-
 """Setup script"""
-
 import sys
+
 import setuptools
 
-from src.info import get_info
-from src.support import Support, Unsupported
+import src.info
+import src.support
 
 # Check python version
 try:
-    INFO = get_info()
-    Support(INFO).install()
-except Unsupported as exception:
+    _INFO = src.info.get_info()
+    src.support.Support(_INFO).check_for_installation()
+except src.support.Unsupported as exception:
     sys.stdout.write(exception)
     sys.exit()
 
-
-with open('README.md', 'r') as fh:
-    LONG_DESCRIPTION = fh.read()
-PYTHON_REQUIRES = ">={}.{}, <{}.{}"
-PYTHON_REQUIRES = PYTHON_REQUIRES.format(*(INFO['python_min_version']
-                                           + INFO['python_max_version']))
+with open("README.md", "r") as fh:
+    _LONG_DESCRIPTION = fh.read()
+_PYTHON_REQUIRES = ">={}.{}, <{}.{}"
+_PYTHON_REQUIRES = _PYTHON_REQUIRES.format(*(_INFO["python_min_version"] +
+                                             _INFO["python_max_version"]))
 setuptools.setup(
-    name=INFO['package_name'],
-    version=INFO['package_version'],
-    scripts=[
-        f"{INFO['package_name']}.py",
-    ],
+    name=_INFO["package_name"],
+    version=_INFO["package_version"],
+    scripts=[f"{_INFO['package_name']}.py"],
     entry_points={
-        'console_scripts': [
-            "{0}={0}:main".format(INFO['package_name']),
-        ],
+        "console_scripts": ["{0}={0}:main".format(_INFO["package_name"])]
     },
-    url=INFO['source'],
+    url=_INFO["source"],
     project_urls={
-        'Documentation': INFO['documentation'],
-        'Source': INFO['source'],
+        "Documentation": _INFO["documentation"],
+        "Source": _INFO["source"],
     },
-    python_requires=PYTHON_REQUIRES,
+    python_requires=_PYTHON_REQUIRES,
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=INFO['required_packages'],
-    author=INFO['author'],
-    author_email=INFO['email'],
-    description=INFO['description'],
-    long_description=LONG_DESCRIPTION,
-    long_description_content_type='text/markdown',
-    license=INFO['license'],
-    keywords=INFO['keywords'],
-    platforms='any',
+    install_requires=_INFO["required_packages"],
+    author=_INFO["author"],
+    author_email=_INFO["email"],
+    description=_INFO["description"],
+    long_description=_LONG_DESCRIPTION,
+    long_description_content_type="text/markdown",
+    license=_INFO["license"],
+    keywords=_INFO["keywords"],
+    platforms="any",
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3 :: Only',
-    ]
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3 :: Only",
+    ],
 )
