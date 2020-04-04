@@ -28,9 +28,9 @@ class FileAttributes:
     """
 
     def __init__(
-            self,
-            file_name: str = "",
-            size: typing.Union[typing.List[int], None] = None,
+        self,
+        file_name: str = "",
+        size: typing.Union[typing.List[int], None] = None,
     ):
         self.file_name = file_name
         self.size = size or []
@@ -64,28 +64,28 @@ class ImageFormater:
     """
 
     def __init__(
-            self,
-            output_file_name: str = "",
-            output_file_size_verbosity: bool = False,
-            output_folder_path: str = "",
-            source_file_path: str = "",
-            sizes_max_min: typing.Union[typing.List[int], None] = None,
-            sizes_square: typing.Union[typing.List[int], None] = None,
-            sizes_rectangular: typing.Union[typing.List[int], None] = None,
-            sizes_mantain: bool = False,
-            head_output: bool = False,
-            url_path: str = "",
-            tag_name: str = "",
-            attribute_color: str = "",
-            attribute_content: str = "",
-            attribute_name: str = "",
-            attribute_property: str = "",
-            attribute_rel: str = "",
-            attribute_type: str = "",
-            attribute_special_content: bool = False,
-            attribute_special_href: bool = False,
-            attribute_special_sizes: bool = False,
-            attribute_special_title: bool = False,
+        self,
+        output_file_name: str = "",
+        output_file_size_verbosity: bool = False,
+        output_folder_path: str = "",
+        source_file_path: str = "",
+        sizes_max_min: typing.Union[typing.List[int], None] = None,
+        sizes_square: typing.Union[typing.List[int], None] = None,
+        sizes_rectangular: typing.Union[typing.List[int], None] = None,
+        sizes_mantain: bool = False,
+        head_output: bool = False,
+        url_path: str = "",
+        tag_name: str = "",
+        attribute_color: str = "",
+        attribute_content: str = "",
+        attribute_name: str = "",
+        attribute_property: str = "",
+        attribute_rel: str = "",
+        attribute_type: str = "",
+        attribute_special_content: bool = False,
+        attribute_special_href: bool = False,
+        attribute_special_sizes: bool = False,
+        attribute_special_title: bool = False,
     ):
         # output file name
         self.output_file_name = output_file_name
@@ -139,17 +139,19 @@ class ImageFormater:
                 file_nam = f"{output_file_name}-{size[0]}x{size[1]}"
                 file_nam += self.output_extension
                 output_file_names.append(
-                    FileAttributes(file_name=file_nam, size=size))
+                    FileAttributes(file_name=file_nam, size=size)
+                )
         else:
             # Probably it is only one, but with _get_sizes we get the size
             # wherever they come from: square_sizes, max_min or rectangular
             for size in self._get_sizes():
                 output_file_names.append(
                     FileAttributes(
-                        file_name=self.output_file_name +
-                        self.output_extension,
+                        file_name=self.output_file_name
+                        + self.output_extension,
                         size=size,
-                    ))
+                    )
+                )
         return output_file_names
 
 
@@ -205,7 +207,8 @@ class IconsFormatConfig:
             # Example:
             # ???
             self.image_format_config_dict[
-                "apple_touch_startup_image_media_queries"],
+                "apple_touch_startup_image_media_queries"
+            ],
             # Fluid icon
             # Example:
             # <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
@@ -254,13 +257,13 @@ class IconsFormatConfig:
         static_folder_path = self.config.get("static_folder_path", "")
         static_url = self.config.get("static_url", "")
         background_color = self.config.get("background_color", "")
-        yandex_content = (f"logo={static_url}/yandex.png, "
-                          f"color={background_color}")
+        yandex_content = (
+            f"logo={static_url}/yandex.png, " f"color={background_color}"
+        )
 
         return {
             # favicon ico
-            "favicon_ico":
-            ImageFormater(
+            "favicon_ico": ImageFormater(
                 output_file_name="favicon",
                 output_folder_path=output_folder_path,
                 source_file_path=favicon_ico,
@@ -273,8 +276,7 @@ class IconsFormatConfig:
                 attribute_special_href=True,
             ),
             # favicon png
-            "favicon_16x16_png":
-            ImageFormater(
+            "favicon_16x16_png": ImageFormater(
                 output_file_name="favicon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -316,8 +318,7 @@ class IconsFormatConfig:
                 attribute_special_sizes=True,
                 attribute_special_href=True,
             ),
-            "ms_icon":
-            ImageFormater(
+            "ms_icon": ImageFormater(
                 output_file_name="ms-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -329,8 +330,7 @@ class IconsFormatConfig:
                 attribute_name="msapplication-TileImage",
                 attribute_special_content=True,
             ),
-            "apple_touch_icon_default":
-            ImageFormater(
+            "apple_touch_icon_default": ImageFormater(
                 output_file_name="apple-touch-icon",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -341,8 +341,7 @@ class IconsFormatConfig:
                 attribute_rel="apple-touch-icon",
                 attribute_special_href=True,
             ),
-            "apple_touch_icon":
-            ImageFormater(
+            "apple_touch_icon": ImageFormater(
                 output_file_name="apple-touch-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -367,8 +366,7 @@ class IconsFormatConfig:
                 attribute_special_href=True,
                 attribute_special_sizes=True,
             ),
-            "apple_touch_startup_image":
-            ImageFormater(
+            "apple_touch_startup_image": ImageFormater(
                 output_file_name="launch",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -379,8 +377,7 @@ class IconsFormatConfig:
                 attribute_rel="apple-touch-startup-image",
                 attribute_special_href=True,
             ),
-            "apple_touch_startup_image_media_queries":
-            ImageFormater(
+            "apple_touch_startup_image_media_queries": ImageFormater(
                 output_file_name="launch",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -408,8 +405,7 @@ class IconsFormatConfig:
                 attribute_rel="apple-touch-startup-image",
                 attribute_special_href=True,
             ),
-            "fluid-icon":
-            ImageFormater(
+            "fluid-icon": ImageFormater(
                 output_file_name="fluid-icon",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -422,8 +418,7 @@ class IconsFormatConfig:
                 attribute_special_href=True,
                 attribute_special_title=True,
             ),
-            "yandex":
-            ImageFormater(
+            "yandex": ImageFormater(
                 output_file_name="yandex",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_png,
@@ -435,8 +430,7 @@ class IconsFormatConfig:
                 attribute_content=yandex_content,
             ),
             # favicon svg
-            "mask-icon":
-            ImageFormater(
+            "mask-icon": ImageFormater(
                 output_file_name="mask-icon",
                 output_folder_path=static_folder_path,
                 source_file_path=favicon_svg,
@@ -449,8 +443,7 @@ class IconsFormatConfig:
                 attribute_special_href=True,
             ),
             # preview png
-            "preview_og":
-            ImageFormater(
+            "preview_og": ImageFormater(
                 output_file_name="preview",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -462,8 +455,7 @@ class IconsFormatConfig:
                 attribute_property="og:image",
                 attribute_special_content=True,
             ),
-            "preview_og_secure_url":
-            ImageFormater(
+            "preview_og_secure_url": ImageFormater(
                 output_file_name="preview",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -475,8 +467,7 @@ class IconsFormatConfig:
                 attribute_property="og:image:secure_url",
                 attribute_special_content=True,
             ),
-            "preview_twitter":
-            ImageFormater(
+            "preview_twitter": ImageFormater(
                 output_file_name="preview",
                 output_folder_path=static_folder_path,
                 output_file_size_verbosity=True,
@@ -489,8 +480,7 @@ class IconsFormatConfig:
                 attribute_special_content=True,
             ),
             # complementary files
-            "browserconfig":
-            ImageFormater(
+            "browserconfig": ImageFormater(
                 output_file_name="ms-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -498,8 +488,7 @@ class IconsFormatConfig:
                 sizes_square=[30, 44, 70, 150, 310],
                 sizes_rectangular=[[310, 150]],
             ),
-            "manifest":
-            ImageFormater(
+            "manifest": ImageFormater(
                 output_file_name="android-icon",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -507,8 +496,7 @@ class IconsFormatConfig:
                 sizes_square=[36, 48, 72, 96, 144, 192, 256, 384, 512],
                 attribute_type="image/png",
             ),
-            "opensearch":
-            ImageFormater(
+            "opensearch": ImageFormater(
                 output_file_name="opensearch",
                 output_file_size_verbosity=True,
                 output_folder_path=static_folder_path,
@@ -538,23 +526,23 @@ class IconsFormatConfig:
 def default_images() -> typing.List[typing.Dict[str, str]]:
     """Generate images files to attach to the preset settings"""
     binary_files = []
-    realpath = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                            "../assets")
+    realpath = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "../assets"
+    )
     image_files = src.helpers.images_list()
     for filename in image_files:
         filepath = os.path.join(realpath, filename)
         with open(filepath, "rb") as binary_file:
-            binary_files.append({
-                "filename": filename,
-                "content": binary_file.read()
-            })
+            binary_files.append(
+                {"filename": filename, "content": binary_file.read()}
+            )
     return binary_files
 
 
 class UserConfigHandler(src.base.logs.Logs):
-    def transform(self,
-                  settings: typing.Union[dict, None] = None,
-                  main_path: str = "") -> dict:
+    def transform(
+        self, settings: typing.Union[dict, None] = None, main_path: str = ""
+    ) -> dict:
         """Format default settings to a dict for this package classes
 
         Format default settings dictionary into a dictionary that the classes
@@ -578,7 +566,8 @@ class UserConfigHandler(src.base.logs.Logs):
         progressive_web_app = settings.get("progressive_web_apps", {})
         if "required" not in settings:
             self.error_log(
-                "Miss 'required' object and it's required in config file.")
+                "Miss 'required' object and it's required in config file."
+            )
         settings = {
             **settings["required"],
             **recommended,
@@ -612,18 +601,24 @@ class UserConfigHandler(src.base.logs.Logs):
         # Define the main path as the passed throught -file argument
         settings["main_folder_path"] = main_path
         settings["output_folder_path"] = os.path.join(
-            settings["main_folder_path"], "output")
+            settings["main_folder_path"], "output"
+        )
         settings["static_folder_path"] = os.path.join(
-            settings["output_folder_path"], settings["static_folder_path"])
+            settings["output_folder_path"], settings["static_folder_path"]
+        )
 
-        settings["favicon_ico"] = os.path.join(settings["main_folder_path"],
-                                               settings["favicon_ico"])
-        settings["favicon_png"] = os.path.join(settings["main_folder_path"],
-                                               settings["favicon_png"])
-        settings["favicon_svg"] = os.path.join(settings["main_folder_path"],
-                                               settings["favicon_svg"])
-        settings["preview_png"] = os.path.join(settings["main_folder_path"],
-                                               settings["preview_png"])
+        settings["favicon_ico"] = os.path.join(
+            settings["main_folder_path"], settings["favicon_ico"]
+        )
+        settings["favicon_png"] = os.path.join(
+            settings["main_folder_path"], settings["favicon_png"]
+        )
+        settings["favicon_svg"] = os.path.join(
+            settings["main_folder_path"], settings["favicon_svg"]
+        )
+        settings["preview_png"] = os.path.join(
+            settings["main_folder_path"], settings["preview_png"]
+        )
         return settings
 
 
@@ -632,7 +627,8 @@ def default_settings() -> str:
 
     info = src.info.get_info()
 
-    settings = textwrap.dedent(f"""\
+    settings = textwrap.dedent(
+        f"""\
         {{
             'comment':  {{
                 'About':            'Config file used by python CUSHEAD',
@@ -683,6 +679,7 @@ def default_settings() -> str:
                 'display':          'browser',
                 'platform':         'web'
             }}
-        }}""")
+        }}"""
+    )
     settings = settings.replace("'", '"')
     return settings

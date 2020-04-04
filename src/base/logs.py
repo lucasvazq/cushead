@@ -39,19 +39,24 @@ class ColorProcessor:
 
     def error_color(self) -> str:
         """Return a string with error color"""
-        return (src.support.ERROR_COLOR + self.string +
-                src.support.DEFAULT_COLOR)
+        return (
+            src.support.ERROR_COLOR + self.string + src.support.DEFAULT_COLOR
+        )
 
     def presentation_color(self) -> str:
         """Return a string with presentation color"""
-        return (src.support.PRESENTATION_COLOR + self.string +
-                src.support.DEFAULT_COLOR)
+        return (
+            src.support.PRESENTATION_COLOR
+            + self.string
+            + src.support.DEFAULT_COLOR
+        )
 
 
 _INFO = src.info.get_info()
 
 # presentation is in /docs/presentation.png
-PRESENTATION_MESSAGE = textwrap.dedent("""\
+PRESENTATION_MESSAGE = textwrap.dedent(
+    """\
        ____  _   _  ____   _   _  _____     _     ____     ____ __   __
       / ___|| | | |/ ___| | | | || ____|   / \\   |  _ \\   |  _ \\\\ \\ / /
      | |    | | | |\\___ \\ | |_| ||  _|    / _ \\  | | | |  | |_) |\\ V /
@@ -73,7 +78,8 @@ PRESENTATION_MESSAGE = textwrap.dedent("""\
     Git: {}
     Documentation: {}
     For help run: {} -h
-    """)  # This line is blank
+    """
+)  # This line is blank
 PRESENTATION_MESSAGE = PRESENTATION_MESSAGE.format(
     _INFO["package_version"],
     _INFO["author"],
