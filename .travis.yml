@@ -10,10 +10,9 @@ install:
   - pip install -r requirements.txt
 script:
   # success
-  - python3 -m COVERAGE_FILE=.coverage_1 coverage run cushead.py -default test/test.json --images
-  - python3 -m COVERAGE_FILE=.coverage_2 coverage run cushead.py -config test/test.json
-  - python3 -m COVERAGE_FILE=.coverage_3 coverage run cushead.py -h
-  - coverage combine
+  - python3 -m coverage run -a cushead.py -default test/test.json --images
+  - python3 -m coverage run -a cushead.py -config test/test.json
+  - python3 -m coverage run -a cushead.py -h
   # bad
   # - python3 -m coverage run cushead.py || echo "assert exit 1"
   # - python3 -m coverage run cushead.py -default || echo "assert exit 1"
