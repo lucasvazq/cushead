@@ -8,15 +8,18 @@ install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
 script:
-  # success
+  # Test correct usage
   - python3 -m coverage run -a cushead.py -default test/test.json --images
   - python3 -m coverage run -a cushead.py -config test/test.json
   - python3 -m coverage run -a cushead.py -h
-  # bad
-  - python3 -m coverage run -a cushead.py
-  - python3 -m coverage run -a cushead.py .
-  - python3 -m coverage run -a cushead.py -default
-  - python3 -m coverage run -a cushead.py -config
-  - python3 -m coverage run -a cushead.py -config . --images
-  - python3 -m coverage run -a cushead.py -config .
+  # Test bad usage
+  - assertError=0
+  - python3 -m coverage run -a cushead.py || let="assertError+=1"
+  - python3 -m coverage run -a cushead.py . || let="assertError+=1"
+  - python3 -m coverage run -a cushead.py -default || let="assertError+=1"
+  - python3 -m coverage run -a cushead.py -config || let="assertError+=1"
+  - python3 -m coverage run -a cushead.py -config . --images || let="assertError+=1"
+  - python3 -m coverage run -a cushead.py -config . || let="assertError+=1"
+  - if [[ "assertError" -eq 6 ]]; then echo "All errors pass tests"; else exit 1; fi
+
   - codecov
