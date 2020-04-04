@@ -2,9 +2,9 @@ import argparse
 import textwrap
 import typing
 
-import src_2.info
 import src_2.base.logs
 import src_2.helpers
+import src_2.info
 
 
 class Argparse(src_2.base.logs.Logs):

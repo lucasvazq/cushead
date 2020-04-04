@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Handle logs information
 
 Relevant Global Variables:
@@ -12,9 +11,7 @@ Classes:
     Logs
     SpecialMessages
 """
-
 import sys
-
 import textwrap
 
 import src_2.info

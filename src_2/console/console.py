@@ -1,21 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Main console module
 
 Classes:
     Main
 """
-
+import collections
 import json
 import os
 import typing
-import collections
 
-import src_2.console.arguments
-import src_2.base.logs
-import src_2.base.generator.base_generator
 import src_2.base.configuration
+import src_2.base.generator.base_generator
+import src_2.base.logs
+import src_2.console.arguments
 import src_2.helpers
 
 

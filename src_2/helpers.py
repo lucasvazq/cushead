@@ -3,8 +3,8 @@ import os
 import shutil
 import typing
 
-import resizeimage.resizeimage
 import PIL.Image
+import resizeimage.resizeimage
 
 
 INDENTATION = " " * 4

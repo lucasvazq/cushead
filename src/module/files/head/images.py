@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Module to handle image tags
 
 Classes:
     Images
 """
-
 from os import path
-from typing import List, Union
+from typing import List
+from typing import Union
 
 from src.services.images import ImageService
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """Setup script"""
-
 import sys
+
 import setuptools
 
 import src_2.info

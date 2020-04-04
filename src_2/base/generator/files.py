@@ -1,8 +1,8 @@
 import os
 import typing
 
-import src_2.helpers
 import src_2.base.generator.images
+import src_2.helpers
 
 
 class IndexGenerator(src_2.base.generator.images.Images):
