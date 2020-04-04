@@ -93,8 +93,8 @@ class Argparse(src.base.logs.Logs):
         if parsed_args.images and not parsed_args.default:
             self.error_log("Can't use --images without -default.")
         if parsed_args.config:
-            error = src.helpers.path_is_not_directory(
-                parsed_args.config, "-config")
+            error = src.helpers.path_is_not_directory(parsed_args.config,
+                                                      "-config")
             if error:
                 self.error_log(error)
 
