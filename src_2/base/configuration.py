@@ -7,12 +7,11 @@ Classes:
     IconsFormatConfig
 """
 import os
-
-import typing
 import textwrap
+import typing
 
-import src_2.helpers
 import src_2.base.logs
+import src_2.helpers
 import src_2.info
 
 
@@ -28,9 +27,11 @@ class FileAttributes:
         size Union[list, None] = None
     """
 
-    def __init__(self,
-                 file_name: str = "",
-                 size: typing.Union[typing.List[int], None] = None):
+    def __init__(
+            self,
+            file_name: str = "",
+            size: typing.Union[typing.List[int], None] = None,
+    ):
         self.file_name = file_name
         self.size = size or []
 
@@ -181,42 +182,35 @@ class IconsFormatConfig:
             # <link rel="icon" type="image/png" href="/static/favicon-16x16.png"
             # sizes="16x16">
             self.image_format_config_dict["favicon_16x16_png"],
-
             # Microsoft icon
             # Example:
             # <meta name="msapplication-TileImage"
             # content="/static/ms-icon-144x144.png">
             self.image_format_config_dict["ms_icon"],
-
             # Apple touch default
             # Example:
             # <link rel="apple-touch-icon"
             # href="/static/apple-touch-icon-default-57x57.png">
             self.image_format_config_dict["apple_touch_icon_default"],
-
             # Apple touch with different sizes
             # Example:
             # <link rel="apple-touch-icon" sizes="57x57"
             # href="/static/apple-touch-icon-57x57.png">
             self.image_format_config_dict["apple_touch_icon"],
-
             # Apple touch startup default
             # Example:
             # ???
             self.image_format_config_dict["apple_touch_startup_image"],
-
             # Apple touch startup with different sizes
             # Example:
             # ???
             self.image_format_config_dict[
                 "apple_touch_startup_image_media_queries"],
-
             # Fluid icon
             # Example:
             # <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
             # title="Microsoft">
             self.image_format_config_dict["fluid-icon"],
-
             # Yandex browser special icon
             # Example:
             # ???
@@ -278,7 +272,6 @@ class IconsFormatConfig:
                 attribute_type="image/x-icon",
                 attribute_special_href=True,
             ),
-
             # favicon png
             "favicon_16x16_png":
             ImageFormater(
@@ -441,7 +434,6 @@ class IconsFormatConfig:
                 attribute_name="yandex-tableau-widget",
                 attribute_content=yandex_content,
             ),
-
             # favicon svg
             "mask-icon":
             ImageFormater(
@@ -456,7 +448,6 @@ class IconsFormatConfig:
                 attribute_rel="mask-icon",
                 attribute_special_href=True,
             ),
-
             # preview png
             "preview_og":
             ImageFormater(
@@ -497,7 +488,6 @@ class IconsFormatConfig:
                 attribute_name="twitter:image",
                 attribute_special_content=True,
             ),
-
             # complementary files
             "browserconfig":
             ImageFormater(

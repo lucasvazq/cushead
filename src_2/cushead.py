@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import src_2.support
-import src_2.base.generator.base_generator
 import src_2.base.configuration
+import src_2.base.generator.base_generator
+import src_2.support
 
 
 def generate_files(config):
