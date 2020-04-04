@@ -13,8 +13,8 @@ script:
   - python3 -m coverage run -a cushead.py -config test/test.json
   - python3 -m coverage run -a cushead.py -h
   # Test bad usage
-  - assertError=0; errorAmounts=0
-  - function testErrors() { $* || let "assertError+=1"; let "testsAmount+=1" }
+  - assertError=0; errorAmounts=0;
+  - function testErrors() { $* || let "assertError+=1"; let "testsAmount+=1" };
   - testErrors python3 -m coverage run -a cushead.py
   - testErrors python3 -m coverage run -a cushead.py .
   - testErrors python3 -m coverage run -a cushead.py -default
