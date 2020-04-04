@@ -601,7 +601,9 @@ class UserConfigHandler(src_2.base.logs.Logs):
         # Required values
         required_values = ["static_url"]
         for key in required_values:
-            if error := src_2.helpers.key_exists(key, settings):
+            # :=
+            error = src_2.helpers.key_exists(key, settings)
+            if error:
                 self.error_log(error)
 
         # Sanitize static_url key
@@ -638,7 +640,7 @@ class UserConfigHandler(src_2.base.logs.Logs):
 def default_settings() -> str:
     """Generate config file in indented JSON format"""
 
-    info = src_2.info.Info.get_info()
+    info = src_2.info.get_info()
 
     settings = textwrap.dedent(f"""\
         {{

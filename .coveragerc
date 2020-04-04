@@ -3,6 +3,7 @@ branch = True
 source = ./
 omit =
     *__init__*
+    *__src__*
 
 [html]
 directory = coverage_html_report

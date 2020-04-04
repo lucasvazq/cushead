@@ -246,7 +246,7 @@ class ComplementaryFilesGenerator:
         ]
         destination_file_path = os.path.join(self.config.get("static_folder_path", ""), "manifest.json")
         return {
-            "content": src_2.helpers.indent_dict(content, 0),
+            "content": src_2.helpers.indent_dict(content, 0).replace("'", '"'),
             "destination_file_path": destination_file_path,
         }
 
@@ -265,16 +265,16 @@ class ComplementaryFilesGenerator:
         size = opensearch_config.sizes_square[0]
         # crear una lista en vez de este string "content"
         content = (f"<?xml version='1.0' encoding='utf-8'?>\n"
-                   f"{src_2.helpers.INDENTATION}<OpenSearchDescription xmlns:moz='"
+                   f"<OpenSearchDescription xmlns:moz='"
                    f"http://www.mozilla.org/2006/browser/search/' "
                    f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>\n"
-                   f"{src_2.helpers.INDENTATION * 2}<ShortName>{self.config['title']}</ShortName>\n"
-                   f"{src_2.helpers.INDENTATION * 2}<Description>Search {self.config['title']}</Description>\n"
-                   f"{src_2.helpers.INDENTATION * 2}<InputEncoding>UTF-8</InputEncoding>\n"
-                   f"{src_2.helpers.INDENTATION * 2}<Url method='get' type='text/html' "
+                   f"{src_2.helpers.INDENTATION}<ShortName>{self.config['title']}</ShortName>\n"
+                   f"{src_2.helpers.INDENTATION}<Description>Search {self.config['title']}</Description>\n"
+                   f"{src_2.helpers.INDENTATION}<InputEncoding>UTF-8</InputEncoding>\n"
+                   f"{src_2.helpers.INDENTATION}<Url method='get' type='text/html' "
                    f"template='http://www.google.com/search?q="
                    f"{{searchTerms}}+site%3A{self.config['clean_url']}'/>\n"
-                   f"{src_2.helpers.INDENTATION * 2}<Image height='{size}' width='{size}' "
+                   f"{src_2.helpers.INDENTATION}<Image height='{size}' width='{size}' "
                    f"type='{opensearch_config.attribute_type}'>"
                    f"{self.config['static_url']}/{opensearch_config.output_file_name}-16x16.png"  # Output file name doesnt give already the sizes?
                    f"</Image>\n"

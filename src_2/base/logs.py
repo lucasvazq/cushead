@@ -49,7 +49,7 @@ class ColorProcessor:
         return src_2.support.PRESENTATION_COLOR + self.string + src_2.support.DEFAULT_COLOR
 
 
-_INFO = src_2.info.Info.get_info()
+_INFO = src_2.info.get_info()
 
 # presentation is in /docs/presentation.png
 PRESENTATION_MESSAGE = textwrap.dedent("""\

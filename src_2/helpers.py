@@ -28,8 +28,9 @@ def indent_dict(dictionary, base_indentation_level):
     indented_content = []
     for key, value in dictionary.items():
         indentation = INDENTATION * (base_indentation_level + 1)
+        value_representation = f"'{value}'" if isinstance(value, str) else value
         indented_content.append(
-            f"{indentation}'{key}': '{value}'"
+            f"{indentation}'{key}': {value_representation}"
         )
     indented_content = ",\n".join(indented_content)
 
@@ -91,7 +92,9 @@ def path_is_not_directory(file_path: str = '', key: str = ''):
 
 def create_folder(destination_file_path):
     """Create folder"""
-    if folder_path := os.path.dirname(destination_file_path):
+    # :=
+    folder_path = os.path.dirname(destination_file_path)
+    if folder_path:
         os.makedirs(folder_path, exist_ok=True)
 
 

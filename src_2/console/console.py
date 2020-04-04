@@ -44,9 +44,13 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
         """Read user config and validate them"""
         file_path = self.args.config
         key = "-config"
-        if error := src_2.helpers.path_is_not_directory(file_path, key):
+        # :=
+        error = src_2.helpers.path_is_not_directory(file_path, key)
+        if error:
             self.error_log(error)
-        if error := src_2.helpers.path_exists(file_path, key):
+        # :=
+        error = src_2.helpers.path_exists(file_path, key)
+        if error:
             self.error_log(error)
 
         with open(self.args.config, "r") as file_instance:
@@ -74,7 +78,6 @@ class Console(src_2.console.arguments.Argparse, src_2.base.logs.Logs):
             created_files[os.path.normpath(os.path.dirname(destination_file_path))].append(os.path.basename(destination_file_path))
 
         for file in files_to_create['image_files']:
-            source_file_path = file['source_file_path']
             destination_file_path = os.path.join(file['output_folder_path'], file['file_name'])
             created_files[os.path.normpath(file['output_folder_path'])].append(file['file_name'])
 
