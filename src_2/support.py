@@ -9,12 +9,10 @@ Classes:
 import os
 import sys
 
-
-DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR = (
-    ("", "", "")
-    if os.name == "nt"
-    else ("\033[0;0m", "\033[1;31m", "\033[1;34m")
-)
+DEFAULT_COLOR, ERROR_COLOR, PRESENTATION_COLOR = (("", "",
+                                                   "") if os.name == "nt" else
+                                                  ("\033[0;0m", "\033[1;31m",
+                                                   "\033[1;34m"))
 
 
 class Messages:
@@ -42,11 +40,9 @@ class Messages:
             "Unsupported Python version\n"
             "{title_frame}\n"
             "This version of {name} requires Python >={min_major}.{min_minor} "
-            "and <{max_major}.{max_minor},\n"
-        )
-        title = title.format(
-            title_frame=title_frame, **self.support_string_format
-        )
+            "and <{max_major}.{max_minor},\n")
+        title = title.format(title_frame=title_frame,
+                             **self.support_string_format)
         return title
 
     def unsupported_installation(self):
@@ -62,20 +58,17 @@ class Messages:
             "version \n"
             "of {name}, make sure you still running it with a supported "
             "version \n"
-            "of Python.\n"
-        )
+            "of Python.\n")
         string = string.format(**self.support_string_format)
         return string
 
     def unsupported_execution(self):
         """Generate unsupported message for the run script attempt"""
-        string = (
-            f"{self._unsupported_title()}"
-            "but you're trying to run it with Python "
-            "{current_major}.{current_minor}\n"
-            "Try running:\n"
-            "   $ python3 ./{name}.py\n"
-        )
+        string = (f"{self._unsupported_title()}"
+                  "but you're trying to run it with Python "
+                  "{current_major}.{current_minor}\n"
+                  "Try running:\n"
+                  "   $ python3 ./{name}.py\n")
         string = string.format(**self.support_string_format)
         return string
 
@@ -104,10 +97,8 @@ class Support(Messages):
 
     def _check_version(self, message):
         """Check if current version is supported"""
-        if (
-            self.current_python < self.min_python
-            or self.current_python > self.max_python
-        ):
+        if (self.current_python < self.min_python
+                or self.current_python > self.max_python):
             raise Unsupported(ERROR_COLOR + message + DEFAULT_COLOR)
 
     def check_for_installation(self):

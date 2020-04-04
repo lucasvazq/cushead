@@ -14,9 +14,8 @@ class Argparse(src_2.base.logs.Logs):
         parse_args
     """
 
-    def parse_args(
-        self, args: typing.Union[list, None] = None
-    ) -> argparse.Namespace:
+    def parse_args(self, args: typing.Union[list, None] = None
+                   ) -> argparse.Namespace:
         """Argparse implementation
 
         This function validates the values of arguments and, if everything is
@@ -31,14 +30,12 @@ class Argparse(src_2.base.logs.Logs):
             prog=info["package_name"],
             formatter_class=argparse.RawDescriptionHelpFormatter,
             usage=f"{info['package_name']} -config FILEPATH",
-            epilog=textwrap.dedent(
-                f"""\
+            epilog=textwrap.dedent(f"""\
                 Examples:
                 1) Generate default config file with images:
                     {name} -default settings.json --images
                 2) Run that config:
-                    {name} -config settings.json"""
-            ),
+                    {name} -config settings.json"""),
         )
 
         # ARGUMENTS
@@ -52,10 +49,8 @@ class Argparse(src_2.base.logs.Logs):
             "-config",
             metavar="FILEPATH",
             dest="config",
-            help=(
-                "Path to a config file in JSON format. "
-                "Read a config file and create the main files based on it."
-            ),
+            help=("Path to a config file in JSON format. "
+                  "Read a config file and create the main files based on it."),
         )
         # -default
         main_arguments.add_argument(
@@ -63,8 +58,7 @@ class Argparse(src_2.base.logs.Logs):
             metavar="FILENAME",
             dest="default",
             help=(
-                "Path to output a default config file. Can use with --images"
-            ),
+                "Path to output a default config file. Can use with --images"),
         )
         # GROUP: options
         # -images
@@ -74,11 +68,9 @@ class Argparse(src_2.base.logs.Logs):
             "--images",
             dest="images",
             action="store_true",
-            help=(
-                f"Use with -default. "
-                f"Generate default images that can be used by the settings. "
-                f"This include: {joined_words}"
-            ),
+            help=(f"Use with -default. "
+                  f"Generate default images that can be used by the settings. "
+                  f"This include: {joined_words}"),
         )
 
         # Set defaults
@@ -97,14 +89,12 @@ class Argparse(src_2.base.logs.Logs):
             )
         if parsed_args.config and parsed_args.default:
             self.error_log(
-                "Can't use -config and -default arguments together."
-            )
+                "Can't use -config and -default arguments together.")
         if parsed_args.images and not parsed_args.default:
             self.error_log("Can't use --images without -default.")
         if parsed_args.config:
             error = src_2.helpers.path_is_not_directory(
-                parsed_args.config, "-config"
-            )
+                parsed_args.config, "-config")
             if error:
                 self.error_log(error)
 

@@ -6,7 +6,6 @@ import typing
 import PIL.Image
 import resizeimage.resizeimage
 
-
 INDENTATION = " " * 4
 
 
@@ -28,19 +27,15 @@ def indent_dict(dictionary, base_indentation_level):
     indented_content = []
     for key, value in dictionary.items():
         indentation = INDENTATION * (base_indentation_level + 1)
-        value_representation = (
-            f"'{value}'" if isinstance(value, str) else value
-        )
+        value_representation = (f"'{value}'"
+                                if isinstance(value, str) else value)
         indented_content.append(
-            f"{indentation}'{key}': {value_representation}"
-        )
+            f"{indentation}'{key}': {value_representation}")
     indented_content = ",\n".join(indented_content)
 
-    return (
-        f"{INDENTATION * base_indentation_level}{{\n"
-        f"{indented_content}\n"
-        f"{INDENTATION * base_indentation_level}}}"
-    )
+    return (f"{INDENTATION * base_indentation_level}{{\n"
+            f"{indented_content}\n"
+            f"{INDENTATION * base_indentation_level}}}")
 
 
 # IMPROVE THIS, make it dynamic
@@ -54,9 +49,8 @@ def images_list() -> typing.List[str]:
     ]
 
 
-def string_list_union(
-    string_list: typing.Union[typing.List[str], None] = None
-) -> str:
+def string_list_union(string_list: typing.Union[typing.List[str], None] = None
+                      ) -> str:
     """Return a str list joined into a sentence
 
     Example:
@@ -64,38 +58,28 @@ def string_list_union(
         output = 'foo, bar, baz and etc'
     """
     string_list = string_list or []
-    return "".join(
-        [
-            string
-            + (
-                ", "
-                if string in string_list[:-2]
-                else (" and " if string == string_list[-2] else "")
-            )
-            for string in string_list
-        ]
-    )
+    return "".join([
+        string + (", " if string in string_list[:-2] else
+                  (" and " if string == string_list[-2] else ""))
+        for string in string_list
+    ])
 
 
 def path_exists(file_path: str = "", key: str = ""):
     """Check if path exists"""
     full_path = os.path.join(os.getcwd(), file_path)
     if not os.path.exists(file_path):
-        return (
-            f"'{key}' ({file_path}) must be referred to a path "
-            f"that exists.\n"
-            f"PATH: {full_path}"
-        )
+        return (f"'{key}' ({file_path}) must be referred to a path "
+                f"that exists.\n"
+                f"PATH: {full_path}")
 
 
 def path_is_not_directory(file_path: str = "", key: str = ""):
     full_path = os.path.join(os.getcwd(), file_path)
     if not os.path.isfile(file_path):
-        return (
-            f"'{key}' key ({file_path}) must be referred to a "
-            f"file path.\n"
-            f"FILE PATH: {full_path}"
-        )
+        return (f"'{key}' key ({file_path}) must be referred to a "
+                f"file path.\n"
+                f"FILE PATH: {full_path}")
 
 
 def create_folder(destination_file_path):
@@ -137,11 +121,9 @@ def copy_file(source_file_path, destination_file_path):
 
 def resize_image(source_file_path, destination_file_path, size):
     with open(source_file_path, "rb") as file_instance, PIL.Image.open(
-        file_instance
-    ) as image_instance:
-        cover = resizeimage.resizeimage.resize_contain(
-            image_instance, [size[0], size[1]]
-        )
+            file_instance) as image_instance:
+        cover = resizeimage.resizeimage.resize_contain(image_instance,
+                                                       [size[0], size[1]])
         cover.save(destination_file_path, image_instance.format)
 
 

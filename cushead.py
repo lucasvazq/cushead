@@ -7,7 +7,6 @@ import sys
 import src_2.info
 import src_2.support
 
-
 # Check python version
 try:
     _INFO = src_2.info.get_info()
