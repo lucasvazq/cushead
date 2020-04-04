@@ -13,12 +13,13 @@ script:
   - python3 -m coverage run -a cushead.py -config test/test.json
   - python3 -m coverage run -a cushead.py -h
   # Test bad usage
-  - assertError=0
-  - python3 -m coverage run -a cushead.py || let "assertError+=1"
-  - python3 -m coverage run -a cushead.py . || let "assertError+=1"
-  - python3 -m coverage run -a cushead.py -default || let "assertError+=1"
-  - python3 -m coverage run -a cushead.py -config || let "assertError+=1"
-  - python3 -m coverage run -a cushead.py -config . --images || let "assertError+=1"
-  - python3 -m coverage run -a cushead.py -config . || let "assertError+=1"
-  - if [[ "assertError" -eq 6 ]]; then echo "All errors pass tests"; else echo $assertError; fi
+  - assertError=0; errorAmounts=0
+  - function testErrors() { $* || let "assertError+=1"; let "testsAmount+=1" }
+  - testErrors python3 -m coverage run -a cushead.py
+  - testErrors python3 -m coverage run -a cushead.py .
+  - testErrors python3 -m coverage run -a cushead.py -default
+  - testErrors python3 -m coverage run -a cushead.py -config
+  - testErrors python3 -m coverage run -a cushead.py -config .
+  - testErrors python3 -m coverage run -a cushead.py -config test/test.json --images
+  - if [[ "assertError" -eq "testsAmount" ]]; then echo "All errors pass tests"; else echo $assertError; fi
   - codecov
