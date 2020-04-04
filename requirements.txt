@@ -1,2 +1,2 @@
-Pillow==6.2.1
+Pillow==7.1.1
 python-resize-image==1.1.19
