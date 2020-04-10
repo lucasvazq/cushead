@@ -78,6 +78,11 @@ class Images:
             f"type='{brand_config.attribute_type}' " if getattr(
                 brand_config, "attribute_type", "") else "")
 
+        # Special sizes, example:
+        # sizes="16x16"
+        tag_element_list.append(f"sizes='{size[0]}x{size[1]}' " if getattr(
+            brand_config, "attribute_special_sizes", False) else "")
+
         # Special content and href. Example:
         # content="/static/ms-icon-144x144.png"
         # href="/static/favicon-16x16.png"
@@ -88,11 +93,6 @@ class Images:
             brand_config, "attribute_special_content", False) else "")
         tag_element_list.append(f"href='{new_file_path}' " if getattr(
             brand_config, "attribute_special_href", False) else "")
-
-        # Special sizes, example:
-        # sizes="16x16"
-        tag_element_list.append(f"sizes='{size[0]}x{size[1]}' " if getattr(
-            brand_config, "attribute_special_sizes", False) else "")
 
         # Special title, example:
         # title="Microsoft"

@@ -181,7 +181,7 @@ class IconsFormatConfig:
             # Example:
             # <link rel="icon" type="image/png" href="/static/favicon-16x16.png"
             # sizes="16x16">
-            self.image_format_config_dict["favicon_16x16_png"],
+            self.image_format_config_dict["favicon_sizexsize_png"],
             # Microsoft icon
             # Example:
             # <meta name="msapplication-TileImage"
@@ -273,7 +273,7 @@ class IconsFormatConfig:
                 attribute_special_href=True,
             ),
             # favicon png
-            "favicon_16x16_png":
+            "favicon_sizexsize_png":
             ImageFormater(
                 output_file_name="favicon",
                 output_file_size_verbosity=True,
@@ -282,32 +282,7 @@ class IconsFormatConfig:
                 # https://www.favicon-generator.org/
                 # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
                 # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-                sizes_square=[
-                    16,
-                    24,
-                    32,
-                    48,
-                    57,
-                    60,
-                    64,
-                    70,
-                    72,
-                    76,
-                    96,
-                    114,
-                    120,
-                    128,
-                    144,
-                    150,
-                    152,
-                    167,
-                    180,
-                    192,
-                    195,
-                    196,
-                    228,
-                    310,
-                ],
+                sizes_square=[16, 32, 96, 192, 194],
                 head_output=True,
                 url_path=static_url,
                 tag_name="link",
@@ -354,11 +329,16 @@ class IconsFormatConfig:
                     76,
                     114,
                     120,
+                    128,
                     144,
                     152,
                     167,
                     180,
-                    1024,
+                    195,
+                    196,
+                    228,
+                    512,
+                    1024
                 ],
                 head_output=True,
                 url_path=static_url,
