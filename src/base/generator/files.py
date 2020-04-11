@@ -1,4 +1,7 @@
+import hashlib
+import json
 import os
+import textwrap
 import typing
 
 import src.base.generator.images
@@ -10,182 +13,269 @@ class IndexGenerator(src.base.generator.images.Images):
         self.config = config
         self.icons_config = icons_config
         self.image_format_config_dict = image_format_config_dict
+        self.INDENTED_QUOTE = "$#@"
 
     def generate_index(self):
         return [{
             "content":
             self.index_base(),
             "destination_file_path":
-            os.path.join(self.config.get("output_folder_path", ""),
-                         "index.html"),
+            os.path.join(self.config["output_folder_path"], "index.html"),
         }]
 
     def index_base(self):
-        return (f"<html lang='{self.config['language']}'>\n"
-                f"{self.index_head()}\n"
-                f"{self.index_body()}\n"
-                "</html>").replace("'", '"')
+
+        html_tag_elements = ["<html class='no-js'"]
+        # python 3.8
+        # if (lang_data := self.config.get('language'), self.config.get('territory', ''))[0]:
+        lang_data = (
+            self.config.get("language"),
+            self.config.get("territory", ""),
+        )
+        if lang_data[0]:
+            conector = "-" if all(lang_data) else ""
+            html_tag_elements.append(
+                f"lang='{lang_data[0]}{conector}{lang_data[1]}'")
+        if "dir" in self.config:
+            html_tag_elements.append(f"dir='{self.config['dir']}'")
+        html_tag = " ".join(html_tag_elements) + ">"
+
+        return (f"\n".join([
+            html_tag,
+            f"{src.helpers.INDENTATION}{self.index_head()}",
+            f"{src.helpers.INDENTATION}{self.index_body()}",
+            "</html>",
+        ]).replace("'", '"').replace(self.INDENTED_QUOTE, "'"))
 
     def index_head(self):
-        head = []
-
-        # content-type
-        head.append(
-            f"<meta http-equiv='Content-Type' content='{self.config['content-type']}'>"
+        favicons, og_social_media_images, twitter_social_media_images, late_browser_config = (
+            self.generate_head_images())
+        site_data = (
+            self.config.get("title", ""),
+            self.config.get("description", ""),
         )
-        # X-UA-Compatible
-        head.append(f"<meta http-equiv='X-UA-Compatible' "
-                    f"content='{self.config['X-UA-Compatible']}'>")
-        # viewport
-        head.append(
-            f"<meta name='viewport' content='{self.config['viewport']}'>")
-        # locale
-        head.append(f"<meta http-equiv='Content-Language' "
-                    f"content='{self.config['language']}'>")
-        # robots
-        head.append(f"<meta name='robots' content='{self.config['robots']}'>")
-        # apple
+        if (og_social_media_images
+                or twitter_social_media_images) and any(site_data):
+            site_data_content = f"{site_data[0]}{' - ' if all(site_data) else ''}{site_data[1]}"
+        else:
+            site_data_content = ""
+
+        # Order matters
+
+        # Early browser configuration
+        head = [
+            "<meta charset='utf-8'>",
+            "<meta http-equiv='X-UA-Compatible' content='ie=edge'>",
+            "<meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>",
+            "<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>",
+        ]
+        if "background_color" in self.config:
+            head.append(
+                f"<meta name='theme-color' content='{self.config['background_color']}'>"
+            )
+        if "title" in self.config:
+            head.append(f"<title>{self.config['title']}</title>")
         head.extend([
             "<meta name='apple-mobile-web-app-capable' content='yes'>",
-            ("<meta name='apple-mobile-web-app-status-bar-style' "
-             "content='black-translucent'>"),
+            "<meta name='mobile-web-app-capable' content='yes'>",
         ])
 
-        # title
-        head.extend([
-            f"<title>{self.config['title']}</title>",
-            f"<meta name='application-name' content='{self.config['title']}'>",
-            ("<meta name='apple-mobile-web-app-title' "
-             f"content='{self.config['title']}'>"),
-        ])
-        # description
-        head.append(
-            f"<meta name='description' content='{self.config['description']}'>"
+        # Favicons
+        head.extend(favicons)
+
+        # Social media
+        # python 3.8
+        # if (lang_data := self.config.get('language'), self.config.get('territory', ''))[0]:
+        lang_data = (
+            self.config.get("language"),
+            self.config.get("territory", ""),
         )
-        # subject
-        head.append(
-            f"<meta name='subject' content='{self.config['subject']}'>")
-        # theme-color and msapplication-TileColor
-        head.extend([
-            f"<meta name='theme-color' content='{self.config['background_color']}'>",
-            f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
-        ])
-        # author
-        head.append(f"<meta name='author' content='{self.config['author']}'>")
-
-        # images
-        for image_type in self.icons_config.values():
-            for brand in image_type:
-                for sizes in brand.formated:
-                    head_element = self.icons_head_creator(
-                        brand, sizes.file_name, sizes.size)
-                    if head_element:
-                        head.append(head_element)
-
-        # browserconfig.xml
-        head.append(
-            f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>"
+        if lang_data[0]:
+            conector = "_" if all(lang_data) else ""
+            head.append(
+                f"<meta property='og:locale' content='{lang_data[0]}{conector}{lang_data[1]}'>"
+            )
+        head.append("<meta property='og:type' content='website'>")
+        if "domain" in self.config:
+            head.append(
+                f"<meta property='og:url' content='https://{self.config['domain']}'>"
+            )
+        if "title" in self.config:
+            head.extend([
+                f"<meta property='og:site_name' content='{self.config['title']}'>",
+                f"<meta property='og:title' content='{self.config['title']}'>",
+            ])
+        if "description" in self.config:
+            head.append(
+                f"<meta property='og:description' content='{self.config['description']}'>"
+            )
+        if og_social_media_images:
+            head.extend([
+                f"<meta property='og:image:alt' content='{site_data_content}'>",
+                *og_social_media_images,
+                "<meta property='og:image:type' content='image/png'>",
+                "<meta propery='og:image:width' content='500'>",
+                "<meta propery='og:image:height' content='500'>",
+            ])
+        head.append("<meta name='twitter:card' content='summary'>")
+        if "twitter_user_@" in self.config:
+            head.append(
+                f"<meta name='twitter:site' content='{self.config['twitter_user_@']}'>"
+            )
+        if "twitter_user_id" in self.config:
+            head.append(
+                f"<meta name='twitter:site:id' content='{self.config['twitter_user_id']}'>"
+            )
+        if "title" in self.config:
+            head.append(
+                f"<meta name='twitter:title' content='{self.config['title']}'>"
+            )
+        if "description" in self.config:
+            head.append(
+                f"<meta name='twitter:description' content='{self.config['description']}'>"
+            )
+        if twitter_social_media_images:
+            head.extend([
+                f"<meta name='twitter:image:alt' content='{site_data_content}'>",
+                *twitter_social_media_images,
+            ])
+        if "twitter_user_@" in self.config:
+            head.append(
+                f"<meta name='twitter:creator' content='{self.config['twitter_user_@']}'>"
+            )
+        if "twitter_user_id" in self.config:
+            head.append(
+                f"<meta property='twitter:creator:id' content='{self.config['twitter_user_id']}'>"
+            )
+        if "facebook_app_id" in self.config:
+            head.append(
+                f"<meta porperty='fb:app_id' content='{self.config['facebook_app_id']}'>"
+            )
+        # python 3.8
+        # if (itunes_data := self.config.get('itunes_app_id'), self.config.get('itunes_affiliate_data'))[0]:
+        itunes_data = (
+            self.config.get("itunes_app_id"),
+            self.config.get("itunes_affiliate_data"),
         )
-        # manifest.json
+        if itunes_data[0]:
+            head.append(
+                f"<meta name='apple-itunes-app' "
+                f"content='app-id={itunes_data[0]}"
+                f"{', ' if itunes_data[1] else ''}"
+                f"affiliate-data={itunes_data[1] if itunes_data[1] else ''}"
+                f", app-argument=/'>")
+
+        # Fonts
+        head.extend([
+            (f"<link rel='preload' "
+             f"href='https://fonts.googleapis.com/css2?family="
+             f"Roboto:wght@400&display=swap' as='style' "
+             f"onload='this.onload=null;this.rel="
+             f"{self.INDENTED_QUOTE}stylesheet{self.INDENTED_QUOTE}'>"),
+            "<noscript>",
+            (f"{src.helpers.INDENTATION}<link "
+             f"href='https://fonts.googleapis.com/css2?family="
+             f"Roboto:wght@400&display=swap' rel='stylesheet'>"),
+            "</noscript>",
+        ])
+
+        # Styles
+        head.extend([
+            "<style>",
+            f"{src.helpers.INDENTATION}/* Add here your custom styles */",
+            "</style>",
+        ])
+
+        # Early js
+        head.extend([
+            "<script>",
+            f"{src.helpers.INDENTATION}// Add here your early load javascript",
+            "</script>",
+        ])
+
+        # Late config
         head.append(
             f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>"
         )
-        # opensearch.xml
+        if "title" in self.config:
+            head.extend([
+                f"<meta name='application-name' content='{self.config['title']}'>",
+                f"<meta name='apple-mobile-web-app-title' content='{self.config['title']}'>",
+            ])
+        if "background_color" in self.config:
+            head.extend([
+                f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
+                *late_browser_config,
+            ])
+        if "title" in self.config:
+            head.append(
+                f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>"
+            )
+        head.extend([
+            f"<meta name='robots' content='index, follow'>",
+            f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>",
+            "<meta name='referrer' content='origin-when-crossorigin'>",
+            "<meta name='google-site-verification' content=''><!-- FILL THIS -->",
+            "<meta name='baidu-site-verification' content=''><!-- FILL THIS -->",
+        ])
+        if "description" in self.config:
+            head.append(
+                f"<meta name='description' content='{self.config['description']}'>"
+            )
+        if "subject" in self.config:
+            head.append(
+                f"<meta name='subject' content='{self.config['subject']}'>")
         head.append(
-            f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>"
+            f"<meta name='author' content='{self.config['static_url']}/humans.txt'>"
         )
 
-        # fb:app_id
-        head.append(
-            f"<meta porperty='fb:app_id' content='{self.config['facebook_app_id']}'>"
-        )
-        # og:locale
-        head.append(
-            f"<meta property='og:locale' content='{self.config['language']}_{self.config['territory']}'>"
-        )
-        # og:type
-        # Only allow website type for simplicity
-        head.append("<meta property='og:type' content='website'>")
-        # og:url, Likes and Shared are stored under this url
-        string = self.config.get("protocol", "")
-        string += self.config.get("clean_url", "")
-        head.append(f"<meta property='og:url' content='{string}'>")
-        # og:site_name
-        head.append(
-            f"<meta property='og:site_name' content='{self.config['title']}'>")
-        # og:title
-        head.append(
-            f"<meta property='og:title' content='{self.config['title']}'>")
-        # og:description
-        head.append(
-            f"<meta property='og:description' content='{self.config['description']}'>"
-        )
-        # og:image:type
-        # Only allow png type for simplicity
-        head.append("<meta property='og:image:type' content='image/png'>")
-        # og:image:alt
-        head.append(
-            f"<meta property='og:image:alt' content='{self.config['title']} - {self.config['description']}'>"
-        )
+        # Structured data
+        head.extend([
+            "<script type='application/ld+json'>",
+            f"{src.helpers.INDENTATION}{{",
+            f"{src.helpers.INDENTATION * 2}'@context': 'http://schema.org/'",
+            f"{src.helpers.INDENTATION * 2}'@type': 'Organization'",
+        ])
+        if "domain" in self.config:
+            head.extend([
+                f"{src.helpers.INDENTATION * 2}'@id': 'https://{self.config['domain']}'",
+                f"{src.helpers.INDENTATION * 2}'url': 'https://{self.config['domain']}'",
+            ])
+        if "description" in self.config:
+            head.extend([
+                f"{src.helpers.INDENTATION * 2}'slogan': 'https://{self.config['description']}'",
+                f"{src.helpers.INDENTATION * 2}'description': 'https://{self.config['description']}'",
+            ])
+        if "domain" in self.config and self.icons_config["preview_png"]:
+            image_name = (self.icons_config["preview_png"]
+                          [0]._output_formater()[0].file_name)
+            head.extend([
+                f"{src.helpers.INDENTATION * 2}'logo': '{self.config['domain']}{self.config['static_url']}/{image_name}'",
+                f"{src.helpers.INDENTATION * 2}'image': '{self.config['domain']}{self.config['static_url']}/{image_name}'",
+            ])
+        head.extend([f"{src.helpers.INDENTATION}}}", "</script>"])
 
-        # twitter:card
-        # Only allow summary type for simplicity
-        head.append("<meta name='twitter:card' content='summary'>")
-        # twitter:site
-        head.append(
-            f"<meta name='twitter:site' content='{self.config['twitter_user_@']}'>"
-        )
-        # twitter:title
-        head.append(
-            f"<meta name='twitter:title' content='{self.config['title']}'>")
-        # twitter:description
-        head.append(
-            f"<meta name='twitter:description' content='{self.config['description']}'>"
-        )
-        # tw:creator
-        head.append(f"<meta property='twitter:creator:id' "
-                    f"content='{self.config['twitter_user_id']}'>")
-        # tw:image:alt
-        head.append(
-            f"<meta name='twitter:image:alt' content='{self.config['title']} - {self.config['description']}'>"
-        )
-
-        image_name = (self.image_format_config_dict["preview_og"].
-                      _output_formater()[0].file_name)
-        json_ld = src.helpers.indent_dict(
-            {
-                "@context":
-                "http://schema.org/",
-                "@type":
-                "Organization",
-                "@id":
-                f"{self.config['protocol']}{self.config['clean_url']}",
-                "url":
-                f"{self.config['protocol']}{self.config['clean_url']}",
-                "slogan":
-                f"{self.config['description']}",
-                "description":
-                f"{self.config['description']}",
-                "logo":
-                f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
-                "image":
-                f"{self.config['protocol']}{self.config['clean_url']}/static/{image_name}",
-            },
-            2,
-        )
-        head.append("<script type='application/ld+json'>\n"
-                    f"{json_ld}\n"
-                    f"{src.helpers.INDENTATION* 2 }</script>")
-
-        # convert to string adding indent
-        head_content = f"{src.helpers.INDENTATION * 2}".join(
-            [f"{tag}\n" for tag in head])
-        return (f"{src.helpers.INDENTATION}<head>\n"
-                f"{src.helpers.INDENTATION * 2}{head_content}"
-                f"{src.helpers.INDENTATION}</head>").replace("'", '"')
+        # convert to string and add indent
+        head_content = f"\n{src.helpers.INDENTATION * 2}".join(
+            [tag for tag in head])
+        return f"\n{src.helpers.INDENTATION}".join([
+            f"<head>", f"{src.helpers.INDENTATION}{head_content}", f"</head>"
+        ]).replace("'", '"')
 
     def index_body(self):
-        return f"{src.helpers.INDENTATION}<body></body>"
+        body = [
+            "<script src='https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>",
+            "<script>",
+            f"{src.helpers.INDENTATION}if ('serviceWorker' in navigator) navigator.serviceWorker.register('{self.config['static_url']}/sw.js');",
+            "</script>",
+        ]
+
+        # convert to string and add indent
+        body_content = f"\n{src.helpers.INDENTATION * 2}".join(
+            [tag for tag in body])
+        return f"\n{src.helpers.INDENTATION}".join([
+            f"<body>", f"{src.helpers.INDENTATION}{body_content}", f"</body>"
+        ]).replace("'", '"')
 
 
 class ComplementaryFilesGenerator:
@@ -205,33 +295,88 @@ class ComplementaryFilesGenerator:
             content str: file content
             destination_file_path str: path where the file must be written
         """
-        browserconfig_config = self.icons_config["browserconfig"][0]
-        icon_name = browserconfig_config.output_file_name
-        sizes_square = browserconfig_config.sizes_square
-        sizes_rectangular = browserconfig_config.sizes_rectangular
-        content = ("<?xml version='1.0' encoding='utf-8'?>\n"
-                   "<browserconfig>\n"
-                   f"{src.helpers.INDENTATION}<msapplication>\n"
-                   f"{src.helpers.INDENTATION * 2}<tile>\n")
-        content += "".join([(
-            f"{src.helpers.INDENTATION * 3}"
-            f"<square{size}x{size}logo "
-            f"src='{self.config['static_url']}/{icon_name}-{size}x{size}.png'/>\n"
-        ) for size in sizes_square])
-        content += "".join([(
-            f"{src.helpers.INDENTATION * 3}"
-            f"<wide{size[0]}x{size[1]}logo "
-            f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>\n"
-        ) for size in sizes_rectangular])
-        content += f"{src.helpers.INDENTATION * 3}<TileColor>{self.config['background_color']}</TileColor>\n"
-        content += (f"{src.helpers.INDENTATION * 2}</tile>\n"
-                    f"{src.helpers.INDENTATION}</msapplication>\n"
-                    "</browserconfig>")
-        destination_file_path = os.path.join(
-            self.config.get("static_folder_path", ""), "browserconfig.xml")
+
+        content = [
+            "<browserconfig>",
+            "<msapplication>",
+            f"{src.helpers.INDENTATION}<tile>",
+        ]
+
+        if self.icons_config["browserconfig"]:
+            browserconfig_config = self.icons_config["browserconfig"][0]
+            icon_name = browserconfig_config.output_file_name
+            sizes_square = browserconfig_config.sizes_square
+            sizes_rectangular = browserconfig_config.sizes_rectangular
+            content.extend([
+                *[(f"{src.helpers.INDENTATION * 2}"
+                   f"<square{size}x{size}logo "
+                   f"src='{self.config['static_url']}/{icon_name}-{size}x{size}.png'/>"
+                   ) for size in sizes_square],
+                *[(f"{src.helpers.INDENTATION * 2}"
+                   f"<wide{size[0]}x{size[1]}logo "
+                   f"src='{self.config['static_url']}/{icon_name}-{size[0]}x{size[1]}.png'/>"
+                   ) for size in sizes_rectangular],
+            ])
+
+        if "main_color" in self.config:
+            content.append(
+                f"{src.helpers.INDENTATION * 2}<TileColor>{self.config['main_color']}</TileColor>"
+            )
+
+        content.extend(
+            [f"{src.helpers.INDENTATION}</tile>", "</msapplication>"])
+
         return {
-            "content": content.replace("'", '"'),
-            "destination_file_path": destination_file_path,
+            "content": ("<?xml version='1.0' encoding='utf-8'?>\n" +
+                        f"\n{src.helpers.INDENTATION}".join(content) +
+                        "\n</browserconfig>").replace("'", '"'),
+            "destination_file_path":
+            os.path.join(self.config["static_folder_path"],
+                         "browserconfig.xml"),
+        }
+
+    def complementary_humans(self) -> typing.Dict[str, str]:
+        content = []
+
+        # python3.8
+        # if any(author_data := (self.config.get("author_name"), self.config.get("author_email"))):
+        author_data = (
+            self.config.get("author_name"),
+            self.config.get("author_email"),
+        )
+        if any(author_data):
+            content.append("/* TEAM */")
+            if author_data[0]:
+                content.append(
+                    f"{src.helpers.INDENTATION}Web designer: {author_data[0]}")
+            if author_data[1]:
+                content.append(
+                    f"{src.helpers.INDENTATION}Contact: mailto:{author_data[1]}"
+                )
+            content.append("")
+
+        content.extend(
+            ["/* SITE */", f"{src.helpers.INDENTATION}Last update: *"])
+
+        # python 3.8
+        # if (lang_data := self.config.get('language'), self.config.get('territory', ''))[0]:
+        lang_data = (
+            self.config.get("language"),
+            self.config.get("territory", ""),
+        )
+        if lang_data[0]:
+            conector = "-" if all(lang_data) else ""
+            content.append(
+                f"{src.helpers.INDENTATION}Language: {lang_data[0]}{conector}{lang_data[1]}"
+            )
+
+        content.append(f"{src.helpers.INDENTATION}Doctype: HTML5")
+
+        return {
+            "content":
+            "\n".join(content).replace("'", '"'),
+            "destination_file_path":
+            os.path.join(self.config["static_folder_path"], "humans.txt"),
         }
 
     def complementary_manifest(self) -> typing.Dict[str, str]:
@@ -245,32 +390,41 @@ class ComplementaryFilesGenerator:
             content str: file content
             destination_file_path str: path where the file must be written
         """
-        manifest_config = self.icons_config["manifest"][0]
-        content = dict()
-        content["name"] = self.config["title"]
-        content["short_name"] = self.config["title"]
-        content["description"] = self.config["description"]
-        content["dir"] = self.config["dir"]
-        content["start_url"] = self.config["start_url"]
-        content["orientation"] = self.config["orientation"]
-        content["background_color"] = self.config["background_color"]
-        content["theme_color"] = self.config["background_color"]
-        content["default_locale"] = self.config["language"]
-        content["scope"] = self.config["scope"]
-        content["display"] = self.config["display"]
-        content["platform"] = self.config["platform"]
-        content["icons"] = [{
-            "src":
-            f"{self.config['static_url']}/{manifest_config.output_file_name}-{size}x{size}",
-            "sizes": f"{size}x{size}",
-            "type": "image/png",
-            "density": str(size / 48),
-        } for size in manifest_config.sizes_square]
-        destination_file_path = os.path.join(
-            self.config.get("static_folder_path", ""), "manifest.json")
+        content = {}
+        if "title" in self.config:
+            content["name"] = self.config["title"]
+            content["short_name"] = self.config["title"]
+        if "description" in self.config:
+            content["description"] = self.config["description"]
+        if "dir" in self.config:
+            content["dir"] = self.config["dir"]
+        if "background_color" in self.config:
+            content["background_color"] = self.config["background_color"]
+            content["theme_color"] = self.config["background_color"]
+        if "language" in self.config:
+            content["default_locale"] = self.config["language"]
+        content["start_url"] = "/"
+        content["orientation"] = "landscape"
+        content["scope"] = "/"
+        content["display"] = "standalone"
+        content["platform"] = "web"
+        content["prefer_related_applications"] = False
+
+        if self.icons_config["manifest"]:
+            manifest_config = self.icons_config["manifest"][0]
+            content["icons"] = [{
+                "src":
+                f"{self.config['static_url']}/{manifest_config.output_file_name}-{size}x{size}",
+                "sizes": f"{size}x{size}",
+                "type": "image/png",
+                "purpose": "maskable any",
+            } for size in manifest_config.sizes_square]
+
         return {
-            "content": src.helpers.indent_dict(content, 0).replace("'", '"'),
-            "destination_file_path": destination_file_path,
+            "content":
+            json.dumps(content, indent=src.helpers.INDENTATION),
+            "destination_file_path":
+            os.path.join(self.config["static_folder_path"], "manifest.json"),
         }
 
     def complementary_opensearch(self) -> typing.Dict[str, str]:
@@ -284,34 +438,42 @@ class ComplementaryFilesGenerator:
             content str: file content
             destination_file_path str: path where the file must be written
         """
-        opensearch_config = self.icons_config["opensearch"][0]
-        size = opensearch_config.sizes_square[0]
-        # crear una lista en vez de este string "content"
-        content = (
-            f"<?xml version='1.0' encoding='utf-8'?>\n"
-            f"<OpenSearchDescription xmlns:moz='"
-            f"http://www.mozilla.org/2006/browser/search/' "
-            f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>\n"
-            f"{src.helpers.INDENTATION}<ShortName>{self.config['title']}</ShortName>\n"
-            f"{src.helpers.INDENTATION}<Description>Search {self.config['title']}</Description>\n"
-            f"{src.helpers.INDENTATION}<InputEncoding>UTF-8</InputEncoding>\n"
-            f"{src.helpers.INDENTATION}<Url method='get' type='text/html' "
-            f"template='http://www.google.com/search?q="
-            f"{{searchTerms}}+site%3A{self.config['clean_url']}'/>\n"
-            f"{src.helpers.INDENTATION}<Image height='{size}' width='{size}' "
-            f"type='{opensearch_config.attribute_type}'>"
-            # Output file name doesnt give already the sizes?
-            f"{self.config['static_url']}/{opensearch_config.output_file_name}-16x16.png"
-            f"</Image>\n"
-            f"</OpenSearchDescription>")
-        destination_file_path = os.path.join(
-            self.config.get("static_folder_path", ""), "opensearch.xml")
+        content = [(f"<OpenSearchDescription xmlns:moz='"
+                    f"http://www.mozilla.org/2006/browser/search/' "
+                    f"xmlns='http://a9.com/-/spec/opensearch/1.1/'>")]
+
+        if "title" in self.config:
+            content.extend([
+                f"<ShortName>{self.config['title']}</ShortName>",
+                f"<Description>Search {self.config['title']}</Description>",
+            ])
+
+        content.append("<InputEncoding>UTF-8</InputEncoding>")
+
+        if "domain" in self.config:
+            content.append(
+                "<Url method='get' type='text/html' "
+                "template='http://www.google.com/search?q="
+                f"{{searchTerms}}+site%3A{self.config['domain']}'/>")
+
+        if self.icons_config["opensearch"]:
+            opensearch_config = self.icons_config["opensearch"][0]
+            size = opensearch_config.sizes_square[0]
+            content.append(
+                f"<Image height='{size}' width='{size}' "
+                f"type='{opensearch_config.attribute_type}'>"
+                f"{self.config['static_url']}/{opensearch_config.output_file_name}-16x16.png"
+                f"</Image>")
+
         return {
-            "content": content.replace("'", '"'),
-            "destination_file_path": destination_file_path,
+            "content": ("<?xml version='1.0' encoding='utf-8'?>\n" +
+                        f"\n{src.helpers.INDENTATION}".join(content) +
+                        "\n</OpenSearchDescription>").replace("'", '"'),
+            "destination_file_path":
+            os.path.join(self.config["static_folder_path"], "opensearch.xml"),
         }
 
-    def robots_content(self) -> typing.Dict[str, str]:
+    def complementary_robots(self) -> typing.Dict[str, str]:
         """robots.txt content
         Return the content of robots.txt and the path where must be written
 
@@ -322,20 +484,109 @@ class ComplementaryFilesGenerator:
             content str: file content
             destination_file_path str: path where the file must be written
         """
-        protocol = self.config.get("protocol", "")
-        clean_url = self.config.get("clean_url", "")
-        content = (f"User-agent: *\n"
-                   f"Allow: /\n"
-                   f"\n"
-                   f"Sitemap: {protocol}{clean_url}/sitemap.xml")
-        destination_file_path = os.path.join(
-            self.config.get("output_folder_path", ""), "robots.txt")
+        content = [f"User-agent: *", f"Allow: /"]
+
+        if "domain" in self.config:
+            content.extend(
+                [f"", f"Sitemap: https://{self.config['domain']}/sitemap.xml"])
+
         return {
-            "content": content,
-            "destination_file_path": destination_file_path,
+            "content":
+            "\n".join(content),
+            "destination_file_path":
+            os.path.join(self.config["output_folder_path"], "robots.txt"),
         }
 
-    def sitemap_content(self) -> typing.Dict[str, str]:
+    def complementary_security(self
+                               ) -> typing.Union[typing.Dict[str, str], None]:
+
+        if "author_email" not in self.config:
+            return None
+
+        content = [
+            "# Our security address",
+            f"Contact: {self.config['author_email']}",
+        ]
+        return {
+            "content":
+            "\n".join(content).replace("'", '"'),
+            "destination_file_path":
+            os.path.join(self.config["output_folder_path"],
+                         ".well-known/humans.txt"),
+        }
+
+    def complementary_service_worker(self):
+        content = textwrap.dedent(f"""\
+            importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+            const {{CacheFirst, StaleWhileRevalidate}} = workbox.strategies;
+            const {{CacheableResponse}} = workbox.cacheableResponse;
+            const {{registerRoute}} = workbox.routing;
+            const {{ExpirationPlugin}} = workbox.expiration
+            const {{precacheAndRoute}} = workbox.precaching
+            const {{CacheableResponsePlugin}} = workbox.cacheableResponse
+
+            workbox.setConfig({{
+              skipWaiting: true,
+              clientsClaim: true
+            }});
+
+            // Cache not very dynamic images
+            registerRoute(
+              /\.(?:png|gif|jpg|jpeg|webp|svg|ico)$/,
+              new CacheFirst({{
+                cacheName: 'images',
+                plugins: [
+                  new ExpirationPlugin({{
+                    maxEntries: 60,
+                    maxAgeSeconds: 30 * 24 * 60 * 60 // one month
+                  }})
+                ]
+              }})
+            );
+
+            // Cache Google Fonts stylesheets
+            registerRoute(
+              /^https:\/\/fonts\.googleapis\.com/,
+              new StaleWhileRevalidate({{
+                cacheName: 'google-fonts-stylesheets',
+              }})
+            );
+
+            // Cache Google Fonts webfont files
+            registerRoute(
+              /^https:\/\/fonts\.gstatic\.com/,
+              new CacheFirst({{
+                cacheName: 'google-fonts-webfonts',
+                plugins: [
+                  new CacheableResponsePlugin({{
+                    statuses: [0, 200],
+                  }}),
+                  new ExpirationPlugin({{
+                    maxAgeSeconds: 60 * 60 * 24 * 365 // one year
+                  }})
+                ]
+              }})
+            );
+
+            // Cache js and css
+            registerRoute(/\.(?:js|css)$/, new StaleWhileRevalidate());
+
+            // Cache urls
+            precacheAndRoute([
+              {{url: "/index.html", revision: "{hashlib.sha1(self.generate_index()[0]["content"].encode('utf-8')).hexdigest()[0:6]}"}}
+            ], {{
+              cleanUrls: true
+            }});
+        """)
+        return {
+            "content":
+            content,
+            "destination_file_path":
+            os.path.join(self.config["output_folder_path"], "sw.js"),
+        }
+
+    def complementary_sitemap(self
+                              ) -> typing.Union[typing.Dict[str, str], None]:
         """sitemap.xml content
         Return the content of sitemap.xml and the path where must be
         written
@@ -347,32 +598,36 @@ class ComplementaryFilesGenerator:
             content str: file content
             destination_file_path str: path where the file must be written
         """
-        protocol = self.config.get("protocol", "")
-        clean_url = self.config.get("clean_url", "")
-        content = (f"<?xml version='1.0' encoding='utf-8'?>"
-                   f"<urlset xmlns="
-                   f"'http://www.sitemaps.org/schemas/sitemap/0.9' "
-                   f"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                   f"xsi:schemaLocation="
-                   f"'http://www.sitemaps.org/schemas/sitemap/0.9 "
-                   f"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>"
-                   f"<url><loc>{protocol}{clean_url}/</loc></url>"
-                   f"</urlset>")
-        content = content.replace("'", '"')
-        destination_file_path = os.path.join(
-            self.config.get("output_folder_path", ""), "sitemap.xml")
+        # If domain isn't defined, robots.txt cant refferer to sitemap
+        if "domain" not in self.config:
+            return None
+
+        content = [
+            "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>",
+            "<url>",
+            f"{src.helpers.INDENTATION}<loc>https://{self.config['domain']}/</loc>",
+            "</url>",
+        ]
         return {
-            "content": content,
-            "destination_file_path": destination_file_path,
+            "content": ("<?xml version='1.0' encoding='utf-8'?>\n" +
+                        f"\n{src.helpers.INDENTATION}".join(content) +
+                        "\n</urlset>").replace("'", '"'),
+            "destination_file_path":
+            os.path.join(self.config["output_folder_path"], "sitemap.xml"),
         }
 
     def generate_complementary_files(self):
         return [
-            self.complementary_browserconfig(),
-            self.complementary_manifest(),
-            self.complementary_opensearch(),
-            self.robots_content(),
-            self.sitemap_content(),
+            file for file in [
+                self.complementary_browserconfig(),
+                self.complementary_humans(),
+                self.complementary_manifest(),
+                self.complementary_opensearch(),
+                self.complementary_robots(),
+                self.complementary_security(),
+                self.complementary_service_worker(),
+                self.complementary_sitemap(),
+            ] if file
         ]
 
 
@@ -392,6 +647,7 @@ class ImagesGenerator:
                         "size": size_format.size,
                         "output_folder_path": brand.output_folder_path,
                         "source_file_path": brand.source_file_path,
+                        "background_color": brand.background_color,
                     })
         return files
 
