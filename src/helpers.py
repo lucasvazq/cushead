@@ -6,7 +6,7 @@ import typing
 import PIL.Image
 import resizeimage.resizeimage
 
-INDENTATION = " " * 4
+INDENTATION = " " * 2
 
 
 def add_indent(element, base: int = 0, base_string: str = '', conector: str = ''):

@@ -227,7 +227,10 @@ class IndexGenerator(src.base.generator.images.Images):
 
     def index_body(self):
         body = [
-            f"<script src='https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>",
+            "<script src='https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>",
+            "<script>",
+            f"{src.helpers.INDENTATION}if ('serviceWorker' in navigator) navigator.serviceWorker.register('{self.config['static_url']}/sw.js')",
+            "</script>"
         ]
 
         # convert to string and add indent
@@ -477,46 +480,46 @@ class ComplementaryFilesGenerator:
             const {{CacheableResponsePlugin}} = workbox.cacheableResponse
 
             workbox.setConfig({{
-                skipWaiting: true,
-                clientsClaim: true
+              skipWaiting: true,
+              clientsClaim: true
             }});
 
             // Cache not very dynamic images
             registerRoute(
-                /\.(?:png|gif|jpg|jpeg|webp|svg|ico)$/,
-                new CacheFirst({{
-                    cacheName: 'images',
-                    plugins: [
-                        new ExpirationPlugin({{
-                            maxEntries: 60,
-                            maxAgeSeconds: 30 * 24 * 60 * 60 // one month
-                        }})
-                    ]
-                }})
+              /\.(?:png|gif|jpg|jpeg|webp|svg|ico)$/,
+              new CacheFirst({{
+                cacheName: 'images',
+                plugins: [
+                  new ExpirationPlugin({{
+                    maxEntries: 60,
+                    maxAgeSeconds: 30 * 24 * 60 * 60 // one month
+                  }})
+                ]
+              }})
             );
 
             // Cache Google Fonts stylesheets
             registerRoute(
-                /^https:\/\/fonts\.googleapis\.com/,
-                new StaleWhileRevalidate({{
-                    cacheName: 'google-fonts-stylesheets',
-                }})
+              /^https:\/\/fonts\.googleapis\.com/,
+              new StaleWhileRevalidate({{
+                cacheName: 'google-fonts-stylesheets',
+              }})
             );
 
             // Cache Google Fonts webfont files
             registerRoute(
-                /^https:\/\/fonts\.gstatic\.com/,
-                new CacheFirst({{
-                    cacheName: 'google-fonts-webfonts',
-                    plugins: [
-                        new CacheableResponsePlugin({{
-                            statuses: [0, 200],
-                        }}),
-                        new ExpirationPlugin({{
-                            maxAgeSeconds: 60 * 60 * 24 * 365 // one year
-                        }})
-                    ]
-                }})
+              /^https:\/\/fonts\.gstatic\.com/,
+              new CacheFirst({{
+                cacheName: 'google-fonts-webfonts',
+                plugins: [
+                  new CacheableResponsePlugin({{
+                    statuses: [0, 200],
+                  }}),
+                  new ExpirationPlugin({{
+                    maxAgeSeconds: 60 * 60 * 24 * 365 // one year
+                  }})
+                ]
+              }})
             );
 
             // Cache js and css
@@ -524,9 +527,9 @@ class ComplementaryFilesGenerator:
 
             // Cache urls
             precacheAndRoute([
-                {{url: "/index.html", revision: "{hashlib.sha1(self.generate_index()[0]["content"].encode('utf-8')).hexdigest()[0:6]}"}}
+              {{url: "/index.html", revision: "{hashlib.sha1(self.generate_index()[0]["content"].encode('utf-8')).hexdigest()[0:6]}"}}
             ], {{
-                cleanUrls: true
+              cleanUrls: true
             }});
         """)
         return {
