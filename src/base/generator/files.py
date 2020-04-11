@@ -229,7 +229,7 @@ class IndexGenerator(src.base.generator.images.Images):
         body = [
             "<script src='https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>",
             "<script>",
-            f"{src.helpers.INDENTATION}if ('serviceWorker' in navigator) navigator.serviceWorker.register('{self.config['static_url']}/sw.js')",
+            f"{src.helpers.INDENTATION}if ('serviceWorker' in navigator) navigator.serviceWorker.register('{self.config['static_url']}/sw.js');",
             "</script>"
         ]
 
