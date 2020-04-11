@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """Module to handle the images configurations
 
 Classes:
     IconsFormatConfigStructure
     IconsFormatConfig
 """
+
 import os
 import textwrap
 import typing
+
+import schema
 
 import src.base.logs
 import src.helpers
@@ -44,6 +48,7 @@ class ImageFormater:
         output_file_size_verbosity bool = False
         output_folder_path str = ''
         source_file_path str = ''
+        background_color str = ''
         sizes_max_min: Union[List[int], None] = None
         sizes_square: Union[List[int], None] = None
         sizes_rectangular: Union[List[int], None] = None
@@ -69,6 +74,7 @@ class ImageFormater:
             output_file_size_verbosity: bool = False,
             output_folder_path: str = "",
             source_file_path: str = "",
+            background_color: str = "",
             sizes_max_min: typing.Union[typing.List[int], None] = None,
             sizes_square: typing.Union[typing.List[int], None] = None,
             sizes_rectangular: typing.Union[typing.List[int], None] = None,
@@ -93,6 +99,8 @@ class ImageFormater:
         self.output_folder_path = output_folder_path
         # source
         self.source_file_path = source_file_path
+        # background color
+        self.background_color = background_color
         # sizes
         self.sizes_max_min = sizes_max_min or []
         self.sizes_square = sizes_square or []
@@ -122,10 +130,7 @@ class ImageFormater:
         self.formated = self._output_formater()
 
     def _get_sizes(self) -> list:
-        sizes_square = [[size, size] for size in self.sizes_square]
-        sizes_rectangular = self.sizes_rectangular
-        sizes_max_min = [[size[1], size[1]] for size in self.sizes_max_min]
-        return sizes_square + sizes_rectangular + sizes_max_min
+        return [[size, size] for size in self.sizes_square] + self.sizes_rectangular + self.sizes_max_min
 
     def _output_formater(self) -> typing.List[FileAttributes]:
         """Return file name, sizes, dest, source resize"""
@@ -166,104 +171,62 @@ class IconsFormatConfig:
         self.icons_config = self.get_icons_config()
 
     def _favicon_ico_icons_config(self) -> typing.List[ImageFormater]:
-
-        return [
-            # <link rel='shortcut icon' href='/favicon.ico'
-            # type='image/x-icon'>
-            self.image_format_config_dict["favicon_ico"]
-        ]
+        if "favicon_ico" in self.image_format_config_dict:
+            return [self.image_format_config_dict["favicon_ico"]]
+        return []
 
     def _favicon_png_icons_config(self) -> typing.List[ImageFormater]:
 
-        # Order matters
-        return [
-            # Default png favicon
-            # Example:
-            # <link rel="icon" type="image/png" href="/static/favicon-16x16.png"
-            # sizes="16x16">
-            self.image_format_config_dict["favicon_sizexsize_png"],
-            # Microsoft icon
-            # Example:
-            # <meta name="msapplication-TileImage"
-            # content="/static/ms-icon-144x144.png">
-            self.image_format_config_dict["ms_icon"],
-            # Apple touch default
-            # Example:
-            # <link rel="apple-touch-icon"
-            # href="/static/apple-touch-icon-default-57x57.png">
-            self.image_format_config_dict["apple_touch_icon_default"],
-            # Apple touch with different sizes
-            # Example:
-            # <link rel="apple-touch-icon" sizes="57x57"
-            # href="/static/apple-touch-icon-57x57.png">
-            self.image_format_config_dict["apple_touch_icon"],
-            # Apple touch startup default
-            # Example:
-            # ???
-            self.image_format_config_dict["apple_touch_startup_image"],
-            # Apple touch startup with different sizes
-            # Example:
-            # ???
-            self.image_format_config_dict[
-                "apple_touch_startup_image_media_queries"],
-            # Fluid icon
-            # Example:
-            # <link rel="fluid-icon" href="/static/fluidicon-512x512.png"
-            # title="Microsoft">
-            self.image_format_config_dict["fluid-icon"],
-            # Yandex browser special icon
-            # Example:
-            # ???
-            self.image_format_config_dict["yandex"],
+        # Order matters for those icons
+        ordered_icons = [
+            self.image_format_config_dict.get("favicon_sizexsize_png"),
+            self.image_format_config_dict.get("apple_touch_icon_default"),
+            self.image_format_config_dict.get("apple_touch_icon"),
+            self.image_format_config_dict.get("apple_touch_startup_image"),
+            self.image_format_config_dict.get("apple_touch_startup_image_media_queries"),
+            self.image_format_config_dict.get("yandex"),
         ]
+        return [icon for icon in [
+            *ordered_icons,
+            self.image_format_config_dict.get("ms_icon"),
+        ] if icon]
 
     def _favicon_svg_icons_config(self) -> typing.List[ImageFormater]:
-        return [
-            # <link color="blue" rel="mask-icon" href="/static/favicon.svg"
-            self.image_format_config_dict["mask-icon"]
-        ]
+        if "mask-icon" in self.image_format_config_dict:
+            return [self.image_format_config_dict["mask-icon"]]
+        return []
 
     def _preview_png_icons_config(self) -> typing.List[ImageFormater]:
-        return [
-            # <meta property='og:image' content='/static/preview-500x500.png'>
-            self.image_format_config_dict["preview_og"],
-            # <meta property='og:image:secure_url'
-            # content='/static/preview-500x500.png'>
-            self.image_format_config_dict["preview_og_secure_url"],
-            # <meta name='twitter:image' content='/static/preview-500x500.png'>
-            self.image_format_config_dict["preview_twitter"],
-        ]
+        return [icon for icon in [
+            self.image_format_config_dict.get("preview_og"),
+            self.image_format_config_dict.get("preview_og_secure_url"),
+            self.image_format_config_dict.get("preview_twitter"),
+        ] if icon]
 
     def _browserconfig_icons_config(self) -> typing.List[ImageFormater]:
-        return [self.image_format_config_dict["browserconfig"]]
+        if "browserconfig" in self.image_format_config_dict:
+            return [self.image_format_config_dict["browserconfig"]]
+        return []
 
     def _manifest_icons_config(self) -> typing.List[ImageFormater]:
-        return [self.image_format_config_dict["manifest"]]
+        if "manifest" in self.image_format_config_dict:
+            return [self.image_format_config_dict["manifest"]]
+        return []
 
     def _opensearch_icons_config(self) -> typing.List[ImageFormater]:
-        return [self.image_format_config_dict["opensearch"]]
+        if "opensearch" in self.image_format_config_dict:
+            return [self.image_format_config_dict["opensearch"]]
+        return []
 
     def _image_format_config(self) -> dict:
         """Dictionary preloaded with custom data"""
+        dictionary = {}
 
-        favicon_ico = self.config.get("favicon_ico", "")
-        favicon_png = self.config.get("favicon_png", "")
-        favicon_svg = self.config.get("favicon_svg", "")
-        preview_png = self.config.get("preview_png", "")
-        output_folder_path = self.config.get("output_folder_path", "")
-        static_folder_path = self.config.get("static_folder_path", "")
-        static_url = self.config.get("static_url", "")
-        background_color = self.config.get("background_color", "")
-        yandex_content = (f"logo={static_url}/yandex.png, "
-                          f"color={background_color}")
-
-        return {
-            # favicon ico
-            "favicon_ico":
-            ImageFormater(
+        if "favicon_ico" in self.config:
+            dictionary["favicon_ico"] = ImageFormater(
                 output_file_name="favicon",
-                output_folder_path=output_folder_path,
-                source_file_path=favicon_ico,
+                output_folder_path=self.config["output_folder_path"],
+                source_file_path=self.config["favicon_ico"],
                 sizes_mantain=True,
                 head_output=True,
                 url_path="/",
@@ -271,232 +234,237 @@ class IconsFormatConfig:
                 attribute_rel="icon",
                 attribute_type="image/x-icon",
                 attribute_special_href=True,
-            ),
-            # favicon png
-            "favicon_sizexsize_png":
-            ImageFormater(
-                output_file_name="favicon",
-                output_file_size_verbosity=True,
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                # https://www.favicon-generator.org/
-                # https://stackoverflow.com/questions/4014823/does-a-favicon-have-to-be-32x32-or-16x16
-                # https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-                sizes_square=[16, 32, 96, 192, 194],
-                head_output=True,
-                url_path=static_url,
-                tag_name="link",
-                attribute_rel="icon",
-                attribute_type="image/png",
-                attribute_special_sizes=True,
-                attribute_special_href=True,
-            ),
-            "ms_icon":
-            ImageFormater(
-                output_file_name="ms-icon",
-                output_file_size_verbosity=True,
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[144],
-                head_output=True,
-                url_path=static_url,
-                tag_name="meta",
-                attribute_name="msapplication-TileImage",
-                attribute_special_content=True,
-            ),
-            "apple_touch_icon_default":
-            ImageFormater(
-                output_file_name="apple-touch-icon",
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[57],
-                head_output=True,
-                url_path=static_url,
-                tag_name="link",
-                attribute_rel="apple-touch-icon",
-                attribute_special_href=True,
-            ),
-            "apple_touch_icon":
-            ImageFormater(
-                output_file_name="apple-touch-icon",
-                output_file_size_verbosity=True,
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[
-                    57,
-                    60,
-                    72,
-                    76,
-                    114,
-                    120,
-                    128,
-                    144,
-                    152,
-                    167,
-                    180,
-                    195,
-                    196,
-                    228,
-                    512,
-                    1024
-                ],
-                head_output=True,
-                url_path=static_url,
-                tag_name="link",
-                attribute_rel="apple-touch-icon",
-                attribute_special_href=True,
-                attribute_special_sizes=True,
-            ),
-            "apple_touch_startup_image":
-            ImageFormater(
-                output_file_name="launch",
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[768],
-                head_output=True,
-                url_path=static_url,
-                tag_name="link",
-                attribute_rel="apple-touch-startup-image",
-                attribute_special_href=True,
-            ),
-            "apple_touch_startup_image_media_queries":
-            ImageFormater(
-                output_file_name="launch",
-                output_file_size_verbosity=True,
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                # Based in:
-                # https://css-tricks.com/snippets/css/media-queries-for-standard-devices/
-                sizes_max_min=[
-                    [38, 42],
-                    [320, 375],
-                    [375, 414],
-                    [414, 480],
-                    [480, 568],
-                    [568, 667],
-                    [667, 736],
-                    [736, 812],
-                    [812, 834],
-                    [1024, 1112],
-                    [1112, 1200],
-                    [1200, 1366],
-                    [1366, 1600],
-                ],
-                head_output=True,
-                url_path=static_url,
-                tag_name="link",
-                attribute_rel="apple-touch-startup-image",
-                attribute_special_href=True,
-            ),
-            "fluid-icon":
-            ImageFormater(
-                output_file_name="fluid-icon",
-                output_folder_path=static_folder_path,
-                output_file_size_verbosity=True,
-                source_file_path=favicon_png,
-                sizes_square=[512],
-                head_output=True,
-                url_path=static_url,
-                tag_name="link",
-                attribute_rel="fluid-icon",
-                attribute_special_href=True,
-                attribute_special_title=True,
-            ),
-            "yandex":
-            ImageFormater(
-                output_file_name="yandex",
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[120],
-                head_output=True,
-                url_path=static_url,
-                tag_name="meta",
-                attribute_name="yandex-tableau-widget",
-                attribute_content=yandex_content,
-            ),
-            # favicon svg
-            "mask-icon":
-            ImageFormater(
-                output_file_name="mask-icon",
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_svg,
-                sizes_mantain=True,
-                head_output=True,
-                url_path=static_url,
-                tag_name="link",
-                attribute_color=background_color,
-                attribute_rel="mask-icon",
-                attribute_special_href=True,
-            ),
-            # preview png
-            "preview_og":
-            ImageFormater(
-                output_file_name="preview",
-                output_folder_path=static_folder_path,
-                output_file_size_verbosity=True,
-                source_file_path=preview_png,
-                sizes_square=[500],
-                head_output=True,
-                url_path=static_url,
-                tag_name="meta",
-                attribute_property="og:image",
-                attribute_special_content=True,
-            ),
-            "preview_og_secure_url":
-            ImageFormater(
-                output_file_name="preview",
-                output_folder_path=static_folder_path,
-                output_file_size_verbosity=True,
-                source_file_path=preview_png,
-                sizes_square=[500],
-                head_output=True,
-                url_path=static_url,
-                tag_name="meta",
-                attribute_property="og:image:secure_url",
-                attribute_special_content=True,
-            ),
-            "preview_twitter":
-            ImageFormater(
-                output_file_name="preview",
-                output_folder_path=static_folder_path,
-                output_file_size_verbosity=True,
-                source_file_path=preview_png,
-                sizes_square=[500],
-                head_output=True,
-                url_path=static_url,
-                tag_name="meta",
-                attribute_name="twitter:image",
-                attribute_special_content=True,
-            ),
-            # complementary files
-            "browserconfig":
-            ImageFormater(
-                output_file_name="ms-icon",
-                output_file_size_verbosity=True,
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[30, 44, 70, 150, 310],
-                sizes_rectangular=[[310, 150]],
-            ),
-            "manifest":
-            ImageFormater(
-                output_file_name="android-icon",
-                output_file_size_verbosity=True,
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[36, 48, 72, 96, 144, 192, 256, 384, 512],
-                attribute_type="image/png",
-            ),
-            "opensearch":
-            ImageFormater(
-                output_file_name="opensearch",
-                output_file_size_verbosity=True,
-                output_folder_path=static_folder_path,
-                source_file_path=favicon_png,
-                sizes_square=[16],
-                attribute_type="image/png",
-            ),
-        }
+            )
+
+        if "favicon_png" in self.config:
+            dictionary.update({
+                "favicon_sizexsize_png":
+                ImageFormater(
+                    output_file_name="favicon",
+                    output_file_size_verbosity=True,
+                    output_folder_path=self.config["static_folder_path"],
+                    source_file_path=self.config["favicon_png"],
+                    sizes_square=[16, 32, 96, 192, 194],
+                    head_output=True,
+                    url_path=self.config["static_url"],
+                    tag_name="link",
+                    attribute_rel="icon",
+                    attribute_type="image/png",
+                    attribute_special_sizes=True,
+                    attribute_special_href=True,
+                ),
+                "ms_icon":
+                ImageFormater(
+                    output_file_name="ms-icon",
+                    output_file_size_verbosity=True,
+                    output_folder_path=self.config["static_folder_path"],
+                    source_file_path=self.config["favicon_png"],
+                    sizes_square=[144],
+                    head_output=True,
+                    url_path=self.config["static_url"],
+                    tag_name="meta",
+                    attribute_name="msapplication-TileImage",
+                    attribute_special_content=True,
+                ),
+                "apple_touch_icon_default":
+                ImageFormater(
+                    output_file_name="apple-touch-icon",
+                    output_file_size_verbosity=True,
+                    output_folder_path=self.config["static_folder_path"],
+                    source_file_path=self.config["favicon_png"],
+                    sizes_square=[57],
+                    head_output=True,
+                    url_path=self.config["static_url"],
+                    tag_name="link",
+                    attribute_rel="apple-touch-icon",
+                    attribute_special_href=True,
+                ),
+                "apple_touch_icon":
+                ImageFormater(
+                    output_file_name="apple-touch-icon",
+                    output_file_size_verbosity=True,
+                    output_folder_path=self.config["static_folder_path"],
+                    source_file_path=self.config["favicon_png"],
+                    sizes_square=[
+                        57,
+                        60,
+                        72,
+                        76,
+                        114,
+                        120,
+                        128,
+                        144,
+                        152,
+                        167,
+                        180,
+                        195,
+                        196,
+                        228,
+                        512,
+                        1024
+                    ],
+                    head_output=True,
+                    url_path=self.config["static_url"],
+                    tag_name="link",
+                    attribute_rel="apple-touch-icon",
+                    attribute_special_href=True,
+                    attribute_special_sizes=True,
+                ),
+                "browserconfig":
+                ImageFormater(
+                    output_file_name="browserconfig",
+                    output_file_size_verbosity=True,
+                    output_folder_path=self.config["static_folder_path"],
+                    source_file_path=self.config["favicon_png"],
+                    sizes_square=[30, 44, 70, 150, 310],
+                    sizes_rectangular=[[310, 150]],
+                ),
+                "manifest":
+                ImageFormater(
+                    output_file_name="manifest",
+                    output_file_size_verbosity=True,
+                    output_folder_path=self.config["static_folder_path"],
+                    source_file_path=self.config["favicon_png"],
+                    sizes_square=[192, 512],
+                    attribute_type="image/png",
+                ),
+                "opensearch":
+                ImageFormater(
+                    output_file_name="opensearch",
+                    output_file_size_verbosity=True,
+                    output_folder_path=self.config["static_folder_path"],
+                    source_file_path=self.config["favicon_png"],
+                    sizes_square=[16],
+                    attribute_type="image/png",
+                )
+            })
+            multiple_initial_data = {
+                "yandex": {
+                    "output_file_name": "yandex",
+                    "output_folder_path": self.config["static_folder_path"],
+                    "source_file_path": self.config["favicon_png"],
+                    "sizes_square": [120],
+                    "head_output": True,
+                    "url_path": self.config["static_url"],
+                    "tag_name": "meta",
+                    "attribute_name": "yandex-tableau-widget",
+                    "attribute_content": f"logo={self.config['static_url']}/yandex.png",
+                },
+                "apple_touch_startup_image": {
+                    "output_file_name": "apple-touch-startup-image",
+                    "output_file_size_verbosity": True,
+                    "output_folder_path": self.config["static_folder_path"],
+                    "source_file_path": self.config["favicon_png"],
+                    "sizes_square": [1024],
+                    "head_output": True,
+                    "url_path": self.config["static_url"],
+                    "tag_name": "link",
+                    "attribute_rel": "apple-touch-startup-image",
+                    "attribute_special_href": True,
+                },
+                "apple_touch_startup_image_media_queries": {
+                    "output_file_name": "apple-touch-startup-image",
+                    "output_file_size_verbosity": True,
+                    "output_folder_path": self.config["static_folder_path"],
+                    "source_file_path": self.config["favicon_png"],
+                    "sizes_max_min": [
+                        # Source: https://github.com/onderceylan/pwa-asset-generator
+                        [2048, 2732, 2],
+                        [2732, 2048, 2],
+                        [1668, 2388, 2],
+                        [2388, 1668, 2],
+                        [1668, 2224, 2],
+                        [2224, 1668, 2],
+                        [1536, 2048, 2],
+                        [2048, 1536, 2],
+                        [1242, 2688, 3],
+                        [2688, 1242, 3],
+                        [1125, 2436, 3],
+                        [2436, 1125, 3],
+                        [828, 1792, 2],
+                        [1792, 828, 2],
+                        [1242, 2208, 3],
+                        [2208, 1242, 3],
+                        [750, 1334, 2],
+                        [1334, 750, 2],
+                        [640, 1136, 2],
+                        [1136, 640, 2],
+                    ],
+                    "head_output": True,
+                    "url_path": self.config["static_url"],
+                    "tag_name": "link",
+                    "attribute_rel": "apple-touch-startup-image",
+                    "attribute_special_href": True,
+                },
+            }
+            if "background_color" in self.config:
+                multiple_initial_data["yandex"]["attribute_content"] += f", color={self.config['background_color']}"
+                multiple_initial_data["apple_touch_startup_image"]["background_color"] = self.config["background_color"]
+                multiple_initial_data["apple_touch_startup_image_media_queries"]["background_color"] = self.config["background_color"]
+            dictionary["yandex"] = ImageFormater(**multiple_initial_data["yandex"])
+            dictionary["apple_touch_startup_image"] = ImageFormater(**multiple_initial_data["apple_touch_startup_image_media_queries"])
+            dictionary["apple_touch_startup_image_media_queries"] = ImageFormater(**multiple_initial_data['apple_touch_startup_image_media_queries'])
+
+        if "favicon_svg" in self.config:
+            initial_data = {
+                "output_file_name": "mask-icon",
+                "output_folder_path": self.config["static_folder_path"],
+                "source_file_path": self.config["favicon_svg"],
+                "sizes_mantain": True,
+                "head_output": True,
+                "url_path": self.config["static_url"],
+                "tag_name": "link",
+                "attribute_rel": "mask-icon",
+                "attribute_special_href": True,
+            }
+            if "main_color" in self.config:
+                initial_data["attribute_color"] = self.config['main_color']
+            dictionary["mask-icon"] = ImageFormater(**initial_data)
+
+        if "preview_png" in self.config:
+            dictionary.update({
+                "preview_og":
+                ImageFormater(
+                    output_file_name="preview",
+                    output_folder_path=self.config["static_folder_path"],
+                    output_file_size_verbosity=True,
+                    source_file_path=self.config["preview_png"],
+                    sizes_square=[500],
+                    head_output=True,
+                    url_path=self.config["static_url"],
+                    tag_name="meta",
+                    attribute_property="og:image",
+                    attribute_special_content=True,
+                ),
+                "preview_og_secure_url":
+                ImageFormater(
+                    output_file_name="preview",
+                    output_folder_path=self.config["static_folder_path"],
+                    output_file_size_verbosity=True,
+                    source_file_path=self.config["preview_png"],
+                    sizes_square=[500],
+                    head_output=True,
+                    url_path=self.config["static_url"],
+                    tag_name="meta",
+                    attribute_property="og:image:secure_url",
+                    attribute_special_content=True,
+                ),
+                "preview_twitter":
+                ImageFormater(
+                    output_file_name="preview",
+                    output_folder_path=self.config["static_folder_path"],
+                    output_file_size_verbosity=True,
+                    source_file_path=self.config["preview_png"],
+                    sizes_square=[500],
+                    head_output=True,
+                    url_path=self.config["static_url"],
+                    tag_name="meta",
+                    attribute_name="twitter:image",
+                    attribute_special_content=True,
+                ),
+            })
+
+        return dictionary
 
     def get_icons_config(self) -> typing.Dict[str, typing.List[ImageFormater]]:
         """Return a default icons format configuration
@@ -532,6 +500,7 @@ def default_images() -> typing.List[typing.Dict[str, str]]:
 
 
 class UserConfigHandler(src.base.logs.Logs):
+
     def transform(self,
                   settings: typing.Union[dict, None] = None,
                   main_path: str = "") -> dict:
@@ -550,61 +519,73 @@ class UserConfigHandler(src.base.logs.Logs):
         """
 
         # Construct config
-        recommended = settings.get("recommended", {})
-        default = settings.get("default", {})
-        general = default.get("general", {})
-        basic = default.get("basic", {})
-        social_media = default.get("social_media", {})
-        progressive_web_app = settings.get("progressive_web_apps", {})
-        if "required" not in settings:
-            self.error_log(
-                "Miss 'required' object and it's required in config file.")
-        settings = {
-            **settings["required"],
-            **recommended,
-            **general,
-            **basic,
-            **social_media,
-            **progressive_web_app,
-        }
+        default_schema = schema.Schema({
+            schema.Optional('comment'): dict,
+            'configuration': {
+                'required': {
+                    'static_url': str,
+                },
+                schema.Optional('images'): {
+                    schema.Optional('favicon_ico'): str,
+                    schema.Optional('favicon_png'): str,
+                    schema.Optional('favicon_svg'): str,
+                    schema.Optional('preview_png'): str,
+                },
+                schema.Optional('general'): {
+                    schema.Optional('language'): str,
+                    schema.Optional('territory'): str,
+                    schema.Optional('domain'): str,
+                    schema.Optional('dir'): str,
+                    schema.Optional('title'): str,
+                    schema.Optional('description'): str,
+                    schema.Optional('subject'): str,
+                    schema.Optional('main_color'): str,
+                    schema.Optional('background_color'): str,
+                    schema.Optional('author_name'): str,
+                    schema.Optional('author_email'): str,
+                },
+                schema.Optional('social_media'): {
+                    schema.Optional('facebook_app_id'): str,
+                    schema.Optional('twitter_user_@'): str,
+                    schema.Optional('twitter_user_id'): str,
+                    schema.Optional('itunes_app_id'): str,
+                    schema.Optional('itunes_affiliate_data'): str,
+                }
+            }
+        })
 
-        # Required values
-        required_values = ["static_url"]
-        for key in required_values:
-            # :=
-            error = src.helpers.key_exists(key, settings)
-            if error:
-                self.error_log(error)
-
-        # Sanitize static_url key
-        # Prevent:
-        #   output = /output/
-        #   static_url = /static/
-        #   output + static_url = /static/ [root/static/]
-        if settings["static_url"][0] == "/":
-            settings["static_folder_path"] = settings["static_url"][1:]
-        # Prevent //
-        if settings["static_url"][-1] == "/":
-            settings["static_url"] = settings["static_url"][:-1]
-        # Static url = "static" , not "static/"
+        try:
+            default_schema.validate(settings)
+        except (schema.SchemaWrongKeyError, schema.SchemaMissingKeyError, schema.SchemaError) as exception:
+            self.error_log(exception)
 
         # Make paths
         # Define the main path as the passed throught -file argument
-        settings["main_folder_path"] = main_path
-        settings["output_folder_path"] = os.path.join(
-            settings["main_folder_path"], "output")
-        settings["static_folder_path"] = os.path.join(
-            settings["output_folder_path"], settings["static_folder_path"])
+        output_folder_path = os.path.join(main_path, "output")
+        static_folder_path = os.path.join(output_folder_path, "static")
+        custom_settings = dict(
+            {
+                "main_folder_path": main_path,
+                "output_folder_path": output_folder_path,
+                "static_folder_path": static_folder_path,
+            },
+            **settings["configuration"]["required"],
+            **settings["configuration"].get("general", {}),
+            **settings["configuration"].get("social_media", {}),
+            **settings["configuration"].get("static_url", {}),
+        )
 
-        settings["favicon_ico"] = os.path.join(settings["main_folder_path"],
-                                               settings["favicon_ico"])
-        settings["favicon_png"] = os.path.join(settings["main_folder_path"],
-                                               settings["favicon_png"])
-        settings["favicon_svg"] = os.path.join(settings["main_folder_path"],
-                                               settings["favicon_svg"])
-        settings["preview_png"] = os.path.join(settings["main_folder_path"],
-                                               settings["preview_png"])
-        return settings
+        if "images" in settings["configuration"]:
+            if "favicon_ico" in settings["configuration"]["images"]:
+                custom_settings["favicon_ico"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_ico"])
+            if "favicon_png" in settings["configuration"]["images"]:
+                custom_settings["favicon_png"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_png"])
+            if "favicon_svg" in settings["configuration"]["images"]:
+                custom_settings["favicon_svg"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_svg"])
+            if "preview_png" in settings["configuration"]["images"]:
+                custom_settings["preview_png"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["preview_png"])
+
+        return custom_settings
 
 
 def default_settings() -> str:
@@ -615,53 +596,41 @@ def default_settings() -> str:
     settings = textwrap.dedent(f"""\
         {{
             'comment':  {{
-                'About':            'Config file used by python CUSHEAD',
-                'Format':           'JSON',
-                'Git':              '{info['source']}',
-                'Documentation':    '{info['documentation']}'
+                'About': 'Config file used by python CUSHEAD',
+                'Format': 'JSON',
+                'Git': '{info['source']}',
+                'Documentation': '{info['documentation']}'
             }},
-            'required': {{
-                'static_url':       '/static/'
-            }},
-            'recommended': {{
-                'favicon_ico':      './favicon_ico_16px.ico',
-                'favicon_png':      './favicon_png_1600px.png',
-                'favicon_svg':      './favicon_svg_scalable.svg',
-                'preview_png':      './preview_png_500px.png'
-            }},
-            'default': {{
-                'general': {{
-                    'content-type':     'text/html; charset=utf-8',
-                    'X-UA-Compatible':  'ie=edge',
-                    'viewport':         '{('width=device-width, '
-                                           'initial-scale=1')}',
-                    'language':         'en',
-                    'territory':        'US',
-                    'protocol':         'https://',
-                    'clean_url':        'microsoft.com',
-                    'robots':           'index, follow'
+            'configuration': {{
+                'required': {{
+                    'static_url': '/static'
                 }},
-                'basic': {{
-                    'title':            'Microsoft',
-                    'description':      'Technology Solutions',
-                    'subject':          'Home Page',
-                    'keywords':         'Microsoft, Windows',
-                    'background_color': '#FFFFFF',
-                    'author':           'Lucas Vazquez'
+                'images': {{
+                    'favicon_ico': './favicon_ico_16px.ico',
+                    'favicon_png': './favicon_png_1600px.png',
+                    'favicon_svg': './favicon_svg_scalable.svg',
+                    'preview_png': './preview_png_500px.png'
+                }},
+                'general': {{
+                    'language': 'en',
+                    'territory': 'US',
+                    'domain': 'microsoft.com',
+                    'dir': 'ltr',
+                    'title': 'Microsoft',
+                    'description': 'Technology Solutions',
+                    'subject': 'Home Page',
+                    'main_color': '#ff0000',
+                    'background_color': '#ffffff',
+                    'author_name': '{info['author']}',
+                    'author_email': '{info['email']}'
                 }},
                 'social_media': {{
-                    'facebook_app_id':  '123456',
-                    'twitter_user_@':   '@Microsoft',
-                    'twitter_user_id':  '123456'
+                    'facebook_app_id': '123456',
+                    'twitter_user_@':'@Microsoft',
+                    'twitter_user_id': '123456',
+                    'itunes_app_id': '123456',
+                    'itunes_affiliate_data': '123456'
                 }}
-            }},
-            'progressive_web_apps': {{
-                'dir':              'ltr',
-                'start_url':        '/',
-                'orientation':      'landscape',
-                'scope':            '/',
-                'display':          'browser',
-                'platform':         'web'
             }}
         }}""")
     settings = settings.replace("'", '"')

@@ -54,17 +54,16 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         with open(self.args.config, "r") as file_instance:
             file_string = file_instance.read()
 
-        json_dict = {}
         try:
-            json_dict.update(json.loads(file_string))
+            json_dict = json.loads(file_string)
         except json.decoder.JSONDecodeError:
             full_path = os.path.join(os.getcwd(), self.args.config)
             self.error_log(
                 f"Invalid json file format in ({self.args.config})\n"
                 f"FILE PATH: {full_path}\n")
-
-        main_path = os.path.dirname(self.args.config)
-        return json_dict, main_path
+        else:
+            main_path = os.path.dirname(self.args.config)
+            return json_dict, main_path
 
     def _create_files(self, files_to_create):
         created_files = collections.defaultdict(list)
@@ -87,6 +86,7 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
                     file["source_file_path"],
                     destination_file_path,
                     file["size"],
+                    file["background_color"],
                 )
             else:
                 src.helpers.copy_file(file["source_file_path"],
@@ -95,9 +95,9 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         self.default_log("GENERATED FILES:\n\n" f"{os.getcwd()}")
         last_item_created_files = next(reversed(created_files))
         for output_folder_path in created_files:
-            folder_conector, folder_extension = ((
-                "`", " ") if output_folder_path == last_item_created_files else
-                                                 ("|", "|"))
+            folder_conector, folder_extension = (
+                ("`", " ") if output_folder_path == last_item_created_files else ("|", "|")
+            )
             self.default_log(f" {folder_conector}-- {output_folder_path}")
             for file in created_files[output_folder_path]:
                 file_conector = ("`" if
@@ -112,12 +112,19 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         Check the current arguments and execute the functions that correspond
         to each one
         """
-        if self.args.images:
-            self.argument_boolean_image()
-        if self.args.config:
-            self.argument_string_config()
-        if self.args.default:
-            self.argument_string_default()
+        files_to_generate = []
+        try:
+            if self.args.images:
+                files_to_generate.append(self.argument_boolean_image())
+            if self.args.config:
+                files_to_generate.append(self.argument_string_config())
+            if self.args.default:
+                files_to_generate.append(self.argument_string_default())
+        except KeyboardInterrupt as e:
+            self.error_log(e)
+
+        # Printear los archivos a generar a medida que se generan
+        print(files_to_generate)
 
     # --images
     def argument_boolean_image(self):
@@ -135,15 +142,11 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
     def argument_string_config(self):
         """Handle -config argument"""
         user_config, main_path = self._read_user_config()
-        if not user_config and not main_path:
-            self.error_log("FALTA USER CONFIG")
-
         config = src.base.configuration.UserConfigHandler().transform(
             user_config, main_path)
         icons_formater = src.base.configuration.IconsFormatConfig(config)
         image_format_config_dict = icons_formater.image_format_config_dict
         icons_config = icons_formater.get_icons_config()
-
         self._create_files(
             src.base.generator.base_generator.BaseGenerator(
                 config, icons_config, image_format_config_dict).generate())
