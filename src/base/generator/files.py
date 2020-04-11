@@ -29,10 +29,12 @@ class IndexGenerator(src.base.generator.images.Images):
         html_tag_elements = ["<html class='no-js'"]
         # python 3.8
         # if (lang_data := self.config.get('language'), self.config.get('territory', ''))[0]:
-        lang_data = self.config.get('language'), self.config.get('territory', '')
+        lang_data = self.config.get(
+            'language'), self.config.get('territory', '')
         if lang_data[0]:
             conector = '-' if all(lang_data) else ''
-            html_tag_elements.append(f"lang='{lang_data[0]}{conector}{lang_data[1]}'")
+            html_tag_elements.append(
+                f"lang='{lang_data[0]}{conector}{lang_data[1]}'")
         if 'dir' in self.config:
             html_tag_elements.append(f"dir='{self.config['dir']}'")
         html_tag = ' '.join(html_tag_elements) + ">"
@@ -46,7 +48,8 @@ class IndexGenerator(src.base.generator.images.Images):
 
     def index_head(self):
         favicons, og_social_media_images, twitter_social_media_images, late_browser_config = self.generate_head_images()
-        site_data = self.config.get('title', ''), self.config.get('description', '')
+        site_data = self.config.get(
+            'title', ''), self.config.get('description', '')
         if (og_social_media_images or twitter_social_media_images) and any(site_data):
             site_data_content = f"{site_data[0]}{' - ' if all(site_data) else ''}{site_data[1]}"
         else:
@@ -62,7 +65,8 @@ class IndexGenerator(src.base.generator.images.Images):
             "<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>",
         ]
         if 'background_color' in self.config:
-            head.append(f"<meta name='theme-color' content='{self.config['background_color']}'>")
+            head.append(
+                f"<meta name='theme-color' content='{self.config['background_color']}'>")
         if 'title' in self.config:
             head.append(f"<title>{self.config['title']}</title>")
         head.extend([
@@ -76,20 +80,24 @@ class IndexGenerator(src.base.generator.images.Images):
         # Social media
         # python 3.8
         # if (lang_data := self.config.get('language'), self.config.get('territory', ''))[0]:
-        lang_data = self.config.get('language'), self.config.get('territory', '')
+        lang_data = self.config.get(
+            'language'), self.config.get('territory', '')
         if lang_data[0]:
             conector = '_' if all(lang_data) else ''
-            head.append(f"<meta property='og:locale' content='{lang_data[0]}{conector}{lang_data[1]}'>")
+            head.append(
+                f"<meta property='og:locale' content='{lang_data[0]}{conector}{lang_data[1]}'>")
         head.append("<meta property='og:type' content='website'>")
         if 'domain' in self.config:
-            head.append(f"<meta property='og:url' content='https://{self.config['domain']}'>")
+            head.append(
+                f"<meta property='og:url' content='https://{self.config['domain']}'>")
         if 'title' in self.config:
             head.extend([
                 f"<meta property='og:site_name' content='{self.config['title']}'>",
                 f"<meta property='og:title' content='{self.config['title']}'>",
             ])
         if 'description' in self.config:
-            head.append(f"<meta property='og:description' content='{self.config['description']}'>")
+            head.append(
+                f"<meta property='og:description' content='{self.config['description']}'>")
         if og_social_media_images:
             head.extend([
                 f"<meta property='og:image:alt' content='{site_data_content}'>",
@@ -100,27 +108,35 @@ class IndexGenerator(src.base.generator.images.Images):
             ])
         head.append("<meta name='twitter:card' content='summary'>")
         if 'twitter_user_@' in self.config:
-            head.append(f"<meta name='twitter:site' content='{self.config['twitter_user_@']}'>")
+            head.append(
+                f"<meta name='twitter:site' content='{self.config['twitter_user_@']}'>")
         if 'twitter_user_id' in self.config:
-            head.append(f"<meta name='twitter:site:id' content='{self.config['twitter_user_id']}'>")
+            head.append(
+                f"<meta name='twitter:site:id' content='{self.config['twitter_user_id']}'>")
         if 'title' in self.config:
-            head.append(f"<meta name='twitter:title' content='{self.config['title']}'>")
+            head.append(
+                f"<meta name='twitter:title' content='{self.config['title']}'>")
         if 'description' in self.config:
-            head.append(f"<meta name='twitter:description' content='{self.config['description']}'>")
+            head.append(
+                f"<meta name='twitter:description' content='{self.config['description']}'>")
         if twitter_social_media_images:
             head.extend([
                 f"<meta name='twitter:image:alt' content='{site_data_content}'>",
                 *twitter_social_media_images,
             ])
         if 'twitter_user_@' in self.config:
-            head.append(f"<meta name='twitter:creator' content='{self.config['twitter_user_@']}'>")
+            head.append(
+                f"<meta name='twitter:creator' content='{self.config['twitter_user_@']}'>")
         if 'twitter_user_id' in self.config:
-            head.append(f"<meta property='twitter:creator:id' content='{self.config['twitter_user_id']}'>")
+            head.append(
+                f"<meta property='twitter:creator:id' content='{self.config['twitter_user_id']}'>")
         if 'facebook_app_id' in self.config:
-            head.append(f"<meta porperty='fb:app_id' content='{self.config['facebook_app_id']}'>")
+            head.append(
+                f"<meta porperty='fb:app_id' content='{self.config['facebook_app_id']}'>")
         # python 3.8
         # if (itunes_data := self.config.get('itunes_app_id'), self.config.get('itunes_affiliate_data'))[0]:
-        itunes_data = self.config.get('itunes_app_id'), self.config.get('itunes_affiliate_data')
+        itunes_data = self.config.get(
+            'itunes_app_id'), self.config.get('itunes_affiliate_data')
         if itunes_data[0]:
             head.append(
                 f"<meta name='apple-itunes-app' "
@@ -163,7 +179,8 @@ class IndexGenerator(src.base.generator.images.Images):
         ])
 
         # Late config
-        head.append(f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>")
+        head.append(
+            f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>")
         if 'title' in self.config:
             head.extend([
                 f"<meta name='application-name' content='{self.config['title']}'>",
@@ -175,7 +192,8 @@ class IndexGenerator(src.base.generator.images.Images):
                 *late_browser_config
             ])
         if 'title' in self.config:
-            head.append(f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>")
+            head.append(
+                f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>")
         head.extend([
             f"<meta name='robots' content='index, follow'>",
             f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>",
@@ -184,10 +202,13 @@ class IndexGenerator(src.base.generator.images.Images):
             "<meta name='baidu-site-verification' content=''><!-- FILL THIS -->",
         ])
         if 'description' in self.config:
-            head.append(f"<meta name='description' content='{self.config['description']}'>")
+            head.append(
+                f"<meta name='description' content='{self.config['description']}'>")
         if 'subject' in self.config:
-            head.append(f"<meta name='subject' content='{self.config['subject']}'>")
-        head.append(f"<meta name='author' content='{self.config['static_url']}/humans.txt'>")
+            head.append(
+                f"<meta name='subject' content='{self.config['subject']}'>")
+        head.append(
+            f"<meta name='author' content='{self.config['static_url']}/humans.txt'>")
 
         # Structured data
         head.extend([
@@ -207,7 +228,8 @@ class IndexGenerator(src.base.generator.images.Images):
                 f"{src.helpers.INDENTATION * 2}'description': 'https://{self.config['description']}'",
             ])
         if "domain" in self.config and self.icons_config["preview_png"]:
-            image_name = self.icons_config["preview_png"][0]._output_formater()[0].file_name
+            image_name = self.icons_config["preview_png"][0]._output_formater()[
+                0].file_name
             head.extend([
                 f"{src.helpers.INDENTATION * 2}'logo': '{self.config['domain']}{self.config['static_url']}/{image_name}'",
                 f"{src.helpers.INDENTATION * 2}'image': '{self.config['domain']}{self.config['static_url']}/{image_name}'",
@@ -218,7 +240,8 @@ class IndexGenerator(src.base.generator.images.Images):
         ])
 
         # convert to string and add indent
-        head_content = f"\n{src.helpers.INDENTATION * 2}".join([tag for tag in head])
+        head_content = f"\n{src.helpers.INDENTATION * 2}".join(
+            [tag for tag in head])
         return f'\n{src.helpers.INDENTATION}'.join([
                                                    f"<head>",
                                                    f"{src.helpers.INDENTATION}{head_content}",
@@ -287,7 +310,8 @@ class ComplementaryFilesGenerator:
             ])
 
         if "main_color" in self.config:
-            content.append(f"{src.helpers.INDENTATION * 2}<TileColor>{self.config['main_color']}</TileColor>")
+            content.append(
+                f"{src.helpers.INDENTATION * 2}<TileColor>{self.config['main_color']}</TileColor>")
 
         content.extend([
             f"{src.helpers.INDENTATION}</tile>",
@@ -304,13 +328,16 @@ class ComplementaryFilesGenerator:
 
         # python3.8
         # if any(author_data := (self.config.get("author_name"), self.config.get("author_email"))):
-        author_data = self.config.get("author_name"), self.config.get("author_email")
+        author_data = self.config.get(
+            "author_name"), self.config.get("author_email")
         if any(author_data):
             content.append("/* TEAM */")
             if author_data[0]:
-                content.append(f"{src.helpers.INDENTATION}Web designer: {author_data[0]}")
+                content.append(
+                    f"{src.helpers.INDENTATION}Web designer: {author_data[0]}")
             if author_data[1]:
-                content.append(f"{src.helpers.INDENTATION}Contact: mailto:{author_data[1]}")
+                content.append(
+                    f"{src.helpers.INDENTATION}Contact: mailto:{author_data[1]}")
             content.append("")
 
         content.extend([
@@ -320,10 +347,12 @@ class ComplementaryFilesGenerator:
 
         # python 3.8
         # if (lang_data := self.config.get('language'), self.config.get('territory', ''))[0]:
-        lang_data = self.config.get('language'), self.config.get('territory', '')
+        lang_data = self.config.get(
+            'language'), self.config.get('territory', '')
         if lang_data[0]:
             conector = '-' if all(lang_data) else ''
-            content.append(f"{src.helpers.INDENTATION}Language: {lang_data[0]}{conector}{lang_data[1]}")
+            content.append(
+                f"{src.helpers.INDENTATION}Language: {lang_data[0]}{conector}{lang_data[1]}")
 
         content.append(f"{src.helpers.INDENTATION}Doctype: HTML5")
 

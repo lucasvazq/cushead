@@ -66,7 +66,8 @@ class Images:
         # property, example:
         # ???
         if brand_config.attribute_property:
-            tag_element_list.append(f"property='{brand_config.attribute_property}'")
+            tag_element_list.append(
+                f"property='{brand_config.attribute_property}'")
 
         # name, example:
         # name="msapplication-TileImage"
@@ -96,7 +97,8 @@ class Images:
         # content, example:
         # ???
         if brand_config.attribute_content:
-            tag_element_list.append(f"content='{brand_config.attribute_content}'")
+            tag_element_list.append(
+                f"content='{brand_config.attribute_content}'")
 
         # Special content and href. Example:
         # content="/static/ms-icon-144x144.png"
@@ -117,6 +119,7 @@ class Images:
         # media="(device-min-width: 38px) and (device-min-height: 38px)"
         # Uses sizes_max_min
         if brand_config.sizes_max_min:
-            tag_element_list.append(f"media='(device-width: {min(size[0], size[1]) // size[2]}px) and (device-height: {max(size[0], size[1]) // size[2]}px) and (-webkit-device-pixel-ratio: {size[2]}) and (orientation: {'portrait' if size[0] < size[1] else 'landscape'})'")
+            tag_element_list.append(
+                f"media='(device-width: {min(size[0], size[1]) // size[2]}px) and (device-height: {max(size[0], size[1]) // size[2]}px) and (-webkit-device-pixel-ratio: {size[2]}) and (orientation: {'portrait' if size[0] < size[1] else 'landscape'})'")
 
         return "<" + " ".join(tag_element_list) + ">"

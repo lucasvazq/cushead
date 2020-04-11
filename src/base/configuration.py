@@ -183,7 +183,8 @@ class IconsFormatConfig:
             self.image_format_config_dict.get("apple_touch_icon_default"),
             self.image_format_config_dict.get("apple_touch_icon"),
             self.image_format_config_dict.get("apple_touch_startup_image"),
-            self.image_format_config_dict.get("apple_touch_startup_image_media_queries"),
+            self.image_format_config_dict.get(
+                "apple_touch_startup_image_media_queries"),
             self.image_format_config_dict.get("yandex"),
         ]
         return [icon for icon in [
@@ -398,12 +399,16 @@ class IconsFormatConfig:
                 },
             }
             if "background_color" in self.config:
-                multiple_initial_data["yandex"]["attribute_content"] += f", color={self.config['background_color']}"
+                multiple_initial_data["yandex"][
+                    "attribute_content"] += f", color={self.config['background_color']}"
                 multiple_initial_data["apple_touch_startup_image"]["background_color"] = self.config["background_color"]
                 multiple_initial_data["apple_touch_startup_image_media_queries"]["background_color"] = self.config["background_color"]
-            dictionary["yandex"] = ImageFormater(**multiple_initial_data["yandex"])
-            dictionary["apple_touch_startup_image"] = ImageFormater(**multiple_initial_data["apple_touch_startup_image_media_queries"])
-            dictionary["apple_touch_startup_image_media_queries"] = ImageFormater(**multiple_initial_data['apple_touch_startup_image_media_queries'])
+            dictionary["yandex"] = ImageFormater(
+                **multiple_initial_data["yandex"])
+            dictionary["apple_touch_startup_image"] = ImageFormater(
+                **multiple_initial_data["apple_touch_startup_image_media_queries"])
+            dictionary["apple_touch_startup_image_media_queries"] = ImageFormater(
+                **multiple_initial_data['apple_touch_startup_image_media_queries'])
 
         if "favicon_svg" in self.config:
             initial_data = {
@@ -577,13 +582,17 @@ class UserConfigHandler(src.base.logs.Logs):
 
         if "images" in settings["configuration"]:
             if "favicon_ico" in settings["configuration"]["images"]:
-                custom_settings["favicon_ico"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_ico"])
+                custom_settings["favicon_ico"] = os.path.join(
+                    custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_ico"])
             if "favicon_png" in settings["configuration"]["images"]:
-                custom_settings["favicon_png"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_png"])
+                custom_settings["favicon_png"] = os.path.join(
+                    custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_png"])
             if "favicon_svg" in settings["configuration"]["images"]:
-                custom_settings["favicon_svg"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_svg"])
+                custom_settings["favicon_svg"] = os.path.join(
+                    custom_settings["main_folder_path"], settings["configuration"]["images"]["favicon_svg"])
             if "preview_png" in settings["configuration"]["images"]:
-                custom_settings["preview_png"] = os.path.join(custom_settings["main_folder_path"], settings["configuration"]["images"]["preview_png"])
+                custom_settings["preview_png"] = os.path.join(
+                    custom_settings["main_folder_path"], settings["configuration"]["images"]["preview_png"])
 
         return custom_settings
 
