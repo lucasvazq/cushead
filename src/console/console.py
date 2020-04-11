@@ -60,8 +60,7 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
             full_path = os.path.join(os.getcwd(), self.args.config)
             self.error_log(
                 f"Invalid json file format in ({self.args.config})\n"
-                f"FILE PATH: {full_path}\n"
-            )
+                f"FILE PATH: {full_path}\n")
         else:
             main_path = os.path.dirname(self.args.config)
             return json_dict, main_path
@@ -72,17 +71,15 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
             content = file["content"]
             destination_file_path = file["destination_file_path"]
             src.helpers.write_unicode_file(content, destination_file_path)
-            created_files[
-                os.path.normpath(os.path.dirname(destination_file_path))
-            ].append(os.path.basename(destination_file_path))
+            created_files[os.path.normpath(
+                os.path.dirname(destination_file_path))].append(
+                    os.path.basename(destination_file_path))
 
         for file in files_to_create["image_files"]:
-            destination_file_path = os.path.join(
-                file["output_folder_path"], file["file_name"]
-            )
+            destination_file_path = os.path.join(file["output_folder_path"],
+                                                 file["file_name"])
             created_files[os.path.normpath(file["output_folder_path"])].append(
-                file["file_name"]
-            )
+                file["file_name"])
 
             if file["size"]:
                 src.helpers.resize_image(
@@ -92,28 +89,22 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
                     file["background_color"],
                 )
             else:
-                src.helpers.copy_file(
-                    file["source_file_path"], destination_file_path
-                )
+                src.helpers.copy_file(file["source_file_path"],
+                                      destination_file_path)
 
         self.default_log("GENERATED FILES:\n\n" f"{os.getcwd()}")
         last_item_created_files = next(reversed(created_files))
         for output_folder_path in created_files:
-            folder_conector, folder_extension = (
-                ("`", " ")
-                if output_folder_path == last_item_created_files
-                else ("|", "|")
-            )
+            folder_conector, folder_extension = ((
+                "`", " ") if output_folder_path == last_item_created_files else
+                                                 ("|", "|"))
             self.default_log(f" {folder_conector}-- {output_folder_path}")
             for file in created_files[output_folder_path]:
-                file_conector = (
-                    "`"
-                    if file == created_files[output_folder_path][-1]
-                    else "|"
-                )
+                file_conector = ("`" if
+                                 file == created_files[output_folder_path][-1]
+                                 else "|")
                 self.default_log(
-                    f" {folder_extension}    {file_conector}-- {file}"
-                )
+                    f" {folder_extension}    {file_conector}-- {file}")
 
     def run(self):
         """Run the current arguments
@@ -144,25 +135,21 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         for binary_image in binary_images:
             file_name = binary_image["filename"]
             destination_file_path = os.path.join(destination_folder, file_name)
-            src.helpers.write_binary_file(
-                binary_image["content"], destination_file_path
-            )
+            src.helpers.write_binary_file(binary_image["content"],
+                                          destination_file_path)
 
     # -config
     def argument_string_config(self):
         """Handle -config argument"""
         user_config, main_path = self._read_user_config()
         config = src.base.configuration.UserConfigHandler().transform(
-            user_config, main_path
-        )
+            user_config, main_path)
         icons_formater = src.base.configuration.IconsFormatConfig(config)
         image_format_config_dict = icons_formater.image_format_config_dict
         icons_config = icons_formater.get_icons_config()
         self._create_files(
             src.base.generator.base_generator.BaseGenerator(
-                config, icons_config, image_format_config_dict
-            ).generate()
-        )
+                config, icons_config, image_format_config_dict).generate())
 
     # -default
     def argument_string_default(self):
@@ -170,6 +157,5 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         default_settings = src.base.configuration.default_settings()
         src.helpers.write_unicode_file(default_settings, self.args.default)
         fullpath = os.path.join(os.getcwd(), self.args.default)
-        self.default_log(
-            f"CONFIG FILE: {self.args.default}\n" f"FULL PATH: {fullpath}"
-        )
+        self.default_log(f"CONFIG FILE: {self.args.default}\n"
+                         f"FULL PATH: {fullpath}")
