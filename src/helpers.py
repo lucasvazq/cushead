@@ -9,26 +9,41 @@ import resizeimage.resizeimage
 INDENTATION = " " * 2
 
 
-def add_indent(element, base: int = 0, base_string: str = '', conector: str = ''):
+def add_indent(element,
+               base: int = 0,
+               base_string: str = "",
+               conector: str = ""):
     new_items = []
     if isinstance(element, list):
         for value in element:
-            new_items.append(add_indent(value, base + 1, base_string, '' if value == element[-1] else ','))
+            new_items.append(
+                add_indent(
+                    value,
+                    base + 1,
+                    base_string,
+                    "" if value == element[-1] else ",",
+                ))
     elif isinstance(element, dict):
-        new_items.append(f'{INDENTATION * base}{{\n')
+        new_items.append(f"{INDENTATION * base}{{\n")
         for key, value in element.items():
-            nested_conector = '' if key == list(element.keys())[-1] else ','
+            nested_conector = "" if key == list(element.keys())[-1] else ","
             nested_indentation = INDENTATION * (base + 1)
             if isinstance(value, dict):
-                new_items.append(f'{nested_indentation}"{key}": {{\n{add_indent(value, base + 1, base_string)}{nested_indentation}}}{nested_conector}\n')
+                new_items.append(
+                    f'{nested_indentation}"{key}": {{\n{add_indent(value, base + 1, base_string)}{nested_indentation}}}{nested_conector}\n'
+                )
             elif isinstance(value, list):
-                new_items.append(f'{nested_indentation}"{key}": [\n{add_indent(value, base + 1, base_string)}{nested_indentation}]{nested_conector}\n')
+                new_items.append(
+                    f'{nested_indentation}"{key}": [\n{add_indent(value, base + 1, base_string)}{nested_indentation}]{nested_conector}\n'
+                )
             else:
-                new_items.append(f'{nested_indentation}"{key}": "{value}"{nested_conector}\n')
-        new_items.append(f'{INDENTATION * base}}}{conector}\n')
+                new_items.append(
+                    f'{nested_indentation}"{key}": "{value}"{nested_conector}\n'
+                )
+        new_items.append(f"{INDENTATION * base}}}{conector}\n")
     else:
         new_items.append(f'{INDENTATION * base}"{element}"{conector}\n')
-    return base_string + ''.join(new_items)
+    return base_string + "".join(new_items)
 
 
 # IMPROVE THIS, make it dynamic
@@ -103,17 +118,26 @@ def copy_file(source_file_path, destination_file_path):
     shutil.copyfile(source_file_path, destination_file_path)
 
 
-def resize_image(source_file_path, destination_file_path, size, background_color=None):
-    with open(source_file_path, "rb") as file_instance, PIL.Image.open(file_instance) as image_instance:
+def resize_image(source_file_path,
+                 destination_file_path,
+                 size,
+                 background_color=None):
+    with open(source_file_path, "rb") as file_instance, PIL.Image.open(
+            file_instance) as image_instance:
 
-        resized_image = resizeimage.resizeimage.resize_contain(image_instance, size)
+        resized_image = resizeimage.resizeimage.resize_contain(
+            image_instance, size)
 
         # Convert only transparent images (https://stackoverflow.com/a/35859141/10712525)
-        if background_color and (
-            resized_image.mode in ('RGBA', 'LA') or (resized_image.mode == 'P' and 'transparency' in resized_image.info)
-        ):
-            alpha = resized_image.convert('RGBA').getchannel('A')
-            new_image = PIL.Image.new("RGBA", resized_image.size, PIL.ImageColor.getrgb(background_color) + (255,))
+        if background_color and (resized_image.mode in ("RGBA", "LA") or
+                                 (resized_image.mode == "P"
+                                  and "transparency" in resized_image.info)):
+            alpha = resized_image.convert("RGBA").getchannel("A")
+            new_image = PIL.Image.new(
+                "RGBA",
+                resized_image.size,
+                PIL.ImageColor.getrgb(background_color) + (255, ),
+            )
             new_image.paste(resized_image, mask=alpha)
             image_to_save = new_image
         else:
