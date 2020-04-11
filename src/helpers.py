@@ -9,30 +9,41 @@ import resizeimage.resizeimage
 INDENTATION = " " * 2
 
 
-def add_indent(element, base: int = 0, base_string: str = '', conector: str = ''):
+def add_indent(
+    element, base: int = 0, base_string: str = "", conector: str = ""
+):
     new_items = []
     if isinstance(element, list):
         for value in element:
-            new_items.append(add_indent(
-                value, base + 1, base_string, '' if value == element[-1] else ','))
+            new_items.append(
+                add_indent(
+                    value,
+                    base + 1,
+                    base_string,
+                    "" if value == element[-1] else ",",
+                )
+            )
     elif isinstance(element, dict):
-        new_items.append(f'{INDENTATION * base}{{\n')
+        new_items.append(f"{INDENTATION * base}{{\n")
         for key, value in element.items():
-            nested_conector = '' if key == list(element.keys())[-1] else ','
+            nested_conector = "" if key == list(element.keys())[-1] else ","
             nested_indentation = INDENTATION * (base + 1)
             if isinstance(value, dict):
                 new_items.append(
-                    f'{nested_indentation}"{key}": {{\n{add_indent(value, base + 1, base_string)}{nested_indentation}}}{nested_conector}\n')
+                    f'{nested_indentation}"{key}": {{\n{add_indent(value, base + 1, base_string)}{nested_indentation}}}{nested_conector}\n'
+                )
             elif isinstance(value, list):
                 new_items.append(
-                    f'{nested_indentation}"{key}": [\n{add_indent(value, base + 1, base_string)}{nested_indentation}]{nested_conector}\n')
+                    f'{nested_indentation}"{key}": [\n{add_indent(value, base + 1, base_string)}{nested_indentation}]{nested_conector}\n'
+                )
             else:
                 new_items.append(
-                    f'{nested_indentation}"{key}": "{value}"{nested_conector}\n')
-        new_items.append(f'{INDENTATION * base}}}{conector}\n')
+                    f'{nested_indentation}"{key}": "{value}"{nested_conector}\n'
+                )
+        new_items.append(f"{INDENTATION * base}}}{conector}\n")
     else:
         new_items.append(f'{INDENTATION * base}"{element}"{conector}\n')
-    return base_string + ''.join(new_items)
+    return base_string + "".join(new_items)
 
 
 # IMPROVE THIS, make it dynamic
@@ -46,8 +57,9 @@ def images_list() -> typing.List[str]:
     ]
 
 
-def string_list_union(string_list: typing.Union[typing.List[str], None] = None
-                      ) -> str:
+def string_list_union(
+    string_list: typing.Union[typing.List[str], None] = None
+) -> str:
     """Return a str list joined into a sentence
 
     Example:
@@ -55,28 +67,38 @@ def string_list_union(string_list: typing.Union[typing.List[str], None] = None
         output = 'foo, bar, baz and etc'
     """
     string_list = string_list or []
-    return "".join([
-        string + (", " if string in string_list[:-2] else
-                  (" and " if string == string_list[-2] else ""))
-        for string in string_list
-    ])
+    return "".join(
+        [
+            string
+            + (
+                ", "
+                if string in string_list[:-2]
+                else (" and " if string == string_list[-2] else "")
+            )
+            for string in string_list
+        ]
+    )
 
 
 def path_exists(file_path: str = "", key: str = ""):
     """Check if path exists"""
     full_path = os.path.join(os.getcwd(), file_path)
     if not os.path.exists(file_path):
-        return (f"'{key}' ({file_path}) must be referred to a path "
-                f"that exists.\n"
-                f"PATH: {full_path}")
+        return (
+            f"'{key}' ({file_path}) must be referred to a path "
+            f"that exists.\n"
+            f"PATH: {full_path}"
+        )
 
 
 def path_is_not_directory(file_path: str = "", key: str = ""):
     full_path = os.path.join(os.getcwd(), file_path)
     if not os.path.isfile(file_path):
-        return (f"'{key}' key ({file_path}) must be referred to a "
-                f"file path.\n"
-                f"FILE PATH: {full_path}")
+        return (
+            f"'{key}' key ({file_path}) must be referred to a "
+            f"file path.\n"
+            f"FILE PATH: {full_path}"
+        )
 
 
 def create_folder(destination_file_path):
@@ -107,20 +129,31 @@ def copy_file(source_file_path, destination_file_path):
     shutil.copyfile(source_file_path, destination_file_path)
 
 
-def resize_image(source_file_path, destination_file_path, size, background_color=None):
-    with open(source_file_path, "rb") as file_instance, PIL.Image.open(file_instance) as image_instance:
+def resize_image(
+    source_file_path, destination_file_path, size, background_color=None
+):
+    with open(source_file_path, "rb") as file_instance, PIL.Image.open(
+        file_instance
+    ) as image_instance:
 
         resized_image = resizeimage.resizeimage.resize_contain(
-            image_instance, size)
+            image_instance, size
+        )
 
         # Convert only transparent images (https://stackoverflow.com/a/35859141/10712525)
         if background_color and (
-            resized_image.mode in ('RGBA', 'LA') or (
-                resized_image.mode == 'P' and 'transparency' in resized_image.info)
+            resized_image.mode in ("RGBA", "LA")
+            or (
+                resized_image.mode == "P"
+                and "transparency" in resized_image.info
+            )
         ):
-            alpha = resized_image.convert('RGBA').getchannel('A')
+            alpha = resized_image.convert("RGBA").getchannel("A")
             new_image = PIL.Image.new(
-                "RGBA", resized_image.size, PIL.ImageColor.getrgb(background_color) + (255,))
+                "RGBA",
+                resized_image.size,
+                PIL.ImageColor.getrgb(background_color) + (255,),
+            )
             new_image.paste(resized_image, mask=alpha)
             image_to_save = new_image
         else:

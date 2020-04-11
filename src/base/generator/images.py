@@ -18,23 +18,33 @@ class Images:
             for brand in image_type:
                 for config in brand.formated:
                     head_element = self._head_formater(
-                        brand, config.file_name, config.size)
+                        brand, config.file_name, config.size
+                    )
                     if head_element:
-                        if brand.attribute_property.startswith('og:'):
+                        if brand.attribute_property.startswith("og:"):
                             og_social_media_images.append(head_element)
-                        elif brand.attribute_name.startswith('twitter:'):
+                        elif brand.attribute_name.startswith("twitter:"):
                             twitter_social_media_images.append(head_element)
-                        elif brand.attribute_rel == "mask-icon" or brand.attribute_name == "msapplication-TileImage":
+                        elif (
+                            brand.attribute_rel == "mask-icon"
+                            or brand.attribute_name
+                            == "msapplication-TileImage"
+                        ):
                             late_browser_config.append(head_element)
                         else:
                             favicons.append(head_element)
-        return favicons, og_social_media_images, twitter_social_media_images, late_browser_config
+        return (
+            favicons,
+            og_social_media_images,
+            twitter_social_media_images,
+            late_browser_config,
+        )
 
     def _head_formater(
-            self,
-            brand_config,
-            filenam,
-            size: typing.Union[typing.List[int], None] = None,
+        self,
+        brand_config,
+        filenam,
+        size: typing.Union[typing.List[int], None] = None,
     ):
 
         if not brand_config.head_output:
@@ -67,7 +77,8 @@ class Images:
         # ???
         if brand_config.attribute_property:
             tag_element_list.append(
-                f"property='{brand_config.attribute_property}'")
+                f"property='{brand_config.attribute_property}'"
+            )
 
         # name, example:
         # name="msapplication-TileImage"
@@ -98,7 +109,8 @@ class Images:
         # ???
         if brand_config.attribute_content:
             tag_element_list.append(
-                f"content='{brand_config.attribute_content}'")
+                f"content='{brand_config.attribute_content}'"
+            )
 
         # Special content and href. Example:
         # content="/static/ms-icon-144x144.png"
@@ -111,7 +123,7 @@ class Images:
 
         # Special title, example:
         # title="Microsoft"
-        if brand_config.attribute_special_title and self.config.get('title'):
+        if brand_config.attribute_special_title and self.config.get("title"):
             tag_element_list.append(f"title='{self.config['title']}'")
 
         # IN REVISION
@@ -120,6 +132,7 @@ class Images:
         # Uses sizes_max_min
         if brand_config.sizes_max_min:
             tag_element_list.append(
-                f"media='(device-width: {min(size[0], size[1]) // size[2]}px) and (device-height: {max(size[0], size[1]) // size[2]}px) and (-webkit-device-pixel-ratio: {size[2]}) and (orientation: {'portrait' if size[0] < size[1] else 'landscape'})'")
+                f"media='(device-width: {min(size[0], size[1]) // size[2]}px) and (device-height: {max(size[0], size[1]) // size[2]}px) and (-webkit-device-pixel-ratio: {size[2]}) and (orientation: {'portrait' if size[0] < size[1] else 'landscape'})'"
+            )
 
         return "<" + " ".join(tag_element_list) + ">"
