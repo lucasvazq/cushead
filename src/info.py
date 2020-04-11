@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Informative module"""
-
 # Keep the old style format
 # Used for setup and main script
 __package_name__ = "cushead"

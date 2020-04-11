@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Module to handle the images configurations
 
 Classes:
     IconsFormatConfigStructure
     IconsFormatConfig
 """
-
 import os
 import textwrap
 import typing
