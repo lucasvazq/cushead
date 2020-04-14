@@ -21,7 +21,7 @@ __keywords__ = ("SEO, meta-tags, UX, PWA, front-end, favicon, manifest, " +
                 "robots, browserconfig, sitemap, opensearch")
 
 # Unused
-__copyright__ = "{} © 2019 {}. Released under the MIT License.".format(
+__copyright__ = "{} © 2020 {}. Released under the MIT License.".format(
     __package_name__, __author__)
 __maintainer__ = "Lucas Vazquez"
 __status__ = "Production"
