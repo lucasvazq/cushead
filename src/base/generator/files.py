@@ -41,6 +41,7 @@ class IndexGenerator(src.base.generator.images.Images):
         html_tag = " ".join(html_tag_elements) + ">"
 
         return (f"\n".join([
+            "<!doctype html>",
             html_tag,
             f"{src.helpers.INDENTATION}{self.index_head()}",
             f"{src.helpers.INDENTATION}{self.index_body()}",
