@@ -1,11 +1,182 @@
 import hashlib
 import json
 import os
+import re
 import textwrap
 import typing
 
 import src.base.generator.images
 import src.helpers
+
+from html import parser
+
+
+class CustomHTMLParser(parser.HTMLParser):
+
+    def __init__(self):
+        super().__init__()
+        self.indentation = 0
+        self.content = []
+        self.one_line = False
+        self.has_data = False
+
+    def parse_element(self, content: str, one_line: bool = False):
+        if one_line:
+            self.content[-1] += content
+        else:
+            self.content.append(f'{src.helpers.INDENTATION * self.indentation}{content}')
+
+    def parse_content(self, content):
+        """Parse html content"""
+        self.feed(content)
+        return '\n'.join(self.content)
+
+    def handle_decl(self, decl):
+        """This method is called to handle an HTML doctype declaration"""
+        self.parse_element(f'<!{decl}>')
+
+    def handle_comment(self, data):
+        """This method is called when a comment is encountered"""
+
+        # detect IE statements
+        trimmed_data = [element.strip() for element in data.split('\n')]
+        if (
+            len(trimmed_data) == 3 and
+            re.match(r'^\[.*]>$', trimmed_data[0]) and
+            re.match(r'^<!\[endif]$', trimmed_data[2])
+        ):
+            # Add it with the instruction with one level more of indentation
+            self.parse_element(f'<!--{trimmed_data[0]}')
+            self.indentation += 1
+            self.parse_element(trimmed_data[1])
+            self.indentation -= 1
+            self.parse_element(f'{trimmed_data[2]}-->')
+
+        else:
+
+            # Detect inline html comment and add it without indentation
+            if self.lasttag == 'meta':
+                self.parse_element(f'<!--{data}-->', True)
+
+            else:
+
+                # Detect comment inside script or style and
+                # add it with indentation
+                self.indentation += 1
+                if self.lasttag == 'script':
+                    self.parse_element(f'// {data}')
+                elif self.lasttag == 'style':
+                    self.parse_element(f'/* {data} */')
+
+    def handle_starttag(self, tag, attrs):
+        """his method is called to handle the start of a tag"""
+
+        # Order attributes and add space separation from tag if them exists
+        if attrs:
+            ordered_items = dict(sorted(dict(attrs).items())).items()
+            attributes_to_add = ' '.join([
+                f"{key}='{value}'" for key, value in ordered_items
+            ])
+            attributes = f' {attributes_to_add}'
+        else:
+            attributes = ''
+
+        # Add the tag
+        element = f'<{tag}{attributes}>'
+        self.parse_element(element)
+
+        # When read the content of title,
+        # must need to append it to the same line of title,
+        # same for it's close tag.
+        if tag == 'title':
+            self.one_line = True
+
+        # If the actual tag is not self closing, the next element must be indented
+        if tag not in ('meta', 'link'):
+            self.indentation += 1
+
+    def handle_endtag(self, tag):
+        """This method is called to handle the end tag of an element"""
+
+        starttag = self.lasttag
+        self.lasttag = f'end_{tag}'
+
+        # The close of tag must be in one level below of indentation than of the actual level
+        self.indentation -= 1
+
+        closed_tag = f'</{tag}>'
+
+        # If the attr one_line is defined,
+        # or if the last oppened tag is the same to the actual tag and
+        # no data was detected, we need add the close tag to the same line
+        if self.one_line or (not self.has_data and starttag == tag):
+            self.parse_element(closed_tag, True)
+
+            # Revert one line
+            if self.one_line:
+                self.one_line = False
+
+            # We need to save the attr has_data to True, because the actual
+            # element must be part of other element.
+            # And, if the next thing to handle is the close of the tag of that
+            # parent element, we need to asume that the data if has was this
+            # element.
+            else:
+                self.has_data = True
+
+        else:
+            self.parse_element(closed_tag)
+
+    def handle_data(self, data):
+        """This method is called to process the text data that are inside of the element"""
+
+        # python 3.8
+        # if cleaned_data := data.strip():
+        cleaned_data = data.strip()
+        if cleaned_data:
+            self.has_data = True
+
+            # Add indentation to the code inside an element
+            if self.lasttag in ('script', 'style'):
+                splitted_cleaned_data = cleaned_data.split('\n')
+                stripped_cleaned_data = [x.strip() for x in splitted_cleaned_data]
+                for line in stripped_cleaned_data:
+                    if line:
+                        if line.endswith('{'):
+                            self.parse_element(line)
+                            self.indentation += 1
+                        elif line.endswith('}'):
+                            self.indentation -= 1
+                            self.parse_element(line)
+                        else:
+                            self.parse_element(line)
+
+            else:
+                if self.one_line:
+                    self.parse_element(cleaned_data, True)
+                else:
+                    self.parse_element(cleaned_data)
+        else:
+            self.has_data = False
+
+
+def complement_opengraph_images(element):
+
+    # Get file url. Its inside content attr
+    file_url = re.search(r'content=\'(?P<file_url>.*)\'', element).group('file_url')
+
+    # Get the height and the width, its appears as "height integer x width integer".
+    # E.g. 600x600
+    sizes = re.search(r'(?P<height>\d+)x(?P<width>\d+)', element)
+    height = sizes.group('height')
+    width = sizes.group('width')
+
+    return ''.join([
+        element,
+        f'<meta content="{file_url}" property="og:image:secure_url">',
+        f'<meta property="og:image:height" content="{height}">',
+        f'<meta property="og:image:width" content="{width}">',
+    ])
 
 
 class IndexGenerator(src.base.generator.images.Images):
@@ -16,6 +187,88 @@ class IndexGenerator(src.base.generator.images.Images):
         self.INDENTED_QUOTE = "$#@"
 
     def generate_index(self):
+
+        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates/index.html')
+        import jinja2
+        with open(filepath) as file:
+
+            templateLoader = jinja2.FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates'))
+            extensions = [
+                'src.base.generator.jinja_extension.OneLineExtension',
+            ]
+            templateEnv = jinja2.Environment(loader=templateLoader, extensions=extensions)
+            templateEnv.globals['complement_opengraph_images'] = complement_opengraph_images
+            TEMPLATE_FILE = "index.html"
+            template = templateEnv.get_template(TEMPLATE_FILE)
+            # template = jinja2.Template(file.read())
+            custom_data = {}
+
+            language_territory = (
+                self.config.get("language"),
+                self.config.get("territory", ""),
+            )
+            if language_territory[0]:
+                if all(language_territory):
+                    hypen = "-"
+                    underscore = "_"
+                else:
+                    hypen = ""
+                    underscore = ""
+                custom_data['lang_data_with_hypen'] = f'{language_territory[0]}{hypen}{language_territory[1]}'
+                custom_data['lang_data_with_underscore'] = f'{language_territory[0]}{underscore}{language_territory[1]}'
+
+            browser_icons, open_graph_images, twitter_images, mask_icon, ms_icon, apple_startup_icons = self.generate_head_images()
+            custom_data['browser_icons'] = browser_icons
+            custom_data['open_graph_images'] = open_graph_images
+            custom_data['twitter_images'] = twitter_images
+            custom_data['mask_icon'] = mask_icon
+            custom_data['ms_icon'] = ms_icon
+            custom_data['apple_startup_icons'] = apple_startup_icons
+
+            itunes_data = (
+                self.config.get("itunes_app_id"),
+                self.config.get("itunes_affiliate_data"),
+            )
+            if itunes_data[0]:
+                itunes_content = [f"app-id={itunes_data[0]}"]
+                if itunes_data[1]:
+                    itunes_content.append(f'affiliate-data={itunes_data[1]}')
+                itunes_content.append('app-argument=/')
+                custom_data['itunes_app'] = ', '.join(itunes_content)
+
+            if "domain" in self.config and self.icons_config["preview_png"]:
+                image_name = (self.icons_config["preview_png"]
+                              [0]._output_formater()[0].file_name)
+                custom_data['preview_png'] = image_name
+
+            title_description_data = (
+                self.config.get("title", ""),
+                self.config.get("description", ""),
+            )
+            if (
+                (open_graph_images or twitter_images) and
+                any(title_description_data)
+            ):
+                if all(title_description_data):
+                    separated_underscore = " - "
+                else:
+                    separated_underscore = ""
+                title_and_or_description = f"{title_description_data[0]}{separated_underscore}{title_description_data[1]}"
+                custom_data["title_and_or_description"] = title_and_or_description
+
+            rendered_template = template.render({
+                'config': self.config,
+                'custom_data': custom_data,
+            })
+            content = CustomHTMLParser().parse_content(rendered_template)
+
+        return [{
+            "content":
+            content,
+            "destination_file_path":
+            os.path.join(self.config["output_folder_path"], "index.html"),
+        }]
+
         return [{
             "content":
             self.index_base(),
@@ -49,6 +302,8 @@ class IndexGenerator(src.base.generator.images.Images):
         ]).replace("'", '"').replace(self.INDENTED_QUOTE, "'"))
 
     def index_head(self):
+        pass
+        """
         favicons, og_social_media_images, twitter_social_media_images, late_browser_config = (
             self.generate_head_images())
         site_data = (
@@ -62,35 +317,49 @@ class IndexGenerator(src.base.generator.images.Images):
             site_data_content = f"{site_data[0]}{' - ' if all(site_data) else ''}{site_data[1]}"
         else:
             site_data_content = ""
-
+        """
         # Order matters
 
         # Early browser configuration
-        head = [
-            "<meta charset='utf-8'>",
-            "<!--[if IE]>",
-            f"{src.helpers.INDENTATION}<meta http-equiv='X-UA-Compatible' content='ie=edge'>",
-            "<![endif]-->",
-            "<meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>",
-            "<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>",
-        ]
-        if "background_color" in self.config:
-            head.append(
-                f"<meta name='theme-color' content='{self.config['background_color']}'>"
-            )
-        if "title" in self.config:
-            head.append(f"<title>{self.config['title']}</title>")
-        head.extend([
-            "<meta name='apple-mobile-web-app-capable' content='yes'>",
-            "<meta name='mobile-web-app-capable' content='yes'>",
-        ])
+        # head = [
+        #     "<meta charset='utf-8'>",
+        #     "<!--[if IE]>",
+        #     f"{src.helpers.INDENTATION}<meta http-equiv='X-UA-Compatible' content='ie=edge'>",
+        #     "<![endif]-->",
+        # ]
+        # if "google_tag_manager" in self.config:
+        #     head.extend([
+        #         "<script>",
+        #         f"{src.helpers.INDENTATION}// Google Tag Manager",
+        #         f"{src.helpers.INDENTATION}(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{'gtm.start':",
+        #         f"{src.helpers.INDENTATION}new Date().getTime(),event:'gtm.js'}});var f=d.getElementsByTagName(s)[0],",
+        #         f"{src.helpers.INDENTATION}j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=",
+        #         f"{src.helpers.INDENTATION}'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);",
+        #         f"{src.helpers.INDENTATION}}})(window,document,'script','dataLayer','{self.config['google_tag_manager']}');",
+        #         "</script>",
+        #     ])
+        # head.extend([
+        #     "<meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>",
+        #    "<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>",
+        # ])
+        # if "background_color" in self.config:
+        #     head.append(
+        #         f"<meta name='theme-color' content='{self.config['background_color']}'>"
+        #     )
+        # if "title" in self.config:
+        #     head.append(f"<title>{self.config['title']}</title>")
+        # head.extend([
+        #     "<meta name='apple-mobile-web-app-capable' content='yes'>",
+        #     "<meta name='mobile-web-app-capable' content='yes'>",
+        # ])
 
         # Favicons
-        head.extend(favicons)
+        # head.extend(favicons)
 
         # Social media
         # python 3.8
         # if (lang_data := self.config.get('language'), self.config.get('territory', ''))[0]:
+        """
         lang_data = (
             self.config.get("language"),
             self.config.get("territory", ""),
@@ -199,24 +468,25 @@ class IndexGenerator(src.base.generator.images.Images):
         ])
 
         # Late config
-        head.append(
-            f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>"
-        )
+        # head.append(
+        #     f"<link rel='manifest' href='{self.config['static_url']}/manifest.json'>"
+        # )
+
         if "title" in self.config:
             head.extend([
                 f"<meta name='application-name' content='{self.config['title']}'>",
                 f"<meta name='apple-mobile-web-app-title' content='{self.config['title']}'>",
             ])
-        if "background_color" in self.config:
-            head.extend([
-                f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
-            ])
+        # if "background_color" in self.config:
+        #     head.extend([
+        #         f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
+        #     ])
         if late_browser_config:
             head.extend(late_browser_config)
-        if "title" in self.config:
-            head.append(
-                f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>"
-            )
+        # if "title" in self.config:
+        #     head.append(
+        #         f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>"
+        #     )
         head.extend([
             f"<meta name='robots' content='index, follow'>",
             f"<meta name='msapplication-config' content='{self.config['static_url']}/browserconfig.xml'>",
@@ -267,15 +537,25 @@ class IndexGenerator(src.base.generator.images.Images):
         return f"\n{src.helpers.INDENTATION}".join([
             f"<head>", f"{src.helpers.INDENTATION}{head_content}", f"</head>"
         ]).replace("'", '"')
+        """
 
     def index_body(self):
-        body = [
+        body = []
+
+        if "google_tag_manager" in self.config:
+            body.extend([
+                "<noscript>",
+                f"{src.helpers.INDENTATION}<iframe src='https://www.googletagmanager.com/ns.html?id={self.config['google_tag_manager']}' "
+                "height='0' width='0' style='display:none; visibility:hidden'></iframe>",
+                "</noscript>",
+            ])
+        body.extend([
             "<script src='https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>",
             "<script>",
             f"{src.helpers.INDENTATION}if ('serviceWorker' in navigator && !navigator.serviceWorker.controller)",
             f"{src.helpers.INDENTATION * 2}navigator.serviceWorker.register('{self.config['static_url']}/sw.js', {{scope: '/'}});",
             "</script>",
-        ]
+        ])
 
         # convert to string and add indent
         body_content = f"\n{src.helpers.INDENTATION * 2}".join(

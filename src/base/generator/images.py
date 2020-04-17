@@ -13,7 +13,9 @@ class Images:
         favicons = []
         og_social_media_images = []
         twitter_social_media_images = []
-        late_browser_config = []
+        mask_icon = []
+        ms_icon = []
+        apple_startup_icons = []
         for image_type in self.icons_config.values():
             for brand in image_type:
                 for config in brand.formated:
@@ -24,17 +26,22 @@ class Images:
                             og_social_media_images.append(head_element)
                         elif brand.attribute_name.startswith("twitter:"):
                             twitter_social_media_images.append(head_element)
-                        elif (brand.attribute_rel == "mask-icon" or
-                              brand.attribute_name == "msapplication-TileImage"
-                              ):
-                            late_browser_config.append(head_element)
+                        elif brand.attribute_rel == "mask-icon":
+                            mask_icon.append(head_element)
+                        elif brand.attribute_name == "msapplication-TileImage":
+                            ms_icon.append(head_element)
+                        elif brand.attribute_rel == "apple-touch-icon" and brand.attribute_special_sizes:
+                            apple_startup_icons.append(head_element)
                         else:
                             favicons.append(head_element)
+
         return (
             favicons,
             og_social_media_images,
             twitter_social_media_images,
-            late_browser_config,
+            mask_icon,
+            ms_icon,
+            apple_startup_icons,
         )
 
     def _head_formater(

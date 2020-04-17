@@ -314,6 +314,7 @@ class IconsFormatConfig:
                     attribute_special_href=True,
                     attribute_special_sizes=True,
                 ),
+
                 "browserconfig":
                 ImageFormater(
                     output_file_name="browserconfig",
@@ -562,6 +563,7 @@ class UserConfigHandler(src.base.logs.Logs):
                     schema.Optional("preview_png"): str,
                 },
                 schema.Optional("general"): {
+                    schema.Optional("google_tag_manager"): str,
                     schema.Optional("language"): str,
                     schema.Optional("territory"): str,
                     schema.Optional("domain"): str,
@@ -658,6 +660,7 @@ def default_settings() -> str:
                     'preview_png': './preview_png_500px.png'
                 }},
                 'general': {{
+                    'google_tag_manager': 'GTM-*******',
                     'language': 'en',
                     'territory': 'US',
                     'domain': 'microsoft.com',
