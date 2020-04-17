@@ -1,1 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><OpenSearchDescription xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns="http://a9.com/-/spec/opensearch/1.1/"><ShortName>Microsoft</ShortName><Description>Search Microsoft</Description><InputEncoding>UTF-8</InputEncoding><Url method="get" type="text/html" template="http://www.google.com/search?q={searchTerms}+site%3Amicrosoft.com" /><Image height="16" width="16" type="image/png">/static/opensearch-16x16.png</Image></OpenSearchDescription>
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Microsoft</ShortName>
+  <Description>Search Microsoft</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Url method="get" type="text/html" template="http://www.google.com/search?q={searchTerms}+site%3Amicrosoft.com"/>
+  <Image height="16" width="16" type="image/png">/static/opensearch-16x16.png</Image>
+</OpenSearchDescription>
