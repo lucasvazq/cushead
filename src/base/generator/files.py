@@ -41,6 +41,7 @@ class IndexGenerator(src.base.generator.images.Images):
         html_tag = " ".join(html_tag_elements) + ">"
 
         return (f"\n".join([
+            "<!doctype html>",
             html_tag,
             f"{src.helpers.INDENTATION}{self.index_head()}",
             f"{src.helpers.INDENTATION}{self.index_body()}",
@@ -54,8 +55,10 @@ class IndexGenerator(src.base.generator.images.Images):
             self.config.get("title", ""),
             self.config.get("description", ""),
         )
-        if (og_social_media_images
-                or twitter_social_media_images) and any(site_data):
+        if (
+            (og_social_media_images or twitter_social_media_images) and
+            any(site_data)
+        ):
             site_data_content = f"{site_data[0]}{' - ' if all(site_data) else ''}{site_data[1]}"
         else:
             site_data_content = ""
@@ -65,7 +68,9 @@ class IndexGenerator(src.base.generator.images.Images):
         # Early browser configuration
         head = [
             "<meta charset='utf-8'>",
-            "<meta http-equiv='X-UA-Compatible' content='ie=edge'>",
+            "<!--[if IE]>",
+            f"{src.helpers.INDENTATION}<meta http-equiv='X-UA-Compatible' content='ie=edge'>",
+            "<![endif]-->",
             "<meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>",
             "<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>",
         ]
@@ -205,8 +210,9 @@ class IndexGenerator(src.base.generator.images.Images):
         if "background_color" in self.config:
             head.extend([
                 f"<meta name='msapplication-TileColor' content='{self.config['background_color']}'>",
-                *late_browser_config,
             ])
+        if late_browser_config:
+            head.extend(late_browser_config)
         if "title" in self.config:
             head.append(
                 f"<link rel='search' type='application/opensearchdescription+xml' title='{self.config['title']}' href='{self.config['static_url']}/opensearch.xml'>"
@@ -266,7 +272,8 @@ class IndexGenerator(src.base.generator.images.Images):
         body = [
             "<script src='https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>",
             "<script>",
-            f"{src.helpers.INDENTATION}if ('serviceWorker' in navigator) navigator.serviceWorker.register('{self.config['static_url']}/sw.js');",
+            f"{src.helpers.INDENTATION}if ('serviceWorker' in navigator && !navigator.serviceWorker.controller)",
+            f"{src.helpers.INDENTATION * 2}navigator.serviceWorker.register('{self.config['static_url']}/sw.js', {{scope: '/'}});",
             "</script>",
         ]
 
