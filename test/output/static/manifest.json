@@ -5,7 +5,6 @@
   "dir": "ltr",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
-  "default_locale": "en",
   "start_url": "/",
   "orientation": "landscape",
   "scope": "/",
@@ -14,16 +13,16 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/static/manifest-192x192",
-      "sizes": "192x192",
+      "src": "/static/manifest-x.png",
+      "sizes": "x",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any maskable"
     },
     {
-      "src": "/static/manifest-512x512",
-      "sizes": "512x512",
+      "src": "/static/manifest-x.png",
+      "sizes": "x",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any maskable"
     }
   ]
 }

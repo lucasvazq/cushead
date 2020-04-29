@@ -12,13 +12,8 @@ class OneLineExtension(ext.Extension):
     It does not remove whitespace between Jinja2 tags or variables. Neither does it remove whitespace between tags
     """
 
-    def __init__(self, *args, **kwargs):
-        # Required tag, used by Jinja2 to detect when need to parse the content
-        self.tags = {'oneline'}
-
-        self.end_tags = [f'name:end{tag_name}' for tag_name in self.tags]
-
-        super().__init__(*args, **kwargs)
+    tags = {'oneline'}
+    end_tags = [f'name:end{tag_name}' for tag_name in tags]
 
     def parse(self, parser: parser.Parser) -> nodes.CallBlock:
         """

@@ -1,0 +1,36 @@
+{% if "us_lt" in misc_data %}
+  <meta property="og:locale" content="{{ misc_data.us_lt }}">
+{% endif %}
+<meta property="og:type" content="website">
+{% if "domain" in config %}
+  <meta property="og:url" content="https://{{ config.domain }}">
+{% endif %}
+{% if "title" in config %}
+  <meta property="og:site_name" content="{{ config.title }}">
+  <meta property="og:title" content="{{ config.title }}">
+{% endif %}
+{% if "description" in config %}
+  <meta property="og:description" content="{{ config.description }}">
+{% endif %}
+{% if "preview_og" in icons_config %}
+  {% set icon = icons_config.preview_og %}
+  {% set icon_name = icon.output_file_name %}
+  {% set ext = icon.ext %}
+  {% for size in icon.sizes_square %}
+    {% set width = size[0] %}
+    {% set height = size[1] %}
+    {% set width_and_height = width|string + "x" + height|string %}
+    {% set file_name = icon_name + "-" + width_and_height + ext %}
+    <meta property="og:image"
+          content="{{ config.static_url }}/{{ file_name }}">
+    <meta property="og:image:secure_url"
+          content="{{ config.static_url }}/{{ file_name }}">
+    <meta property="og:image:width" content="{{ width }}">
+    <meta property="og:image:height" content="{{ height }}">
+    <meta property="og:image:type" content="image/png">
+    {% if "title_and_or_description" in misc_data %}
+      <meta property="og:image:alt"
+            content="{{ misc_data.title_and_or_description }}">
+    {% endif %}
+  {% endfor %}
+{% endif %}

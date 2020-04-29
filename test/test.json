@@ -20,7 +20,7 @@
             "language": "en",
             "territory": "US",
             "domain": "microsoft.com",
-            "dir": "ltr",
+            "text_dir": "ltr",
             "title": "Microsoft",
             "description": "Technology Solutions",
             "subject": "Home Page",
@@ -31,7 +31,7 @@
         },
         "social_media": {
             "facebook_app_id": "123456",
-            "twitter_user_@":"@Microsoft",
+            "twitter_username":"Microsoft",
             "twitter_user_id": "123456",
             "itunes_app_id": "123456",
             "itunes_affiliate_data": "123456"

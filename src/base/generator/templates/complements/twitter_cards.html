@@ -1,0 +1,36 @@
+<meta name="twitter:card" content="summary">
+{% if "twitter_username" in config %}
+  <meta name="twitter:site" content="@{{ config.twitter_username }}">
+{% endif %}
+{% if "twitter_user_id" in config %}
+  <meta name="twitter:site:id" content="{{ config.twitter_user_id }}">
+{% endif %}
+{% if "title" in config %}
+  <meta name="twitter:title" content="{{ config.title }}">
+{% endif %}
+{% if "description" in config %}
+  <meta name="twitter:description" content="{{ config.description }}">
+{% endif %}
+{% if "preview_twitter" in icons_config %}
+  {% set icon = icons_config.preview_twitter %}
+  {% set icon_name = icon.output_file_name %}
+  {% set ext = icon.ext %}
+  {% for size in icon.size_square %}
+    {% set width = size[0] %}
+    {% set height = size[1] %}
+    {% set width_and_height = width|string + "x" + height|string %}
+    {% set file_name = icon_name + "-" + width_and_height + ext %}
+    <meta content="{{ static_url }}/{{ file_name }}"
+          name="twitter:image">
+    {% if "title_and_or_description" in misc_data %}
+      <meta name="twitter:image:alt"
+            content="{{ misc_data.title_and_or_description }}">
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% if "twitter_username" in config %}
+  <meta name="twitter:creator" content="@{{ config.twitter_username }}">
+{% endif %}
+{% if "twitter_user_id" in config %}
+  <meta property="twitter:creator:id" content="{{ config.twitter_user_id }}">
+{% endif %}

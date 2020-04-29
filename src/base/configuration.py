@@ -29,11 +29,9 @@ class FileAttributes:
         size Union[list, None] = None
     """
 
-    def __init__(
-            self,
-            file_name: str = "",
-            size: typing.Union[typing.List[int], None] = None,
-    ):
+    def __init__(self,
+                file_name: str = "",
+                size: typing.Union[typing.List[int], None] = None):
         self.file_name = file_name
         self.size = size or []
 
@@ -91,6 +89,7 @@ class ImageFormater:
             attribute_special_sizes: bool = False,
             attribute_special_title: bool = False,
     ):
+        self.ext = ".png"
         # output file name
         self.output_file_name = output_file_name
         self.output_file_size_verbosity = output_file_size_verbosity
@@ -178,7 +177,7 @@ class IconsFormatConfig:
 
         # Order matters for those icons
         ordered_icons = [
-            self.image_format_config_dict.get("favicon_sizexsize_png"),
+            self.image_format_config_dict.get("favicon_png"),
             self.image_format_config_dict.get("apple_touch_icon_default"),
             self.image_format_config_dict.get("apple_touch_icon"),
             self.image_format_config_dict.get("apple_touch_startup_image"),
@@ -194,8 +193,8 @@ class IconsFormatConfig:
         ]
 
     def _favicon_svg_icons_config(self) -> typing.List[ImageFormater]:
-        if "mask-icon" in self.image_format_config_dict:
-            return [self.image_format_config_dict["mask-icon"]]
+        if "mask_icon" in self.image_format_config_dict:
+            return [self.image_format_config_dict["mask_icon"]]
         return []
 
     def _preview_png_icons_config(self) -> typing.List[ImageFormater]:
@@ -242,7 +241,7 @@ class IconsFormatConfig:
 
         if "favicon_png" in self.config:
             dictionary.update({
-                "favicon_sizexsize_png":
+                "favicon_png":
                 ImageFormater(
                     output_file_name="favicon",
                     output_file_size_verbosity=True,
@@ -258,6 +257,7 @@ class IconsFormatConfig:
                     attribute_special_href=True,
                 ),
                 "ms_icon":
+                # LISTO
                 ImageFormater(
                     output_file_name="ms-icon",
                     output_file_size_verbosity=True,
@@ -316,6 +316,7 @@ class IconsFormatConfig:
                 ),
 
                 "browserconfig":
+                # LISTO
                 ImageFormater(
                     output_file_name="browserconfig",
                     output_file_size_verbosity=True,
@@ -325,6 +326,7 @@ class IconsFormatConfig:
                     sizes_rectangular=[[310, 150]],
                 ),
                 "manifest":
+                # LISTO
                 ImageFormater(
                     output_file_name="manifest",
                     output_file_size_verbosity=True,
@@ -334,6 +336,7 @@ class IconsFormatConfig:
                     attribute_type="image/png",
                 ),
                 "opensearch":
+                # LISTO
                 ImageFormater(
                     output_file_name="opensearch",
                     output_file_size_verbosity=True,
@@ -376,6 +379,7 @@ class IconsFormatConfig:
                     "attribute_special_href": True,
                 },
                 "apple_touch_startup_image_media_queries": {
+                    # LISTO
                     "output_file_name":
                     "apple-touch-startup-image",
                     "output_file_size_verbosity":
@@ -437,6 +441,7 @@ class IconsFormatConfig:
                     **multiple_initial_data[
                         "apple_touch_startup_image_media_queries"])
 
+        # LISTO
         if "favicon_svg" in self.config:
             initial_data = {
                 "output_file_name": "mask-icon",
@@ -451,43 +456,32 @@ class IconsFormatConfig:
             }
             if "main_color" in self.config:
                 initial_data["attribute_color"] = self.config["main_color"]
-            dictionary["mask-icon"] = ImageFormater(**initial_data)
+            dictionary["mask_icon"] = ImageFormater(**initial_data)
 
         if "preview_png" in self.config:
             dictionary.update({
+                # LISTO
                 "preview_og":
                 ImageFormater(
                     output_file_name="preview",
                     output_folder_path=self.config["static_folder_path"],
                     output_file_size_verbosity=True,
                     source_file_path=self.config["preview_png"],
-                    sizes_square=[500],
+                    sizes_square=[600, 1080],
                     head_output=True,
                     url_path=self.config["static_url"],
                     tag_name="meta",
                     attribute_property="og:image",
                     attribute_special_content=True,
                 ),
-                "preview_og_secure_url":
-                ImageFormater(
-                    output_file_name="preview",
-                    output_folder_path=self.config["static_folder_path"],
-                    output_file_size_verbosity=True,
-                    source_file_path=self.config["preview_png"],
-                    sizes_square=[500],
-                    head_output=True,
-                    url_path=self.config["static_url"],
-                    tag_name="meta",
-                    attribute_property="og:image:secure_url",
-                    attribute_special_content=True,
-                ),
+                # LISTO
                 "preview_twitter":
                 ImageFormater(
                     output_file_name="preview",
                     output_folder_path=self.config["static_folder_path"],
                     output_file_size_verbosity=True,
                     source_file_path=self.config["preview_png"],
-                    sizes_square=[500],
+                    sizes_square=[600],
                     head_output=True,
                     url_path=self.config["static_url"],
                     tag_name="meta",
@@ -504,6 +498,7 @@ class IconsFormatConfig:
         This return includes configs for favicons with png extension and for
         browserconfig, manifest and opensearch related icons
         """
+        return self._image_format_config()
         return {
             "favicon_ico": self._favicon_ico_icons_config(),
             "favicon_png": self._favicon_png_icons_config(),
@@ -554,7 +549,7 @@ class UserConfigHandler(src.base.logs.Logs):
             schema.Optional("comment"): dict,
             "configuration": {
                 "required": {
-                    "static_url": str
+                    "static_url": str,
                 },
                 schema.Optional("images"): {
                     schema.Optional("favicon_ico"): str,
@@ -567,7 +562,7 @@ class UserConfigHandler(src.base.logs.Logs):
                     schema.Optional("language"): str,
                     schema.Optional("territory"): str,
                     schema.Optional("domain"): str,
-                    schema.Optional("dir"): str,
+                    schema.Optional("text_dir"): str,
                     schema.Optional("title"): str,
                     schema.Optional("description"): str,
                     schema.Optional("subject"): str,
@@ -578,7 +573,7 @@ class UserConfigHandler(src.base.logs.Logs):
                 },
                 schema.Optional("social_media"): {
                     schema.Optional("facebook_app_id"): str,
-                    schema.Optional("twitter_user_@"): str,
+                    schema.Optional("twitter_username"): str,
                     schema.Optional("twitter_user_id"): str,
                     schema.Optional("itunes_app_id"): str,
                     schema.Optional("itunes_affiliate_data"): str,
@@ -664,7 +659,7 @@ def default_settings() -> str:
                     'language': 'en',
                     'territory': 'US',
                     'domain': 'microsoft.com',
-                    'dir': 'ltr',
+                    'text_dir': 'ltr',
                     'title': 'Microsoft',
                     'description': 'Technology Solutions',
                     'subject': 'Home Page',
@@ -675,7 +670,7 @@ def default_settings() -> str:
                 }},
                 'social_media': {{
                     'facebook_app_id': '123456',
-                    'twitter_user_@':'@Microsoft',
+                    'twitter_username':'Microsoft',
                     'twitter_user_id': '123456',
                     'itunes_app_id': '123456',
                     'itunes_affiliate_data': '123456'

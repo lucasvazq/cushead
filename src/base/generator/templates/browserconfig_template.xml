@@ -1,0 +1,39 @@
+{% include "complements/xml_declaration.xml" %}
+<browserconfig>
+  <msapplication>
+    <tile>
+      {% if "browserconfig" in icons_config %}
+        {% set icon = icons_config.browserconfig %}
+        {% set icon_name = icon.output_file_name %}
+        {% set ext = icon.ext %}
+        {% for size in icon.sizes_square %}
+          {% set width_and_height = size|string + "x" + size|string %}
+          {% set file_name = icon_name + "-" + width_and_height + ext %}
+          <square{{ width_and_height }}logo
+            src="{{ static_url }}/{{ file_name }}"/>
+        {% endfor %}
+        {% for size in icon.sizes_rectangular %}
+          {% set width = size[0] %}
+          {% set height = size[1] %}
+          {% set width_and_height = width|string + "x" + height|string %}
+          {% set file_name = icon_name + "-" + width_and_height + ext %}
+          <wide{{ width_and_height }}logo
+            src="{{ static_url }}/{{ file_name }}"/>
+        {% endfor %}
+      {% endif %}
+      {% if "ms_icon" in icons_config %}
+        {% set icon = icons_config.ms_icon %}
+        {% set icon_name = icon.output_file_name %}
+        {% set ext = icon.ext %}
+        {% for size in icon.sizes_square %}
+          {% set width_and_height = size|string + "x" + size|string %}
+          {% set file_name = icon_name + "-" + width_and_height + ext %}
+          <TileImage src="{{ static_url }}/{{ file_name }}"/>
+        {% endfor %}
+      {% endif %}
+      {% if "main_color" in config %}
+        <TileColor>{{ config.main_color }}</TileColor>
+      {% endif %}
+    </tile>
+  </msapplication>
+</browserconfig>

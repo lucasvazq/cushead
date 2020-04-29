@@ -10,9 +10,9 @@ class Images:
         self.icons_config = icons_config
 
     def generate_head_images(self):
-        favicons = []
-        og_social_media_images = []
-        twitter_social_media_images = []
+        browser_icons = []
+        open_graph_images = []
+        twitter_images = []
         mask_icon = []
         ms_icon = []
         apple_startup_icons = []
@@ -23,22 +23,27 @@ class Images:
                                                        config.size)
                     if head_element:
                         if brand.attribute_property.startswith("og:"):
-                            og_social_media_images.append(head_element)
+                            open_graph_images.append(head_element)
+                            # LISTO
                         elif brand.attribute_name.startswith("twitter:"):
-                            twitter_social_media_images.append(head_element)
+                            twitter_images.append(head_element)
+                            # LISTO
                         elif brand.attribute_rel == "mask-icon":
                             mask_icon.append(head_element)
+                            # LISTO
                         elif brand.attribute_name == "msapplication-TileImage":
                             ms_icon.append(head_element)
-                        elif brand.attribute_rel == "apple-touch-icon" and brand.attribute_special_sizes:
+                            # LISTO
+                        elif brand.attribute_rel == "apple-touch-startup-image":
                             apple_startup_icons.append(head_element)
                         else:
-                            favicons.append(head_element)
+                            browser_icons.append(head_element)
 
+        browser_icons, open_graph_images, twitter_images, mask_icon, ms_icon, apple_startup_icons
         return (
-            favicons,
-            og_social_media_images,
-            twitter_social_media_images,
+            browser_icons,
+            open_graph_images,
+            twitter_images,
             mask_icon,
             ms_icon,
             apple_startup_icons,

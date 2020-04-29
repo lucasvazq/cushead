@@ -11,7 +11,7 @@ import os
 import typing
 
 import src.base.configuration
-import src.base.generator.base_generator
+import src.base.generator.files
 import src.base.logs
 import src.console.arguments
 import src.helpers
@@ -145,11 +145,14 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         config = src.base.configuration.UserConfigHandler().transform(
             user_config, main_path)
         icons_formater = src.base.configuration.IconsFormatConfig(config)
-        image_format_config_dict = icons_formater.image_format_config_dict
         icons_config = icons_formater.get_icons_config()
+        initial_data = {
+            'config': config,
+            'icons_config': icons_config,
+            'indentation': src.helpers.INDENTATION,
+        }
         self._create_files(
-            src.base.generator.base_generator.BaseGenerator(
-                config, icons_config, image_format_config_dict).generate())
+            src.base.generator.files.FilesGenerator(**initial_data).generate())
 
     # -default
     def argument_string_default(self):

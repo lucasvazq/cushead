@@ -5,7 +5,6 @@ const {registerRoute} = workbox.routing;
 const {ExpirationPlugin} = workbox.expiration
 const {precacheAndRoute} = workbox.precaching
 const {CacheableResponsePlugin} = workbox.cacheableResponse
-
 workbox.setConfig({
   skipWaiting: true,
   clientsClaim: true
@@ -54,7 +53,7 @@ registerRoute(/\.(?:js|css)$/, new StaleWhileRevalidate());
 
 // Cache urls
 precacheAndRoute([
-  {url: "/index.html", revision: "1fcf13"}
+  {url: "/index.html", revision: "f2c934"}
 ], {
   cleanUrls: true
 });

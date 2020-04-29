@@ -1,0 +1,48 @@
+{#
+  Here define icons for the browsers.
+  Its include the classic favicon, and some special icons with
+  different sizes for android and apple.
+  They are ordered yet, keeping classic favicon first,
+  favicon with sizes then, and icons for safari to.
+  Then, we define yandex icons.
+#}
+{% if "browser_icons" in misc_data %}
+  {% for icon in misc_data.browser_icons %}
+    {{ icon }}
+  {% endfor %}
+{% endif %}
+{% if "favicon_ico" in icons_config %}
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
+{% endif %}
+{% if "favicon_png" in icons_config %}
+  {% set icon = icons_config.favicon_png %}
+  {% set icon_name = icon.output_file_name %}
+  {% set ext = icon.ext %}
+  {% for size in icon.sizes_square %}
+    {% set width = size[0] %}
+    {% set height = size[1] %}
+    {% set width_and_height = width|string + "x" + height|string %}
+    {% set file_name = icon_name + "-" + width_and_height + ext %}
+    <link href="{{ static_url }}/{{ file_name }}"
+          rel="icon"
+          sizes="{{ width_and_height }}"
+          type="image/png">
+  {% endfor %}
+{% endif %}
+{% if "apple_touch_icon" in icon_config %}
+  {% set icon = icons_config.favicon_png %}
+  {% set icon_name = icon.output_file_name %}
+  {% set ext = icon.ext %}
+  {% for size in icon.sizes_square %}
+    {% set width = size[0] %}
+    {% set height = size[1] %}
+    {% set width_and_height = width|string + "x" + height|string %}
+    {% set file_name = icon_name + "-" + width_and_height + ext %}
+    {% if loop.first %}
+      <link href="{{ static_url }}/{{ file_name }}" rel="apple-touch-icon">
+    {% endif %}
+    <link href="{{ static_url }}/{{ file_name }}"
+          rel="apple-touch-icon"
+          sizes="{{ width_and_height }}">
+  {% endfor %}
+{% endif %}

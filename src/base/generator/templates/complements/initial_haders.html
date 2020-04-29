@@ -1,0 +1,43 @@
+{#
+  Here we include charset and X-UA-Compatible for IE first
+  as most important metatags for the correct format and process of
+  the page.
+#}
+<meta charset="utf-8">
+<!--[if IE]>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<![endif]-->
+
+{#
+  Google Tag Manager.
+  We include at top, after the most important tags, to capture the
+  user as soon as possible.
+#}
+{% if "google_tag_manager" in config %}
+  <script>
+    {% oneline %}
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      '{{ gtm_url }}/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',
+      '{{ config.google_tag_manager }}');
+    {% endoneline %}
+  </script>
+{% endif %}
+
+{# 
+  Here we add some tags than impact in the first impresion that the
+  user can we have of the site. They are the viewport, the title and
+  the display format and the color of the browser
+#}
+<meta name="viewport"
+      content="width=device-width,minimum-scale=1,initial-scale=1">
+{% if "title" in config %}<title>{{ config.title }}</title>{% endif %}
+{% if "background_color" in config %}
+  <meta name="theme-color" content="{{ config.background_color }}">
+{% endif %}
+<meta name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
