@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <OpenSearchDescription xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>Microsoft</ShortName>
-  <Description>Search Microsoft</Description>
-  <InputEncoding>UTF-8</InputEncoding>
-  <Url method="get" type="text/html" template="http://www.google.com/search?q={searchTerms}+site%3Amicrosoft.com">
-  <Image width="" height="" type="image/png">/static/opensearch-x.png</Image>
+  <ShortName>Microsoft</shortname>
+</ShortName>
+<Description>Search Microsoft</description>
+</Description>
+<InputEncoding>UTF-8</inputencoding>
+</InputEncoding>
+<Url method="get" type="text/html" template="http://www.google.com/search?q={searchTerms}+site%3Amicrosoft.com"></url>
+<Image width="" height="" type="image/png">/static/opensearch-x.png</image>
+</Image>
+</opensearchdescription>
 </OpenSearchDescription>

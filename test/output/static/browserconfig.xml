@@ -2,14 +2,18 @@
 <browserconfig>
   <msapplication>
     <tile>
-      <square30x30logo src="/static/browserconfig-30x30.png"/>
-        <square44x44logo src="/static/browserconfig-44x44.png"/>
-          <square70x70logo src="/static/browserconfig-70x70.png"/>
-            <square150x150logo src="/static/browserconfig-150x150.png"/>
-              <square310x310logo src="/static/browserconfig-310x310.png"/>
-                <wide310x150logo src="/static/browserconfig-310x150.png"/>
-                  <TileImage src="/static/ms-icon-144x144.png">
-                  <TileColor>#ff0000</TileColor>
-                </tile>
-              </msapplication>
-            </browserconfig>
+      <square30x30logo src="/static/browserconfig-30x30.png"/></square30x30logo>
+      <square44x44logo src="/static/browserconfig-44x44.png"/></square44x44logo>
+      <square70x70logo src="/static/browserconfig-70x70.png"/></square70x70logo>
+      <square150x150logo src="/static/browserconfig-150x150.png"/></square150x150logo>
+      <square310x310logo src="/static/browserconfig-310x310.png"/></square310x310logo>
+      <wide310x150logo src="/static/browserconfig-310x150.png"/></wide310x150logo>
+      <TileImage src="/static/ms-icon-144x144.png"></tileimage>
+    <TileColor>#ff0000</tilecolor>
+  </TileColor>
+</tile>
+</tile>
+</msapplication>
+</msapplication>
+</browserconfig>
+</browserconfig>

@@ -184,7 +184,7 @@ class TextFilesGenerator(images.Images):
             'indentation_trigger': '/*',
             'indentation': self.indentation,
         }
-        content = parser.CustomNonFormatFileParser(**initial_data).parse_content(content=rendered_template)
+        content = parser.CustomPlainTextParser(**initial_data).parse_content(content=rendered_template)
 
         output_file_path = path.join(self.config["output_folder_path"], "humans.txt")
         return {
@@ -228,7 +228,7 @@ class TextFilesGenerator(images.Images):
             'indentation': self.indentation,
             'new_line_trigger': 'Sitemap',
         }
-        content = parser.CustomNonFormatFileParser(**initial_data).parse_content(content=rendered_template)
+        content = parser.CustomPlainTextParser(**initial_data).parse_content(content=rendered_template)
         output_file_path = path.join(self.config["output_folder_path"], "robots.txt")
         return {
             "content": content,
@@ -243,7 +243,7 @@ class TextFilesGenerator(images.Images):
         initial_data = {
             'indentation': self.indentation,
         }
-        content = parser.CustomNonFormatFileParser(**initial_data).parse_content(content=rendered_template)
+        content = parser.CustomPlainTextParser(**initial_data).parse_content(content=rendered_template)
         output_file_path = path.join(self.config["output_folder_path"], ".well-known/security.txt")
         return {
             "content": content,
