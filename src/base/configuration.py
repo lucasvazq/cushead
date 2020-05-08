@@ -30,8 +30,8 @@ class FileAttributes:
     """
 
     def __init__(self,
-                file_name: str = "",
-                size: typing.Union[typing.List[int], None] = None):
+                 file_name: str = "",
+                 size: typing.Union[typing.List[int], None] = None):
         self.file_name = file_name
         self.size = size or []
 

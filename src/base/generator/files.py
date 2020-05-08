@@ -99,7 +99,8 @@ class TextFilesGenerator(images.Images):
         if itunes_app_id:
             itunes_content = [f"app-id={itunes_app_id}"]
             if itunes_affiliate_data:
-                itunes_content.append(f'affiliate-data={itunes_affiliate_data}')
+                itunes_content.append(
+                    f'affiliate-data={itunes_affiliate_data}')
             itunes_content.append('app-argument=/')
             misc_data['itunes_app'] = ', '.join(itunes_content)
 
@@ -116,10 +117,13 @@ class TextFilesGenerator(images.Images):
         return misc_data
 
     def setup_template_reader(self) -> jinja2.Environment:
-        templates_folderpath = path.join(path.dirname(path.realpath(__file__)), 'templates')
-        template_loader = jinja2.FileSystemLoader(searchpath=templates_folderpath)
+        templates_folderpath = path.join(
+            path.dirname(path.realpath(__file__)), 'templates')
+        template_loader = jinja2.FileSystemLoader(
+            searchpath=templates_folderpath)
         extensions = ['src.base.generator.jinja_extension.OneLineExtension']
-        template_environment = jinja2.Environment(loader=template_loader, extensions=extensions)
+        template_environment = jinja2.Environment(
+            loader=template_loader, extensions=extensions)
         template_environment.globals.update({
             'config': self.config,
             'misc_data': self.misc_data,
@@ -144,8 +148,10 @@ class TextFilesGenerator(images.Images):
             'one_line_tags': ('title',),
             'self_close_tags': ('meta', 'link'),
         }
-        content = parser.CustomHTMLParser(**initial_data).parse_content(content=rendered_template)
-        output_file_path = path.join(self.config["output_folder_path"], "index.html")
+        content = parser.CustomHTMLParser(
+            **initial_data).parse_content(content=rendered_template)
+        output_file_path = path.join(
+            self.config["output_folder_path"], "index.html")
         return {
             "content": content,
             "destination_file_path": output_file_path,
@@ -163,8 +169,10 @@ class TextFilesGenerator(images.Images):
             'self_close_tags': ('TileImage',),
             'regex_self_close_tags': (r'square\d*x\d*', r'wide\d*x\d*'),
         }
-        content = parser.CustomXMLParser(**initial_data).parse_content(content=rendered_template)
-        destination_file_path = path.join(self.config["static_folder_path"], "browserconfig.xml")
+        content = parser.CustomXMLParser(
+            **initial_data).parse_content(content=rendered_template)
+        destination_file_path = path.join(
+            self.config["static_folder_path"], "browserconfig.xml")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -180,9 +188,11 @@ class TextFilesGenerator(images.Images):
             'indentation_trigger': '/*',
             'indentation': self.indentation,
         }
-        content = parser.CustomPlainTextParser(**initial_data).parse_content(content=rendered_template)
+        content = parser.CustomPlainTextParser(
+            **initial_data).parse_content(content=rendered_template)
 
-        output_file_path = path.join(self.config["output_folder_path"], "humans.txt")
+        output_file_path = path.join(
+            self.config["output_folder_path"], "humans.txt")
         return {
             "content": content,
             "destination_file_path": output_file_path,
@@ -193,8 +203,10 @@ class TextFilesGenerator(images.Images):
         initial_data = {
             'indentation': self.indentation
         }
-        content = parser.CustomScriptParser(**initial_data).parse_content(content=rendered_template)
-        output_file_path = path.join(self.config["static_folder_path"], "manifest.json")
+        content = parser.CustomScriptParser(
+            **initial_data).parse_content(content=rendered_template)
+        output_file_path = path.join(
+            self.config["static_folder_path"], "manifest.json")
         return {
             "content": content,
             "destination_file_path": output_file_path,
@@ -211,8 +223,10 @@ class TextFilesGenerator(images.Images):
                               'Image'),
             'self_close_tags': ('Url',),
         }
-        content = parser.CustomXMLParser(**initial_data).parse_content(content=rendered_template)
-        output_file_path = path.join(self.config["static_folder_path"], "opensearch.xml")
+        content = parser.CustomXMLParser(
+            **initial_data).parse_content(content=rendered_template)
+        output_file_path = path.join(
+            self.config["static_folder_path"], "opensearch.xml")
         return {
             "content": content,
             "destination_file_path": output_file_path,
@@ -224,8 +238,10 @@ class TextFilesGenerator(images.Images):
             'indentation': self.indentation,
             'new_line_trigger': 'Sitemap',
         }
-        content = parser.CustomPlainTextParser(**initial_data).parse_content(content=rendered_template)
-        output_file_path = path.join(self.config["output_folder_path"], "robots.txt")
+        content = parser.CustomPlainTextParser(
+            **initial_data).parse_content(content=rendered_template)
+        output_file_path = path.join(
+            self.config["output_folder_path"], "robots.txt")
         return {
             "content": content,
             "destination_file_path": output_file_path,
@@ -239,8 +255,10 @@ class TextFilesGenerator(images.Images):
         initial_data = {
             'indentation': self.indentation,
         }
-        content = parser.CustomPlainTextParser(**initial_data).parse_content(content=rendered_template)
-        output_file_path = path.join(self.config["output_folder_path"], ".well-known/security.txt")
+        content = parser.CustomPlainTextParser(
+            **initial_data).parse_content(content=rendered_template)
+        output_file_path = path.join(
+            self.config["output_folder_path"], ".well-known/security.txt")
         return {
             "content": content,
             "destination_file_path": output_file_path,
@@ -252,8 +270,10 @@ class TextFilesGenerator(images.Images):
             'indentation': self.indentation,
             'new_line_trigger': '//',
         }
-        content = parser.CustomScriptParser(**initial_data).parse_content(content=rendered_template)
-        output_file_path = path.join(self.config["static_folder_path"], "sw.js")
+        content = parser.CustomScriptParser(
+            **initial_data).parse_content(content=rendered_template)
+        output_file_path = path.join(
+            self.config["static_folder_path"], "sw.js")
         return {
             "content": content,
             "destination_file_path": output_file_path,
@@ -269,8 +289,10 @@ class TextFilesGenerator(images.Images):
             'indentation': self.indentation,
             'one_line_tags': ('loc',),
         }
-        content = parser.CustomXMLParser(**initial_data).parse_content(content=rendered_template)
-        output_file_path = path.join(self.config["output_folder_path"], "sitemap.xml")
+        content = parser.CustomXMLParser(
+            **initial_data).parse_content(content=rendered_template)
+        output_file_path = path.join(
+            self.config["output_folder_path"], "sitemap.xml")
         return {
             "content": content,
             "destination_file_path": output_file_path,
