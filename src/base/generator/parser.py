@@ -14,7 +14,6 @@ from jinja2 import runtime
 HTMLTagAttrs = Optional[List[Tuple[str, str]]]
 
 
-
 class BaseParser(metaclass=abc.ABCMeta):
     def __init__(self, indentation, base_indentation: int = 0):
         self.indentation = indentation
@@ -22,8 +21,9 @@ class BaseParser(metaclass=abc.ABCMeta):
         self.content = []
         super().__init__()
 
+
 class CustomPlainTextParser(BaseParser):
-    def __init__(self, indentation_trigger = None, new_line_trigger = None, **kwargs):
+    def __init__(self, indentation_trigger=None, new_line_trigger=None, **kwargs):
         self.indentation_trigger = indentation_trigger or ()
         self.new_line_trigger = new_line_trigger or ()
         super().__init__(**kwargs)
@@ -44,8 +44,9 @@ class CustomPlainTextParser(BaseParser):
                     self.indent_amount += 1
         return '\n'.join(self.content)
 
+
 class CustomScriptParser(BaseParser):
-    def __init__(self, new_line_trigger = None, base_indentation = None, **kwargs):
+    def __init__(self, new_line_trigger=None, base_indentation=None, **kwargs):
         self.new_line_trigger = new_line_trigger or ()
         self.endstart_delimiters_pattern = re.compile(
             r'^(}|]|\)|;)+'
@@ -85,8 +86,9 @@ class CustomScriptParser(BaseParser):
                     self.parse_element(content=line)
         return '\n'.join(self.content)
 
+
 class MLParser(BaseParser, html_parser.HTMLParser, metaclass=abc.ABCMeta):
-    def __init__(self, one_line_tags = None, self_close_tags = None, **kwargs):
+    def __init__(self, one_line_tags=None, self_close_tags=None, **kwargs):
         super().__init__(**kwargs)
         self.one_line_tags = one_line_tags
         self.self_close_tags = self_close_tags or ()
@@ -108,6 +110,7 @@ class MLParser(BaseParser, html_parser.HTMLParser, metaclass=abc.ABCMeta):
 
     def handle_endtag(self, tag):
         self.lasttag = f'end_{tag}'
+
 
 class CustomHTMLParser(MLParser):
 
@@ -215,34 +218,36 @@ class CustomHTMLParser(MLParser):
         # python 3.8
         # if cleaned_data := data.strip():
         cleaned_data = data.strip()
-        try:
-            if cleaned_data:
-                self.has_data = True
+        if cleaned_data:
+            self.has_data = True
 
-                # Add indentation to the code inside an element
-                if self.lasttag in ('script', 'style'):
-                    initial_data = {
-                        'indentation': self.indentation,
-                        'base_indentation': self.indent_amount,
-                    }
-                    content_parser = CustomScriptParser(**initial_data)
-                    content = content_parser.parse_content(content=data)
-                    self.parse_element(content=content)
+            # Add indentation to the code inside an element
+            if self.lasttag in ('script', 'style'):
+                initial_data = {
+                    'indentation': self.indentation,
+                    'base_indentation': self.indent_amount,
+                }
+                content_parser = CustomScriptParser(**initial_data)
+                content = content_parser.parse_content(content=data)
+                self.parse_element(content=content)
 
-                else:
-                    if self.one_line:
-                        self.parse_element(content=cleaned_data, one_line=True)
-                    else:
-                        self.parse_element(content=cleaned_data)
             else:
-                self.has_data = False
-        except Exception:
-            print('wasa')
+                if self.one_line:
+                    self.parse_element(content=cleaned_data, one_line=True)
+                else:
+                    self.parse_element(content=cleaned_data)
+        else:
+            self.has_data = False
 
 # indentation, camel_case_tags, regex_self_close_tags, one_line_tags, self_close_tags
-class CustomXMLParser(CustomHTMLParser):
+class CustomXMLParser(MLParser):
 
-    def __init__(self, *, indentation: str, camel_case_tags: Optional[Tuple[str]] = None, regex_self_close_tags: Tuple[re.Pattern] = None, one_line_tags: Optional[Tuple[str]] = None, self_close_tags: Optional[Tuple[str]] = None) -> NoReturn:
+    def __init__(self, *,
+                 indentation: str,
+                 camel_case_tags: Optional[Tuple[str]] = None,
+                 regex_self_close_tags: Tuple[re.Pattern] = None,
+                 one_line_tags: Optional[Tuple[str]] = None,
+                 self_close_tags: Optional[Tuple[str]] = None) -> NoReturn:
         super().__init__(indentation=indentation, one_line_tags=one_line_tags, self_close_tags=self_close_tags)
         self.camel_case_tags = camel_case_tags or ()
         self.regex_self_close_tags = regex_self_close_tags or ()
@@ -251,12 +256,12 @@ class CustomXMLParser(CustomHTMLParser):
         self.parse_element(content=f'<?{data}>')
 
     def parse_self_close_tags(self, *, tag: str) -> bool:
-        if tag.startswith(self.self_close_tags):
+        if tag in self.self_close_tags:
             return True
 
         if self.regex_self_close_tags:
             pattern = '|'.join(self.regex_self_close_tags)
-            return(bool(re.search(pattern, tag)))
+            return bool(re.search(pattern, tag))
 
         return False
 
@@ -270,6 +275,7 @@ class CustomXMLParser(CustomHTMLParser):
             if self.parse_self_close_tags(tag=self.lasttag):
                 self_close_tag = f'{content[:-1]}/{content[-1]}'
                 self.content.append(indentation + self_close_tag)
+                self.one_line = True
             else:
                 self.content.append(indentation + content)
 
@@ -288,12 +294,76 @@ class CustomXMLParser(CustomHTMLParser):
         return tag
 
     def handle_starttag(self, tag: str, attrs: HTMLTagAttrs) -> NoReturn:
-        super().handle_starttag(self.parse_tag(tag=tag), attrs)
+        parsed_tag = self.parse_tag(tag=tag)
+        self.lasttag = parsed_tag
+        attributes = self.handle_attrs(attrs)
+
+        # Add the tag
+        element = f'<{parsed_tag}{attributes}>'
+        self.parse_element(content=element)
+
+        # When read the content of title,
+        # must need to append it to the same line of title,
+        # same for it's close tag.
+        if parsed_tag in self.one_line_tags:
+            if self.one_line:
+                self.indent_amount += 1
+            self.one_line = True
+
+        # If the actual tag is not self closing, the next element must be indented
+        if parsed_tag not in (self.one_line_tags + self.self_close_tags):
+            self.indent_amount += 1
 
     def handle_endtag(self, tag: str) -> NoReturn:
-        super().handle_endtag(tag)
-        if not self.parse_self_close_tags(tag=tag):
-            super().handle_endtag(self.parse_tag(tag=tag))
+        starttag = self.lasttag
+        parsed_tag = self.parse_tag(tag=tag)
+        super().handle_endtag(parsed_tag)
+        if not self.parse_self_close_tags(tag=parsed_tag):
+
+            if parsed_tag.startswith(self.self_close_tags):
+                return
+
+            # The close of tag must be in one level below of indentation than of the actual level
+            if not parsed_tag.startswith(self.one_line_tags):
+                self.indent_amount -= 1
+
+            closed_tag = f'</{parsed_tag}>'
+
+            # If the attr one_line is defined,
+            # or if the last oppened tag is the same to the actual tag and
+            # no data was detected, we need add the close tag to the same line
+            if self.one_line or (not self.has_data and starttag == parsed_tag):
+                self.parse_element(content=closed_tag, one_line=True)
+
+                # Revert one line
+                if self.one_line:
+                    self.one_line = False
+
+                # We need to save the attr has_data to True, because the actual
+                # element must be part of other element.
+                # And, if the next thing to handle is the close of the tag of that
+                # parent element, we need to asume that the data if has was this
+                # element.
+                else:
+                    self.has_data = True
+
+            else:
+                self.parse_element(content=closed_tag)
+        else:
+            self.indent_amount -= 1
+
+    def handle_data(self, data: str) -> NoReturn:
+        # 3.8
+        cleaned_data = data.strip()
+        if cleaned_data:
+            self.has_data = True
+
+            if self.one_line:
+                self.parse_element(content=cleaned_data, one_line=True)
+            else:
+                self.parse_element(content=cleaned_data)
+        else:
+            self.has_data = False
 
 
 class OneLineExtension(ext.Extension):

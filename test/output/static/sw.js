@@ -53,7 +53,7 @@ registerRoute(/\.(?:js|css)$/, new StaleWhileRevalidate());
 
 // Cache urls
 precacheAndRoute([
-  {url: "/index.html", revision: "3dbe89"}
+  {url: "/index.html", revision: "d1728a"}
 ], {
   cleanUrls: true
 });

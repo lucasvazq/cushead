@@ -26,8 +26,8 @@
       {% set ext = icon.ext %}
       {% for size in icon.sizes_square %}
         {
-          {% set width = size[0] %}
-          {% set height = size[1] %}
+          {% set width = size %}
+          {% set height = size %}
           {% set width_and_height = width|string + "x" + height|string %}
           {% set file_name = icon_name + "-" + width_and_height + ext %}
           "src": "{{ static_url }}/{{ file_name }}",
