@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-
 import abc
 import re
 from html import parser as html_parser
-from typing import List, NoReturn, Optional, Tuple
+from typing import List
+from typing import NoReturn
+from typing import Optional
+from typing import Tuple
 
 from jinja2 import ext
 from jinja2 import nodes

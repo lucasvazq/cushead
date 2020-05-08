@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-
-from jinja2 import nodes
 from jinja2 import ext
+from jinja2 import nodes
 from jinja2 import parser
 from jinja2 import runtime
 
