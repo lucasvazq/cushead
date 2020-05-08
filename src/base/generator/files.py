@@ -61,9 +61,8 @@ class MiscData(TypedDict, total=False):
 
 
 class TextFilesGenerator(images.Images):
-    def __init__(
-        self, *, config: Config, icons_config: IconsConfig, indentation: str
-    ) -> NoReturn:
+    def __init__(self, *, config: Config, icons_config: IconsConfig,
+                 indentation: str) -> NoReturn:
         self.config = config
         self.icons_config = icons_config
         self.indentation = indentation
@@ -101,8 +100,7 @@ class TextFilesGenerator(images.Images):
             itunes_content = [f"app-id={itunes_app_id}"]
             if itunes_affiliate_data:
                 itunes_content.append(
-                    f"affiliate-data={itunes_affiliate_data}"
-                )
+                    f"affiliate-data={itunes_affiliate_data}")
             itunes_content.append("app-argument=/")
             misc_data["itunes_app"] = ", ".join(itunes_content)
 
@@ -119,30 +117,35 @@ class TextFilesGenerator(images.Images):
         return misc_data
 
     def setup_template_reader(self) -> jinja2.Environment:
-        templates_folderpath = path.join(
-            path.dirname(path.realpath(__file__)), "templates"
-        )
+        templates_folderpath = path.join(path.dirname(path.realpath(__file__)),
+                                         "templates")
         template_loader = jinja2.FileSystemLoader(
-            searchpath=templates_folderpath
-        )
+            searchpath=templates_folderpath)
         extensions = ["src.base.generator.jinja_extension.OneLineExtension"]
-        template_environment = jinja2.Environment(
-            loader=template_loader, extensions=extensions
-        )
-        template_environment.globals.update(
-            {
-                "config": self.config,
-                "misc_data": self.misc_data,
-                "icons_config": self.icons_config,
-                "static_url": self.config["static_url"],
-                "wse": "http://www.google.com",
-                "gtm_url": "https://www.googletagmanager.com",
-                "gf_url": "https://fonts.googleapis.com",
-                "gf_family": "css2?family=Roboto:wght@400&display=swap",
-                "gapis_url": "https://storage.googleapis.com",
-                "cf_url": "https://cdnjs.cloudflare.com/ajax/libs",
-            }
-        )
+        template_environment = jinja2.Environment(loader=template_loader,
+                                                  extensions=extensions)
+        template_environment.globals.update({
+            "config":
+            self.config,
+            "misc_data":
+            self.misc_data,
+            "icons_config":
+            self.icons_config,
+            "static_url":
+            self.config["static_url"],
+            "wse":
+            "http://www.google.com",
+            "gtm_url":
+            "https://www.googletagmanager.com",
+            "gf_url":
+            "https://fonts.googleapis.com",
+            "gf_family":
+            "css2?family=Roboto:wght@400&display=swap",
+            "gapis_url":
+            "https://storage.googleapis.com",
+            "cf_url":
+            "https://cdnjs.cloudflare.com/ajax/libs",
+        })
         return template_environment
 
     def render_template(self, file_name):
@@ -152,38 +155,32 @@ class TextFilesGenerator(images.Images):
         rendered_template = self.render_template("index_template.html")
         initial_data = {
             "indentation": self.indentation,
-            "one_line_tags": ("title",),
+            "one_line_tags": ("title", ),
             "self_close_tags": ("meta", "link"),
         }
         content = parser.CustomHTMLParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        output_file_path = path.join(
-            self.config["output_folder_path"], "index.html"
-        )
+            content=rendered_template)
+        output_file_path = path.join(self.config["output_folder_path"],
+                                     "index.html")
         return {"content": content, "destination_file_path": output_file_path}
 
     def generate_browserconfig(self) -> Union[Dict[str, str], None]:
-        if (
-            not self.icons_config["browserconfig"]
-            and "main_color" not in self.config
-        ):
+        if (not self.icons_config["browserconfig"]
+                and "main_color" not in self.config):
             return
 
         rendered_template = self.render_template("browserconfig_template.xml")
         initial_data = {
             "camel_case_tags": ("TileColor", "TileImage"),
             "indentation": self.indentation,
-            "one_line_tags": ("TileColor",),
-            "self_close_tags": ("TileImage",),
+            "one_line_tags": ("TileColor", ),
+            "self_close_tags": ("TileImage", ),
             "regex_self_close_tags": (r"square\d*x\d*", r"wide\d*x\d*"),
         }
         content = parser.CustomXMLParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        destination_file_path = path.join(
-            self.config["static_folder_path"], "browserconfig.xml"
-        )
+            content=rendered_template)
+        destination_file_path = path.join(self.config["static_folder_path"],
+                                          "browserconfig.xml")
         return {
             "content": content,
             "destination_file_path": destination_file_path,
@@ -191,10 +188,8 @@ class TextFilesGenerator(images.Images):
 
     def generate_humans(self) -> Union[Dict[str, str], None]:
 
-        if (
-            "author_name" not in self.config
-            and "author_email" not in self.config
-        ):
+        if ("author_name" not in self.config
+                and "author_email" not in self.config):
             return
 
         rendered_template = self.render_template("humans_template.html")
@@ -203,23 +198,19 @@ class TextFilesGenerator(images.Images):
             "indentation": self.indentation,
         }
         content = parser.CustomPlainTextParser(**initial_data).parse_content(
-            content=rendered_template
-        )
+            content=rendered_template)
 
-        output_file_path = path.join(
-            self.config["output_folder_path"], "humans.txt"
-        )
+        output_file_path = path.join(self.config["output_folder_path"],
+                                     "humans.txt")
         return {"content": content, "destination_file_path": output_file_path}
 
     def generate_manifest(self) -> Dict[str, str]:
         rendered_template = self.render_template("manifest_template.html")
         initial_data = {"indentation": self.indentation}
         content = parser.CustomScriptParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        output_file_path = path.join(
-            self.config["static_folder_path"], "manifest.json"
-        )
+            content=rendered_template)
+        output_file_path = path.join(self.config["static_folder_path"],
+                                     "manifest.json")
         return {"content": content, "destination_file_path": output_file_path}
 
     def generate_opensearch(self) -> Dict[str, str]:
@@ -233,21 +224,20 @@ class TextFilesGenerator(images.Images):
                 "Url",
                 "Image",
             ),
-            "indentation": self.indentation,
+            "indentation":
+            self.indentation,
             "one_line_tags": (
                 "ShortName",
                 "Description",
                 "InputEncoding",
                 "Image",
             ),
-            "self_close_tags": ("Url",),
+            "self_close_tags": ("Url", ),
         }
         content = parser.CustomXMLParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        output_file_path = path.join(
-            self.config["static_folder_path"], "opensearch.xml"
-        )
+            content=rendered_template)
+        output_file_path = path.join(self.config["static_folder_path"],
+                                     "opensearch.xml")
         return {"content": content, "destination_file_path": output_file_path}
 
     def generate_robots(self) -> Dict[str, str]:
@@ -257,11 +247,9 @@ class TextFilesGenerator(images.Images):
             "new_line_trigger": "Sitemap",
         }
         content = parser.CustomPlainTextParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        output_file_path = path.join(
-            self.config["output_folder_path"], "robots.txt"
-        )
+            content=rendered_template)
+        output_file_path = path.join(self.config["output_folder_path"],
+                                     "robots.txt")
         return {"content": content, "destination_file_path": output_file_path}
 
     def generate_security(self) -> Union[Dict[str, str], None]:
@@ -271,11 +259,9 @@ class TextFilesGenerator(images.Images):
         rendered_template = self.render_template("security_template.html")
         initial_data = {"indentation": self.indentation}
         content = parser.CustomPlainTextParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        output_file_path = path.join(
-            self.config["output_folder_path"], ".well-known/security.txt"
-        )
+            content=rendered_template)
+        output_file_path = path.join(self.config["output_folder_path"],
+                                     ".well-known/security.txt")
         return {"content": content, "destination_file_path": output_file_path}
 
     def generate_service_worker(self):
@@ -285,11 +271,9 @@ class TextFilesGenerator(images.Images):
             "new_line_trigger": "//",
         }
         content = parser.CustomScriptParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        output_file_path = path.join(
-            self.config["static_folder_path"], "sw.js"
-        )
+            content=rendered_template)
+        output_file_path = path.join(self.config["static_folder_path"],
+                                     "sw.js")
         return {"content": content, "destination_file_path": output_file_path}
 
     def generate_sitemap(self) -> Union[Dict[str, str], None]:
@@ -300,14 +284,12 @@ class TextFilesGenerator(images.Images):
         rendered_template = self.render_template("sitemap_template.xml")
         initial_data = {
             "indentation": self.indentation,
-            "one_line_tags": ("loc",),
+            "one_line_tags": ("loc", ),
         }
         content = parser.CustomXMLParser(**initial_data).parse_content(
-            content=rendered_template
-        )
-        output_file_path = path.join(
-            self.config["output_folder_path"], "sitemap.xml"
-        )
+            content=rendered_template)
+        output_file_path = path.join(self.config["output_folder_path"],
+                                     "sitemap.xml")
         return {"content": content, "destination_file_path": output_file_path}
 
 
@@ -320,20 +302,17 @@ class ImagesGenerator:
         files = []
         for icon in self.icons_config.values():
             for size_format in icon.formated:
-                files.append(
-                    {
-                        "file_name": size_format.file_name,
-                        "size": size_format.size,
-                        "output_folder_path": icon.output_folder_path,
-                        "source_file_path": icon.source_file_path,
-                        "background_color": icon.background_color,
-                    }
-                )
+                files.append({
+                    "file_name": size_format.file_name,
+                    "size": size_format.size,
+                    "output_folder_path": icon.output_folder_path,
+                    "source_file_path": icon.source_file_path,
+                    "background_color": icon.background_color,
+                })
         return files
 
-    def get_icons_creation_config(
-        self
-    ) -> List[Dict[str, Union[str, List[int]]]]:
+    def get_icons_creation_config(self
+                                  ) -> List[Dict[str, Union[str, List[int]]]]:
         """Return a list with default images creation configuration
 
         It's include configurations for the images listed in the assets folder
@@ -354,9 +333,9 @@ class ImagesGenerator:
 
 class FilesGenerator(TextFilesGenerator, ImagesGenerator):
     def __init__(self, *, config, icons_config, indentation):
-        super().__init__(
-            config=config, icons_config=icons_config, indentation=indentation
-        )
+        super().__init__(config=config,
+                         icons_config=icons_config,
+                         indentation=indentation)
 
     def generate(self):
         return {
