@@ -12,8 +12,8 @@ class OneLineExtension(ext.Extension):
     It does not remove whitespace between Jinja2 tags or variables. Neither does it remove whitespace between tags
     """
 
-    tags = {'oneline'}
-    end_tags = [f'name:end{tag_name}' for tag_name in tags]
+    tags = {"oneline"}
+    end_tags = [f"name:end{tag_name}" for tag_name in tags]
 
     def parse(self, parser: parser.Parser) -> nodes.CallBlock:
         """
@@ -44,7 +44,7 @@ class OneLineExtension(ext.Extension):
         body = parser.parse_statements(self.end_tags, True)
 
         # We parse te content calling our custom methods and generate the a CallBlock
-        method = self.call_method('strip_spaces')
+        method = self.call_method("strip_spaces")
         call_block = nodes.CallBlock(method, [], [], body)
 
         # Return CallBlock seeted to the line number
@@ -62,4 +62,4 @@ class OneLineExtension(ext.Extension):
         Return:
             return the cleaned content of the macro
         """
-        return ''.join(caller().split())
+        return "".join(caller().split())

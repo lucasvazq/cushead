@@ -23,7 +23,9 @@ class BaseParser(metaclass=abc.ABCMeta):
 
 
 class CustomPlainTextParser(BaseParser):
-    def __init__(self, indentation_trigger=None, new_line_trigger=None, **kwargs):
+    def __init__(
+        self, indentation_trigger=None, new_line_trigger=None, **kwargs
+    ):
         self.indentation_trigger = indentation_trigger or ()
         self.new_line_trigger = new_line_trigger or ()
         super().__init__(**kwargs)
@@ -33,41 +35,39 @@ class CustomPlainTextParser(BaseParser):
         self.content.append(indentation + content)
 
     def parse_content(self, content: str) -> NoReturn:
-        splited_content = content.split('\n')
+        splited_content = content.split("\n")
         for line in splited_content:
             stripped_line = line.strip()
             if stripped_line:
                 if stripped_line.startswith(self.new_line_trigger):
-                    self.parse_element(content='')  # add new line
+                    self.parse_element(content="")  # add new line
                 self.parse_element(content=stripped_line)
                 if stripped_line.startswith(self.indentation_trigger):
                     self.indent_amount += 1
-        return '\n'.join(self.content)
+        return "\n".join(self.content)
 
 
 class CustomScriptParser(BaseParser):
     def __init__(self, new_line_trigger=None, base_indentation=None, **kwargs):
         self.new_line_trigger = new_line_trigger or ()
         self.endstart_delimiters_pattern = re.compile(
-            r'^(}|]|\)|;)+'
-            r',? '
-            r'({|\[|\()+$'
+            r"^(}|]|\)|;)+" r",? " r"({|\[|\()+$"
         )
         self.base_indentation = bool(base_indentation)
-        self.end_delimiters_pattern = re.compile(r'.*({|\[|\()$')
-        self.start_delimiters_pattern = re.compile(r'^(}|]|\)|;)+,?$')
+        self.end_delimiters_pattern = re.compile(r".*({|\[|\()$")
+        self.start_delimiters_pattern = re.compile(r"^(}|]|\)|;)+,?$")
         super().__init__(**kwargs)
 
     def parse_element(self, *, content: str) -> NoReturn:
         if self.base_indentation:
-            indentation = ''
+            indentation = ""
             self.base_indentation = False
         else:
             indentation = self.indentation * self.indent_amount
         self.content.append(indentation + content)
 
     def parse_content(self, content: str) -> NoReturn:
-        cleaned_data = filter(None, [x.strip() for x in content.split('\n')])
+        cleaned_data = filter(None, [x.strip() for x in content.split("\n")])
         for line in cleaned_data:
             if line:
                 if self.endstart_delimiters_pattern.match(line):
@@ -82,9 +82,9 @@ class CustomScriptParser(BaseParser):
                     self.parse_element(content=line)
                 else:
                     if line.startswith(self.new_line_trigger):
-                        self.parse_element(content='')  # add new line
+                        self.parse_element(content="")  # add new line
                     self.parse_element(content=line)
-        return '\n'.join(self.content)
+        return "\n".join(self.content)
 
 
 class MLParser(BaseParser, html_parser.HTMLParser, metaclass=abc.ABCMeta):
@@ -92,45 +92,50 @@ class MLParser(BaseParser, html_parser.HTMLParser, metaclass=abc.ABCMeta):
         super().__init__(**kwargs)
         self.one_line_tags = one_line_tags
         self.self_close_tags = self_close_tags or ()
-        self.lastendtag = '???'
+        self.lastendtag = "???"
         self.one_line = False
 
     def handle_attrs(self, attrs):
         if attrs:
-            attributes = ' ' + ' '.join([
-                f"{k}=\"{v}\"" for k, v in dict(attrs).items()
-            ])
+            attributes = " " + " ".join(
+                [f'{k}="{v}"' for k, v in dict(attrs).items()]
+            )
         else:
-            attributes = ''
+            attributes = ""
         return attributes
 
     def parse_content(self, content):
         self.feed(content)
-        return '\n'.join(self.content)
+        return "\n".join(self.content)
 
     def handle_endtag(self, tag):
-        self.lasttag = f'end_{tag}'
+        self.lasttag = f"end_{tag}"
 
 
 class CustomHTMLParser(MLParser):
-
-    def __init__(self, *,
-                 indentation: str,
-                 one_line_tags: Optional[Tuple[str]] = None,
-                 self_close_tags: Optional[Tuple[str]] = None) -> NoReturn:
-        super().__init__(indentation=indentation,
-                         one_line_tags=one_line_tags, self_close_tags=self_close_tags)
+    def __init__(
+        self,
+        *,
+        indentation: str,
+        one_line_tags: Optional[Tuple[str]] = None,
+        self_close_tags: Optional[Tuple[str]] = None,
+    ) -> NoReturn:
+        super().__init__(
+            indentation=indentation,
+            one_line_tags=one_line_tags,
+            self_close_tags=self_close_tags,
+        )
         self.match_ie_sentence = re.compile(
-            r'(?P<starttag>\[if IE]>)'
-            r'( |\s)*'
-            r'(?P<data>.*(?!<!).)'
-            r'( |\s)*'
-            r'(?P<endtag><!\[endif])'
+            r"(?P<starttag>\[if IE]>)"
+            r"( |\s)*"
+            r"(?P<data>.*(?!<!).)"
+            r"( |\s)*"
+            r"(?P<endtag><!\[endif])"
         )
 
-    def parse_element(self, *,
-                      content: str,
-                      one_line: bool = False) -> NoReturn:
+    def parse_element(
+        self, *, content: str, one_line: bool = False
+    ) -> NoReturn:
         if one_line:
             self.content[-1] += content
         else:
@@ -139,7 +144,7 @@ class CustomHTMLParser(MLParser):
 
     def handle_decl(self, decl: str) -> NoReturn:
         """This method is called to handle an HTML doctype declaration"""
-        self.parse_element(content=f'<!{decl}>')
+        self.parse_element(content=f"<!{decl}>")
 
     def handle_comment(self, data: str) -> NoReturn:
         """This method is called when a comment is encountered"""
@@ -149,22 +154,22 @@ class CustomHTMLParser(MLParser):
         if match:
             groups = match.groupdict()
             # Add it with the instruction with one level more of indentation
-            self.parse_element(content='<!--' + groups['starttag'])
+            self.parse_element(content="<!--" + groups["starttag"])
             self.indent_amount += 1
-            self.parse_element(content=groups['data'])
+            self.parse_element(content=groups["data"])
             self.indent_amount -= 1
-            self.parse_element(content=groups['endtag'] + '-->')
+            self.parse_element(content=groups["endtag"] + "-->")
 
         # Detect inline html comment and add it without indentation
         elif self.lasttag in self.self_close_tags:
-            self.parse_element(content=f'<!--{data}-->', one_line=True)
+            self.parse_element(content=f"<!--{data}-->", one_line=True)
 
     def handle_starttag(self, tag: str, attrs: HTMLTagAttrs) -> NoReturn:
         """his method is called to handle the start of a tag"""
         attributes = self.handle_attrs(attrs)
 
         # Add the tag
-        element = f'<{tag}{attributes}>'
+        element = f"<{tag}{attributes}>"
         self.parse_element(content=element)
 
         # When read the content of title,
@@ -190,7 +195,7 @@ class CustomHTMLParser(MLParser):
         if not tag.startswith(self.one_line_tags):
             self.indent_amount -= 1
 
-        closed_tag = f'</{tag}>'
+        closed_tag = f"</{tag}>"
 
         # If the attr one_line is defined,
         # or if the last oppened tag is the same to the actual tag and
@@ -223,10 +228,10 @@ class CustomHTMLParser(MLParser):
             self.has_data = True
 
             # Add indentation to the code inside an element
-            if self.lasttag in ('script', 'style'):
+            if self.lasttag in ("script", "style"):
                 initial_data = {
-                    'indentation': self.indentation,
-                    'base_indentation': self.indent_amount,
+                    "indentation": self.indentation,
+                    "base_indentation": self.indent_amount,
                 }
                 content_parser = CustomScriptParser(**initial_data)
                 content = content_parser.parse_content(content=data)
@@ -240,61 +245,62 @@ class CustomHTMLParser(MLParser):
         else:
             self.has_data = False
 
+
 # indentation, camel_case_tags, regex_self_close_tags, one_line_tags, self_close_tags
 
 
 class CustomXMLParser(MLParser):
-
-    def __init__(self, *,
-                 indentation: str,
-                 camel_case_tags: Optional[Tuple[str]] = None,
-                 regex_self_close_tags: Tuple[re.Pattern] = None,
-                 one_line_tags: Optional[Tuple[str]] = None,
-                 self_close_tags: Optional[Tuple[str]] = None) -> NoReturn:
-        super().__init__(indentation=indentation,
-                         one_line_tags=one_line_tags, self_close_tags=self_close_tags)
+    def __init__(
+        self,
+        *,
+        indentation: str,
+        camel_case_tags: Optional[Tuple[str]] = None,
+        regex_self_close_tags: Tuple[re.Pattern] = None,
+        one_line_tags: Optional[Tuple[str]] = None,
+        self_close_tags: Optional[Tuple[str]] = None,
+    ) -> NoReturn:
+        super().__init__(
+            indentation=indentation,
+            one_line_tags=one_line_tags,
+            self_close_tags=self_close_tags,
+        )
         self.camel_case_tags = camel_case_tags or ()
         self.regex_self_close_tags = regex_self_close_tags or ()
 
     def handle_pi(self, data: str) -> NoReturn:
-        self.parse_element(content=f'<?{data}>')
+        self.parse_element(content=f"<?{data}>")
 
     def parse_self_close_tags(self, *, tag: str) -> bool:
         if tag in self.self_close_tags:
             return True
 
         if self.regex_self_close_tags:
-            pattern = '|'.join(self.regex_self_close_tags)
+            pattern = "|".join(self.regex_self_close_tags)
             return bool(re.search(pattern, tag))
 
         return False
 
-    def parse_element(self, *,
-                      content: str,
-                      one_line: bool = False) -> NoReturn:
+    def parse_element(
+        self, *, content: str, one_line: bool = False
+    ) -> NoReturn:
         if one_line:
             self.content[-1] += content
         else:
             indentation = self.indentation * self.indent_amount
             if self.parse_self_close_tags(tag=self.lasttag):
-                self_close_tag = f'{content[:-1]}/{content[-1]}'
+                self_close_tag = f"{content[:-1]}/{content[-1]}"
                 self.content.append(indentation + self_close_tag)
                 self.one_line = True
             else:
                 self.content.append(indentation + content)
 
     def parse_tag(self, *, tag: str) -> NoReturn:
-        pattern = re.compile(
-            r'(^|[^\w])(?P<tag>'
-            f'{tag}'
-            r')([^\w]|$)',
-            re.I
-        )
-        elements_to_match = ','.join(self.camel_case_tags)
+        pattern = re.compile(r"(^|[^\w])(?P<tag>" f"{tag}" r")([^\w]|$)", re.I)
+        elements_to_match = ",".join(self.camel_case_tags)
         # 3.8
         match = pattern.search(elements_to_match)
         if match:
-            return match.groupdict()['tag']
+            return match.groupdict()["tag"]
         return tag
 
     def handle_starttag(self, tag: str, attrs: HTMLTagAttrs) -> NoReturn:
@@ -303,7 +309,7 @@ class CustomXMLParser(MLParser):
         attributes = self.handle_attrs(attrs)
 
         # Add the tag
-        element = f'<{parsed_tag}{attributes}>'
+        element = f"<{parsed_tag}{attributes}>"
         self.parse_element(content=element)
 
         # When read the content of title,
@@ -331,7 +337,7 @@ class CustomXMLParser(MLParser):
             if not parsed_tag.startswith(self.one_line_tags):
                 self.indent_amount -= 1
 
-            closed_tag = f'</{parsed_tag}>'
+            closed_tag = f"</{parsed_tag}>"
 
             # If the attr one_line is defined,
             # or if the last oppened tag is the same to the actual tag and
@@ -378,8 +384,8 @@ class OneLineExtension(ext.Extension):
 
     # Jinja2 docs:
     # tags = a set of names that trigger the extension.
-    tags = {'oneline'}
-    endtags = tuple([f'name:end{tagname}' for tagname in tags])
+    tags = {"oneline"}
+    endtags = tuple([f"name:end{tagname}" for tagname in tags])
 
     def parse(self, parser: jinja2_parser.Parser) -> nodes.CallBlock:
         """
@@ -410,7 +416,7 @@ class OneLineExtension(ext.Extension):
         body = parser.parse_statements(self.endtags, True)
 
         # We parse te content calling our custom methods and generate the a CallBlock
-        method = self.call_method('strip_spaces')
+        method = self.call_method("strip_spaces")
         call_block = nodes.CallBlock(method, [], [], body)
 
         # Return CallBlock seeted to the line number
@@ -428,4 +434,4 @@ class OneLineExtension(ext.Extension):
         Return:
             return the cleaned content of the macro
         """
-        return ''.join(caller().split())
+        return "".join(caller().split())

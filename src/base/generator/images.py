@@ -19,8 +19,9 @@ class Images:
         for image_type in self.icons_config.values():
             for brand in image_type:
                 for config in brand.formated:
-                    head_element = self._head_formater(brand, config.file_name,
-                                                       config.size)
+                    head_element = self._head_formater(
+                        brand, config.file_name, config.size
+                    )
                     if head_element:
                         if brand.attribute_property.startswith("og:"):
                             open_graph_images.append(head_element)
@@ -34,7 +35,9 @@ class Images:
                         elif brand.attribute_name == "msapplication-TileImage":
                             ms_icon.append(head_element)
                             # LISTO
-                        elif brand.attribute_rel == "apple-touch-startup-image":
+                        elif (
+                            brand.attribute_rel == "apple-touch-startup-image"
+                        ):
                             apple_startup_icons.append(head_element)
                         else:
                             browser_icons.append(head_element)
@@ -50,10 +53,10 @@ class Images:
         )
 
     def _head_formater(
-            self,
-            brand_config,
-            filenam,
-            size: typing.Union[typing.List[int], None] = None,
+        self,
+        brand_config,
+        filenam,
+        size: typing.Union[typing.List[int], None] = None,
     ):
 
         if not brand_config.head_output:
@@ -86,7 +89,8 @@ class Images:
         # ???
         if brand_config.attribute_property:
             tag_element_list.append(
-                f"property='{brand_config.attribute_property}'")
+                f"property='{brand_config.attribute_property}'"
+            )
 
         # name, example:
         # name="msapplication-TileImage"
@@ -117,7 +121,8 @@ class Images:
         # ???
         if brand_config.attribute_content:
             tag_element_list.append(
-                f"content='{brand_config.attribute_content}'")
+                f"content='{brand_config.attribute_content}'"
+            )
 
         # Special content and href. Example:
         # content="/static/ms-icon-144x144.png"
