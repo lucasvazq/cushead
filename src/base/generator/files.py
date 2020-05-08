@@ -1,14 +1,16 @@
 import hashlib
 from os import path
-from typing import Dict, List, NoReturn, TypedDict, Union
+from typing import Dict
+from typing import List
+from typing import NoReturn
+from typing import TypedDict
+from typing import Union
 
 import jinja2
 
-from src.base.generator import parser
-from src.base.generator import images
-
-
 from src.base import configuration
+from src.base.generator import images
+from src.base.generator import parser
 
 IconFamily = List[Dict[str, configuration.ImageFormater]]
 
