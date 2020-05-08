@@ -73,8 +73,7 @@ class TextFilesGenerator(images.Images):
     def generate_index_hash(self) -> str:
         index_content = self.generate_index()["content"]
         index_hash = hashlib.sha1(index_content.encode('utf-8')).hexdigest()
-        short_hash = index_hash[0:6]
-        return short_hash
+        return index_hash[0:6]
 
     def setup_data(self) -> MiscData:
         misc_data = {}
@@ -110,10 +109,7 @@ class TextFilesGenerator(images.Images):
             misc_data['preview_image'] = image_name
 
         if any((og_image, twitter_image)) and any((title, description)):
-            if all((title, description)):
-                headline_conector = " - "
-            else:
-                headline_conector = ""
+            headline_conector = ' - ' if all((title, description)) else ''
             headline = f"{title or ''}{headline_conector}{description or ''}"
             misc_data["title_and_or_description"] = headline
 
