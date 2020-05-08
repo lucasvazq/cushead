@@ -97,7 +97,7 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         for output_folder_path in created_files:
             folder_conector, folder_extension = ((
                 "`", " ") if output_folder_path == last_item_created_files else
-                                                 ("|", "|"))
+                ("|", "|"))
             self.default_log(f" {folder_conector}-- {output_folder_path}")
             for file in created_files[output_folder_path]:
                 file_conector = ("`" if

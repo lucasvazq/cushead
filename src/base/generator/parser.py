@@ -118,7 +118,8 @@ class CustomHTMLParser(MLParser):
                  indentation: str,
                  one_line_tags: Optional[Tuple[str]] = None,
                  self_close_tags: Optional[Tuple[str]] = None) -> NoReturn:
-        super().__init__(indentation=indentation, one_line_tags=one_line_tags, self_close_tags=self_close_tags)
+        super().__init__(indentation=indentation,
+                         one_line_tags=one_line_tags, self_close_tags=self_close_tags)
         self.match_ie_sentence = re.compile(
             r'(?P<starttag>\[if IE]>)'
             r'( |\s)*'
@@ -240,6 +241,8 @@ class CustomHTMLParser(MLParser):
             self.has_data = False
 
 # indentation, camel_case_tags, regex_self_close_tags, one_line_tags, self_close_tags
+
+
 class CustomXMLParser(MLParser):
 
     def __init__(self, *,
@@ -248,7 +251,8 @@ class CustomXMLParser(MLParser):
                  regex_self_close_tags: Tuple[re.Pattern] = None,
                  one_line_tags: Optional[Tuple[str]] = None,
                  self_close_tags: Optional[Tuple[str]] = None) -> NoReturn:
-        super().__init__(indentation=indentation, one_line_tags=one_line_tags, self_close_tags=self_close_tags)
+        super().__init__(indentation=indentation,
+                         one_line_tags=one_line_tags, self_close_tags=self_close_tags)
         self.camel_case_tags = camel_case_tags or ()
         self.regex_self_close_tags = regex_self_close_tags or ()
 
