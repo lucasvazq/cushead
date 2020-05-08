@@ -12,7 +12,6 @@ from jinja2 import nodes
 from jinja2 import parser as jinja2_parser
 from jinja2 import runtime
 
-
 HTMLTagAttrs = Optional[List[Tuple[str, str]]]
 
 
@@ -25,9 +24,10 @@ class BaseParser(metaclass=abc.ABCMeta):
 
 
 class CustomPlainTextParser(BaseParser):
-    def __init__(
-        self, indentation_trigger=None, new_line_trigger=None, **kwargs
-    ):
+    def __init__(self,
+                 indentation_trigger=None,
+                 new_line_trigger=None,
+                 **kwargs):
         self.indentation_trigger = indentation_trigger or ()
         self.new_line_trigger = new_line_trigger or ()
         super().__init__(**kwargs)
@@ -52,9 +52,9 @@ class CustomPlainTextParser(BaseParser):
 class CustomScriptParser(BaseParser):
     def __init__(self, new_line_trigger=None, base_indentation=None, **kwargs):
         self.new_line_trigger = new_line_trigger or ()
-        self.endstart_delimiters_pattern = re.compile(
-            r"^(}|]|\)|;)+" r",? " r"({|\[|\()+$"
-        )
+        self.endstart_delimiters_pattern = re.compile(r"^(}|]|\)|;)+"
+                                                      r",? "
+                                                      r"({|\[|\()+$")
         self.base_indentation = bool(base_indentation)
         self.end_delimiters_pattern = re.compile(r".*({|\[|\()$")
         self.start_delimiters_pattern = re.compile(r"^(}|]|\)|;)+,?$")
@@ -100,8 +100,7 @@ class MLParser(BaseParser, html_parser.HTMLParser, metaclass=abc.ABCMeta):
     def handle_attrs(self, attrs):
         if attrs:
             attributes = " " + " ".join(
-                [f'{k}="{v}"' for k, v in dict(attrs).items()]
-            )
+                [f'{k}="{v}"' for k, v in dict(attrs).items()])
         else:
             attributes = ""
         return attributes
@@ -116,28 +115,25 @@ class MLParser(BaseParser, html_parser.HTMLParser, metaclass=abc.ABCMeta):
 
 class CustomHTMLParser(MLParser):
     def __init__(
-        self,
-        *,
-        indentation: str,
-        one_line_tags: Optional[Tuple[str]] = None,
-        self_close_tags: Optional[Tuple[str]] = None,
+            self,
+            *,
+            indentation: str,
+            one_line_tags: Optional[Tuple[str]] = None,
+            self_close_tags: Optional[Tuple[str]] = None,
     ) -> NoReturn:
         super().__init__(
             indentation=indentation,
             one_line_tags=one_line_tags,
             self_close_tags=self_close_tags,
         )
-        self.match_ie_sentence = re.compile(
-            r"(?P<starttag>\[if IE]>)"
-            r"( |\s)*"
-            r"(?P<data>.*(?!<!).)"
-            r"( |\s)*"
-            r"(?P<endtag><!\[endif])"
-        )
+        self.match_ie_sentence = re.compile(r"(?P<starttag>\[if IE]>)"
+                                            r"( |\s)*"
+                                            r"(?P<data>.*(?!<!).)"
+                                            r"( |\s)*"
+                                            r"(?P<endtag><!\[endif])")
 
-    def parse_element(
-        self, *, content: str, one_line: bool = False
-    ) -> NoReturn:
+    def parse_element(self, *, content: str,
+                      one_line: bool = False) -> NoReturn:
         if one_line:
             self.content[-1] += content
         else:
@@ -253,13 +249,13 @@ class CustomHTMLParser(MLParser):
 
 class CustomXMLParser(MLParser):
     def __init__(
-        self,
-        *,
-        indentation: str,
-        camel_case_tags: Optional[Tuple[str]] = None,
-        regex_self_close_tags: Tuple[re.Pattern] = None,
-        one_line_tags: Optional[Tuple[str]] = None,
-        self_close_tags: Optional[Tuple[str]] = None,
+            self,
+            *,
+            indentation: str,
+            camel_case_tags: Optional[Tuple[str]] = None,
+            regex_self_close_tags: Tuple[re.Pattern] = None,
+            one_line_tags: Optional[Tuple[str]] = None,
+            self_close_tags: Optional[Tuple[str]] = None,
     ) -> NoReturn:
         super().__init__(
             indentation=indentation,
@@ -282,9 +278,8 @@ class CustomXMLParser(MLParser):
 
         return False
 
-    def parse_element(
-        self, *, content: str, one_line: bool = False
-    ) -> NoReturn:
+    def parse_element(self, *, content: str,
+                      one_line: bool = False) -> NoReturn:
         if one_line:
             self.content[-1] += content
         else:
