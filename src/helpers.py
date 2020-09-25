@@ -46,31 +46,7 @@ def add_indent(element,
     return base_string + "".join(new_items)
 
 
-# IMPROVE THIS, make it dynamic
-def images_list() -> typing.List[str]:
-    """Returns a list of image file names that are in assets"""
-    return [
-        "favicon_ico_16px.ico",
-        "favicon_png_1600px.png",
-        "favicon_svg_scalable.svg",
-        "preview_png_500px.png",
-    ]
 
-
-def string_list_union(string_list: typing.Union[typing.List[str], None] = None
-                      ) -> str:
-    """Return a str list joined into a sentence
-
-    Example:
-        input = ['foo', 'bar', 'baz', 'etc']
-        output = 'foo, bar, baz and etc'
-    """
-    string_list = string_list or []
-    return "".join([
-        string + (", " if string in string_list[:-2] else
-                  (" and " if string == string_list[-2] else ""))
-        for string in string_list
-    ])
 
 
 def path_exists(file_path: str = "", key: str = ""):
@@ -82,12 +58,6 @@ def path_exists(file_path: str = "", key: str = ""):
                 f"PATH: {full_path}")
 
 
-def path_is_not_directory(file_path: str = "", key: str = ""):
-    full_path = os.path.join(os.getcwd(), file_path)
-    if not os.path.isfile(file_path):
-        return (f"'{key}' key ({file_path}) must be referred to a "
-                f"file path.\n"
-                f"FILE PATH: {full_path}")
 
 
 def create_folder(destination_file_path):
@@ -150,3 +120,72 @@ def key_exists(key, dictionary):
     """Check if a key is in a dictionary"""
     if key not in dictionary:
         return f"Miss '{key}' key and it's required in config file."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pathlib
+from typing import Iterable, Tuple, NamedTuple
+import textwrap
+
+
+class Image(NamedTuple):
+    reference: str
+    name: str
+    data: bytes
+
+def get_images_list() -> Tuple[Image]:
+    """Returns a list of image file names that are in assets"""
+    assets_path = pathlib.Path(pathlib.Path(__file__).parent, 'assets')
+    assets = (
+        ('favicon_ico', 'favicon_ico_16px.ico'),
+        ('favicon_png', 'favicon_png_1600px.png'),
+        ('favicon_svg', 'favicon_svg_scalable.svg'),
+        ('preview_png', 'preview_png_500px.png'),
+    )
+    return tuple(
+        Image(
+            reference=reference,
+            name=(assets_path / filename).name,
+            data=(assets_path / filename).read_bytes(),
+        )
+        for reference, filename in assets
+    )
+
+def string_list_union(
+    *,
+    string_list: Iterable[str],
+) -> str:
+    """Return a iterable represented into a sentence
+
+    Example:
+        input = ["foo", "bar", "baz", "etc"]
+        output = "foo, bar, baz and etc"
+    """
+    return " and ".join(", ".join(string_list).rsplit(", ", 1))
+
+
+def path_is_not_directory(
+    *,
+    key: str,
+    file_path: str,
+) -> str:
+    """doc"""
+    if not pathlib.Path(file_path).is_file():
+        full_path = pathlib.Path(pathlib.Path.cwd(), file_path)
+        return textwrap.dedent(f"""\
+            '{key}' key ({file_path}) must be referred to a file path.
+            REFERRED: {full_path}
+        """)

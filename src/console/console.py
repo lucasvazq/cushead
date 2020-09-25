@@ -5,6 +5,7 @@
 Classes:
     Main
 """
+
 import collections
 import json
 import os
@@ -17,7 +18,7 @@ import src.console.arguments
 import src.helpers
 
 
-class Console(src.console.arguments.Argparse, src.base.logs.Logs):
+class Console():
     """Class used to handle the CLI inputs and outputs
 
     Init:
@@ -106,38 +107,6 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
                 self.default_log(
                     f" {folder_extension}    {file_conector}-- {file}")
 
-    def run(self):
-        """Run the current arguments
-
-        Check the current arguments and execute the functions that correspond
-        to each one
-        """
-        files_to_generate = []
-        try:
-            if self.args.images:
-                files_to_generate.append(self.argument_boolean_image())
-            if self.args.config:
-                files_to_generate.append(self.argument_string_config())
-            if self.args.default:
-                files_to_generate.append(self.argument_string_default())
-        except KeyboardInterrupt as e:
-            self.error_log(e)
-
-        # Printear los archivos a generar a medida que se generan
-        print(files_to_generate)
-
-    # --images
-    def argument_boolean_image(self):
-        """Handle --images argument"""
-        src.helpers.create_folder(self.args.default)
-        binary_images = src.base.configuration.default_images()
-        destination_folder = os.path.dirname(self.args.default)
-        for binary_image in binary_images:
-            file_name = binary_image["filename"]
-            destination_file_path = os.path.join(destination_folder, file_name)
-            src.helpers.write_binary_file(binary_image["content"],
-                                          destination_file_path)
-
     # -config
     def argument_string_config(self):
         """Handle -config argument"""
@@ -154,11 +123,91 @@ class Console(src.console.arguments.Argparse, src.base.logs.Logs):
         self._create_files(
             src.base.generator.files.FilesGenerator(**initial_data).generate())
 
-    # -default
-    def argument_string_default(self):
-        """Handle -default argument"""
-        default_settings = src.base.configuration.default_settings()
-        src.helpers.write_unicode_file(default_settings, self.args.default)
-        fullpath = os.path.join(os.getcwd(), self.args.default)
-        self.default_log(f"CONFIG FILE: {self.args.default}\n"
-                         f"FULL PATH: {fullpath}")
+
+
+
+from typing import List, NoReturn, Iterable, NamedTuple
+from src.console import arguments
+from src.base import configuration
+from src import helpers
+import pathlib
+from src.base import logs
+from src.base import configuration
+from src.base.generator import files
+
+class File(NamedTuple):
+    """
+    doc
+    """
+    path: str
+    data: bytes
+
+
+def generate_default_config_file(
+    *,
+    path: str,
+) -> Iterable[File]:
+    """
+    doc
+    """
+    default_settings = configuration.default_settings()
+    parsed_settings = json.dumps(default_settings, indent=4).encode('utf-8')
+    return (
+        File(
+            path=path,
+            data=parsed_settings,
+        ),
+    )
+
+
+def generate_images(
+    *,
+    path: str,
+) -> Iterable[File]:
+    """
+    doc
+    """
+    destination_folder = pathlib.Path(path).parent
+    return (
+        File(
+            path=pathlib.Path(destination_folder, image.name),
+            data=image.data,
+        ) for image in helpers.get_images_list()
+    )
+
+
+def parse_config_file(
+    *,
+    path: str,
+) -> Iterable[File]:
+    """
+    doc
+    """
+    config = configuration.read_config_file(path=path)
+
+    files_to_generate = files.generate_files(config=config)
+    # !!!!!!!!!!!!!!! File instances
+
+    return ()
+
+
+def parse_args(
+    *,
+    args: List[str],
+) -> NoReturn:
+    """
+    doc
+    """
+    files_to_create = []
+    parsed_args = arguments.parse_args(args=args)
+    try:
+        if parsed_args.default:
+            files_to_create.extend(generate_default_config_file(path=parsed_args.default))
+        if parsed_args.images:
+            files_to_create.extend(generate_images(path=parsed_args.default))
+        if parsed_args.config:
+            files_to_create.extend(parse_config_file(path=parsed_args.config))
+    except KeyboardInterrupt as exception:
+        logs.error_log(message=exception)
+
+    files.create_files(files_to_create=files_to_create)

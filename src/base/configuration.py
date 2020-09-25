@@ -6,6 +6,7 @@ Classes:
     IconsFormatConfigStructure
     IconsFormatConfig
 """
+from math import exp
 import os
 import textwrap
 import typing
@@ -526,156 +527,171 @@ def default_images() -> typing.List[typing.Dict[str, str]]:
     return binary_files
 
 
-class UserConfigHandler(src.base.logs.Logs):
-    def transform(self,
-                  settings: typing.Union[dict, None] = None,
-                  main_path: str = "") -> dict:
-        """Format default settings to a dict for this package classes
 
-        Format default settings dictionary into a dictionary that the classes
-        under this package can understand
 
-        Args:
-            settings dict: Pass a default settings dict format
-            main_path: base path folder
 
-        Returns:
-            dict: config that the classes under this module can use
 
-        """
 
-        # Construct config
-        default_schema = schema.Schema({
-            schema.Optional("comment"): dict,
-            "configuration": {
-                "required": {
-                    "static_url": str,
-                },
-                schema.Optional("images"): {
-                    schema.Optional("favicon_ico"): str,
-                    schema.Optional("favicon_png"): str,
-                    schema.Optional("favicon_svg"): str,
-                    schema.Optional("preview_png"): str,
-                },
-                schema.Optional("general"): {
-                    schema.Optional("google_tag_manager"): str,
-                    schema.Optional("language"): str,
-                    schema.Optional("territory"): str,
-                    schema.Optional("domain"): str,
-                    schema.Optional("text_dir"): str,
-                    schema.Optional("title"): str,
-                    schema.Optional("description"): str,
-                    schema.Optional("subject"): str,
-                    schema.Optional("main_color"): str,
-                    schema.Optional("background_color"): str,
-                    schema.Optional("author_name"): str,
-                    schema.Optional("author_email"): str,
-                },
-                schema.Optional("social_media"): {
-                    schema.Optional("facebook_app_id"): str,
-                    schema.Optional("twitter_username"): str,
-                    schema.Optional("twitter_user_id"): str,
-                    schema.Optional("itunes_app_id"): str,
-                    schema.Optional("itunes_affiliate_data"): str,
-                },
-            },
-        })
+from src import info
+import json
+from json import decoder
+from src.base import logs
+import pathlib
+from PIL import Image
 
-        try:
-            default_schema.validate(settings)
-        except (
-                schema.SchemaWrongKeyError,
-                schema.SchemaMissingKeyError,
-                schema.SchemaError,
-        ) as exception:
-            self.error_log(exception)
 
-        # Make paths
-        # Define the main path as the passed throught -file argument
-        output_folder_path = os.path.join(main_path, "output")
-        static_folder_path = os.path.join(output_folder_path, "static")
-        custom_settings = dict(
-            {
-                "main_folder_path": main_path,
-                "output_folder_path": output_folder_path,
-                "static_folder_path": static_folder_path,
-            },
-            **settings["configuration"]["required"],
-            **settings["configuration"].get("general", {}),
-            **settings["configuration"].get("social_media", {}),
-            **settings["configuration"].get("static_url", {}),
+def read_config_file(*, path: str):
+    with open(path, "r") as file:
+        file_string = file.read()
+    try:
+        config = json.loads(file_string)
+    except decoder.JSONDecodeError:
+        logs.error_log(
+            f"Invalid json file format in ({path})\n"
+            f"FILE PATH: {path}\n"  # Esto debería ser full path
         )
 
-        if "images" in settings["configuration"]:
-            if "favicon_ico" in settings["configuration"]["images"]:
-                custom_settings["favicon_ico"] = os.path.join(
-                    custom_settings["main_folder_path"],
-                    settings["configuration"]["images"]["favicon_ico"],
-                )
-            if "favicon_png" in settings["configuration"]["images"]:
-                custom_settings["favicon_png"] = os.path.join(
-                    custom_settings["main_folder_path"],
-                    settings["configuration"]["images"]["favicon_png"],
-                )
-            if "favicon_svg" in settings["configuration"]["images"]:
-                custom_settings["favicon_svg"] = os.path.join(
-                    custom_settings["main_folder_path"],
-                    settings["configuration"]["images"]["favicon_svg"],
-                )
-            if "preview_png" in settings["configuration"]["images"]:
-                custom_settings["preview_png"] = os.path.join(
-                    custom_settings["main_folder_path"],
-                    settings["configuration"]["images"]["preview_png"],
-                )
+    output_folder_path = pathlib.Path(path).parent
+    return parse_config(path=output_folder_path, config=config)
 
-        return custom_settings
+
+def load_binary_image(*, path: str, expected_format: str):
+    try:
+        image = Image.open(path)
+    except IsADirectoryError:
+        logs.error_log('error')
+    except Image.UnidentifiedImageError:
+        logs.error_log('error')
+    if image.format != expected_format:
+        logs.error_log('error')
+    image.verify()
+    image.close()
+
+    # reload image
+    image = Image.open(path)
+
+    return image
+
+
+def parse_config(
+    *,
+    path: str,
+    config: dict,
+) -> dict:
+    """Format default settings to a dict for this package classes
+
+    Format default settings dictionary into a dictionary that the classes
+    under this package can understand
+
+    Args:
+        settings dict: Pass a default settings dict format
+        main_path: base path folder
+
+    Returns:
+        dict: config that the classes under this module can use
+
+    """
+
+    # Construct config
+    default_schema = schema.Schema({
+        "required": {
+            "static_url": str,
+        },
+        schema.Optional("images"): {
+            schema.Optional("favicon_ico"): str,
+            schema.Optional("favicon_png"): str,
+            schema.Optional("favicon_svg"): str,
+            schema.Optional("preview_png"): str,
+        },
+        schema.Optional("general"): {
+            schema.Optional("google_tag_manager"): str,
+            schema.Optional("language"): str,
+            schema.Optional("territory"): str,
+            schema.Optional("domain"): str,
+            schema.Optional("text_dir"): str,
+            schema.Optional("title"): str,
+            schema.Optional("description"): str,
+            schema.Optional("subject"): str,
+            schema.Optional("main_color"): str,
+            schema.Optional("background_color"): str,
+            schema.Optional("author_name"): str,
+            schema.Optional("author_email"): str,
+        },
+        schema.Optional("social_media"): {
+            schema.Optional("facebook_app_id"): str,
+            schema.Optional("twitter_username"): str,
+            schema.Optional("twitter_user_id"): str,
+            schema.Optional("itunes_app_id"): str,
+            schema.Optional("itunes_affiliate_data"): str,
+        },
+    })
+
+    try:
+        default_schema.validate(config)
+    except (
+            schema.SchemaWrongKeyError,
+            schema.SchemaMissingKeyError,
+            schema.SchemaError,
+    ) as exception:
+        logs.error_log(exception)
+
+    # Make paths
+    # Define the main path as the passed throught -file argument
+    output_folder_path = path / "output"
+    static_folder_path = output_folder_path / "static"
+    custom_settings = dict(
+        {
+            "main_folder_path": path,
+            "output_folder_path": output_folder_path,
+            "static_folder_path": static_folder_path,
+        },
+        **config["required"],
+        **config.get("general", {}),
+        **config.get("social_media", {}),
+        **config.get("static_url", {}),
+    )
+
+    if "images" in config:
+        if "favicon_ico" in config["images"]:
+            custom_settings["favicon_ico"] = load_binary_image(path=custom_settings["main_folder_path"] / config["images"]["favicon_ico"], expected_format='ICO')
+        if "favicon_png" in config["images"]:
+            custom_settings["favicon_png"] = load_binary_image(path=custom_settings["main_folder_path"] / config["images"]["favicon_png"], expected_format='PNG')
+        if "preview_png" in config["images"]:
+            custom_settings["preview_png"] = load_binary_image(path=custom_settings["main_folder_path"] / config["images"]["preview_png"], expected_format='PNG')
+        if "favicon_svg" in config["images"]:
+            custom_settings["favicon_svg"] = custom_settings["main_folder_path"] / config["images"]["favicon_svg"]
+
+    return custom_settings
 
 
 def default_settings() -> str:
     """Generate config file in indented JSON format"""
-
-    info = src.info.get_info()
-
-    settings = textwrap.dedent(f"""\
-        {{
-            'comment':  {{
-                'About': 'Config file used by python CUSHEAD',
-                'Format': 'JSON',
-                'Git': '{info['source']}',
-                'Documentation': '{info['documentation']}'
-            }},
-            'configuration': {{
-                'required': {{
-                    'static_url': '/static'
-                }},
-                'images': {{
-                    'favicon_ico': './favicon_ico_16px.ico',
-                    'favicon_png': './favicon_png_1600px.png',
-                    'favicon_svg': './favicon_svg_scalable.svg',
-                    'preview_png': './preview_png_500px.png'
-                }},
-                'general': {{
-                    'google_tag_manager': 'GTM-*******',
-                    'language': 'en',
-                    'territory': 'US',
-                    'domain': 'microsoft.com',
-                    'text_dir': 'ltr',
-                    'title': 'Microsoft',
-                    'description': 'Technology Solutions',
-                    'subject': 'Home Page',
-                    'main_color': '#ff0000',
-                    'background_color': '#ffffff',
-                    'author_name': '{info['author']}',
-                    'author_email': '{info['email']}'
-                }},
-                'social_media': {{
-                    'facebook_app_id': '123456',
-                    'twitter_username':'Microsoft',
-                    'twitter_user_id': '123456',
-                    'itunes_app_id': '123456',
-                    'itunes_affiliate_data': '123456'
-                }}
-            }}
-        }}""")
-    settings = settings.replace("'", '"')
-    return settings
+    package_info = info.get_info()
+    from src import helpers
+    return {
+        "required": {
+            "static_url": "/static",
+        },
+        "images": {image.reference: f"./{image.name}" for image in helpers.get_images_list()},
+        "general": {
+            "google_tag_manager": "GTM-*******",
+            "language": "en",
+            "territory": "US",
+            "domain": "microsoft.com",
+            "text_dir": "ltr",
+            "title": "Microsoft",
+            "description": "Technology Solutions",
+            "subject": "Home Page",
+            "main_color": "#ff0000",
+            "background_color": "#ffffff",
+            "author_name": package_info.author,
+            "author_email": package_info.email,
+        },
+        "social_media": {
+            "facebook_app_id": "123456",
+            "twitter_username": "Microsoft",
+            "twitter_user_id": "123456",
+            "itunes_app_id": "123456",
+            "itunes_affiliate_data": "123456",
+        },
+    }

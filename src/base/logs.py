@@ -11,42 +11,20 @@ Classes:
     Logs
     SpecialMessages
 """
+import os
 import sys
 import textwrap
+from typing import NoReturn
 
-import src.info
-import src.support
-
-
-class ColorProcessor:
-    """Class to handle the color processing
-
-    Init:
-        string str = ''
-
-    Methods:
-        default_color
-        error_color
-        presentation_color
-    """
-
-    def __init__(self, string: str = ""):
-        self.string = string
-
-    def default_color(self) -> str:
-        """Return a string with the default color"""
-        return self.string
-
-    def presentation_color(self) -> str:
-        """Return a string with presentation color"""
-        return (src.support.PRESENTATION_COLOR + self.string +
-                src.support.DEFAULT_COLOR)
+from src import info
+from src import support
 
 
-_INFO = src.info.get_info()
+_INFO = info.get_info()
+
 
 # presentation is in /docs/presentation.png
-PRESENTATION_MESSAGE = textwrap.dedent("""\
+PRESENTATION_MESSAGE = textwrap.dedent(f"""\
        ____  _   _  ____   _   _  _____     _     ____     ____ __   __
       / ___|| | | |/ ___| | | | || ____|   / \\   |  _ \\   |  _ \\\\ \\ / /
      | |    | | | |\\___ \\ | |_| ||  _|    / _ \\  | | | |  | |_) |\\ V /
@@ -55,78 +33,72 @@ PRESENTATION_MESSAGE = textwrap.dedent("""\
                                  __       _
                                  _/     /
                                 /    __/
-             UX / SEO         _/  __/           v {}
+             UX / SEO         _/  __/           v {_INFO.package_version}
                              / __/
                             / /
                            /'
 
-    Author: {}
-    Email: {}
-    Page: {}
-    License: {}
+    Author: {_INFO.author}
+    Email: {_INFO.email}
+    Page: {_INFO.author_page}
+    License: {_INFO.license}
 
-    Git: {}
-    Documentation: {}
-    For help run: {} -h
-    """)  # This line is blank
-PRESENTATION_MESSAGE = PRESENTATION_MESSAGE.format(
-    _INFO["package_version"],
-    _INFO["author"],
-    _INFO["email"],
-    _INFO["author_page"],
-    _INFO["license"],
-    _INFO["source"],
-    _INFO["documentation"],
-    _INFO["package_name"],
-)
+    Source: {_INFO.source}
+    Documentation: {_INFO.documentation}
+    For help run: {_INFO.package_name} -h
+""")
 
 
-class MessagesHandler:
-    """Handle different types of outputs
-
-    Methods:
-        @staticmethod default_stdout
-        @staticmethod error_exception
-        @staticmethod error_stdout
-        @staticmethod presentation_stdout
+def log(
+    *,
+    color: str,
+    message: str,
+    is_exit: bool,
+) -> NoReturn:
     """
-
-    # default section
-
-    @staticmethod
-    def default_stdout(message: str = ""):
-        class_instance = ColorProcessor(message + "\n")
-        sys.stdout.write(class_instance.default_color())
-
-    # error section
-
-    @staticmethod
-    def error_stdout(message: str = ""):
-        class_instance = ColorProcessor(message)
-        sys.exit(class_instance.default_color())
-
-    # presentation section
-
-    @staticmethod
-    def presentation_stdout(message: str = ""):
-        class_instance = ColorProcessor(message + "\n")
-        sys.stdout.write(class_instance.presentation_color())
-
-
-class Logs(MessagesHandler):
-    """Different output handler for different situations
-
-    Methods:
-        default_log
-        error_log
-        presentation_log
+    doc
     """
+    function = sys.exit if is_exit else sys.stdout.write
+    function(f"{color}{message}{support.DEFAULT_COLOR}\n")
 
-    def default_log(self, message: str = ""):
-        self.default_stdout(message)
 
-    def error_log(self, message: str = ""):
-        self.error_stdout(message)
+def error_log(
+    *,
+    message: str,
+) -> NoReturn:
+    """
+    doc
+    """
+    log(
+        color=support.ERROR_COLOR,
+        message=message,
+        is_exit=True
+    )
 
-    def presentation_log(self, message: str = ""):
-        self.presentation_stdout(message)
+
+def default_log(
+    *,
+    message: str,
+) -> NoReturn:
+    """
+    doc
+    """
+    log(
+        color=support.DEFAULT_COLOR,
+        message=message,
+        is_exit=False,
+    )
+
+
+def presentation_log(
+    *,
+    message: str,
+) -> NoReturn:
+    """
+    doc
+    """
+    log(
+        color=support.PRESENTATION_COLOR,
+        message=message,
+        is_exit=False,
+    )

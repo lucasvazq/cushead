@@ -1,0 +1,32 @@
+{
+    "required": {
+        "static_url": "/static"
+    },
+    "images": {
+        "favicon_ico": "./favicon_ico_16px.ico",
+        "favicon_png": "./favicon_png_1600px.png",
+        "favicon_svg": "./favicon_svg_scalable.svg",
+        "preview_png": "./preview_png_500px.png"
+    },
+    "general": {
+        "google_tag_manager": "GTM-*******",
+        "language": "en",
+        "territory": "US",
+        "domain": "microsoft.com",
+        "text_dir": "ltr",
+        "title": "Microsoft",
+        "description": "Technology Solutions",
+        "subject": "Home Page",
+        "main_color": "#ff0000",
+        "background_color": "#ffffff",
+        "author_name": "Lucas Vazquez",
+        "author_email": "lucas5zvazquez@gmail.com"
+    },
+    "social_media": {
+        "facebook_app_id": "123456",
+        "twitter_username": "Microsoft",
+        "twitter_user_id": "123456",
+        "itunes_app_id": "123456",
+        "itunes_affiliate_data": "123456"
+    }
+}
