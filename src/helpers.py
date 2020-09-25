@@ -25,9 +25,9 @@ def add_indent(element,
                 ))
     elif isinstance(element, dict):
         new_items.append(f"{INDENTATION * base}{{\n")
+        nested_indentation = INDENTATION * (base + 1)
         for key, value in element.items():
             nested_conector = "" if key == list(element.keys())[-1] else ","
-            nested_indentation = INDENTATION * (base + 1)
             if isinstance(value, dict):
                 new_items.append(
                     f'{nested_indentation}"{key}": {{\n{add_indent(value, base + 1, base_string)}{nested_indentation}}}{nested_conector}\n'

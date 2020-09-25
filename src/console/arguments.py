@@ -101,8 +101,7 @@ def parse_args(
     doc
     """
     parser = setup_parser()
-    parsed_args = validate_args(
+    return validate_args(
         parser=parser,
         args=args,
     )
-    return parsed_args

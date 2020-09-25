@@ -500,15 +500,6 @@ class IconsFormatConfig:
         browserconfig, manifest and opensearch related icons
         """
         return self._image_format_config()
-        return {
-            "favicon_ico": self._favicon_ico_icons_config(),
-            "favicon_png": self._favicon_png_icons_config(),
-            "favicon_svg": self._favicon_svg_icons_config(),
-            "preview_png": self._preview_png_icons_config(),
-            "browserconfig": self._browserconfig_icons_config(),
-            "manifest": self._manifest_icons_config(),
-            "opensearch": self._opensearch_icons_config(),
-        }
 
 
 def default_images() -> typing.List[typing.Dict[str, str]]:
