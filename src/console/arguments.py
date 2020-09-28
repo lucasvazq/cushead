@@ -1,13 +1,21 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+doc
+"""
 import argparse
+import pathlib
 import textwrap
 
 from src import helpers
 from src import info
-from src.base import logs
+from src.console import console
 
 
 def setup_parser() -> argparse.ArgumentParser:
-    """doc"""
+    """
+    doc
+    """
     package_info = info.get_info()
     name = package_info.package_name
     parser = argparse.ArgumentParser(
@@ -41,6 +49,7 @@ def setup_parser() -> argparse.ArgumentParser:
         dest="default",
         help="Path to output a default config file. Can use with --images",
     )
+
     # GROUP: options
     # -images
     images_names_list = (image.name for image in helpers.get_images_list())
@@ -60,49 +69,43 @@ def setup_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def validate_args(
-    *,
-    parser: argparse.ArgumentParser,
-    args: list,
-) -> argparse.ArgumentParser:
+def validate_args(*, parser: argparse.ArgumentParser, args: list) -> argparse.ArgumentParser:
     """
     doc
     """
 
     unrecognized_args = parser.parse_known_args(args)[1]
     if unrecognized_args:
-        logs.error_log(message=f"Unrecognized argument {unrecognized_args[0]}")
+        raise console.MainException(f"Unrecognized argument {unrecognized_args[0]}")
 
     # Re-parse arguments.
     parsed_args = parser.parse_args(args)
 
     if not (parsed_args.config or parsed_args.default):
-        logs.error_log(message="Miss Required arguments. Use -config or -default. Use -h for help")
+        raise console.MainException("Miss Required arguments. Use -config or -default. Use -h for help")
     if parsed_args.config and parsed_args.default:
-        logs.error_log(message="Can't use -config and -default arguments together.")
+        raise console.MainException("Can't use -config and -default arguments together.")
     if parsed_args.images and not parsed_args.default:
-        logs.error_log(message="Can't use --images without -default.")
+        raise console.MainException("Can't use --images without -default.")
     if parsed_args.config:
-        error = helpers.path_is_not_directory(
-            key="-config",
-            file_path=parsed_args.config,
-        )
-        if error:
-            logs.error_log(message=error)
+        reference = pathlib.Path(parsed_args.config)
+        if not reference.exists():
+            raise console.MainException('\n'.join((
+                f"'config' key ({reference}) must be referred to a path that exists.",
+                f"ABSOLUTE PATH: {reference.absolute()}",
+            )))
+        if not reference.is_file():
+            raise console.MainException('\n'.join((
+                f"'config' key ({reference}) must be referred to a file path.",
+                f"ABSOLUTE PATH: {reference.absolute()}",
+            )))
 
     return parsed_args
 
 
-def parse_args(
-    *,
-    args: list
-) -> argparse.Namespace:
+def parse_args(*, args: list) -> argparse.Namespace:
     """
     doc
     """
     parser = setup_parser()
-    parsed_args = validate_args(
-        parser=parser,
-        args=args,
-    )
-    return parsed_args
+    return validate_args(parser=parser, args=args)

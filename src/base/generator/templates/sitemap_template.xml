@@ -1,8 +1,0 @@
-{% include "complements/xml_declaration.xml" %}
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {% if "domain" in config %}
-    <url>
-      <loc>https://{{ config.domain }}/</loc>
-    </url>
-  {% endif %}
-</urlset>
