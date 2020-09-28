@@ -110,7 +110,7 @@ class TextFilesGenerator(images.Images):
             misc_data["preview_image"] = image_name
 
         if any((og_image, twitter_image)) and any((title, description)):
-            headline_conector = ' - ' if all((title, description)) else ''
+            headline_conector = " - " if all((title, description)) else ""
             headline = f"{title or ''}{headline_conector}{description or ''}"
             misc_data["title_and_or_description"] = headline
 
