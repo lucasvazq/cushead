@@ -196,7 +196,6 @@ def default_settings() -> str:
     """
     Generate config file in indented JSON format
     """
-    package_info = info.get_info()
     return {
         "required": {
             "static_url": "/static",
@@ -213,8 +212,8 @@ def default_settings() -> str:
             "subject": "Home Page",
             "main_color": "#ff0000",
             "background_color": "#ffffff",
-            "author_name": package_info.author,
-            "author_email": package_info.email,
+            "author_name": info.author,
+            "author_email": info.email,
         },
         "social_media": {
             "facebook_app_id": "123456",

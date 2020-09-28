@@ -11,8 +11,6 @@ from src import info
 from src import support
 
 
-_INFO = info.get_info()
-
 
 PRESENTATION_MESSAGE = textwrap.dedent(f"""\
        ____  _   _  ____   _   _  _____     _     ____     ____ __   __
@@ -23,19 +21,19 @@ PRESENTATION_MESSAGE = textwrap.dedent(f"""\
                                  __       _
                                  _/     /
                                 /    __/
-             UX / SEO         _/  __/           v {_INFO.package_version}
+             UX / SEO         _/  __/           v {info.package_version}
                              / __/
                             / /
                            /'
 
-    Author: {_INFO.author}
-    Email: {_INFO.email}
-    Page: {_INFO.author_page}
-    License: {_INFO.license}
+    Author: {info.author}
+    Email: {info.email}
+    Page: {info.author_page}
+    License: {info.package_license}
 
-    Source: {_INFO.source}
-    Documentation: {_INFO.documentation}
-    For help run: {_INFO.package_name} -h
+    Source: {info.source}
+    Documentation: {info.documentation}
+    For help run: {info.package_name} -h
 """)
 
 

@@ -1,48 +1,42 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Setup script"""
-import sys
-
+"""
+Setup script
+"""
 import setuptools
 
-import src.info
-import src.support
+from src import info
+from src import support
 
-# Check python version
-try:
-    _INFO = src.info.get_info()
-    src.support.Support(_INFO).check_for_installation()
-except src.support.Unsupported as exception:
-    sys.stdout.write(exception)
-    sys.exit()
+
+support.check_if_can_install()
+
 
 with open("README.md", "r") as fh:
     _LONG_DESCRIPTION = fh.read()
-_PYTHON_REQUIRES = ">={}.{}"
-_PYTHON_REQUIRES = _PYTHON_REQUIRES.format(*(_INFO["python_min_version"]))
 setuptools.setup(
-    name=_INFO["package_name"],
-    version=_INFO["package_version"],
-    scripts=[f"{_INFO['package_name']}.py"],
+    name=info.package_name,
+    version=info.package_version,
+    scripts=["{}.py".format(info.package_name)],
     entry_points={
-        "console_scripts": ["{0}={0}:main".format(_INFO["package_name"])]
+        "console_scripts": ["{0}={0}:main".format(info.package_name)]
     },
-    url=_INFO["source"],
+    url=info.source,
     project_urls={
-        "Documentation": _INFO["documentation"],
-        "Source": _INFO["source"],
+        "Documentation": info.documentation,
+        "Source": info.source,
     },
-    python_requires=_PYTHON_REQUIRES,
+    python_requires=">={}.{}".format(*(info.python_min_version)),
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=_INFO["required_packages"],
-    author=_INFO["author"],
-    author_email=_INFO["email"],
-    description=_INFO["description"],
+    install_requires=info.required_packages,
+    author=info.author,
+    author_email=info.email,
+    description=info.description,
     long_description=_LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    license=_INFO["license"],
-    keywords=_INFO["keywords"],
+    license=info.package_license,
+    keywords=info.keywords,
     platforms="any",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -52,7 +46,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3 :: Only",
     ],

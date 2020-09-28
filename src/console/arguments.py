@@ -16,12 +16,11 @@ def setup_parser() -> argparse.ArgumentParser:
     """
     doc
     """
-    package_info = info.get_info()
-    name = package_info.package_name
+    name = info.package_name
     parser = argparse.ArgumentParser(
-        prog=package_info.package_name,
+        prog=info.package_name,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage=f"{package_info.package_name} -config FILEPATH",
+        usage=f"{info.package_name} -config FILEPATH",
         epilog=textwrap.dedent(f"""\
             Examples:
             1) Generate default config file with images:

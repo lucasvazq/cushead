@@ -24,7 +24,6 @@ else:
     PRESENTATION_COLOR = "\033[1;34m"
 
 
-_INFO = info.get_info()
 _CURRENT_VERSION = sys.version_info[:2]
 
 
@@ -41,8 +40,8 @@ def get_unsupported_title(action):
             'current_minor',
         )
     )(
-        min_major=_INFO.python_min_version[0],
-        min_minor=_INFO.python_min_version[1],
+        min_major=info.python_min_version[0],
+        min_minor=info.python_min_version[1],
         current_major=_CURRENT_VERSION[0],
         current_minor=_CURRENT_VERSION[1],
     )
@@ -58,7 +57,7 @@ def get_unsupported_title(action):
             "but you're trying to {action} it with Python {current_major}.{current_minor}"
         ),
     )).format(
-        package_name=_INFO.package_name,
+        package_name=info.package_name,
         min_major=_SUPPORT_INFO.min_major,
         min_minor=_SUPPORT_INFO.min_minor,
         current_major=_SUPPORT_INFO.current_major,
@@ -78,7 +77,7 @@ def get_unsupported_installation_message():
             "This will update pip and setuptools, and install the latest version of {package_name},"
             "make sure you still running it with a supported version of Python"
         ),
-    )).format(package_name=_INFO.package_name)
+    )).format(package_name=info.package_name)
 
 
 def get_unsupported_execution_message():
@@ -87,12 +86,12 @@ def get_unsupported_execution_message():
         get_unsupported_title(action="run"),
         "Try running:",
         "    $ python3 {package_name}",
-    )).format(package_name=_INFO.package_name)
+    )).format(package_name=info.package_name)
 
 
 def check_version(message):
     """Check if current version is supported"""
-    if _CURRENT_VERSION < _INFO.python_min_version:
+    if _CURRENT_VERSION < info.python_min_version:
         sys.exit(
             "{error_color}{message}{default_color}".format(
                 error_color=ERROR_COLOR,
