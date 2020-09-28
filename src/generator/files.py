@@ -285,7 +285,7 @@ def generate_templates(*, config: dict):
             File(
                 path=config['output_folder_path'] / 'static' / 'browserconfig.xml',
                 data=template_loader.load_template(path='browserconfig.html')
-            ),
+            )
         )
 
     if "author_email" in config:
@@ -293,7 +293,7 @@ def generate_templates(*, config: dict):
             File(
                 path=config['output_folder_path'] / '.well-known' /'security',
                 data=template_loader.load_template(path='security.html')
-            ),
+            )
         )
 
     if "author_name" in config or "author_email" in config:
@@ -301,7 +301,7 @@ def generate_templates(*, config: dict):
             File(
                 path=config['output_folder_path'] / 'humans.txt',
                 data=template_loader.load_template(path='humans.html')
-            ),
+            )
         )
 
     return templates

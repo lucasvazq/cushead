@@ -5,15 +5,20 @@ doc
 """
 import json
 import pathlib
-from src import helpers
 import textwrap
+from json import decoder
+from typing import TypedDict
+from typing import Optional
+from typing import NoReturn
 
 import schema
+from PIL import IcoImagePlugin
 from PIL import Image
+from PIL import PngImagePlugin
 
+from src import helpers
 from src import info
 from src.console import console
-from json import decoder
 
 
 def read_config_file(*, path: str):
@@ -62,12 +67,34 @@ def load_binary_image(*, path: str, expected_format: str):
     return Image.open(path)
 
 
-def parse_config(*, path: str, config: dict) -> dict:
-    """
-    doc
-    """
+class Config(TypedDict):
+    main_folder_path: pathlib.Path
+    output_folder_path: pathlib.Path
+    static_url: str
+    favicon_ico: Optional[IcoImagePlugin.IcoImageFile]
+    favicon_png: Optional[PngImagePlugin.PngImageFile]
+    favicon_svg: Optional[pathlib.Path]
+    preview_png: Optional[PngImagePlugin.PngImageFile]
+    google_tag_manager: Optional[str]
+    language: Optional[str]
+    territory: Optional[str]
+    domain: Optional[str]
+    text_dir: Optional[str]
+    title: Optional[str]
+    description: Optional[str]
+    subject: Optional[str]
+    main_color: Optional[str]
+    background_color: Optional[str]
+    author_name: Optional[str]
+    author_email: Optional[str]
+    facebook_app_id: Optional[str]
+    twitter_username: Optional[str]
+    twitter_user_id: Optional[str]
+    itunes_app_id: Optional[str]
+    itunes_affiliate_data: Optional[str]
 
-    # Construct config
+
+def validate_config(*, config: dict) -> NoReturn:
     default_schema = schema.Schema({
         "required": {
             "static_url": str,
@@ -100,7 +127,6 @@ def parse_config(*, path: str, config: dict) -> dict:
             schema.Optional("itunes_affiliate_data"): str,
         },
     })
-
     try:
         default_schema.validate(config)
     except (
@@ -110,31 +136,60 @@ def parse_config(*, path: str, config: dict) -> dict:
     ) as exception:
         raise console.MainException(exception)
 
-    # Make paths
-    # Define the main path as the passed throught -file argument
-    output_folder_path = path / "output"
-    custom_settings = dict(
-        {
-            "main_folder_path": path,
-            "output_folder_path": output_folder_path,
-        },
-        **config["required"],
-        **config.get("general", {}),
-        **config.get("social_media", {}),
-        **config.get("static_url", {}),
-    )
 
+def parse_config(*, path: str, config: dict) -> Config:
+    """
+    doc
+    """
+
+    validate_config(config=config)
+
+    parsed_config = {
+        "main_folder_path": path,
+        "output_folder_path": path / "output",
+        **config["required"],
+        # images
+        'favicon_ico': '',
+        'favicon_png': '',
+        'favicon_svg': '',
+        'preview_png': '',
+
+        # general
+        'google_tag_manager': '',
+        'language': '',
+        'territory': '',
+        'domain': '',
+        'text_dir': '',
+        'title': '',
+        'description': '',
+        'subject': '',
+        'main_color': '',
+        'background_color': '',
+        'author_name': '',
+        'author_email': '',
+
+        # social_media
+        'facebook_app_id': '',
+        'twitter_username': '',
+        'twitter_user_id': '',
+        'itunes_app_id': '',
+        'itunes_affiliate_data': '',
+    }
     if "images" in config:
         if "favicon_ico" in config["images"]:
-            custom_settings["favicon_ico"] = load_binary_image(path=custom_settings["main_folder_path"] / config["images"]["favicon_ico"], expected_format='ICO')
+            parsed_config["favicon_ico"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["favicon_ico"], expected_format='ICO')
         if "favicon_png" in config["images"]:
-            custom_settings["favicon_png"] = load_binary_image(path=custom_settings["main_folder_path"] / config["images"]["favicon_png"], expected_format='PNG')
-        if "preview_png" in config["images"]:
-            custom_settings["preview_png"] = load_binary_image(path=custom_settings["main_folder_path"] / config["images"]["preview_png"], expected_format='PNG')
+            parsed_config["favicon_png"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["favicon_png"], expected_format='PNG')
         if "favicon_svg" in config["images"]:
-            custom_settings["favicon_svg"] = custom_settings["main_folder_path"] / config["images"]["favicon_svg"]
+            parsed_config["favicon_svg"] = parsed_config["main_folder_path"] / config["images"]["favicon_svg"]
+        if "preview_png" in config["images"]:
+            parsed_config["preview_png"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["preview_png"], expected_format='PNG')
+    parsed_config.update(
+        **config.get("general", {}),
+        **config.get("social_media", {}),
+    )
 
-    return custom_settings
+    return parsed_config
 
 
 def default_settings() -> str:
