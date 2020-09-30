@@ -10,6 +10,9 @@ from src import support
 
 
 def main():
+    """
+    doc
+    """
     support.check_if_can_execute()
     console = importlib.import_module("src.console.console")
     console.parse_args(args=sys.argv[1:])

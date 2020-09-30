@@ -64,6 +64,9 @@ class ImageData(NamedTuple):
 
 
 def convert_image_to_bytes(image):
+    """
+    doc
+    """
     io_file = io.BytesIO()
     image.save(io_file, format=image.format)
     return io_file.read()
@@ -242,6 +245,9 @@ def generate_template_hash(*, template) -> str:
 
 
 def generate_templates(*, config: dict):
+    """
+    doc
+    """
     templates_path = pathlib.Path(pathlib.Path(__file__).parent, 'templates')
     template_loader = TemplateLoader(templates_path=templates_path)
     template_loader.add_template_variable(**{'config': config})

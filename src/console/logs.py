@@ -21,19 +21,19 @@ PRESENTATION_MESSAGE = textwrap.dedent(f"""\
                                  __       _
                                  _/     /
                                 /    __/
-             UX / SEO         _/  __/           v {info.package_version}
+             UX / SEO         _/  __/           v {info.PACKAGE_NAME}
                              / __/
                             / /
                            /'
 
-    Author: {info.author}
-    Email: {info.email}
-    Page: {info.author_page}
-    License: {info.package_license}
+    Author: {info.AUTHOR}
+    Email: {info.EMAIL}
+    Page: {info.AUTHOR_PAGE}
+    License: {info.PACKAGE_LICENSE}
 
-    Source: {info.source}
-    Documentation: {info.documentation}
-    For help run: {info.package_name} -h
+    Source: {info.SOURCE}
+    Documentation: {info.DOCUMENTATION}
+    For help run: {info.PACKAGE_NAME} -h
 """)
 
 

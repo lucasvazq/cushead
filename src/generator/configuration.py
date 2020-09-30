@@ -5,7 +5,6 @@ doc
 """
 import json
 import pathlib
-import textwrap
 from json import decoder
 from typing import TypedDict
 from typing import Optional
@@ -16,9 +15,9 @@ from PIL import IcoImagePlugin
 from PIL import Image
 from PIL import PngImagePlugin
 
+from src import exceptions
 from src import helpers
 from src import info
-from src.console import console
 
 
 def read_config_file(*, path: str):
@@ -29,11 +28,12 @@ def read_config_file(*, path: str):
         file_string = file.read()
     try:
         config = json.loads(file_string)
-    except decoder.JSONDecodeError:
-        raise console.MainException(textwrap.dedent(f"""\
-            Invalid json file format in ({path})
-            ABSOLUTE PATH: {path.absolute()}
-        """))
+    except decoder.JSONDecodeError as exception:
+        raise exceptions.MainException("".join((
+            f"Invalid json file format in ({path})",
+            f"ABSOLUTE PATH: {path.absolute()}",
+            f"Exception: {exception}"
+        )))
 
     output_folder_path = pathlib.Path(path).parent
     return parse_config(path=output_folder_path, config=config)
@@ -45,21 +45,23 @@ def load_binary_image(*, path: str, expected_format: str):
     """
     try:
         image = Image.open(path)
-    except IsADirectoryError:
-        raise console.MainException(textwrap.dedent(f"""\
-            Image reference must be a file, not a directory
-            ABSOLUTE PATH: {path.absolute()}
-        """))
-    except Image.UnidentifiedImageError:
-        raise console.MainException(textwrap.dedent(f"""\
-            Can't identify image file
-            ABSOLUTE PATH: {path.absolute()}
-        """))
+    except IsADirectoryError as exception:
+        raise exceptions.MainException("".join((
+            "Image reference must be a file, not a directory",
+            f"ABSOLUTE PATH: {path.absolute()}",
+            f"Exception: {exception}",
+        )))
+    except Image.UnidentifiedImageError as exception:
+        raise exceptions.MainException("".join((
+            "Can't identify image file",
+            f"ABSOLUTE PATH: {path.absolute()}",
+            f"Exception: {exception}",
+        )))
     if image.format != expected_format:
-        raise console.MainException(textwrap.dedent(f"""\
-            Wrong image format. Expected {expected_format}, received {image.format}
-            ABSOLUTE PATH: {path.absolute()}
-        """))
+        raise exceptions.MainException("".join((
+            f"Wrong image format. Expected {expected_format}, received {image.format}",
+            f"ABSOLUTE PATH: {path.absolute()}",
+        )))
     image.verify()
     image.close()
 
@@ -68,6 +70,9 @@ def load_binary_image(*, path: str, expected_format: str):
 
 
 class Config(TypedDict):
+    """
+    doc
+    """
     main_folder_path: pathlib.Path
     output_folder_path: pathlib.Path
     static_url: str
@@ -95,6 +100,9 @@ class Config(TypedDict):
 
 
 def validate_config(*, config: dict) -> NoReturn:
+    """
+    doc
+    """
     default_schema = schema.Schema({
         "required": {
             "static_url": str,
@@ -134,7 +142,7 @@ def validate_config(*, config: dict) -> NoReturn:
             schema.SchemaMissingKeyError,
             schema.SchemaError,
     ) as exception:
-        raise console.MainException(exception)
+        raise exceptions.MainException(exception)
 
 
 def parse_config(*, path: str, config: dict) -> Config:
@@ -212,8 +220,8 @@ def default_settings() -> str:
             "subject": "Home Page",
             "main_color": "#ff0000",
             "background_color": "#ffffff",
-            "author_name": info.author,
-            "author_email": info.email,
+            "author_name": info.AUTHOR,
+            "author_email": info.EMAIL,
         },
         "social_media": {
             "facebook_app_id": "123456",

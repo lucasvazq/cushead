@@ -29,7 +29,7 @@ def get_unsupported_title(action):
     """
     doc
     """
-    _SUPPORT_INFO = namedtuple(
+    support_info = namedtuple(
         typename='SupportString',
         field_names=(
             'min_major',
@@ -38,8 +38,8 @@ def get_unsupported_title(action):
             'current_minor',
         )
     )(
-        min_major=info.python_min_version[0],
-        min_minor=info.python_min_version[1],
+        min_major=info.PYTHON_MIN_VERSION[0],
+        min_minor=info.PYTHON_MIN_VERSION[1],
         current_major=_CURRENT_VERSION[0],
         current_minor=_CURRENT_VERSION[1],
     )
@@ -55,11 +55,11 @@ def get_unsupported_title(action):
             "but you're trying to {action} it with Python {current_major}.{current_minor}"
         ),
     )).format(
-        package_name=info.package_name,
-        min_major=_SUPPORT_INFO.min_major,
-        min_minor=_SUPPORT_INFO.min_minor,
-        current_major=_SUPPORT_INFO.current_major,
-        current_minor=_SUPPORT_INFO.current_minor,
+        package_name=info.PACKAGE_NAME,
+        min_major=support_info.min_major,
+        min_minor=support_info.min_minor,
+        current_major=support_info.current_major,
+        current_minor=support_info.current_minor,
         action=action,
     )
 
@@ -75,7 +75,7 @@ def get_unsupported_installation_message():
             "This will update pip and setuptools, and install the latest version of {package_name},"
             "make sure you still running it with a supported version of Python"
         ),
-    )).format(package_name=info.package_name)
+    )).format(package_name=info.PACKAGE_NAME)
 
 
 def get_unsupported_execution_message():
@@ -84,12 +84,12 @@ def get_unsupported_execution_message():
         get_unsupported_title(action="run"),
         "Try running:",
         "    $ python3 {package_name}",
-    )).format(package_name=info.package_name)
+    )).format(package_name=info.PACKAGE_NAME)
 
 
 def check_version(message):
     """Check if current version is supported"""
-    if _CURRENT_VERSION < info.python_min_version:
+    if _CURRENT_VERSION < info.PYTHON_MIN_VERSION:
         sys.exit(
             "{error_color}{message}{default_color}".format(
                 error_color=ERROR_COLOR,

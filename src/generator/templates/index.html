@@ -11,6 +11,7 @@
     {#- Google Tag Manager. We include at top, after the most important tags, to capture the user interaction as soon as possible. #}
     {%+ if "google_tag_manager" in config -%}
     {% oneline %}
+    {{ config.title }}
     <script>
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

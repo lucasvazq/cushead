@@ -15,28 +15,28 @@ support.check_if_can_install()
 with open("README.md", "r") as fh:
     _LONG_DESCRIPTION = fh.read()
 setuptools.setup(
-    name=info.package_name,
-    version=info.package_version,
-    scripts=["{}.py".format(info.package_name)],
+    name=info.PACKAGE_NAME,
+    version=info.PACKAGE_VERSION,
+    scripts=["{}.py".format(info.PACKAGE_NAME)],
     entry_points={
-        "console_scripts": ["{0}={0}:main".format(info.package_name)]
+        "console_scripts": ["{0}={0}:main".format(info.PACKAGE_NAME)]
     },
-    url=info.source,
+    url=info.SOURCE,
     project_urls={
-        "Documentation": info.documentation,
-        "Source": info.source,
+        "Documentation": info.DOCUMENTATION,
+        "Source": info.SOURCE,
     },
-    python_requires=">={}.{}".format(*(info.python_min_version)),
+    python_requires=">={}.{}".format(*(info.PYTHON_MIN_VERSION)),
     packages=setuptools.find_packages(),
     include_package_data=True,
-    install_requires=info.required_packages,
-    author=info.author,
-    author_email=info.email,
-    description=info.description,
+    install_requires=info.REQUIRED_PACKAGES,
+    author=info.AUTHOR,
+    author_email=info.EMAIL,
+    description=info.DESCRIPTION,
     long_description=_LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    license=info.package_license,
-    keywords=info.keywords,
+    license=info.PACKAGE_LICENSE,
+    keywords=info.KEYWORDS,
     platforms="any",
     classifiers=[
         "Development Status :: 5 - Production/Stable",

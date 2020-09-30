@@ -6,15 +6,15 @@ Informative module
 """
 
 
-package_name = "cushead"
-package_version = "3.1.8"
-python_min_version = (3, 8)
-source = "https://github.com/lucasvazq/{}".format(package_name)
-documentation = "https://github.com/lucasvazq/{}/blob/master/README.md".format(package_name)
-required_packages = ("python-resize-image", "Pillow")
-author = "Lucas Vazquez"
-email = "lucas5zvazquez@gmail.com"
-description = "CLI that help you to improve the SEO and UX of your websites."
-package_license = "MIT"
-keywords = "SEO, meta-tags, UX, PWA, front-end, favicon, manifest, robots, browserconfig, sitemap, opensearch"
-author_page = "https://github.com/lucasvazq"
+PACKAGE_NAME = "cushead"
+PACKAGE_VERSION = "3.1.8"
+PYTHON_MIN_VERSION = (3, 8)
+SOURCE = "https://github.com/lucasvazq/{}".format(PACKAGE_NAME)
+DOCUMENTATION = "https://github.com/lucasvazq/{}/blob/master/README.md".format(PACKAGE_NAME)
+REQUIRED_PACKAGES = ("python-resize-image", "Pillow")
+AUTHOR = "Lucas Vazquez"
+EMAIL = "lucas5zvazquez@gmail.com"
+DESCRIPTION = "CLI that help you to improve the SEO and UX of your websites."
+PACKAGE_LICENSE = "MIT"
+KEYWORDS = "SEO, meta-tags, UX, PWA, front-end, favicon, manifest, robots, browserconfig, sitemap, opensearch"
+AUTHOR_PAGE = "https://github.com/lucasvazq"

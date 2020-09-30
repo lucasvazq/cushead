@@ -7,20 +7,20 @@ import argparse
 import pathlib
 import textwrap
 
+from src import exceptions
 from src import helpers
 from src import info
-from src.console import console
 
 
 def setup_parser() -> argparse.ArgumentParser:
     """
     doc
     """
-    name = info.package_name
+    name = info.PACKAGE_NAME
     parser = argparse.ArgumentParser(
-        prog=info.package_name,
+        prog=info.PACKAGE_NAME,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage=f"{info.package_name} -config FILEPATH",
+        usage=f"{info.PACKAGE_NAME} -config FILEPATH",
         epilog=textwrap.dedent(f"""\
             Examples:
             1) Generate default config file with images:
@@ -75,26 +75,26 @@ def validate_args(*, parser: argparse.ArgumentParser, args: list) -> argparse.Ar
 
     unrecognized_args = parser.parse_known_args(args)[1]
     if unrecognized_args:
-        raise console.MainException(f"Unrecognized argument {unrecognized_args[0]}")
+        raise exceptions.MainException(f"Unrecognized argument {unrecognized_args[0]}")
 
     # Re-parse arguments.
     parsed_args = parser.parse_args(args)
 
     if not (parsed_args.config or parsed_args.default):
-        raise console.MainException("Miss Required arguments. Use -config or -default. Use -h for help")
+        raise exceptions.MainException("Miss Required arguments. Use -config or -default. Use -h for help")
     if parsed_args.config and parsed_args.default:
-        raise console.MainException("Can't use -config and -default arguments together.")
+        raise exceptions.MainException("Can't use -config and -default arguments together.")
     if parsed_args.images and not parsed_args.default:
-        raise console.MainException("Can't use --images without -default.")
+        raise exceptions.MainException("Can't use --images without -default.")
     if parsed_args.config:
         reference = pathlib.Path(parsed_args.config)
         if not reference.exists():
-            raise console.MainException('\n'.join((
+            raise exceptions.MainException('\n'.join((
                 f"'config' key ({reference}) must be referred to a path that exists.",
                 f"ABSOLUTE PATH: {reference.absolute()}",
             )))
         if not reference.is_file():
-            raise console.MainException('\n'.join((
+            raise exceptions.MainException('\n'.join((
                 f"'config' key ({reference}) must be referred to a file path.",
                 f"ABSOLUTE PATH: {reference.absolute()}",
             )))

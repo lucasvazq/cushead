@@ -7,19 +7,13 @@ import json
 import pathlib
 from typing import List, NoReturn, Tuple
 
+from src import exceptions
 from src import helpers
 from src.generator import configuration
 from src.generator import files
 from src.console import arguments
 from src.console import files_creator
 from src.console import logs
-
-
-class MainException(Exception):
-    """
-    doc
-    """
-    pass
 
 
 def generate_default_config_file(*, path: str) -> Tuple[files.File]:
@@ -71,5 +65,5 @@ def parse_args(*, args: List[str]) -> NoReturn:
         if parsed_args.config:
             files_to_create.extend(parse_config_file(path=parsed_args.config))
         files_creator.create_files(files_to_create=files_to_create)
-    except (KeyboardInterrupt, MainException) as exception:
+    except (KeyboardInterrupt, exceptions.MainException) as exception:
         logs.error_log(message=exception)

@@ -10,11 +10,19 @@ from typing import NoReturn
 
 
 class DirNode:
+    """
+    doc
+    """
+
     def __init__(self, name):
         self.elements = {}
         self.name = name
 
     def add_child(self, parts, data):
+        """
+        doc
+        """
+
         if parts[1:]:
             if parts[0] not in self.elements:
                 self.elements[parts[0]] = DirNode(parts[0])
@@ -22,13 +30,21 @@ class DirNode:
         else:
             self.elements[parts[0]] = FileNode(parts[0], data)
 
+
 class FileNode:
+    """
+    doc
+    """
+
     def __init__(self, name, data):
         self.name = name
         self.data = data
 
 
 def get_files_tree(*, files_to_create: DirNode) -> DirNode:
+    """
+    doc
+    """
     base_path = DirNode(name='')
     for file in files_to_create:
         base_path.add_child(parts=pathlib.Path(file.path).parts, data=file.data)
