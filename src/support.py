@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Handle supported situations
-
-Classes:
-    Messages
+"""
+doc
 """
 # IMPORTANT: This module would be python2 and python3 compatible
 
