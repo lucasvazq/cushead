@@ -1,0 +1,28 @@
+# Python auto-linter
+
+
+name: Python auto-linter [develop]
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  auto-linter:
+    name: Python auto-linter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: pylint
+        uses: lucasvazq/auto-linter@master
+        with:
+          args: "pylint --help"
