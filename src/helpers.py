@@ -19,7 +19,7 @@ class Image(NamedTuple):
 
 def get_images_list() -> Tuple[Image]:
     """
-    Returns a list of image file names that are in assets
+    doc
     """
     assets_path = pathlib.Path(pathlib.Path(__file__).parent, 'assets')
     assets = (
