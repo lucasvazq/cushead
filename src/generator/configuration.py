@@ -202,7 +202,7 @@ def parse_config(*, path: str, config: dict) -> Config:
 
 def default_settings() -> str:
     """
-    Generate config file in indented JSON format
+    doc
     """
     return {
         "required": {
