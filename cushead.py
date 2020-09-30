@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Main script"""
+"""
+Main script thats run the CLI feature
+"""
 import importlib
 import sys
 
