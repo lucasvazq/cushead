@@ -284,3 +284,36 @@ def parse_config(*, path: str, config: dict) -> Config:
             parsed_config["preview_png"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["preview_png"], expected_format='PNG')
     parsed_config.update(**config.get("general"))
     return parsed_config
+
+
+def default_settings() -> str:
+    """
+    doc
+    """
+    return {
+        "required": {
+            "static_url": "/static",
+        },
+        "images": {image.reference: f"./{image.name}" for image in helpers.get_images_list()},
+        "general": {
+            "google_tag_manager": "GTM-*******",
+            "language": "en",
+            "territory": "US",
+            "domain": "microsoft.com",
+            "text_dir": "ltr",
+            "title": "Microsoft",
+            "description": "Technology Solutions",
+            "subject": "Home Page",
+            "main_color": "#ff0000",
+            "background_color": "#ffffff",
+            "author_name": info.AUTHOR,
+            "author_email": info.EMAIL,
+        },
+        "social_media": {
+            "facebook_app_id": "123456",
+            "twitter_username": "Microsoft",
+            "twitter_user_id": "123456",
+            "itunes_app_id": "123456",
+            "itunes_affiliate_data": "123456",
+        },
+    }
