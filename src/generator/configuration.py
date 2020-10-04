@@ -4,7 +4,6 @@ Module where are all things related to the configurations.
 import pathlib
 import re
 from typing import Any
-from typing import Dict
 from typing import Optional
 from typing import TypedDict
 from typing import Union
@@ -16,8 +15,6 @@ from PIL import PngImagePlugin
 import schema
 
 from src import exceptions
-from src import helpers
-from src import info
 
 
 class Config(TypedDict):

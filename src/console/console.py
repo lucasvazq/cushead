@@ -13,9 +13,9 @@ from typing import Tuple
 from typing import TypedDict
 
 from src import exceptions
-from src import helpers
 from src import info
 from src.console import arguments
+from src.console import assets
 from src.console import files_creator
 from src.generator import configuration
 from src.generator import files
@@ -97,7 +97,7 @@ def get_default_config() -> DefaultConfig:
     Returns:
         a dict with the default config.
     """
-    images = helpers.get_assets_images()
+    images = assets.get_assets_images()
     return DefaultConfig({
         "static_url": "/static",
         "favicon_ico": images.favicon_ico.name,
@@ -150,7 +150,7 @@ def generate_images(*, path: pathlib.Path) -> Tuple[files.File, ...]:
         A tuple of images ready to save.
     """
     destination_folder = pathlib.Path(path).parent
-    images = helpers.get_assets_images()
+    images = assets.get_assets_images()
     return (
         files.File(path=destination_folder / images.favicon_ico.name, data=images.favicon_ico.data),
         files.File(path=destination_folder / images.favicon_png.name, data=images.favicon_png.data),

@@ -6,10 +6,9 @@ from __future__ import annotations
 import pathlib
 from typing import Dict
 from typing import List
-from typing import NoReturn
+from typing import Optional
 from typing import Tuple
 from typing import Union
-from typing import Optional
 
 from src.generator import files
 
@@ -19,18 +18,19 @@ class Node:
     Class used to represent a parent node.
     """
 
-    def __init__(self: Node, name: str, data: Optional[bytes] = None) -> None:
+    def __init__(self, name: str, data: Optional[bytes] = None) -> None:
         """
         Create a parent node.
 
         Args:
             name: the node name.
+            data: the node data.
         """
         self.name = name
         self.data = data
         self.elements: Dict[str, Union[Node]] = {}
 
-    def add_child(self: Node, parts: Tuple[str, ...], data: bytes) -> None:
+    def add_child(self, parts: Tuple[str, ...], data: bytes) -> None:
         """
         Add a child to node.
 

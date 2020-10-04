@@ -21,7 +21,7 @@ class OneLineExtension(ext.Extension):
     # A tuple of names that trigger the extension.
     tags = {'oneline'}
 
-    def parse(self: OneLineExtension, parser: jinja2_parser.Parser) -> Any:
+    def parse(self, parser: jinja2_parser.Parser) -> Any:
         """
         This method is called when any of tags is recognized.
 

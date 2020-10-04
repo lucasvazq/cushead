@@ -9,7 +9,6 @@ import pathlib
 from collections import namedtuple
 from typing import List
 from typing import NamedTuple
-from typing import NoReturn
 from typing import Tuple
 from typing import Union
 
@@ -240,7 +239,7 @@ class TemplateLoader:
     Handle the jinja template loader.
     """
 
-    def __init__(self: TemplateLoader, *, templates_path: pathlib.Path) -> None:
+    def __init__(self, *, templates_path: pathlib.Path) -> None:
         """
         Create a template loader of jinja2.
 
@@ -251,7 +250,7 @@ class TemplateLoader:
         self.template_parser = jinja2.Environment(loader=template_loader, extensions=['src.generator.jinja_extension.OneLineExtension'])
         self.template_parser.lstrip_blocks = True
 
-    def add_template_variable(self: TemplateLoader, name: str, value: Union[configuration.Config, str]) -> None:
+    def add_template_variable(self, name: str, value: Union[configuration.Config, str]) -> None:
         """
         Add variable to the template loader.
 
@@ -261,7 +260,7 @@ class TemplateLoader:
         """
         self.template_parser.globals.update({name: value})
 
-    def render_template(self: TemplateLoader, *, path: str) -> bytes:
+    def render_template(self, *, path: str) -> bytes:
         """
         Render a template.
 

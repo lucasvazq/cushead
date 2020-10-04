@@ -7,8 +7,8 @@ import textwrap
 from typing import List
 
 from src import exceptions
-from src import helpers
 from src import info
+from src.console import assets
 
 
 def setup_parser() -> argparse.ArgumentParser:
@@ -49,7 +49,7 @@ def setup_parser() -> argparse.ArgumentParser:
         help="Path to output a default config file. Can use with --images.",
     )
 
-    images = helpers.get_assets_images()
+    images = assets.get_assets_images()
     assets_images = f"{images.favicon_ico.name}, {images.favicon_png.name}, {images.favicon_svg.name} and {images.preview_png.name}"
     optional_arguments.add_argument(
         "--images",
