@@ -3,7 +3,8 @@ Module where are all things related to the configurations.
 """
 import pathlib
 import re
-from typing import NoReturn
+from typing import Any
+from typing import Dict
 from typing import Optional
 from typing import TypedDict
 from typing import Union
@@ -27,10 +28,10 @@ class Config(TypedDict):
     main_folder_path: pathlib.Path
     output_folder_path: pathlib.Path
     static_url: str
-    favicon_ico: Optional[IcoImagePlugin.IcoImageFile]
-    favicon_png: Optional[PngImagePlugin.PngImageFile]
-    favicon_svg: Optional[pathlib.Path]
-    preview_png: Optional[PngImagePlugin.PngImageFile]
+    favicon_ico: Union[IcoImagePlugin.IcoImageFile, None]
+    favicon_png: Union[PngImagePlugin.PngImageFile, None]
+    favicon_svg: Union[pathlib.Path, None]
+    preview_png: Union[PngImagePlugin.PngImageFile, None]
     google_tag_manager: Optional[str]
     language: Optional[str]
     territory: Optional[str]
@@ -50,94 +51,7 @@ class Config(TypedDict):
     itunes_affiliate_data: Optional[str]
 
 
-class RequiredConfig(TypedDict):
-    """
-    The structure of the required part of the default config.
-    """
-
-    static_url: str
-
-
-class ImagesConfig(TypedDict):
-    """
-    The structure of the images part of the default config.
-    """
-
-    favicon_ico: str
-    favicon_png: str
-    favicon_svg: str
-    preview_png: str
-
-
-class GeneralConfig(TypedDict):
-    """
-    The structure of the general part of the default config.
-    """
-
-    google_tag_manager: str
-    language: str
-    territory: str
-    domain: str
-    text_dir: str
-    title: str
-    description: str
-    subject: str
-    main_color: str
-    background_color: str
-    author_name: str
-    author_email: str
-    facebook_app_id: str
-    twitter_username: str
-    twitter_user_id: str
-    itunes_app_id: str
-    itunes_affiliate_data: str
-
-
-class DefaultConfig(TypedDict):
-    """
-    The default config structure.
-    """
-
-    required: RequiredConfig
-    images: ImagesConfig
-    general: GeneralConfig
-
-
-def get_default_config() -> DefaultConfig:
-    """
-    Generate the default config.
-
-    Returns:
-        a dict with the default config.
-    """
-    return {
-        "required": {
-            "static_url": "/static",
-        },
-        "images": {image.reference: f"./{image.name}" for image in helpers.get_assets_list()},
-        "general": {
-            "google_tag_manager": "GTM-*******",
-            "language": "en",
-            "territory": "US",
-            "domain": "microsoft.com",
-            "text_dir": "ltr",
-            "title": "Microsoft",
-            "description": "Technology Solutions",
-            "subject": "Home Page",
-            "main_color": "#ff0000",
-            "background_color": "#ffffff",
-            "author_name": info.AUTHOR,
-            "author_email": info.EMAIL,
-            "facebook_app_id": "123456",
-            "twitter_username": "Microsoft",
-            "twitter_user_id": "123456",
-            "itunes_app_id": "123456",
-            "itunes_affiliate_data": "123456",
-        },
-    }
-
-
-def validate_config(*, config: Config) -> NoReturn:
+def validate_config(*, config: Any) -> None:
     """
     Validate a configuration.
 
@@ -148,34 +62,28 @@ def validate_config(*, config: Config) -> NoReturn:
         InvalidConfiguration: when the config isn't valid.
     """
     default_schema = schema.Schema({
-        "required": {
-            "static_url": str,
-        },
-        schema.Optional("images"): {
-            schema.Optional("favicon_ico"): str,
-            schema.Optional("favicon_png"): str,
-            schema.Optional("favicon_svg"): str,
-            schema.Optional("preview_png"): str,
-        },
-        schema.Optional("general"): {
-            schema.Optional("google_tag_manager"): str,
-            schema.Optional("language"): str,
-            schema.Optional("territory"): str,
-            schema.Optional("domain"): str,
-            schema.Optional("text_dir"): str,
-            schema.Optional("title"): str,
-            schema.Optional("description"): str,
-            schema.Optional("subject"): str,
-            schema.Optional("main_color"): str,
-            schema.Optional("background_color"): str,
-            schema.Optional("author_name"): str,
-            schema.Optional("author_email"): str,
-            schema.Optional("facebook_app_id"): str,
-            schema.Optional("twitter_username"): str,
-            schema.Optional("twitter_user_id"): str,
-            schema.Optional("itunes_app_id"): str,
-            schema.Optional("itunes_affiliate_data"): str,
-        },
+        "static_url": str,
+        schema.Optional("favicon_ico"): schema.Or(None, str),
+        schema.Optional("favicon_png"): schema.Or(None, str),
+        schema.Optional("favicon_svg"): schema.Or(None, str),
+        schema.Optional("preview_png"): schema.Or(None, str),
+        schema.Optional("google_tag_manager"): schema.Or(None, str),
+        schema.Optional("language"): schema.Or(None, str),
+        schema.Optional("territory"): schema.Or(None, str),
+        schema.Optional("domain"): schema.Or(None, str),
+        schema.Optional("text_dir"): schema.Or(None, str),
+        schema.Optional("title"): schema.Or(None, str),
+        schema.Optional("description"): schema.Or(None, str),
+        schema.Optional("subject"): schema.Or(None, str),
+        schema.Optional("main_color"): schema.Or(None, str),
+        schema.Optional("background_color"): schema.Or(None, str),
+        schema.Optional("author_name"): schema.Or(None, str),
+        schema.Optional("author_email"): schema.Or(None, str),
+        schema.Optional("facebook_app_id"): schema.Or(None, str),
+        schema.Optional("twitter_username"): schema.Or(None, str),
+        schema.Optional("twitter_user_id"): schema.Or(None, str),
+        schema.Optional("itunes_app_id"): schema.Or(None, str),
+        schema.Optional("itunes_affiliate_data"): schema.Or(None, str),
     })
     try:
         default_schema.validate(config)
@@ -186,14 +94,13 @@ def validate_config(*, config: Config) -> NoReturn:
     ) as exception:
         raise exceptions.InvalidConfiguration(exception)
 
-    if config.get("general"):
-        hex_color = re.compile('^#(?:[0-9a-fA-F]{3}){1,2}$')
-        for color_key in ("main_color", "background_color"):
-            if config["general"].get(color_key) and not hex_color.match(config["main_color"]):
-                raise exceptions.InvalidConfiguration(f"The key {color_key} must be a hex color code")
+    hex_color = re.compile('^#(?:[0-9a-fA-F]{3}){1,2}$')
+    for color_key in ("main_color", "background_color"):
+        if config.get(color_key) is not None and not hex_color.match(config[color_key]):
+            raise exceptions.InvalidConfiguration(f"The key {color_key} must be a hex color code. If you don't want any value on this key, set the value to null.")
 
 
-def load_binary_image(*, path: str, expected_format: str) -> Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]:
+def load_binary_image(*, path: pathlib.Path, expected_format: str) -> Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]:
     """
     Load a binary type image.
 
@@ -235,7 +142,7 @@ def load_binary_image(*, path: str, expected_format: str) -> Union[IcoImagePlugi
     return Image.open(path)
 
 
-def parse_config(*, path: str, config: dict) -> Config:
+def parse_config(*, path: pathlib.Path, config: Any) -> Config:
     """
     Parse a config.
 
@@ -246,46 +153,53 @@ def parse_config(*, path: str, config: dict) -> Config:
     Returns:
         A new dict with the parsed config.
     """
-    parsed_config = {
+    if config.get("favicon_ico"):
+        favicon_ico = load_binary_image(path=path / config["favicon_ico"], expected_format='ICO')
+    else:
+        favicon_ico = None
+
+    if config.get("favicon_png"):
+        favicon_png = load_binary_image(path=path / config["favicon_png"], expected_format='PNG')
+    else:
+        favicon_png = None
+
+    if config.get("favicon_svg"):
+        favicon_svg = path / config["favicon_svg"]
+    else:
+        favicon_svg = None
+
+    if config.get("preview_png"):
+        preview_png = load_binary_image(path=path / config["preview_png"], expected_format='PNG')
+    else:
+        preview_png = None
+
+    return Config({
         "main_folder_path": path,
         "output_folder_path": path / "output",
 
         # required
-        **config["required"],
+        'static_url': str(config['static_url']),
 
-        # images
-        'favicon_ico': '',
-        'favicon_png': '',
-        'favicon_svg': '',
-        'preview_png': '',
-
-        # general
-        'google_tag_manager': '',
-        'language': '',
-        'territory': '',
-        'domain': '',
-        'text_dir': '',
-        'title': '',
-        'description': '',
-        'subject': '',
-        'main_color': '',
-        'background_color': '',
-        'author_name': '',
-        'author_email': '',
-        'facebook_app_id': '',
-        'twitter_username': '',
-        'twitter_user_id': '',
-        'itunes_app_id': '',
-        'itunes_affiliate_data': '',
-    }
-    if "images" in config:
-        if "favicon_ico" in config["images"]:
-            parsed_config["favicon_ico"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["favicon_ico"], expected_format='ICO')
-        if "favicon_png" in config["images"]:
-            parsed_config["favicon_png"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["favicon_png"], expected_format='PNG')
-        if "favicon_svg" in config["images"]:
-            parsed_config["favicon_svg"] = parsed_config["main_folder_path"] / config["images"]["favicon_svg"]
-        if "preview_png" in config["images"]:
-            parsed_config["preview_png"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["preview_png"], expected_format='PNG')
-    parsed_config.update(**config.get("general"))
-    return parsed_config
+        # optionals
+        'favicon_ico': favicon_ico,
+        'favicon_png': favicon_png,
+        'favicon_svg': favicon_svg,
+        'preview_png': preview_png,
+        'google_tag_manager': str(config.get("google_tag_manager", "")),
+        'language': str(config.get("language", "")),
+        'territory': str(config.get("territory", "")),
+        'domain': str(config.get("domain", "")),
+        'text_dir': str(config.get("text_dir", "")),
+        'title': str(config.get("title", "")),
+        'description': str(config.get("description", "")),
+        'subject': str(config.get("subject", "")),
+        'main_color': str(config.get("main_color", "")),
+        'background_color': str(config.get("background_color", "")),
+        'author_name': str(config.get("author_name", "")),
+        'author_email': str(config.get("author_email", "")),
+        'facebook_app_id': str(config.get("facebook_app_id", "")),
+        'twitter_username': str(config.get("twitter_username", "")),
+        'twitter_user_id': str(config.get("twitter_user_id", "")),
+        'itunes_app_id': str(config.get("itunes_app_id", "")),
+        'itunes_affiliate_data': str(config.get("itunes_affiliate_data", "")),
+    })

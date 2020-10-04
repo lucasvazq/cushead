@@ -1,17 +1,17 @@
 {
   "manifest_version": 2,
   "version": "0.1.0",
-  {%+ if "title" in config -%}
+  {%+ if config.title -%}
   "name": "{{ config.title }}",
   "short_name": "{{ config.title }}",
   {%- endif %}
-  {%+ if "description" in config -%}
+  {%+ if config.description -%}
   "description": "{{ config.description }}",
   {%- endif %}
-  {%+ if "text_dir" in config -%}
+  {%+ if config.text_dir -%}
   "dir": "{{ config.text_dir }}",
   {%- endif %}
-  {%+ if "background_color" in config -%}
+  {%+ if config.background_color -%}
   "background_color": "{{ config.background_color }}",
   "theme_color": "{{ config.background_color }}",
   {%- endif %}
@@ -20,8 +20,8 @@
   "scope": "/",
   "display": "standalone",
   "platform": "web",
-  "prefer_related_applications": false{% if "favicon_png" in config %},{% endif %}
-  {%+ if "favicon_png" in config -%}
+  "prefer_related_applications": false{% if config.favicon_png %},{% endif %}
+  {%+ if config.favicon_png -%}
   "icons": [
     {
       "src": "{{ config.static_url }}/manifest-192x192.png",

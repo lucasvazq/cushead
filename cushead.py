@@ -3,12 +3,11 @@
 Main script thats run the CLI feature.
 """
 import sys
-from typing import NoReturn
 
 from src.console import console
 
 
-def main() -> NoReturn:
+def main() -> None:
     """
     Handle the CLI feature.
     """

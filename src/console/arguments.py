@@ -49,20 +49,20 @@ def setup_parser() -> argparse.ArgumentParser:
         help="Path to output a default config file. Can use with --images.",
     )
 
-    images_names_list = (image.name for image in helpers.get_assets_list())
-    joined_words = helpers.string_list_union(string_list=images_names_list)
+    images = helpers.get_assets_images()
+    assets_images = f"{images.favicon_ico.name}, {images.favicon_png.name}, {images.favicon_svg.name} and {images.preview_png.name}"
     optional_arguments.add_argument(
         "--images",
         dest="images",
         action="store_true",
-        help=f"Use with -default. Generate default images that can be used by the settings. This include: {joined_words}",
+        help=f"Use with -default. Generate default images that can be used by the settings. This include: {assets_images}",
     )
     parser.set_defaults(images=False)
 
     return parser
 
 
-def validate_args(*, parser: argparse.ArgumentParser, args: List[str]) -> argparse.ArgumentParser:
+def validate_args(*, parser: argparse.ArgumentParser, args: List[str]) -> argparse.Namespace:
     """
     Validate arguments using argparse parser instance.
 

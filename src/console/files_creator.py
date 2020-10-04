@@ -4,29 +4,33 @@ Module used to create files.
 from __future__ import annotations
 
 import pathlib
+from typing import Dict
 from typing import List
 from typing import NoReturn
 from typing import Tuple
+from typing import Union
+from typing import Optional
 
 from src.generator import files
 
 
-class ParentNode:
+class Node:
     """
     Class used to represent a parent node.
     """
 
-    def __init__(self: ParentNode, name: str) -> NoReturn:
+    def __init__(self: Node, name: str, data: Optional[bytes] = None) -> None:
         """
         Create a parent node.
 
         Args:
             name: the node name.
         """
-        self.elements = {}
         self.name = name
+        self.data = data
+        self.elements: Dict[str, Union[Node]] = {}
 
-    def add_child(self: ParentNode, parts: Tuple[str], data: bytes) -> NoReturn:
+    def add_child(self: Node, parts: Tuple[str, ...], data: bytes) -> None:
         """
         Add a child to node.
 
@@ -36,30 +40,13 @@ class ParentNode:
         """
         if len(parts) > 1:
             if parts[0] not in self.elements:
-                self.elements[parts[0]] = ParentNode(parts[0])
+                self.elements[parts[0]] = Node(parts[0])
             self.elements[parts[0]].add_child(parts[1:], data)
         else:
-            self.elements[parts[0]] = LeafNode(parts[0], data)
+            self.elements[parts[0]] = Node(parts[0], data)
 
 
-class LeafNode:
-    """
-    Class used to represent a leaf node.
-    """
-
-    def __init__(self: LeafNode, name: str, data: bytes) -> NoReturn:
-        """
-        Create a leaf node.
-
-        Args:
-            name: the node name.
-            data: the node data.
-        """
-        self.name = name
-        self.data = data
-
-
-def create_node(*, node_items: List[files.File]) -> ParentNode:
+def create_node(*, node_items: List[files.File]) -> Node:
     """
     Create node based on a list.
 
@@ -69,13 +56,13 @@ def create_node(*, node_items: List[files.File]) -> ParentNode:
     Returns:
         A main dir node.
     """
-    base_path = ParentNode(name='')
+    base_path = Node(name='')
     for file in node_items:
         base_path.add_child(parts=pathlib.Path(file.path).parts, data=file.data)
     return base_path
 
 
-def parse_node(*, node: ParentNode, base_path: pathlib.Path) -> NoReturn:
+def parse_node(*, node: Node, base_path: pathlib.Path) -> None:
     """
     Create a representation of the node in the system directory.
 
@@ -85,7 +72,7 @@ def parse_node(*, node: ParentNode, base_path: pathlib.Path) -> NoReturn:
     """
     for name, element in sorted(node.elements.items()):
         destination_path = base_path / name
-        if isinstance(element, LeafNode):
+        if element.data is not None:
             print(destination_path)
             destination_path.write_bytes(element.data)
         else:
@@ -94,7 +81,7 @@ def parse_node(*, node: ParentNode, base_path: pathlib.Path) -> NoReturn:
             parse_node(node=element, base_path=destination_path)
 
 
-def create_files(*, files_to_create: List[files.File]) -> NoReturn:
+def create_files(*, files_to_create: List[files.File]) -> None:
     """
     Create files based on a list.
 

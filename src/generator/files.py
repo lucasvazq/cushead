@@ -27,11 +27,11 @@ class File(NamedTuple):
     Used to store data about a file that want to create.
     """
 
-    path: str
+    path: pathlib.Path
     data: bytes
 
 
-def resize_image(*, image: str, width: int, height: int) -> PIL.Image:
+def resize_image(*, image: PIL.Image, width: int, height: int) -> PIL.Image:
     """
     Return a image resized.
 
@@ -82,7 +82,7 @@ def read_image_bytes(image: Union[PIL.Image]) -> bytes:
     """
     io_file = io.BytesIO()
     image.save(io_file, format=image.format)
-    return io_file.read()
+    return io_file.getvalue()
 
 
 def generate_images(*, config: configuration.Config) -> List[File]:
@@ -97,8 +97,9 @@ def generate_images(*, config: configuration.Config) -> List[File]:
     """
     ImageData = namedtuple('ImageData', 'path width height')
     images = []
+    images_data: Tuple[ImageData, ...]
 
-    if 'favicon_ico' in config:
+    if config.get("favicon_png"):
         images.append(
             # favicon ico version, used for opensearch too
             File(
@@ -107,7 +108,7 @@ def generate_images(*, config: configuration.Config) -> List[File]:
             )
         )
 
-    if 'favicon_png' in config:
+    if config.get("favicon_png") is not None:
         images_data = (
             # favicon png version
             ImageData(path=config['output_folder_path'] / 'static' / 'favicon-16x16.png', width=16, height=16),
@@ -185,12 +186,12 @@ def generate_images(*, config: configuration.Config) -> List[File]:
             ImageData(path=config['output_folder_path'] / 'static' / 'apple-touch-startup-image-640x1136.png', width=640, height=1136),
             ImageData(path=config['output_folder_path'] / 'static' / 'apple-touch-startup-image-1136x640.png', width=1136, height=640),
         )
-        if 'background_color' in config:
+        if config.get("background_color") is not None:
             images.extend(
                 File(
                     data=read_image_bytes(remove_transparency(
                         image=resize_image(image=config["favicon_png"], width=image.width, height=image.height),
-                        background_color=config['background_color']
+                        background_color=str(config['background_color']),
                     )),
                     path=image.path
                 ) for image in images_data
@@ -203,7 +204,7 @@ def generate_images(*, config: configuration.Config) -> List[File]:
                 ) for image in images_data
             )
 
-    if 'favicon_svg' in config:
+    if config["favicon_svg"] is not None:
         images.append(
             File(
                 path=config['output_folder_path'] / 'static' / 'mask-icon.svg',
@@ -211,7 +212,7 @@ def generate_images(*, config: configuration.Config) -> List[File]:
             )
         )
 
-    if 'preview_png' in config:
+    if config.get("preview_png"):
         images_data = (
             # Estas imagenes se sobreescriben, evitar que ocurra eso
             # og
@@ -239,18 +240,18 @@ class TemplateLoader:
     Handle the jinja template loader.
     """
 
-    def __init__(self: TemplateLoader, *, templates_path: str) -> NoReturn:
+    def __init__(self: TemplateLoader, *, templates_path: pathlib.Path) -> None:
         """
         Create a template loader of jinja2.
 
         Args:
             templates_path: the path where the templates are stored.
         """
-        template_loader = jinja2.FileSystemLoader(searchpath=templates_path)
+        template_loader = jinja2.FileSystemLoader(searchpath=str(templates_path))
         self.template_parser = jinja2.Environment(loader=template_loader, extensions=['src.generator.jinja_extension.OneLineExtension'])
         self.template_parser.lstrip_blocks = True
 
-    def add_template_variable(self: TemplateLoader, name: str, value: Union[configuration.Config, str]) -> NoReturn:
+    def add_template_variable(self: TemplateLoader, name: str, value: Union[configuration.Config, str]) -> None:
         """
         Add variable to the template loader.
 
@@ -260,7 +261,7 @@ class TemplateLoader:
         """
         self.template_parser.globals.update({name: value})
 
-    def render_template(self: TemplateLoader, *, path: str) -> str:
+    def render_template(self: TemplateLoader, *, path: str) -> bytes:
         """
         Render a template.
 
@@ -273,7 +274,7 @@ class TemplateLoader:
         return self.template_parser.get_template(path).render().encode('utf-8')
 
 
-def generate_template_hash(*, template: str) -> str:
+def generate_template_hash(*, template: bytes) -> str:
     """
     Generate a hash of a template.
 
@@ -296,7 +297,7 @@ def generate_templates(*, config: configuration.Config) -> List[File]:
     Returns:
         The templates list.
     """
-    templates_path = pathlib.Path(pathlib.Path(__file__).parent, 'templates')
+    templates_path = pathlib.Path(__file__).parent / 'templates'
     template_loader = TemplateLoader(templates_path=templates_path)
     template_loader.add_template_variable(name='config', value=config)
     index_template = template_loader.render_template(path='index.html')
@@ -361,7 +362,7 @@ def generate_templates(*, config: configuration.Config) -> List[File]:
     return templates
 
 
-def generate_files(*, config: configuration.Config) -> Tuple[File]:
+def generate_files(*, config: configuration.Config) -> Tuple[File, ...]:
     """
     Get the images and templates to create.
 

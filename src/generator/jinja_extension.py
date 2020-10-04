@@ -3,6 +3,8 @@ Module used to group jinja extensions.
 """
 from __future__ import annotations
 
+from typing import Any
+
 from jinja2 import ext
 from jinja2 import nodes
 from jinja2 import parser as jinja2_parser
@@ -19,7 +21,7 @@ class OneLineExtension(ext.Extension):
     # A tuple of names that trigger the extension.
     tags = {'oneline'}
 
-    def parse(self: OneLineExtension, parser: jinja2_parser.Parser) -> nodes.CallBlock:
+    def parse(self: OneLineExtension, parser: jinja2_parser.Parser) -> Any:
         """
         This method is called when any of tags is recognized.
 
@@ -34,23 +36,19 @@ class OneLineExtension(ext.Extension):
         Returns:
             The call block.
         """
-        # The first token is the token that started the tag.
-        # Don't need it.
+        # We need actual line number to append the final result to this line number.
+        # The first token is the token that started the tag, so, don't need it.
         next(parser.stream)
-
-        # We need actual linenumber to append the final result to this line number.
         lineno = parser.stream.current.lineno
 
         # Get the content inside the extension tag, with the second parameter as True,
         # we dont get, as final token, the end block of the extension tag, because we don't need it.
         body = parser.parse_statements(tuple(f'name:end{tagname}' for tagname in self.tags), True)
 
-        # We parse te content calling our custom methods and generate the a CallBlock.
         method = self.call_method('strip_spaces')
         call_block = nodes.CallBlock(method, [], [], body)
-
-        # Return CallBlock seeted to the line number.
-        return call_block.set_lineno(lineno)
+        call_block.set_lineno(lineno)
+        return call_block
 
     @staticmethod
     def strip_spaces(caller: runtime.Macro) -> str:

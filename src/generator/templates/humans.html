@@ -1,9 +1,7 @@
-{%+ if "author_name" in config or "author_email" in config -%}
 /* TEAM */
-  {%+ if "author_name" in config -%}
+  {%+ if config.author_name -%}
   Web designer: {{ config.author_name }}
   {%- endif %}
-  {%+ if "author_email" in config -%}
+  {%+ if config.author_email -%}
   Contact: {{ config.author_email }}
   {%- endif %}
-{%- endif %}
