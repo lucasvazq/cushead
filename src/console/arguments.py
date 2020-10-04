@@ -1,11 +1,10 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-doc
+Module used to parse console arguments.
 """
 import argparse
 import pathlib
 import textwrap
+from typing import List
 
 from src import exceptions
 from src import helpers
@@ -14,7 +13,10 @@ from src import info
 
 def setup_parser() -> argparse.ArgumentParser:
     """
-    doc
+    Setup argparse.
+
+    Returns:
+        Argparse parser instance.
     """
     name = info.PACKAGE_NAME
     parser = argparse.ArgumentParser(
@@ -30,71 +32,75 @@ def setup_parser() -> argparse.ArgumentParser:
         """),
     )
 
-    main_arguments = parser.add_argument_group("Main arguments")
-    complementary_arguments = parser.add_argument_group("Complementary")
+    required_arguments = parser.add_argument_group("")
+    optional_arguments = parser.add_argument_group("optional")
 
-    # GROUP: required
-    # -config
-    main_arguments.add_argument(
+    required_arguments.add_argument(
         "-config",
         metavar="FILEPATH",
         dest="config",
         help="Path to a config file in JSON format. Read a config file and create the main files based on it.",
     )
-    # -default
-    main_arguments.add_argument(
+
+    required_arguments.add_argument(
         "-default",
         metavar="FILENAME",
         dest="default",
-        help="Path to output a default config file. Can use with --images",
+        help="Path to output a default config file. Can use with --images.",
     )
 
-    # GROUP: options
-    # -images
-    images_names_list = (image.name for image in helpers.get_images_list())
+    images_names_list = (image.name for image in helpers.get_assets_list())
     joined_words = helpers.string_list_union(string_list=images_names_list)
-    complementary_arguments.add_argument(
+    optional_arguments.add_argument(
         "--images",
         dest="images",
         action="store_true",
-        help=(
-            "Use with -default. Generate default images that can be used by the settings. "
-            f"This include: {joined_words}"
-        ),
+        help=f"Use with -default. Generate default images that can be used by the settings. This include: {joined_words}",
     )
-
     parser.set_defaults(images=False)
 
     return parser
 
 
-def validate_args(*, parser: argparse.ArgumentParser, args: list) -> argparse.ArgumentParser:
+def validate_args(*, parser: argparse.ArgumentParser, args: List[str]) -> argparse.ArgumentParser:
     """
-    doc
+    Validate arguments using argparse parser instance.
+
+    Args:
+        parser: parser instance.
+        args: list of arguments.
+
+    Returns:
+        A validated instance of the parser.
+
+    Raises:
+        UnrecognizedArgument: when there's any invalid argument.
+        MissRequired: when missing a required argument.
+        InvalidCombination: when the combinations of arguments are invalid.
+        BadReference: when the arguments reference to a invalid file.
     """
 
     unrecognized_args = parser.parse_known_args(args)[1]
     if unrecognized_args:
-        raise exceptions.MainException(f"Unrecognized argument {unrecognized_args[0]}")
+        raise exceptions.UnrecognizedArgument(f"Unrecognized argument {unrecognized_args[0]}.")
 
-    # Re-parse arguments.
     parsed_args = parser.parse_args(args)
 
     if not (parsed_args.config or parsed_args.default):
-        raise exceptions.MainException("Miss Required arguments. Use -config or -default. Use -h for help")
+        raise exceptions.MissRequired("Miss Required arguments. Use -config or -default. Use -h for help.")
     if parsed_args.config and parsed_args.default:
-        raise exceptions.MainException("Can't use -config and -default arguments together.")
+        raise exceptions.InvalidCombination("Can't use -config and -default arguments together.")
     if parsed_args.images and not parsed_args.default:
-        raise exceptions.MainException("Can't use --images without -default.")
+        raise exceptions.InvalidCombination("Can't use --images without -default.")
     if parsed_args.config:
         reference = pathlib.Path(parsed_args.config)
         if not reference.exists():
-            raise exceptions.MainException('\n'.join((
+            raise exceptions.BadReference('\n'.join((
                 f"'config' key ({reference}) must be referred to a path that exists.",
                 f"ABSOLUTE PATH: {reference.absolute()}",
             )))
         if not reference.is_file():
-            raise exceptions.MainException('\n'.join((
+            raise exceptions.BadReference('\n'.join((
                 f"'config' key ({reference}) must be referred to a file path.",
                 f"ABSOLUTE PATH: {reference.absolute()}",
             )))
@@ -102,9 +108,15 @@ def validate_args(*, parser: argparse.ArgumentParser, args: list) -> argparse.Ar
     return parsed_args
 
 
-def parse_args(*, args: list) -> argparse.Namespace:
+def parse_args(*, args: List[str]) -> argparse.Namespace:
     """
-    doc
+    Parse arguments using argparse.
+
+    Args:
+        args: list of args.
+
+    Returns:
+        A validated instance of a argparse parser instance.
     """
     parser = setup_parser()
     return validate_args(parser=parser, args=args)

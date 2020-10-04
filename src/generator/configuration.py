@@ -1,77 +1,27 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-doc
+Module where are all things related to the configurations
 """
-import json
 import pathlib
-from json import decoder
-from typing import TypedDict
-from typing import Optional
+import re
 from typing import NoReturn
+from typing import Optional
+from typing import TypedDict
+from typing import Union
 
-import schema
 from PIL import IcoImagePlugin
 from PIL import Image
 from PIL import PngImagePlugin
+
+import schema
 
 from src import exceptions
 from src import helpers
 from src import info
 
 
-def read_config_file(*, path: str):
-    """
-    doc
-    """
-    with open(path, "r") as file:
-        file_string = file.read()
-    try:
-        config = json.loads(file_string)
-    except decoder.JSONDecodeError as exception:
-        raise exceptions.MainException("".join((
-            f"Invalid json file format in ({path})",
-            f"ABSOLUTE PATH: {path.absolute()}",
-            f"Exception: {exception}"
-        )))
-
-    output_folder_path = pathlib.Path(path).parent
-    return parse_config(path=output_folder_path, config=config)
-
-
-def load_binary_image(*, path: str, expected_format: str):
-    """
-    doc
-    """
-    try:
-        image = Image.open(path)
-    except IsADirectoryError as exception:
-        raise exceptions.MainException("".join((
-            "Image reference must be a file, not a directory",
-            f"ABSOLUTE PATH: {path.absolute()}",
-            f"Exception: {exception}",
-        )))
-    except Image.UnidentifiedImageError as exception:
-        raise exceptions.MainException("".join((
-            "Can't identify image file",
-            f"ABSOLUTE PATH: {path.absolute()}",
-            f"Exception: {exception}",
-        )))
-    if image.format != expected_format:
-        raise exceptions.MainException("".join((
-            f"Wrong image format. Expected {expected_format}, received {image.format}",
-            f"ABSOLUTE PATH: {path.absolute()}",
-        )))
-    image.verify()
-    image.close()
-
-    # return a new instance of the image
-    return Image.open(path)
-
-
 class Config(TypedDict):
     """
-    doc
+    The parsed config structure
     """
     main_folder_path: pathlib.Path
     output_folder_path: pathlib.Path
@@ -99,9 +49,98 @@ class Config(TypedDict):
     itunes_affiliate_data: Optional[str]
 
 
-def validate_config(*, config: dict) -> NoReturn:
+class RequiredConfig(TypedDict):
     """
-    doc
+    The structure of the required part of the default config.
+    """
+    static_url: str
+
+
+class ImagesConfig(TypedDict):
+    """
+    The structure of the images part of the default config.
+    """
+    favicon_ico: str
+    favicon_png: str
+    favicon_svg: str
+    preview_png: str
+
+
+class GeneralConfig(TypedDict):
+    """
+    The structure of the general part of the default config.
+    """
+    google_tag_manager: str
+    language: str
+    territory: str
+    domain: str
+    text_dir: str
+    title: str
+    description: str
+    subject: str
+    main_color: str
+    background_color: str
+    author_name: str
+    author_email: str
+    facebook_app_id: str
+    twitter_username: str
+    twitter_user_id: str
+    itunes_app_id: str
+    itunes_affiliate_data: str
+
+
+class DefaultConfig(TypedDict):
+    """
+    The default config structure.
+    """
+    required: RequiredConfig
+    images: ImagesConfig
+    general: GeneralConfig
+
+
+def get_default_config() -> DefaultConfig:
+    """
+    Generate the default config.
+
+    Returns:
+        a dict with the default config.
+    """
+    return {
+        "required": {
+            "static_url": "/static",
+        },
+        "images": {image.reference: f"./{image.name}" for image in helpers.get_assets_list()},
+        "general": {
+            "google_tag_manager": "GTM-*******",
+            "language": "en",
+            "territory": "US",
+            "domain": "microsoft.com",
+            "text_dir": "ltr",
+            "title": "Microsoft",
+            "description": "Technology Solutions",
+            "subject": "Home Page",
+            "main_color": "#ff0000",
+            "background_color": "#ffffff",
+            "author_name": info.AUTHOR,
+            "author_email": info.EMAIL,
+            "facebook_app_id": "123456",
+            "twitter_username": "Microsoft",
+            "twitter_user_id": "123456",
+            "itunes_app_id": "123456",
+            "itunes_affiliate_data": "123456",
+        },
+    }
+
+
+def validate_config(*, config: Config) -> NoReturn:
+    """
+    Validate a configuration.
+
+    Args:
+        config: the configuration.
+
+    Raises:
+        InvalidConfiguration: when the config isn't valid.
     """
     default_schema = schema.Schema({
         "required": {
@@ -126,8 +165,6 @@ def validate_config(*, config: dict) -> NoReturn:
             schema.Optional("background_color"): str,
             schema.Optional("author_name"): str,
             schema.Optional("author_email"): str,
-        },
-        schema.Optional("social_media"): {
             schema.Optional("facebook_app_id"): str,
             schema.Optional("twitter_username"): str,
             schema.Optional("twitter_user_id"): str,
@@ -142,20 +179,75 @@ def validate_config(*, config: dict) -> NoReturn:
             schema.SchemaMissingKeyError,
             schema.SchemaError,
     ) as exception:
-        raise exceptions.MainException(exception)
+        raise exceptions.InvalidConfiguration(exception)
+
+    if config.get("general"):
+        hex_color = re.compile('^#(?:[0-9a-fA-F]{3}){1,2}$')
+        for color_key in ("main_color", "background_color"):
+            if config["general"].get(color_key) and not hex_color.match(config["main_color"]):
+                raise exceptions.InvalidConfiguration(f"The key {color_key} must be a hex color code")
+
+
+def load_binary_image(*, path: str, expected_format: str) -> Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]:
+    """
+    Load a binary type image.
+
+    Args:
+        path: the image path
+        expected_format: the expected format of the image.
+
+    Returns:
+        The image instance.
+
+    Raises:
+        BadReference: when the reference to the image isn't a file.
+        WrongFileFormat: when the image isn't valid.
+    """
+    try:
+        image = Image.open(path)
+    except IsADirectoryError as exception:
+        raise exceptions.BadReference("".join((
+            "Image reference must be a file, not a directory",
+            f"ABSOLUTE PATH: {path.absolute()}",
+            f"Exception: {exception}",
+        )))
+    except Image.UnidentifiedImageError as exception:
+        raise exceptions.WrongFileFormat("".join((
+            "Can't identify image file",
+            f"ABSOLUTE PATH: {path.absolute()}",
+            f"Exception: {exception}",
+        )))
+    if image.format != expected_format:
+        raise exceptions.WrongFileFormat("".join((
+            f"Wrong image format. Expected {expected_format}, received {image.format}",
+            f"ABSOLUTE PATH: {path.absolute()}",
+        )))
+
+    # Verify the image. After this, need to close it.
+    image.verify()
+    image.close()
+
+    return Image.open(path)
 
 
 def parse_config(*, path: str, config: dict) -> Config:
     """
-    doc
+    Parse a config.
+
+    Args:
+        path: config folder path.
+        config: the config.
+
+    Returns:
+        A new dict with the parsed config.
     """
-
-    validate_config(config=config)
-
     parsed_config = {
         "main_folder_path": path,
         "output_folder_path": path / "output",
+
+        # required
         **config["required"],
+
         # images
         'favicon_ico': '',
         'favicon_png': '',
@@ -175,8 +267,6 @@ def parse_config(*, path: str, config: dict) -> Config:
         'background_color': '',
         'author_name': '',
         'author_email': '',
-
-        # social_media
         'facebook_app_id': '',
         'twitter_username': '',
         'twitter_user_id': '',
@@ -192,42 +282,5 @@ def parse_config(*, path: str, config: dict) -> Config:
             parsed_config["favicon_svg"] = parsed_config["main_folder_path"] / config["images"]["favicon_svg"]
         if "preview_png" in config["images"]:
             parsed_config["preview_png"] = load_binary_image(path=parsed_config["main_folder_path"] / config["images"]["preview_png"], expected_format='PNG')
-    parsed_config.update(
-        **config.get("general", {}),
-        **config.get("social_media", {}),
-    )
-
+    parsed_config.update(**config.get("general"))
     return parsed_config
-
-
-def default_settings() -> str:
-    """
-    Generate config file in indented JSON format
-    """
-    return {
-        "required": {
-            "static_url": "/static",
-        },
-        "images": {image.reference: f"./{image.name}" for image in helpers.get_images_list()},
-        "general": {
-            "google_tag_manager": "GTM-*******",
-            "language": "en",
-            "territory": "US",
-            "domain": "microsoft.com",
-            "text_dir": "ltr",
-            "title": "Microsoft",
-            "description": "Technology Solutions",
-            "subject": "Home Page",
-            "main_color": "#ff0000",
-            "background_color": "#ffffff",
-            "author_name": info.AUTHOR,
-            "author_email": info.EMAIL,
-        },
-        "social_media": {
-            "facebook_app_id": "123456",
-            "twitter_username": "Microsoft",
-            "twitter_user_id": "123456",
-            "itunes_app_id": "123456",
-            "itunes_affiliate_data": "123456",
-        },
-    }

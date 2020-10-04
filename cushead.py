@@ -1,20 +1,18 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 """
-Main script thats run the CLI feature
+Main script thats run the CLI feature.
 """
-import importlib
 import sys
+from typing import NoReturn
 
-from src import support
+from src.console import console
 
 
-def main():
+def main() -> NoReturn:
     """
-    doc
+    Handle the CLI feature.
     """
-    support.check_if_can_execute()
-    console = importlib.import_module("src.console.console")
+    console.show_presentation()
     console.parse_args(args=sys.argv[1:])
 
 

@@ -1,15 +1,10 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 """
-Setup script
+Setup script.
 """
 import setuptools
 
 from src import info
-from src import support
-
-
-support.check_if_can_install()
 
 
 with open("README.md", "r") as fh:

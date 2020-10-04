@@ -1,47 +1,64 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-doc
+Handle files generation.
 """
+from __future__ import annotations
+
 import hashlib
 import io
 import pathlib
+from collections import namedtuple
+from typing import List
 from typing import NamedTuple
+from typing import NoReturn
+from typing import Tuple
+from typing import Union
+
+import PIL
 
 import jinja2
-import PIL
+
 from resizeimage import resizeimage
 
-
-class Image(NamedTuple):
-    """
-    doc
-    """
-    reference: str
-    name: str
-    data: bytes
+from src.generator import configuration
 
 
 class File(NamedTuple):
     """
-    doc
+    Used to store data about a file that want to create.
     """
     path: str
     data: bytes
 
 
-def resize_image(*, image: str, width: int, height: int):
+def resize_image(*, image: str, width: int, height: int) -> PIL.Image:
     """
-    doc
+    Return a image resized.
+
+    Args:
+        image: a PIL image instance.
+        width: the width
+        height : the height
+
+    Returns:
+        A new image resized.
     """
     resized_image = resizeimage.resize_contain(image, (width, height))
     resized_image.format = image.format
+    print(resized_image)
+    print(type(resized_image))
     return resized_image
 
 
-def remove_transparency(*, image, background_color):
+def remove_transparency(*, image: PIL.Image, background_color: str) -> PIL.Image:
     """
-    doc
+    Remove the transparency of png images.
+
+    Args:
+        image: a PIL image instance.
+        background_color: the background color used to replace the transparency.
+
+    Returns:
+        A PIL image instance.
     """
     # Remove transparency (https://stackoverflow.com/a/35859141/10712525)
     if image.mode in ("RGBA", "LA") or (image.mode == "P" and "transparency" in image.info):
@@ -54,28 +71,32 @@ def remove_transparency(*, image, background_color):
     return image
 
 
-class ImageData(NamedTuple):
+def read_image_bytes(image: Union[PIL.Image]) -> bytes:
     """
-    doc
-    """
-    path: str
-    width: int
-    height: int
+    Read the bytes of a image.
 
+    Args:
+        image: a PIL image instance
 
-def convert_image_to_bytes(image):
-    """
-    doc
+    Returns:
+        The bytes data
     """
     io_file = io.BytesIO()
     image.save(io_file, format=image.format)
     return io_file.read()
 
 
-def generate_images(*, config: dict):
+def generate_images(*, config: configuration.Config) -> List[File]:
     """
-    doc
+    Get images ready to be created.
+
+    Args:
+        config: the config.
+
+    Returns:
+        The images list.
     """
+    ImageData = namedtuple('ImageData', 'path width height')
     images = []
 
     if 'favicon_ico' in config:
@@ -83,7 +104,7 @@ def generate_images(*, config: dict):
             # favicon ico version, used for opensearch too
             File(
                 path=config['output_folder_path'] / 'favicon.ico',
-                data=convert_image_to_bytes(config["favicon_ico"]),
+                data=read_image_bytes(config["favicon_ico"]),
             )
         )
 
@@ -133,7 +154,7 @@ def generate_images(*, config: dict):
         images.extend(
             File(
                 path=image.path,
-                data=convert_image_to_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
+                data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
             ) for image in images_data
         )
 
@@ -168,7 +189,7 @@ def generate_images(*, config: dict):
         if 'background_color' in config:
             images.extend(
                 File(
-                    data=convert_image_to_bytes(remove_transparency(
+                    data=read_image_bytes(remove_transparency(
                         image=resize_image(image=config["favicon_png"], width=image.width, height=image.height),
                         background_color=config['background_color']
                     )),
@@ -177,11 +198,11 @@ def generate_images(*, config: dict):
             )
         else:
             images.extend(
-            File(
-                path=image.path,
-                data=convert_image_to_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
-            ) for image in images_data
-        )
+                File(
+                    path=image.path,
+                    data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
+                ) for image in images_data
+            )
 
     if 'favicon_svg' in config:
         images.append(
@@ -207,7 +228,7 @@ def generate_images(*, config: dict):
         images.extend(
             File(
                 path=image.path,
-                data=convert_image_to_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
+                data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
             ) for image in images_data
         )
 
@@ -216,44 +237,66 @@ def generate_images(*, config: dict):
 
 class TemplateLoader:
     """
-    doc
+    Handle the jinja template loader
     """
 
-    def __init__(self, *, templates_path):
+    def __init__(self: TemplateLoader, *, templates_path: str) -> NoReturn:
         template_loader = jinja2.FileSystemLoader(searchpath=templates_path)
         self.template_parser = jinja2.Environment(loader=template_loader, extensions=['src.generator.jinja_extension.OneLineExtension'])
         self.template_parser.lstrip_blocks = True
 
-    def add_template_variable(self, **variables: dict):
+    def add_template_variable(self: TemplateLoader, name: str, value: Union[configuration.Config, str]) -> NoReturn:
         """
-        doc
-        """
-        self.template_parser.globals.update(**variables)
+        Add variable to the tempalte loader.
 
-    def load_template(self, *, path):
+        Args:
+            name: variable name.
+            value: variable value.
         """
-        doc
+        self.template_parser.globals.update({name: value})
+
+    def render_template(self: TemplateLoader, *, path: str) -> str:
+        """
+        Render a template.
+
+        Args:
+            path: template path.
+
+        Returns:
+            The template in string format.
         """
         return self.template_parser.get_template(path).render().encode('utf-8')
 
 
-def generate_template_hash(*, template) -> str:
+def generate_template_hash(*, template: str) -> str:
     """
-    doc
+    Generate a hash of a template.
+
+    Args:
+        template: the template in string format.
+
+    Returns:
+        The hash.
     """
-    return hashlib.sha1(template).hexdigest()[0:6]
+    return hashlib.sha256(template).hexdigest()[0:6]
 
 
-def generate_templates(*, config: dict):
+def generate_templates(*, config: configuration.Config) -> List[File]:
     """
-    doc
+    Get templates ready to be created.
+
+    Args:
+        config: the configuration.
+
+    Returns:
+        The templates list.
     """
     templates_path = pathlib.Path(pathlib.Path(__file__).parent, 'templates')
     template_loader = TemplateLoader(templates_path=templates_path)
-    template_loader.add_template_variable(**{'config': config})
-    index_template = template_loader.load_template(path='index.html')
+    template_loader.add_template_variable(name='config', value=config)
+    index_template = template_loader.render_template(path='index.html')
     index_hash = generate_template_hash(template=index_template)
-    template_loader.add_template_variable(**{'index_hash': index_hash})
+    template_loader.add_template_variable(name='index_hash', value=index_hash)
 
     templates = [
         File(
@@ -262,62 +305,68 @@ def generate_templates(*, config: dict):
         ),
         File(
             path=config['output_folder_path'] / 'robots.txt',
-            data=template_loader.load_template(path='robots.html')
+            data=template_loader.render_template(path='robots.html')
         ),
         File(
             path=config['output_folder_path'] / 'static' / 'manifest.json',
-            data=template_loader.load_template(path='manifest.html')
+            data=template_loader.render_template(path='manifest.html')
         ),
         File(
             path=config['output_folder_path'] / 'static' / 'sw.js',
-            data=template_loader.load_template(path='service_worker.html')
+            data=template_loader.render_template(path='service_worker.html')
         ),
     ]
 
-    if "domain" in config:
+    if config.get("domain"):
         templates.extend((
             File(
                 path=config['output_folder_path'] / 'sitemap.xml',
-                data=template_loader.load_template(path='sitemap.html')
+                data=template_loader.render_template(path='sitemap.html')
             ),
             File(
                 path=config['output_folder_path'] / 'static' / 'opensearch.xml',
-                data=template_loader.load_template(path='opensearch.html')
+                data=template_loader.render_template(path='opensearch.html')
             ),
         ))
 
-    if "favicon_png" in config or "main_color" in config:
+    if config.get("favicon_png") or config.get("main_color"):
         templates.append(
             File(
                 path=config['output_folder_path'] / 'static' / 'browserconfig.xml',
-                data=template_loader.load_template(path='browserconfig.html')
+                data=template_loader.render_template(path='browserconfig.html')
             )
         )
 
-    if "author_email" in config:
+    if config.get("author_email"):
         templates.append(
             File(
-                path=config['output_folder_path'] / '.well-known' /'security',
-                data=template_loader.load_template(path='security.html')
+                path=config['output_folder_path'] / '.well-known' / 'security',
+                data=template_loader.render_template(path='security.html')
             )
         )
 
-    if "author_name" in config or "author_email" in config:
+    if config.get("author_name") or config.get("author_email"):
         templates.append(
             File(
                 path=config['output_folder_path'] / 'humans.txt',
-                data=template_loader.load_template(path='humans.html')
+                data=template_loader.render_template(path='humans.html')
             )
         )
 
     return templates
 
-def generate_files(*, config: dict):
+
+def generate_files(*, config: configuration.Config) -> Tuple[File]:
     """
-    doc
+    Get the images and templates to create.
+
+    Args:
+        config: the configuration.
+
+    Returns:
+        The list of images and templates.
     """
-    files = (
+    return (
         *generate_images(config=config),
         *generate_templates(config=config),
     )
-    return files

@@ -1,8 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-doc
+Module used to group jinja extensions
 """
+from __future__ import annotations
+
 from jinja2 import ext
 from jinja2 import nodes
 from jinja2 import parser as jinja2_parser
@@ -16,11 +16,10 @@ class OneLineExtension(ext.Extension):
     It does not remove whitespace between Jinja2 tags or variables. Neither does it remove whitespace between tags
     """
 
-    # Jinja2 docs:
-    # tags = a set of names that trigger the extension.
+    # A tuple of names that trigger the extension.
     tags = {'oneline'}
 
-    def parse(self, parser: jinja2_parser.Parser) -> nodes.CallBlock:
+    def parse(self: OneLineExtension, parser: jinja2_parser.Parser) -> nodes.CallBlock:
         """
         This method is called when any of tags is recognized
 
@@ -33,7 +32,7 @@ class OneLineExtension(ext.Extension):
         Args:
             parser: parser processor gived from Jinja2
 
-        Return:
+        Returns:
             CallBlock node type
         """
 
@@ -65,7 +64,7 @@ class OneLineExtension(ext.Extension):
                 This class is callable and return a parsed version (variable replacement) of the content
                 gived to the CallBlock.
 
-        Return:
+        Returns:
             return the cleaned content of the macro
         """
         return ''.join(caller().split())

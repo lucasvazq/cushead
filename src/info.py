@@ -1,8 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# IMPORTANT: This module would be python2 and python3 compatible
 """
-Informative module
+Informative module.
 """
 
 
