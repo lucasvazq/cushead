@@ -12,16 +12,16 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
-    scripts=["{}.py".format(info.PACKAGE_NAME)],
+    scripts=[f"{info.PACKAGE_NAME}.py"],
     entry_points={
-        "console_scripts": ["{0}={0}:main".format(info.PACKAGE_NAME)]
+        "console_scripts": [f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}:main"]
     },
     url=info.SOURCE,
     project_urls={
         "Documentation": info.DOCUMENTATION,
         "Source": info.SOURCE,
     },
-    python_requires=">={}.{}".format(*(info.PYTHON_MIN_VERSION)),
+    python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=info.REQUIRED_PACKAGES,

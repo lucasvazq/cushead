@@ -1,5 +1,5 @@
 """
-Module where are all things related to the configurations
+Module where are all things related to the configurations.
 """
 import pathlib
 import re
@@ -21,8 +21,9 @@ from src import info
 
 class Config(TypedDict):
     """
-    The parsed config structure
+    The parsed config structure.
     """
+
     main_folder_path: pathlib.Path
     output_folder_path: pathlib.Path
     static_url: str
@@ -53,6 +54,7 @@ class RequiredConfig(TypedDict):
     """
     The structure of the required part of the default config.
     """
+
     static_url: str
 
 
@@ -60,6 +62,7 @@ class ImagesConfig(TypedDict):
     """
     The structure of the images part of the default config.
     """
+
     favicon_ico: str
     favicon_png: str
     favicon_svg: str
@@ -70,6 +73,7 @@ class GeneralConfig(TypedDict):
     """
     The structure of the general part of the default config.
     """
+
     google_tag_manager: str
     language: str
     territory: str
@@ -93,6 +97,7 @@ class DefaultConfig(TypedDict):
     """
     The default config structure.
     """
+
     required: RequiredConfig
     images: ImagesConfig
     general: GeneralConfig

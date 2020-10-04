@@ -26,6 +26,7 @@ class File(NamedTuple):
     """
     Used to store data about a file that want to create.
     """
+
     path: str
     data: bytes
 
@@ -44,8 +45,6 @@ def resize_image(*, image: str, width: int, height: int) -> PIL.Image:
     """
     resized_image = resizeimage.resize_contain(image, (width, height))
     resized_image.format = image.format
-    print(resized_image)
-    print(type(resized_image))
     return resized_image
 
 
@@ -237,17 +236,23 @@ def generate_images(*, config: configuration.Config) -> List[File]:
 
 class TemplateLoader:
     """
-    Handle the jinja template loader
+    Handle the jinja template loader.
     """
 
     def __init__(self: TemplateLoader, *, templates_path: str) -> NoReturn:
+        """
+        Create a template loader of jinja2.
+
+        Args:
+            templates_path: the path where the templates are stored.
+        """
         template_loader = jinja2.FileSystemLoader(searchpath=templates_path)
         self.template_parser = jinja2.Environment(loader=template_loader, extensions=['src.generator.jinja_extension.OneLineExtension'])
         self.template_parser.lstrip_blocks = True
 
     def add_template_variable(self: TemplateLoader, name: str, value: Union[configuration.Config, str]) -> NoReturn:
         """
-        Add variable to the tempalte loader.
+        Add variable to the template loader.
 
         Args:
             name: variable name.

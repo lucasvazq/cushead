@@ -79,7 +79,6 @@ def validate_args(*, parser: argparse.ArgumentParser, args: List[str]) -> argpar
         InvalidCombination: when the combinations of arguments are invalid.
         BadReference: when the arguments reference to a invalid file.
     """
-
     unrecognized_args = parser.parse_known_args(args)[1]
     if unrecognized_args:
         raise exceptions.UnrecognizedArgument(f"Unrecognized argument {unrecognized_args[0]}.")

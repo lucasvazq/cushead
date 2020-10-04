@@ -33,7 +33,7 @@ else:
 
 def show_presentation() -> NoReturn:
     """
-    Print the console presentation message
+    Print the console presentation message.
     """
     presentation_message = textwrap.dedent(f"""\
          ____  _   _  ____   _   _  _____     _     ____     ____ __   __
@@ -81,7 +81,7 @@ def generate_default_config_file(*, path: str) -> files.File:
 
 def generate_images(*, path: str) -> Tuple[files.File]:
     """
-    Return the default images assets
+    Return the default images assets.
 
     Args:
         path: path where the images should be saved.
@@ -126,10 +126,10 @@ def read_config_file(*, path: str) -> dict:
 
 def parse_config_file(*, path: str) -> Tuple[files.File]:
     """
-    Parse a config file
+    Parse a config file.
 
     Args:
-        path: path where the config file is stored
+        path: path where the config file is stored.
 
     Returns:
         The files to generate based on the configuration file.
@@ -145,7 +145,7 @@ def parse_args(*, args: List[str]) -> NoReturn:
     Parse the arguments and create the correspondent files.
 
     Args:
-        args: list of arguments
+        args: list of arguments.
     """
     files_to_create = []
     try:

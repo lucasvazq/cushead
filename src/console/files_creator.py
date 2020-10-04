@@ -17,6 +17,12 @@ class ParentNode:
     """
 
     def __init__(self: ParentNode, name: str) -> NoReturn:
+        """
+        Create a parent node.
+
+        Args:
+            name: the node name.
+        """
         self.elements = {}
         self.name = name
 
@@ -42,6 +48,13 @@ class LeafNode:
     """
 
     def __init__(self: LeafNode, name: str, data: bytes) -> NoReturn:
+        """
+        Create a leaf node.
+
+        Args:
+            name: the node name.
+            data: the node data.
+        """
         self.name = name
         self.data = data
 
@@ -64,11 +77,11 @@ def create_node(*, node_items: List[files.File]) -> ParentNode:
 
 def parse_node(*, node: ParentNode, base_path: pathlib.Path) -> NoReturn:
     """
-    Create a representation of the node in the system directory
+    Create a representation of the node in the system directory.
 
     Args:
-        node: the node
-        base_path: the base path
+        node: the node.
+        base_path: the base path.
     """
     for name, element in sorted(node.elements.items()):
         destination_path = base_path / name
@@ -83,7 +96,7 @@ def parse_node(*, node: ParentNode, base_path: pathlib.Path) -> NoReturn:
 
 def create_files(*, files_to_create: List[files.File]) -> NoReturn:
     """
-    Create files based on a list
+    Create files based on a list.
 
     Args:
         files_to_create: a list that have info about the elements to create inside the node.

@@ -6,8 +6,8 @@ Informative module.
 PACKAGE_NAME = "cushead"
 PACKAGE_VERSION = "3.1.8"
 PYTHON_MIN_VERSION = (3, 8)
-SOURCE = "https://github.com/lucasvazq/{}".format(PACKAGE_NAME)
-DOCUMENTATION = "https://github.com/lucasvazq/{}/blob/master/README.md".format(PACKAGE_NAME)
+SOURCE = f"https://github.com/lucasvazq/{PACKAGE_NAME}"
+DOCUMENTATION = f"https://github.com/lucasvazq/{PACKAGE_NAME}/blob/master/README.md"
 REQUIRED_PACKAGES = ("python-resize-image", "Pillow")
 AUTHOR = "Lucas Vazquez"
 EMAIL = "lucas5zvazquez@gmail.com"

@@ -1,5 +1,5 @@
 """
-Helpers
+Helpers.
 """
 import pathlib
 from collections import namedtuple
@@ -12,6 +12,7 @@ class Image(NamedTuple):
     """
     Used to store data of the assets images.
     """
+
     reference: str
     name: str
     data: bytes
