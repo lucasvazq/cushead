@@ -274,8 +274,12 @@ class TemplateLoader:
             templates_path: the path where the templates are stored.
         """
         template_loader = jinja2.FileSystemLoader(searchpath=str(templates_path))
-        self.template_parser = jinja2.Environment(loader=template_loader, extensions=["src.generator.jinja_extension.OneLineExtension"])
-        self.template_parser.lstrip_blocks = True
+        self.template_parser = jinja2.Environment(
+            loader=template_loader,
+            lstrip_blocks=True,
+            autoescape=True,
+            extensions=["src.generator.jinja_extension.OneLineExtension"],
+        )
 
     def add_template_variable(self, name: str, value: Union[configuration.Config, str]) -> None:
         """
