@@ -7,6 +7,7 @@ import hashlib
 import io
 import pathlib
 from collections import namedtuple
+from typing import overload
 from typing import List
 from typing import NamedTuple
 from typing import Optional
@@ -31,7 +32,13 @@ class File(NamedTuple):
     data: bytes
 
 
-def resize_image(*, image: Optional[PIL.Image.Image], width: int, height: int) -> Optional[PIL.Image.Image]:
+@overload
+def resize_image(*, image: None, width: int, height: int) -> None:
+    ...
+@overload
+def resize_image(*, image: PIL.Image.Image, width: int, height: int) -> PIL.Image.Image:
+    ...
+def resize_image(*, image, width, height):
     """
     Return a image resized.
 
@@ -51,7 +58,13 @@ def resize_image(*, image: Optional[PIL.Image.Image], width: int, height: int) -
     return resized_image
 
 
-def remove_transparency(*, image: Optional[PIL.Image.Image], background_color: str) -> Optional[PIL.Image.Image]:
+@overload
+def remove_transparency(*, image: None, background_color: str) -> None:
+    ...
+@overload
+def remove_transparency(*, image: PIL.Image.Image, background_color: str) -> PIL.Image.Image:
+    ...
+def remove_transparency(*, image, background_color):
     """
     Remove the transparency of png images.
 

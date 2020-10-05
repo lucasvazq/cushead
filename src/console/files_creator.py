@@ -28,7 +28,7 @@ class Node:
         """
         self.name = name
         self.data = data
-        self.elements: Dict[str, Union[Node]] = {}
+        self.elements: Dict[str, Node] = {}
 
     def add_child(self, parts: Tuple[str, ...], data: bytes) -> None:
         """

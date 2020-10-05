@@ -23,10 +23,10 @@ class Config(TypedDict):
     main_folder_path: pathlib.Path
     output_folder_path: pathlib.Path
     static_url: str
-    favicon_ico: Union[Image.Image, None]
-    favicon_png: Union[Image.Image, None]
-    favicon_svg: Union[pathlib.Path, None]
-    preview_png: Union[Image.Image, None]
+    favicon_ico: Optional[Image.Image]
+    favicon_png: Optional[Image.Image]
+    favicon_svg: Optional[pathlib.Path]
+    preview_png: Optional[Image.Image]
     google_tag_manager: Optional[str]
     language: Optional[str]
     territory: Optional[str]
