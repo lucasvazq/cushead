@@ -9,6 +9,7 @@ import pathlib
 from collections import namedtuple
 from typing import List
 from typing import NamedTuple
+from typing import Optional
 from typing import Tuple
 from typing import Union
 
@@ -30,7 +31,7 @@ class File(NamedTuple):
     data: bytes
 
 
-def resize_image(*, image: PIL.Image, width: int, height: int) -> PIL.Image:
+def resize_image(*, image: Optional[PIL.Image.Image], width: int, height: int) -> Optional[PIL.Image.Image]:
     """
     Return a image resized.
 
@@ -42,12 +43,15 @@ def resize_image(*, image: PIL.Image, width: int, height: int) -> PIL.Image:
     Returns:
         A new image resized.
     """
+    if image is None:
+        return None
+
     resized_image = resizeimage.resize_contain(image, (width, height))
     resized_image.format = image.format
     return resized_image
 
 
-def remove_transparency(*, image: PIL.Image, background_color: str) -> PIL.Image:
+def remove_transparency(*, image: Optional[PIL.Image.Image], background_color: str) -> Optional[PIL.Image.Image]:
     """
     Remove the transparency of png images.
 
@@ -58,6 +62,10 @@ def remove_transparency(*, image: PIL.Image, background_color: str) -> PIL.Image
     Returns:
         A PIL image instance.
     """
+
+    if image is None:
+        return None
+
     # Remove transparency (https://stackoverflow.com/a/35859141/10712525)
     if image.mode in ("RGBA", "LA") or (image.mode == "P" and "transparency" in image.info):
         alpha = image.convert("RGBA").getchannel("A")
@@ -69,7 +77,7 @@ def remove_transparency(*, image: PIL.Image, background_color: str) -> PIL.Image
     return image
 
 
-def read_image_bytes(image: Union[PIL.Image]) -> bytes:
+def read_image_bytes(image: Optional[PIL.Image.Image]) -> bytes:
     """
     Read the bytes of a image.
 
@@ -79,6 +87,9 @@ def read_image_bytes(image: Union[PIL.Image]) -> bytes:
     Returns:
         The bytes data
     """
+    if image is None:
+        return bytes()
+
     io_file = io.BytesIO()
     image.save(io_file, format=image.format)
     return io_file.getvalue()

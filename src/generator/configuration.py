@@ -8,9 +8,7 @@ from typing import Optional
 from typing import TypedDict
 from typing import Union
 
-from PIL import IcoImagePlugin
 from PIL import Image
-from PIL import PngImagePlugin
 
 import schema
 
@@ -25,10 +23,10 @@ class Config(TypedDict):
     main_folder_path: pathlib.Path
     output_folder_path: pathlib.Path
     static_url: str
-    favicon_ico: Union[IcoImagePlugin.IcoImageFile, None]
-    favicon_png: Union[PngImagePlugin.PngImageFile, None]
+    favicon_ico: Union[Image.Image, None]
+    favicon_png: Union[Image.Image, None]
     favicon_svg: Union[pathlib.Path, None]
-    preview_png: Union[PngImagePlugin.PngImageFile, None]
+    preview_png: Union[Image.Image, None]
     google_tag_manager: Optional[str]
     language: Optional[str]
     territory: Optional[str]
@@ -97,7 +95,7 @@ def validate_config(*, config: Any) -> None:
             raise exceptions.InvalidConfiguration(f"The key {color_key} must be a hex color code. If you don't want any value on this key, set the value to null.")
 
 
-def load_binary_image(*, path: pathlib.Path, expected_format: str) -> Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]:
+def load_binary_image(*, path: pathlib.Path, expected_format: str) -> Image.Image:
     """
     Load a binary type image.
 
