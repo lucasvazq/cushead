@@ -1,0 +1,205 @@
+2020-10-05 20:05:32,164 INFO Starting server at `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.`.
+2020-10-05 20:05:32,164 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/client.lock
+2020-10-05 20:05:32,165 DEBUG Daemonizing the configuration_monitor.
+2020-10-05 20:05:32,166 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/server/server.lock
+2020-10-05 20:05:32,166 DEBUG Unable to acquire lock because lock file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/server/server.lock was not found
+2020-10-05 20:05:32,167 DEBUG Running `/home/lucasvazq/.Envs/Python/h_al/bin/pyre.bin start -logging-sections environment -project-root /home/lucasvazq/Workspaces/H/cushead/1/cushead -log-directory /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre -taint-models /home/lucasvazq/.Envs/Python/h_al/lib -filter-directories /home/lucasvazq/Workspaces/H/cushead/1/cushead/. -workers 1 -expected-binary-version unversioned -search-path /home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.9,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.7,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.6,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/2and3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/third_party/3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/third_party/2and3 -new-incremental-check /home/lucasvazq/Workspaces/H/cushead/1/cushead/.`
+2020-10-05 20:05:32,170 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.lock
+2020-10-05 20:05:32,170 DEBUG Registering process with pid 361886 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.pid`
+2020-10-05 20:05:32,229 DEBUG Registering process with pid 361885 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/start-361885.pid`
+2020-10-05 20:05:33,259 INFO Starting up server ...
+2020-10-05 20:05:33,259 INFO Running as pid: 361885
+2020-10-05 20:05:33,260 INFO Version: f319efebe90e67e4220339e10efa6ee3155537ad
+2020-10-05 20:05:33,260 INFO Build info: Linux x86_64 @ Thu Sep 24 17:22:29 PDT 2020
+2020-10-05 20:05:33,263 INFO Server starting in background
+2020-10-05 20:05:33,282 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/start-361885.pid`
+2020-10-05 20:05:40,759 DEBUG Daemonizing the file_monitor.
+2020-10-05 20:05:40,779 DEBUG Initialized file monitor.
+2020-10-05 20:05:40,783 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.lock
+2020-10-05 20:05:40,783 DEBUG Registering process with pid 361945 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.pid`
+2020-10-05 20:05:40,794 INFO Waiting for server...
+2020-10-05 20:05:41,028 ERROR Found 9 type errors!
+
+2020-10-05 20:11:54,599 INFO Waiting for server...
+2020-10-05 20:11:55,044 ERROR Found 9 type errors!
+
+2020-10-05 20:15:58,891 INFO Waiting for server...
+2020-10-05 20:15:58,963 ERROR Found 9 type errors!
+
+2020-10-05 20:19:43,573 DEBUG Running `/home/lucasvazq/.Envs/Python/h_al/bin/pyre.bin stop -log-directory /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre /home/lucasvazq/Workspaces/H/cushead/1/cushead/.`
+2020-10-05 20:19:43,577 DEBUG Registering process with pid 363814 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/stop-363814.pid`
+2020-10-05 20:19:43,625 INFO Server stopped, polling for deletion of socket.
+2020-10-05 20:19:43,627 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/stop-363814.pid`
+2020-10-05 20:19:43,628 INFO Polling for server's process to stop...
+2020-10-05 20:19:43,829 INFO The server process has stopped.
+2020-10-05 20:19:43,829 INFO Stopped server at `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.`
+2020-10-05 20:19:43,829 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.pid`
+2020-10-05 20:19:43,829 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.pid`
+2020-10-05 20:19:43,830 WARNING Interrupted by user
+
+2020-10-05 20:19:43,830 WARNING Interrupted by user
+
+2020-10-05 20:19:43,888 DEBUG Traceback (most recent call last):
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/pyre.py", line 125, in run_pyre
+    exit_code = command.run().exit_code()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/incremental.py", line 106, in _run
+    Start(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/start.py", line 116, in _run
+    self._start_configuration_monitor()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/start.py", line 98, in _start_configuration_monitor
+    configuration_monitor.ConfigurationMonitor(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 159, in daemonize
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 140, in _run
+    self._handle_response(response)
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/configuration_monitor.py", line 117, in _handle_response
+    self._stop()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/configuration_monitor.py", line 93, in _stop
+    stop.Stop(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/stop.py", line 113, in _run
+    watchman.stop_subscriptions(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 172, in stop_subscriptions
+    os.kill(pid, signal.SIGINT)
+KeyboardInterrupt
+
+2020-10-05 20:19:43,889 DEBUG Traceback (most recent call last):
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/pyre.py", line 125, in run_pyre
+    exit_code = command.run().exit_code()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/incremental.py", line 106, in _run
+    Start(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/start.py", line 148, in _run
+    file_monitor.daemonize()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 159, in daemonize
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 129, in _run
+    response = connection.receive()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pywatchman/__init__.py", line 695, in receive
+    buf = [self.transport.readBytes(sniff_len)]
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pywatchman/__init__.py", line 339, in readBytes
+    buf = [self.sock.recv(size)]
+KeyboardInterrupt
+
+2020-10-05 20:19:46,684 INFO Starting server at `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.`.
+2020-10-05 20:19:46,685 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/client.lock
+2020-10-05 20:19:46,685 DEBUG Daemonizing the configuration_monitor.
+2020-10-05 20:19:46,686 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/server/server.lock
+2020-10-05 20:19:46,687 DEBUG Running `/home/lucasvazq/.Envs/Python/h_al/bin/pyre.bin start -logging-sections environment -project-root /home/lucasvazq/Workspaces/H/cushead/1/cushead -log-directory /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre -taint-models /home/lucasvazq/.Envs/Python/h_al/lib -filter-directories /home/lucasvazq/Workspaces/H/cushead/1/cushead/. -workers 1 -expected-binary-version unversioned -search-path /home/lucasvazq/Workspaces/H/cushead/1/cushead/.,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.9,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.7,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.6,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/2and3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/third_party/3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/third_party/2and3 -new-incremental-check /home/lucasvazq/Workspaces/H/cushead/1/cushead/.`
+2020-10-05 20:19:46,690 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.lock
+2020-10-05 20:19:46,691 DEBUG Registering process with pid 363823 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.pid`
+2020-10-05 20:19:46,693 DEBUG Registering process with pid 363824 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/start-363824.pid`
+2020-10-05 20:19:46,732 INFO Starting up server ...
+2020-10-05 20:19:46,732 INFO Running as pid: 363824
+2020-10-05 20:19:46,732 INFO Version: f319efebe90e67e4220339e10efa6ee3155537ad
+2020-10-05 20:19:46,733 INFO Build info: Linux x86_64 @ Thu Sep 24 17:22:29 PDT 2020
+2020-10-05 20:19:46,755 INFO Server starting in background
+2020-10-05 20:19:46,757 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/start-363824.pid`
+2020-10-05 20:19:51,322 DEBUG Daemonizing the file_monitor.
+2020-10-05 20:19:51,323 DEBUG Initialized file monitor.
+2020-10-05 20:19:51,325 INFO Waiting for server...
+2020-10-05 20:19:51,325 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.lock
+2020-10-05 20:19:51,326 DEBUG Registering process with pid 363867 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.pid`
+2020-10-05 20:19:51,424 ERROR Found 9 type errors!
+
+2020-10-05 20:20:10,024 DEBUG Running `/home/lucasvazq/.Envs/Python/h_al/bin/pyre.bin stop -log-directory /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre /home/lucasvazq/Workspaces/H/cushead/1/cushead/.`
+2020-10-05 20:20:10,028 DEBUG Registering process with pid 363954 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/stop-363954.pid`
+2020-10-05 20:20:10,057 INFO Server stopped, polling for deletion of socket.
+2020-10-05 20:20:10,059 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/stop-363954.pid`
+2020-10-05 20:20:10,059 INFO Polling for server's process to stop...
+2020-10-05 20:20:10,360 INFO The server process has stopped.
+2020-10-05 20:20:10,360 INFO Stopped server at `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.`
+2020-10-05 20:20:10,361 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.pid`
+2020-10-05 20:20:10,361 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.pid`
+2020-10-05 20:20:10,361 WARNING Interrupted by user
+
+2020-10-05 20:20:10,361 WARNING Interrupted by user
+
+2020-10-05 20:20:10,362 DEBUG Traceback (most recent call last):
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/pyre.py", line 125, in run_pyre
+    exit_code = command.run().exit_code()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/incremental.py", line 106, in _run
+    Start(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/start.py", line 116, in _run
+    self._start_configuration_monitor()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/start.py", line 98, in _start_configuration_monitor
+    configuration_monitor.ConfigurationMonitor(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 159, in daemonize
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 140, in _run
+    self._handle_response(response)
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/configuration_monitor.py", line 117, in _handle_response
+    self._stop()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/configuration_monitor.py", line 93, in _stop
+    stop.Stop(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/stop.py", line 113, in _run
+    watchman.stop_subscriptions(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 172, in stop_subscriptions
+    os.kill(pid, signal.SIGINT)
+KeyboardInterrupt
+
+2020-10-05 20:20:10,362 DEBUG Traceback (most recent call last):
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/pyre.py", line 125, in run_pyre
+    exit_code = command.run().exit_code()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/incremental.py", line 106, in _run
+    Start(
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/command.py", line 407, in run
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/commands/start.py", line 148, in _run
+    file_monitor.daemonize()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 159, in daemonize
+    self._run()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pyre_check/client/watchman.py", line 129, in _run
+    response = connection.receive()
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pywatchman/__init__.py", line 695, in receive
+    buf = [self.transport.readBytes(sniff_len)]
+  File "/home/lucasvazq/.Envs/Python/h_al/lib/python3.8/site-packages/pywatchman/__init__.py", line 339, in readBytes
+    buf = [self.sock.recv(size)]
+KeyboardInterrupt
+
+2020-10-05 20:20:35,559 INFO Starting server at `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.`.
+2020-10-05 20:20:35,560 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/client.lock
+2020-10-05 20:20:35,560 DEBUG Daemonizing the configuration_monitor.
+2020-10-05 20:20:35,561 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/server/server.lock
+2020-10-05 20:20:35,563 DEBUG Running `/home/lucasvazq/.Envs/Python/h_al/bin/pyre.bin start -logging-sections environment -project-root /home/lucasvazq/Workspaces/H/cushead/1/cushead -log-directory /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre -taint-models /home/lucasvazq/.Envs/Python/h_al/lib -filter-directories /home/lucasvazq/Workspaces/H/cushead/1/cushead/. -workers 1 -expected-binary-version unversioned -search-path /home/lucasvazq/.Envs/Python/h_al/bin,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.9,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.7,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3.6,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/stdlib/2and3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/third_party/3,/home/lucasvazq/.Envs/Python/h_al/lib/pyre_check/typeshed/third_party/2and3 -new-incremental-check /home/lucasvazq/Workspaces/H/cushead/1/cushead/.`
+2020-10-05 20:20:35,564 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.lock
+2020-10-05 20:20:35,564 DEBUG Registering process with pid 364054 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/configuration_monitor/configuration_monitor.pid`
+2020-10-05 20:20:35,571 DEBUG Registering process with pid 364055 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/start-364055.pid`
+2020-10-05 20:20:35,600 INFO Starting up server ...
+2020-10-05 20:20:35,600 INFO Running as pid: 364055
+2020-10-05 20:20:35,601 INFO Version: f319efebe90e67e4220339e10efa6ee3155537ad
+2020-10-05 20:20:35,601 INFO Build info: Linux x86_64 @ Thu Sep 24 17:22:29 PDT 2020
+2020-10-05 20:20:35,603 INFO Server starting in background
+2020-10-05 20:20:35,604 DEBUG Removing pid file: `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/pid_files/start-364055.pid`
+2020-10-05 20:20:40,741 DEBUG Daemonizing the file_monitor.
+2020-10-05 20:20:40,742 DEBUG Initialized file monitor.
+2020-10-05 20:20:40,744 DEBUG Trying to acquire lock on file /home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.lock
+2020-10-05 20:20:40,744 INFO Waiting for server...
+2020-10-05 20:20:40,745 DEBUG Registering process with pid 364099 in pid file `/home/lucasvazq/Workspaces/H/cushead/1/cushead/.pyre/file_monitor/file_monitor.pid`
+2020-10-05 20:20:40,842 ERROR Found 9 type errors!
+
+2020-10-05 20:28:11,671 INFO Waiting for server...
+2020-10-05 20:28:11,688 ERROR Found 8 type errors!
+
+2020-10-05 20:41:52,431 INFO Waiting for server...
+2020-10-05 20:41:52,545 ERROR Found 8 type errors!
+
+2020-10-05 20:51:50,062 INFO Waiting for server...
+2020-10-05 20:51:50,076 ERROR Found 7 type errors!
+

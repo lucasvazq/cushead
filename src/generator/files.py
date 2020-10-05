@@ -236,7 +236,7 @@ def generate_images(*, config: configuration.Config) -> List[File]:
         images.append(
             File(
                 path=config["output_folder_path"] / "static" / "mask-icon.svg",
-                data=config["favicon_svg"].read_bytes(),
+                data=getattr(config["favicon_svg"], 'read_bytes', b''),
             )
         )
 

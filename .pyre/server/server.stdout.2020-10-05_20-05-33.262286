@@ -1,0 +1,47 @@
+2020-10-05 20:05:33 INFO Running as pid: 361895
+2020-10-05 20:05:33 INFO Version: f319efebe90e67e4220339e10efa6ee3155537ad
+2020-10-05 20:05:33 INFO Build info: Linux x86_64 @ Thu Sep 24 17:22:29 PDT 2020
+2020-10-05 20:05:34 PERFORMANCE Module tracker built: 0.531483s
+2020-10-05 20:05:34 INFO Building type environment...
+2020-10-05 20:05:34 INFO Parsing 1007 stubs and sources...
+2020-10-05 20:05:38 PERFORMANCE Sources parsed: 3.556120s
+2020-10-05 20:05:39 ENVIRONMENT Updating is from empty stub result Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating Alias Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating Edges Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating Class metadata Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating parse annotation Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating metaclasses Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating attributes Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating Global Environment
+2020-10-05 20:05:39 ENVIRONMENT Updating Global Locations Environment
+2020-10-05 20:05:39 PERFORMANCE Full environment built: 5.056271s
+2020-10-05 20:05:39 INFO Checking 67 functions...
+2020-10-05 20:05:39 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:39 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:39 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:39 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:39 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:39 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:39 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:40 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:40 PROGRESS Processed 34 of 67 functions
+2020-10-05 20:05:40 ENVIRONMENT Superclass of top (unresolved name: typing.Generic[])
+2020-10-05 20:05:40 PROGRESS Processed 67 of 67 functions
+2020-10-05 20:05:40 PERFORMANCE Check_TypeCheck: 0.562382s
+2020-10-05 20:05:40 MEMORY Shared memory size post-typecheck (size: 10)
+2020-10-05 20:05:40 PROGRESS Postprocessing 1007 sources...
+2020-10-05 20:05:40 PROGRESS Postprocessed 202 of 1007 sources
+2020-10-05 20:05:40 PROGRESS Postprocessed 404 of 1007 sources
+2020-10-05 20:05:40 PROGRESS Postprocessed 606 of 1007 sources
+2020-10-05 20:05:40 PROGRESS Postprocessed 808 of 1007 sources
+2020-10-05 20:05:40 PROGRESS Postprocessed 1007 of 1007 sources
+2020-10-05 20:05:40 PERFORMANCE Initialization: 6.628570s
+2020-10-05 20:05:40 INFO Server started using incremental style Configuration.Analysis.FineGrained
+2020-10-05 20:05:40 INFO Enabled features = { Configuration.Features.click_to_fix = false; go_to_definition = false;
+  hover = false }
+2020-10-05 20:05:41 PERFORMANCE Server request: 0.000208s
+2020-10-05 20:05:41 PERFORMANCE Server request: 0.000309s
+2020-10-05 20:11:54 PERFORMANCE Server request: 0.106340s
+2020-10-05 20:11:55 PERFORMANCE Server request: 0.186213s
+2020-10-05 20:15:58 PERFORMANCE Server request: 0.000187s
+2020-10-05 20:15:58 PERFORMANCE Server request: 0.000294s

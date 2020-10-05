@@ -17,7 +17,7 @@ class Node:
     Class used to represent a parent node.
     """
 
-    def __init__(self, name: str, data: Optional[bytes] = None) -> None:
+    def __init__(self, name: str, data: bytes = b'') -> None:
         """
         Create a parent node.
 
@@ -71,7 +71,7 @@ def parse_node(*, node: Node, base_path: pathlib.Path) -> None:
     """
     for name, element in sorted(node.elements.items()):
         destination_path = base_path / name
-        if element.data is not None:
+        if element.data:
             print(destination_path)
             destination_path.write_bytes(element.data)
         else:
