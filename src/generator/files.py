@@ -14,10 +14,8 @@ from typing import overload
 from typing import Tuple
 from typing import Union
 
-import PIL
-
 import jinja2
-
+import PIL
 from resizeimage import resizeimage
 
 from src.generator import configuration

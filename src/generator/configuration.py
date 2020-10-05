@@ -7,9 +7,8 @@ from typing import Any
 from typing import Optional
 from typing import TypedDict
 
-from PIL import Image
-
 import schema
+from PIL import Image
 
 from src import exceptions
 
