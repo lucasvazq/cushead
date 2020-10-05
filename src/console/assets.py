@@ -32,7 +32,7 @@ def get_assets_images() -> Assets:
     Returns:
         A tuple of the images.
     """
-    assets_path = pathlib.Path(pathlib.Path(__file__).parent, 'assets')
+    assets_path = pathlib.Path(pathlib.Path(__file__).parent, "assets")
     return Assets(
         favicon_ico=Image(name="favicon_ico_16px.ico", data=(assets_path / "favicon_ico_16px.ico").read_bytes()),
         favicon_png=Image(name="favicon_png_1600px.png", data=(assets_path / "favicon_png_1600px.png").read_bytes()),

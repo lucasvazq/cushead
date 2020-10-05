@@ -35,7 +35,8 @@ def show_presentation() -> None:
     """
     Print the console presentation message.
     """
-    presentation_message = textwrap.dedent(f"""\
+    presentation_message = textwrap.dedent(
+        f"""\
           ____  _   _  ____   _   _  _____     _     ____     ____ __   __
          / ___|| | | |/ ___| | | | || ____|   / \\   |  _ \\   |  _ \\\\ \\ / /
         | |    | | | |\\___ \\ | |_| ||  _|    / _ \\  | | | |  | |_) |\\ V /
@@ -57,7 +58,8 @@ def show_presentation() -> None:
         Source: {info.SOURCE}
         Documentation: {info.DOCUMENTATION}
         For help run: {info.PACKAGE_NAME} -h
-    """)
+        """
+    )
     print(f"{_PRESENTATION_COLOR}{presentation_message}{_DEFAULT_COLOR}")
 
 
@@ -135,7 +137,7 @@ def generate_default_config_file(*, path: pathlib.Path) -> files.File:
         The file to save.
     """
     default_config = get_default_config()
-    parsed_settings = json.dumps(default_config, indent=4).encode('utf-8')
+    parsed_settings = json.dumps(default_config, indent=4).encode("utf-8")
     return files.File(path=path, data=parsed_settings)
 
 
@@ -177,11 +179,15 @@ def read_config_file(*, path: str) -> Any:
     try:
         config = json.loads(file_string)
     except decoder.JSONDecodeError as exception:
-        raise exceptions.WrongFileFormat("".join((
-            f"Invalid json file format in ({path})",
-            f"ABSOLUTE PATH: {pathlib.Path(path).absolute()}",
-            f"Exception: {exception}"
-        )))
+        raise exceptions.WrongFileFormat(
+            "".join(
+                (
+                    f"Invalid json file format in ({path})",
+                    f"ABSOLUTE PATH: {pathlib.Path(path).absolute()}",
+                    f"Exception: {exception}",
+                )
+            )
+        )
     return config
 
 

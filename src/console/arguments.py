@@ -3,7 +3,6 @@ Module used to parse console arguments.
 """
 import argparse
 import pathlib
-import textwrap
 from typing import List
 
 from src import exceptions
@@ -23,16 +22,18 @@ def setup_parser() -> argparse.ArgumentParser:
         prog=info.PACKAGE_NAME,
         formatter_class=argparse.RawDescriptionHelpFormatter,
         usage=f"{info.PACKAGE_NAME} -config FILEPATH",
-        epilog=textwrap.dedent(f"""\
-            Examples:
-            1) Generate default config file with images:
-                {name} -default settings.json --images
-            2) Run that config:
-                {name} -config settings.json
-        """),
+        epilog="".join(
+            (
+                "Examples:",
+                "1) Generate default config file with images:",
+                "    {name} -default settings.json --images",
+                "2) Run that config:",
+                "    {name} -config settings.json",
+            )
+        ),
     )
 
-    required_arguments = parser.add_argument_group("")
+    required_arguments = parser.add_argument_group("required")
     optional_arguments = parser.add_argument_group("optional")
 
     required_arguments.add_argument(
@@ -94,15 +95,23 @@ def validate_args(*, parser: argparse.ArgumentParser, args: List[str]) -> argpar
     if parsed_args.config:
         reference = pathlib.Path(parsed_args.config)
         if not reference.exists():
-            raise exceptions.BadReference('\n'.join((
-                f"'config' key ({reference}) must be referred to a path that exists.",
-                f"ABSOLUTE PATH: {reference.absolute()}",
-            )))
+            raise exceptions.BadReference(
+                "\n".join(
+                    (
+                        f"'config' key ({reference}) must be referred to a path that exists.",
+                        f"ABSOLUTE PATH: {reference.absolute()}",
+                    )
+                )
+            )
         if not reference.is_file():
-            raise exceptions.BadReference('\n'.join((
-                f"'config' key ({reference}) must be referred to a file path.",
-                f"ABSOLUTE PATH: {reference.absolute()}",
-            )))
+            raise exceptions.BadReference(
+                "\n".join(
+                    (
+                        f"'config' key ({reference}) must be referred to a file path.",
+                        f"ABSOLUTE PATH: {reference.absolute()}",
+                    )
+                )
+            )
 
     return parsed_args
 

@@ -55,7 +55,7 @@ def create_node(*, node_items: List[files.File]) -> Node:
     Returns:
         A main dir node.
     """
-    base_path = Node(name='')
+    base_path = Node(name="")
     for file in node_items:
         base_path.add_child(parts=pathlib.Path(file.path).parts, data=file.data)
     return base_path
@@ -88,4 +88,4 @@ def create_files(*, files_to_create: List[files.File]) -> None:
         files_to_create: a list that have info about the elements to create inside the node.
     """
     node = create_node(node_items=files_to_create)
-    parse_node(node=node, base_path=pathlib.Path(''))
+    parse_node(node=node, base_path=pathlib.Path(""))

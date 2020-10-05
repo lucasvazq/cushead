@@ -13,9 +13,7 @@ setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
     scripts=[f"{info.PACKAGE_NAME}.py"],
-    entry_points={
-        "console_scripts": [f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}:main"]
-    },
+    entry_points={"console_scripts": [f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}:main"]},
     url=info.SOURCE,
     project_urls={
         "Documentation": info.DOCUMENTATION,

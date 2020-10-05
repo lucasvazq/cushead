@@ -19,7 +19,7 @@ class OneLineExtension(ext.Extension):
     """
 
     # A tuple of names that trigger the extension.
-    tags = {'oneline'}
+    tags = {"oneline"}
 
     def parse(self, parser: jinja2_parser.Parser) -> Any:
         """
@@ -43,9 +43,9 @@ class OneLineExtension(ext.Extension):
 
         # Get the content inside the extension tag, with the second parameter as True,
         # we dont get, as final token, the end block of the extension tag, because we don't need it.
-        body = parser.parse_statements(tuple(f'name:end{tagname}' for tagname in self.tags), True)
+        body = parser.parse_statements(tuple(f"name:end{tagname}" for tagname in self.tags), True)
 
-        method = self.call_method('strip_spaces')
+        method = self.call_method("strip_spaces")
         call_block = nodes.CallBlock(method, [], [], body)
         call_block.set_lineno(lineno)
         return call_block
@@ -63,4 +63,4 @@ class OneLineExtension(ext.Extension):
         Returns:
             return the cleaned content of the macro.
         """
-        return ''.join(caller().split())
+        return "".join(caller().split())
