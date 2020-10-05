@@ -170,7 +170,7 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
     else:
         preview_png = None
 
-    return Config({
+    return {
         "main_folder_path": path,
         "output_folder_path": path / "output",
 
@@ -199,4 +199,4 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
         'twitter_user_id': str(config.get("twitter_user_id", "")),
         'itunes_app_id': str(config.get("itunes_app_id", "")),
         'itunes_affiliate_data': str(config.get("itunes_affiliate_data", "")),
-    })
+    }

@@ -98,7 +98,7 @@ def get_default_config() -> DefaultConfig:
         a dict with the default config.
     """
     images = assets.get_assets_images()
-    return DefaultConfig({
+    return {
         "static_url": "/static",
         "favicon_ico": images.favicon_ico.name,
         "favicon_png": images.favicon_png.name,
@@ -121,7 +121,7 @@ def get_default_config() -> DefaultConfig:
         "twitter_user_id": "123456",
         "itunes_app_id": "123456",
         "itunes_affiliate_data": "123456",
-    })
+    }
 
 
 def generate_default_config_file(*, path: pathlib.Path) -> files.File:
