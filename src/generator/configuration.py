@@ -6,7 +6,6 @@ import re
 from typing import Any
 from typing import Optional
 from typing import TypedDict
-from typing import Union
 
 from PIL import Image
 
