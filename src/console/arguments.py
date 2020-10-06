@@ -17,7 +17,6 @@ def setup_parser() -> argparse.ArgumentParser:
     Returns:
         Argparse parser instance.
     """
-    name = info.PACKAGE_NAME
     parser = argparse.ArgumentParser(
         prog=info.PACKAGE_NAME,
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -26,9 +25,9 @@ def setup_parser() -> argparse.ArgumentParser:
             (
                 "Examples:",
                 "1) Generate default config file with images:",
-                "    {name} -default settings.json --images",
+                f"    {info.PACKAGE_NAME} -default settings.json --images",
                 "2) Run that config:",
-                "    {name} -config settings.json",
+                f"    {info.PACKAGE_NAME} -config settings.json",
             )
         ),
     )

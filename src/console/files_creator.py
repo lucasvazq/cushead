@@ -6,7 +6,6 @@ from __future__ import annotations
 import pathlib
 from typing import Dict
 from typing import List
-from typing import Optional
 from typing import Tuple
 
 from src.generator import files
@@ -17,7 +16,7 @@ class Node:
     Class used to represent a parent node.
     """
 
-    def __init__(self, name: str, data: bytes = b'') -> None:
+    def __init__(self, name: str, data: bytes = b"") -> None:
         """
         Create a parent node.
 
