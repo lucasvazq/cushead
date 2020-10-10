@@ -10,12 +10,13 @@ from collections import namedtuple
 from typing import List
 from typing import NamedTuple
 from typing import Optional
-from typing import overload
 from typing import Tuple
 from typing import Union
+from typing import overload
 
 import jinja2
-import PIL
+from PIL import Image
+from PIL import ImageColor
 from resizeimage import resizeimage
 
 from src.generator import configuration
@@ -36,7 +37,7 @@ def resize_image(*, image: None, width: int, height: int) -> None:
 
 
 @overload
-def resize_image(*, image: PIL.Image.Image, width: int, height: int) -> PIL.Image.Image:
+def resize_image(*, image: Image.Image, width: int, height: int) -> Image.Image:
     ...
 
 
@@ -66,7 +67,7 @@ def remove_transparency(*, image: None, background_color: str) -> None:
 
 
 @overload
-def remove_transparency(*, image: PIL.Image.Image, background_color: str) -> PIL.Image.Image:
+def remove_transparency(*, image: Image.Image, background_color: str) -> Image.Image:
     ...
 
 
@@ -87,15 +88,15 @@ def remove_transparency(*, image, background_color):
     # Remove transparency (https://stackoverflow.com/a/35859141/10712525)
     if image.mode in ("RGBA", "LA") or (image.mode == "P" and "transparency" in image.info):
         alpha = image.convert("RGBA").getchannel("A")
-        color = PIL.ImageColor.getrgb(background_color) + (255,)
-        new_image = PIL.Image.new("RGBA", image.size, color)
+        color = ImageColor.getrgb(background_color) + (255,)
+        new_image = Image.new("RGBA", image.size, color)
         new_image.paste(image, mask=alpha)
         new_image.format = image.format
         return new_image
     return image
 
 
-def read_image_bytes(image: Optional[PIL.Image.Image]) -> bytes:
+def read_image_bytes(image: Optional[Image.Image]) -> bytes:
     """
     Read the bytes of a image.
 
@@ -236,7 +237,7 @@ def generate_images(*, config: configuration.Config) -> List[File]:
         images.append(
             File(
                 path=config["output_folder_path"] / "static" / "mask-icon.svg",
-                data=getattr(config["favicon_svg"], "read_bytes", b""),
+                data=getattr(config["favicon_svg"], "read_bytes", bytes)(),
             )
         )
 
@@ -330,26 +331,26 @@ def generate_templates(*, config: configuration.Config) -> List[File]:
     templates_path = pathlib.Path(__file__).parent / "templates"
     template_loader = TemplateLoader(templates_path=templates_path)
     template_loader.add_template_variable(name="config", value=config)
-    index_template = template_loader.render_template(path="index.html")
+    index_template = template_loader.render_template(path="index.jinja2")
     index_hash = generate_template_hash(template=index_template)
     template_loader.add_template_variable(name="index_hash", value=index_hash)
 
     templates = [
         File(
-            path=config["output_folder_path"] / "index.html",
+            path=config["output_folder_path"] / "index.jinja2",
             data=index_template,
         ),
         File(
             path=config["output_folder_path"] / "robots.txt",
-            data=template_loader.render_template(path="robots.html"),
+            data=template_loader.render_template(path="robots.jinja2"),
         ),
         File(
             path=config["output_folder_path"] / "static" / "manifest.json",
-            data=template_loader.render_template(path="manifest.html"),
+            data=template_loader.render_template(path="manifest.jinja2"),
         ),
         File(
             path=config["output_folder_path"] / "static" / "sw.js",
-            data=template_loader.render_template(path="service_worker.html"),
+            data=template_loader.render_template(path="service_worker.jinja2"),
         ),
     ]
 
@@ -358,11 +359,11 @@ def generate_templates(*, config: configuration.Config) -> List[File]:
             (
                 File(
                     path=config["output_folder_path"] / "sitemap.xml",
-                    data=template_loader.render_template(path="sitemap.html"),
+                    data=template_loader.render_template(path="sitemap.jinja2"),
                 ),
                 File(
                     path=config["output_folder_path"] / "static" / "opensearch.xml",
-                    data=template_loader.render_template(path="opensearch.html"),
+                    data=template_loader.render_template(path="opensearch.jinja2"),
                 ),
             )
         )
@@ -371,7 +372,7 @@ def generate_templates(*, config: configuration.Config) -> List[File]:
         templates.append(
             File(
                 path=config["output_folder_path"] / "static" / "browserconfig.xml",
-                data=template_loader.render_template(path="browserconfig.html"),
+                data=template_loader.render_template(path="browserconfig.jinja2"),
             )
         )
 
@@ -379,7 +380,7 @@ def generate_templates(*, config: configuration.Config) -> List[File]:
         templates.append(
             File(
                 path=config["output_folder_path"] / ".well-known" / "security",
-                data=template_loader.render_template(path="security.html"),
+                data=template_loader.render_template(path="security.jinja2"),
             )
         )
 
@@ -387,7 +388,7 @@ def generate_templates(*, config: configuration.Config) -> List[File]:
         templates.append(
             File(
                 path=config["output_folder_path"] / "humans.txt",
-                data=template_loader.render_template(path="humans.html"),
+                data=template_loader.render_template(path="humans.jinja2"),
             )
         )
 

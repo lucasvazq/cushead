@@ -22,13 +22,13 @@ from src.generator import files
 
 
 if os.name == "nt":
-    _DEFAULT_COLOR = ""
-    _ERROR_COLOR = ""
-    _PRESENTATION_COLOR = ""
+    DEFAULT_COLOR = ""
+    ERROR_COLOR = ""
+    PRESENTATION_COLOR = ""
 else:
-    _DEFAULT_COLOR = "\033[0;0m"
-    _ERROR_COLOR = "\033[1;31m"
-    _PRESENTATION_COLOR = "\033[1;34m"
+    DEFAULT_COLOR = "\033[0;0m"
+    ERROR_COLOR = "\033[1;31m"
+    PRESENTATION_COLOR = "\033[1;34m"
 
 
 def show_presentation() -> None:
@@ -60,7 +60,7 @@ def show_presentation() -> None:
         For help run: {info.PACKAGE_NAME} -h
         """
     )
-    print(f"{_PRESENTATION_COLOR}{presentation_message}{_DEFAULT_COLOR}")
+    print(f"{PRESENTATION_COLOR}{presentation_message}{DEFAULT_COLOR}")
 
 
 class DefaultConfig(TypedDict):
@@ -151,17 +151,16 @@ def generate_images(*, path: pathlib.Path) -> Tuple[files.File, ...]:
     Returns:
         A tuple of images ready to save.
     """
-    destination_folder = pathlib.Path(path).parent
     images = assets.get_assets_images()
     return (
-        files.File(path=destination_folder / images.favicon_ico.name, data=images.favicon_ico.data),
-        files.File(path=destination_folder / images.favicon_png.name, data=images.favicon_png.data),
-        files.File(path=destination_folder / images.favicon_svg.name, data=images.favicon_svg.data),
-        files.File(path=destination_folder / images.preview_png.name, data=images.preview_png.data),
+        files.File(path=path / images.favicon_ico.name, data=images.favicon_ico.data),
+        files.File(path=path / images.favicon_png.name, data=images.favicon_png.data),
+        files.File(path=path / images.favicon_svg.name, data=images.favicon_svg.data),
+        files.File(path=path / images.preview_png.name, data=images.preview_png.data),
     )
 
 
-def read_config_file(*, path: str) -> Any:
+def read_config_file(*, path: pathlib.Path) -> Any:
     """
     Read config file.
 
@@ -180,18 +179,14 @@ def read_config_file(*, path: str) -> Any:
         config = json.loads(file_string)
     except decoder.JSONDecodeError as exception:
         raise exceptions.WrongFileFormat(
-            "".join(
-                (
-                    f"Invalid json file format in ({path})",
-                    f"ABSOLUTE PATH: {pathlib.Path(path).absolute()}",
-                    f"Exception: {exception}",
-                )
-            )
+            f"Invalid json file format in ({path})"
+            f"\nABSOLUTE PATH: {pathlib.Path(path).absolute()}"
+            f"\nException: {exception}"
         )
     return config
 
 
-def parse_config_file(*, path: str) -> Tuple[files.File, ...]:
+def parse_config_file(*, path: pathlib.Path) -> Tuple[files.File, ...]:
     """
     Parse a config file.
 
@@ -216,13 +211,17 @@ def parse_args(*, args: List[str]) -> None:
     """
     files_to_create = []
     try:
-        parsed_args = arguments.parse_args(args=args)
-        if parsed_args.default:
-            files_to_create.append(generate_default_config_file(path=parsed_args.default))
-        if parsed_args.images:
-            files_to_create.extend(generate_images(path=parsed_args.default))
-        if parsed_args.config:
-            files_to_create.extend(parse_config_file(path=parsed_args.config))
+        parser = arguments.parse_args(args=args)
+
+        path = pathlib.Path(parser.FILE)
+        if parser.default:
+            files_to_create.append(generate_default_config_file(path=path))
+        if parser.images:
+            files_to_create.extend(generate_images(path=path.parent))
+        if parser.config:
+            files_to_create.extend(parse_config_file(path=path))
+
         files_creator.create_files(files_to_create=files_to_create)
+
     except (KeyboardInterrupt, exceptions.MainException) as exception:
-        sys.exit(f"{_ERROR_COLOR}{exception}{_DEFAULT_COLOR}\n")
+        sys.exit(f"{ERROR_COLOR}{exception}{DEFAULT_COLOR}\n")
