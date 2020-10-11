@@ -11,7 +11,7 @@
 
 **Improve the SEO and the UX of your website.**
 
-**Python Versions:** _>=3.6, <4.0_
+**Python Versions:** _>=3.8_
 
 **Package Version**: _*_
 

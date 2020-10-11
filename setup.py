@@ -2,13 +2,13 @@
 """
 Setup script.
 """
+import pathlib
+
 import setuptools
 
 from src import info
 
 
-with open("README.md", "r") as fh:
-    _LONG_DESCRIPTION = fh.read()
 setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
@@ -26,7 +26,7 @@ setuptools.setup(
     author=info.AUTHOR,
     author_email=info.EMAIL,
     description=info.DESCRIPTION,
-    long_description=_LONG_DESCRIPTION,
+    long_description=pathlib.Path("README.md").read_text(),
     long_description_content_type="text/markdown",
     license=info.PACKAGE_LICENSE,
     keywords=info.KEYWORDS,
