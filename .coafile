@@ -1,0 +1,6 @@
+[all]
+language = Python
+bears = BanditBear,coalaBear,FilenameBear,KeywordBear,PyCommentedCodeBear,PyUnusedCodeBear
+files = *.py, **/*.py
+json, non_interactive = True
+file_naming_convention=auto

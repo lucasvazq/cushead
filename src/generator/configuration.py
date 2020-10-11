@@ -114,20 +114,32 @@ def load_binary_image(*, path: pathlib.Path, expected_format: str) -> Image.Imag
         image = Image.open(path)
     except IsADirectoryError as exception:
         raise exceptions.BadReference(
-            "Image reference must be a file, not a directory"
-            f"\nABSOLUTE PATH: {path.absolute()}"
-            f"\nException: {exception}"
+            "\n".join(
+                (
+                    "Image reference must be a file, not a directory",
+                    f"ABSOLUTE PATH: {path.absolute()}",
+                    f"Exception: {exception}",
+                ),
+            ),
         )
     except Image.UnidentifiedImageError as exception:
         raise exceptions.WrongFileFormat(
-            "Can't identify image file",
-            f"\nABSOLUTE PATH: {path.absolute()}"
-            f"\nException: {exception}"
+            "\n".join(
+                (
+                    "Can't identify image file",
+                    f"ABSOLUTE PATH: {path.absolute()}",
+                    f"Exception: {exception}",
+                ),
+            ),
         )
     if image.format != expected_format:
         raise exceptions.WrongFileFormat(
-            f"Wrong image format. Expected {expected_format}, received {image.format}"
-            f"\nABSOLUTE PATH: {path.absolute()}"
+            "\n".join(
+                (
+                    f"Wrong image format. Expected {expected_format}, received {image.format}",
+                    f"ABSOLUTE PATH: {path.absolute()}",
+                ),
+            ),
         )
 
     # Verify the image. After this, need to close it.

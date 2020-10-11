@@ -9,13 +9,17 @@ from typing import List
 from typing import NamedTuple
 from typing import Tuple
 
-from src.console import console
+from src.console import logs
 from src.generator import files
 
 
 class Error(NamedTuple):
+    """
+    Class used to store error data.
+    """
+
     error: str
-    path: str
+    path: pathlib.Path
 
 
 class Node:
@@ -117,4 +121,4 @@ def create_files(*, files_to_create: List[files.File]) -> None:
     if errors:
         print("\nErrors:")
         for error in errors:
-            print(f" - {ERROR_COLOR}{error.error}{DEFAULT_COLOR}: {error.path}")
+            print(f" - {logs.ERROR_COLOR}{error.error}{logs.DEFAULT_COLOR}: {error.path}")

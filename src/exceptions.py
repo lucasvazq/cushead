@@ -9,12 +9,6 @@ class MainException(Exception):
     """
 
 
-class UnrecognizedArgument(MainException):
-    """
-    When an argument is invalid.
-    """
-
-
 class MissRequired(MainException):
     """
     When something required is missing.

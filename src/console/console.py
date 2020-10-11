@@ -2,10 +2,8 @@
 Module used to run the package as CLI.
 """
 import json
-import os
 import pathlib
 import sys
-import textwrap
 from json import decoder
 from typing import Any
 from typing import List
@@ -17,50 +15,9 @@ from src import info
 from src.console import arguments
 from src.console import assets
 from src.console import files_creator
+from src.console import logs
 from src.generator import configuration
 from src.generator import files
-
-
-if os.name == "nt":
-    DEFAULT_COLOR = ""
-    ERROR_COLOR = ""
-    PRESENTATION_COLOR = ""
-else:
-    DEFAULT_COLOR = "\033[0;0m"
-    ERROR_COLOR = "\033[1;31m"
-    PRESENTATION_COLOR = "\033[1;34m"
-
-
-def show_presentation() -> None:
-    """
-    Print the console presentation message.
-    """
-    presentation_message = textwrap.dedent(
-        f"""\
-          ____  _   _  ____   _   _  _____     _     ____     ____ __   __
-         / ___|| | | |/ ___| | | | || ____|   / \\   |  _ \\   |  _ \\\\ \\ / /
-        | |    | | | |\\___ \\ | |_| ||  _|    / _ \\  | | | |  | |_) |\\ V /
-        | |___ | |_| | ___) ||  _  || |___  / ___ \\ | |_| |_ |  __/  | |
-         \\____| \\___/ |____/ |_| |_||_____|/_/   \\_\\|____/(_)|_|     |_|
-                                     __       _
-                                     _/     /
-                                    /    __/
-                UX / SEO          _/  __/           v {info.PACKAGE_VERSION}
-                                 / __/
-                                / /
-                               /'
-
-        Author: {info.AUTHOR}
-        Email: {info.EMAIL}
-        Page: {info.AUTHOR_PAGE}
-        License: {info.PACKAGE_LICENSE}
-
-        Source: {info.SOURCE}
-        Documentation: {info.DOCUMENTATION}
-        For help run: {info.PACKAGE_NAME} -h
-        """
-    )
-    print(f"{PRESENTATION_COLOR}{presentation_message}{DEFAULT_COLOR}")
 
 
 class DefaultConfig(TypedDict):
@@ -179,9 +136,13 @@ def read_config_file(*, path: pathlib.Path) -> Any:
         config = json.loads(file_string)
     except decoder.JSONDecodeError as exception:
         raise exceptions.WrongFileFormat(
-            f"Invalid json file format in ({path})"
-            f"\nABSOLUTE PATH: {pathlib.Path(path).absolute()}"
-            f"\nException: {exception}"
+            "\n".join(
+                (
+                    f"Invalid json file format in ({path})",
+                    f"ABSOLUTE PATH: {pathlib.Path(path).absolute()}",
+                    f"Exception: {exception}",
+                ),
+            ),
         )
     return config
 
@@ -224,4 +185,4 @@ def parse_args(*, args: List[str]) -> None:
         files_creator.create_files(files_to_create=files_to_create)
 
     except (KeyboardInterrupt, exceptions.MainException) as exception:
-        sys.exit(f"{ERROR_COLOR}{exception}{DEFAULT_COLOR}\n")
+        sys.exit(f"{logs.ERROR_COLOR}{exception}{logs.DEFAULT_COLOR}\n")
