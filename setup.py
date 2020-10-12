@@ -17,7 +17,6 @@ setuptools.setup(
     url=info.SOURCE,
     project_urls={
         "Documentation": info.DOCUMENTATION,
-
         "Source": info.SOURCE,
     },
     python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
