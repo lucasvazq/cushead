@@ -11,10 +11,9 @@ on:
       - master
 
 jobs:
-  Python observant:
+  Python-observant:
     name: Python observant
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
