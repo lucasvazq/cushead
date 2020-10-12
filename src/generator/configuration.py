@@ -4,11 +4,15 @@ Module where are all things related to the configurations.
 import pathlib
 import re
 from typing import Any
+from typing import Literal
 from typing import Optional
 from typing import TypedDict
+from typing import overload
 
 import schema
+from PIL import IcoImagePlugin
 from PIL import Image
+from PIL import PngImagePlugin
 
 from src import exceptions
 
@@ -21,10 +25,10 @@ class Config(TypedDict):
     main_folder_path: pathlib.Path
     output_folder_path: pathlib.Path
     static_url: str
-    favicon_ico: Optional[Image.Image]
-    favicon_png: Optional[Image.Image]
+    favicon_ico: Optional[IcoImagePlugin.IcoImageFile]
+    favicon_png: Optional[PngImagePlugin.PngImageFile]
     favicon_svg: Optional[pathlib.Path]
-    preview_png: Optional[Image.Image]
+    preview_png: Optional[PngImagePlugin.PngImageFile]
     google_tag_manager: Optional[str]
     language: Optional[str]
     territory: Optional[str]
@@ -95,7 +99,17 @@ def validate_config(*, config: Any) -> None:
             raise exceptions.InvalidConfiguration(f"The key {color_key} must be a hex color code. If you don't want any value on this key, set the value to null.")
 
 
-def load_binary_image(*, path: pathlib.Path, expected_format: str) -> Image.Image:
+@overload
+def load_binary_image(*, path: pathlib.Path, expected_format: Literal["ICO"]) -> IcoImagePlugin.IcoImageFile:
+    ...
+
+
+@overload
+def load_binary_image(*, path: pathlib.Path, expected_format: Literal["PNG"]) -> PngImagePlugin.PngImageFile:
+    ...
+
+
+def load_binary_image(*, path, expected_format):
     """
     Load a binary type image.
 

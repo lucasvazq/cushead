@@ -8,10 +8,13 @@ from collections import namedtuple
 from typing import List
 from typing import Optional
 from typing import Tuple
+from typing import Union
 from typing import overload
 
+from PIL import IcoImagePlugin
 from PIL import Image
 from PIL import ImageColor
+from PIL import PngImagePlugin
 from resizeimage import resizeimage
 
 from src.generator import configuration
@@ -24,7 +27,7 @@ def resize_image(*, image: None, width: int, height: int) -> None:
 
 
 @overload
-def resize_image(*, image: Image.Image, width: int, height: int) -> Image.Image:
+def resize_image(*, image: Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile], width: int, height: int) -> Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]:
     ...
 
 
@@ -54,7 +57,12 @@ def remove_transparency(*, image: None, background_color: str) -> None:
 
 
 @overload
-def remove_transparency(*, image: Image.Image, background_color: str) -> Image.Image:
+def remove_transparency(*, image: IcoImagePlugin.IcoImageFile, background_color: str) -> IcoImagePlugin.IcoImageFile:
+    ...
+
+
+@overload
+def remove_transparency(*, image: PngImagePlugin.PngImageFile, background_color: str) -> PngImagePlugin.PngImageFile:
     ...
 
 
@@ -83,7 +91,7 @@ def remove_transparency(*, image, background_color):
     return image
 
 
-def read_image_bytes(image: Optional[Image.Image]) -> bytes:
+def read_image_bytes(image: Optional[Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]]) -> bytes:
     """
     Read the bytes of a image.
 

@@ -1,8 +1,6 @@
 """
 Module used to group jinja extensions.
 """
-from typing import Any
-
 from jinja2 import ext
 from jinja2 import nodes
 from jinja2 import parser as jinja2_parser
@@ -19,7 +17,7 @@ class OneLineExtension(ext.Extension):
     # A tuple of names that trigger the extension.
     tags = {"oneline"}
 
-    def parse(self, parser: jinja2_parser.Parser) -> Any:
+    def parse(self, parser: jinja2_parser.Parser) -> nodes.CallBlock:
         """
         This method is called when any of tags is recognized.
 
