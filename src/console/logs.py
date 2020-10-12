@@ -1,20 +1,11 @@
 """
 Module used to store things related to the console presentation.
 """
-import os
 import textwrap
 
+import colorama
+
 from src import info
-
-
-if os.name == "nt":
-    DEFAULT_COLOR = ""
-    ERROR_COLOR = ""
-    PRESENTATION_COLOR = ""
-else:
-    DEFAULT_COLOR = "\033[0;0m"
-    ERROR_COLOR = "\033[1;31m"
-    PRESENTATION_COLOR = "\033[1;34m"
 
 
 def show_presentation() -> None:
@@ -46,4 +37,4 @@ def show_presentation() -> None:
         For help run: {info.PACKAGE_NAME} -h
         """
     )
-    print(f"{PRESENTATION_COLOR}{presentation_message}{DEFAULT_COLOR}")
+    print(f"{colorama.Fore.BLUE}{presentation_message}{colorama.Fore.RESET}")

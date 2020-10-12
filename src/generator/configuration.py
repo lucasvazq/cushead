@@ -121,9 +121,18 @@ def load_binary_image(*, path, expected_format):
         The image instance.
 
     Raises:
-        BadReference: when the reference to the image isn't a file.
+        BadReference: when the reference to the image doesn't exist or isn't a file.
         WrongFileFormat: when the image isn't valid.
     """
+    if not path.exists():
+        raise exceptions.BadReference(
+            "\n".join(
+                (
+                    "Image reference doesn't exists",
+                    f"ABSOLUTE PATH: {path.absolute()}",
+                ),
+            ),
+        )
     try:
         image = Image.open(path)
     except IsADirectoryError as exception:

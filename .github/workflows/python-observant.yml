@@ -21,6 +21,6 @@ jobs:
       - name: Python Observant
         uses: lucasvazq/auto-linter@master
         with:
-          requirements: "Jinja2 Pillow python-resize-image schema"
+          requirements: "pip install -r requirements.txt"
           max_line_length: 199
           repo_is_package: true

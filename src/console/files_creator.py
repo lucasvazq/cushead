@@ -9,7 +9,8 @@ from typing import List
 from typing import NamedTuple
 from typing import Tuple
 
-from src.console import logs
+import colorama
+
 from src.generator import files
 
 
@@ -94,7 +95,7 @@ def parse_node(*, node: Node, base_path: pathlib.Path) -> Tuple[bool, List[Error
                 errors.append(Error(error=str(exception.__class__.__name__), path=destination_path))
             else:
                 created_files = True
-                print(f" - {destination_path}")
+                print(f" - {destination_path.parent}/{colorama.Fore.YELLOW}{destination_path.name}{colorama.Fore.RESET}")
         else:
             if not destination_path.exists():
                 destination_path.mkdir()
@@ -121,4 +122,4 @@ def create_files(*, files_to_create: List[files.File]) -> None:
     if errors:
         print("\nErrors:")
         for error in errors:
-            print(f" - {logs.ERROR_COLOR}{error.error}{logs.DEFAULT_COLOR}: {error.path}")
+            print(f" - {colorama.Fore.RED}{error.error}{colorama.Fore.RESET}: {error.path.parent}/{colorama.Fore.YELLOW}{error.path.name}{colorama.Fore.RESET}")

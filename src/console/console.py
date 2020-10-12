@@ -10,12 +10,13 @@ from typing import List
 from typing import Tuple
 from typing import TypedDict
 
+import colorama
+
 from src import exceptions
 from src import info
 from src.console import arguments
 from src.console import assets
 from src.console import files_creator
-from src.console import logs
 from src.generator import configuration
 from src.generator import files
 
@@ -185,4 +186,4 @@ def parse_args(*, args: List[str]) -> None:
         files_creator.create_files(files_to_create=files_to_create)
 
     except (KeyboardInterrupt, exceptions.MainException) as exception:
-        sys.exit(f"{logs.ERROR_COLOR}{exception}{logs.DEFAULT_COLOR}\n")
+        sys.exit(f"{colorama.Fore.RED}{exception}{colorama.Fore.RESET}\n")
