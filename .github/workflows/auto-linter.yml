@@ -1,7 +1,4 @@
-# Python auto-linter
-
-
-name: Python auto-linter [develop]
+name: Python observant
 
 on:
   push:
@@ -14,15 +11,15 @@ on:
       - master
 
 jobs:
-  auto-linter:
-    name: Python auto-linter
+  Python observant:
+    name: Python observant
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: pylint
+      - name: Python observant
         uses: lucasvazq/auto-linter@master
         with:
           requirements: "Pillow Jinja2 python-resize-image schema"

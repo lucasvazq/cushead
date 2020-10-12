@@ -27,7 +27,12 @@ def resize_image(*, image: None, width: int, height: int) -> None:
 
 
 @overload
-def resize_image(*, image: Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile], width: int, height: int) -> Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]:
+def resize_image(*, image: IcoImagePlugin.IcoImageFile, width: int, height: int) -> IcoImagePlugin.IcoImageFile:
+    ...
+
+
+@overload
+def resize_image(*, image: PngImagePlugin.PngImageFile, width: int, height: int) -> PngImagePlugin.PngImageFile:
     ...
 
 
@@ -37,8 +42,8 @@ def resize_image(*, image, width, height):
 
     Args:
         image: a PIL image instance.
-        width: the width
-        height : the height
+        width: the width.
+        height : the height.
 
     Returns:
         A new image resized.
@@ -99,7 +104,7 @@ def read_image_bytes(image: Optional[Union[IcoImagePlugin.IcoImageFile, PngImage
         image: a PIL image instance
 
     Returns:
-        The bytes data
+        The bytes data.
     """
     if image is None:
         return bytes()
@@ -123,18 +128,18 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
     images = []
     images_data: Tuple[ImageData, ...]
 
-    if config.get("favicon_png"):
+    if config.get("favicon_ico"):
         images.append(
-            # favicon ico version, used for opensearch too
+            # favicon ico version, used for most browsers and opensearch
             files.File(
                 path=config["output_folder_path"] / "favicon.ico",
                 data=read_image_bytes(config["favicon_ico"]),
             )
         )
 
-    if config.get("favicon_png") is not None:
+    if config.get("favicon_png"):
         images_data = (
-            # favicon png version
+            # favicon png version, used for most browsers
             ImageData(path=config["output_folder_path"] / "static" / "favicon-16x16.png", width=16, height=16),
             ImageData(path=config["output_folder_path"] / "static" / "favicon-32x32.png", width=32, height=32),
             ImageData(path=config["output_folder_path"] / "static" / "favicon-96x96.png", width=96, height=96),

@@ -1,5 +1,5 @@
 """
-Helpers.
+Module to handle the assets.
 """
 import pathlib
 from typing import NamedTuple
