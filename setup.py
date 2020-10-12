@@ -23,7 +23,6 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=info.REQUIRED_PACKAGES,
-
     author=info.AUTHOR,
     author_email=info.EMAIL,
     description=info.DESCRIPTION,
