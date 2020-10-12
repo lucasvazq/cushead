@@ -1,8 +1,0 @@
-/* TEAM */
-  Web designer: Lucas Vazquez
-  Contact: mailto:lucas5zvazquez@gmail.com
-
-/* SITE */
-  Last update: *
-  Language: en-US
-  Doctype: HTML5

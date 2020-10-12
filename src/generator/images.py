@@ -175,18 +175,6 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
             ImageData(path=config["output_folder_path"] / "static" / "manifest-512x512.png", width=512, height=512),
             # opensearch
             ImageData(path=config["output_folder_path"] / "static" / "opensearch-16x16.png", width=16, height=16),
-        )
-        images.extend(
-            files.File(
-                path=image.path,
-                data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
-            )
-            for image in images_data
-        )
-
-        images_data = (
-            # yandex
-            ImageData(path=config["output_folder_path"] / "static" / "yandex.png", width=120, height=120),
             # apple startup image
             # Source: https://github.com/onderceylan/pwa-asset-generator
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-1024x1024.png", width=1024, height=1024),
@@ -211,27 +199,22 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-640x1136.png", width=640, height=1136),
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-1136x640.png", width=1136, height=640),
         )
+        images.extend(
+            files.File(
+                path=image.path,
+                data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
+            )
+            for image in images_data
+        )
+
+        # yandex
+        image = ImageData(path=config["output_folder_path"] / "static" / "yandex.png", width=120, height=120)
+        resized_image = resize_image(image=config["favicon_png"], width=image.width, height=image.height)
         if config.get("background_color") is not None:
-            images.extend(
-                files.File(
-                    data=read_image_bytes(
-                        remove_transparency(
-                            image=resize_image(image=config["favicon_png"], width=image.width, height=image.height),
-                            background_color=str(config["background_color"]),
-                        )
-                    ),
-                    path=image.path,
-                )
-                for image in images_data
-            )
+            parsed_image = remove_transparency(image=resized_image, background_color=str(config["background_color"]))
         else:
-            images.extend(
-                files.File(
-                    path=image.path,
-                    data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
-                )
-                for image in images_data
-            )
+            parsed_image = resized_image
+        images.append(files.File(data=read_image_bytes(parsed_image), path=image.path))
 
     if config["favicon_svg"] is not None:
         images.append(

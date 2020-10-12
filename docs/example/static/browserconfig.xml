@@ -8,6 +8,7 @@
       <square150x150logo src="/static/browserconfig-150x150.png"/>
       <square310x310logo src="/static/browserconfig-310x310.png"/>
       <wide310x150logo src="/static/browserconfig-310x150.png"/>
+      <TileImage src="/static/browserconfig-144x144.png"/>
       <TileColor>#ff0000</TileColor>
     </tile>
   </msapplication>

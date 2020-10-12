@@ -89,7 +89,7 @@ def generate_templates(*, config: configuration.Config) -> List[files.File]:
 
     templates = [
         files.File(
-            path=config["output_folder_path"] / "index.jinja2",
+            path=config["output_folder_path"] / "index.html",
             data=index_template,
         ),
         files.File(
