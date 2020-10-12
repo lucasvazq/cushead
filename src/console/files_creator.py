@@ -81,8 +81,8 @@ def parse_node(*, node: Node, base_path: pathlib.Path) -> Tuple[bool, List[Error
         base_path: the base path.
 
     Returns:
-        If at least one file has been created
-        Files with errors
+        If at least one file has been created.
+        Files with errors.
     """
     errors = []
     created_files = False
