@@ -4,7 +4,7 @@ Informative module.
 import pathlib
 
 
-_REQUIREMENTS_FILE = pathlib.Path(__file__).parent.parent / 'requirements.txt'
+_REQUIREMENTS_FILE = pathlib.Path(__file__).parent.parent / "requirements.txt"
 
 
 PACKAGE_NAME = "cushead"
