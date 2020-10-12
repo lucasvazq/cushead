@@ -22,7 +22,6 @@ setuptools.setup(
     python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
     packages=setuptools.find_packages(),
     include_package_data=True,
-
     install_requires=info.REQUIRED_PACKAGES,
     author=info.AUTHOR,
     author_email=info.EMAIL,
