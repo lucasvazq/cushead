@@ -9,4 +9,4 @@ install:
   - pip install -r requirements-dev.txt
 script:
   - python -m coverage run -a test/console.py
-  - codecov
+  - codecov -X gcov
