@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test CLI interactions
+Test CLI interactions.
 """
 import pathlib
 import unittest
