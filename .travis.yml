@@ -8,5 +8,5 @@ install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
 script:
-  - python -m run -a test/console.py
+  - python -m coverage run -a test/console.py
   - codecov
