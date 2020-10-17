@@ -10,7 +10,7 @@ from typing import List
 from typing import Tuple
 from typing import TypedDict
 
-import colorama
+import argparse
 
 from src import exceptions
 from src import info
@@ -172,18 +172,20 @@ def parse_args(*, args: List[str]) -> None:
         args: list of arguments.
     """
     files_to_create = []
+    parser = arguments.setup_parser(args=args)
     try:
-        parser = arguments.parse_args(args=args)
+        parser_namespace = parser.parse_args(args)
+        arguments.validate_args(parser_namespace=parser_namespace, args=args)
 
-        path = pathlib.Path(parser.FILE)
-        if parser.default:
+        path = pathlib.Path(parser_namespace.FILE)
+        if parser_namespace.default:
             files_to_create.append(generate_default_config_file(path=path))
-        if parser.images:
+        if parser_namespace.images:
             files_to_create.extend(generate_images(path=path.parent))
-        if parser.config:
+        if parser_namespace.config:
             files_to_create.extend(parse_config_file(path=path))
 
         files_creator.create_files(files_to_create=files_to_create)
 
     except (KeyboardInterrupt, exceptions.MainException) as exception:
-        sys.exit(f"{colorama.Fore.RED}{exception}{colorama.Fore.RESET}\n")
+        parser.error(exception)

@@ -10,7 +10,10 @@ from src import info
 from src.console import assets
 
 
-def setup_parser(*, args: List[str]) -> argparse.Namespace:
+USAGE = f"{info.PACKAGE_NAME} {{ --help | {{ --config | --default [ --images ] }} FILE }}"
+
+
+def setup_parser(*, args: List[str]) -> argparse.ArgumentParser:
     """
     Setup argparse.
 
@@ -23,7 +26,7 @@ def setup_parser(*, args: List[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog=info.PACKAGE_NAME,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage=f"{info.PACKAGE_NAME} {{ --help | {{ --config | --default [ --images ] }} FILE }}",
+        usage=USAGE,
         allow_abbrev=False,
         add_help=False,
         epilog="\n".join(
@@ -79,6 +82,7 @@ def setup_parser(*, args: List[str]) -> argparse.Namespace:
 
     positional_arguments.add_argument(
         "FILE",
+        nargs="?",
         help=(
             "Input or output file used by --config or --default args. "
             "For --config it must be a path to a config file in JSON format. "
@@ -87,15 +91,15 @@ def setup_parser(*, args: List[str]) -> argparse.Namespace:
         ),
     )
 
-    return parser.parse_args(args)
+    return parser
 
 
-def validate_args(*, parser: argparse.Namespace, args: List[str]) -> None:
+def validate_args(*, parser_namespace: argparse.Namespace, args: List[str]) -> None:
     """
     Validate arguments using argparse parser instance.
 
     Args:
-        parser: parser instance.
+        parser_namespace: parser instance.
         args: list of arguments.
 
     Raises:
@@ -103,20 +107,23 @@ def validate_args(*, parser: argparse.Namespace, args: List[str]) -> None:
         InvalidCombination: when the combinations of arguments are invalid.
         BadReference: when the arguments reference to a invalid file.
     """
-    if not (parser.config or parser.default):
+    if not (parser_namespace.config or parser_namespace.default):
         raise exceptions.MissRequired("Miss Required arguments. Use -c or -d. Use -h for help.")
 
-    if parser.config and parser.default:
+    if parser_namespace.config and parser_namespace.default:
         config_arg = "-c" if "-c" in args else "--config"
         default_arg = "-d" if "-d" in args else "--default"
         raise exceptions.InvalidCombination(f"Can't use {config_arg} and {default_arg} arguments together.")
 
-    if parser.images and not parser.default:
+    if parser_namespace.images and not parser_namespace.default:
         images_arg = "-i" if "-i" in args else "--images"
         raise exceptions.InvalidCombination(f"Can't use {images_arg} without -d.")
 
-    if parser.config:
-        reference = pathlib.Path(parser.FILE)
+    if not (parser_namespace.FILE):
+        raise exceptions.MissRequired("Miss FILE")
+
+    if parser_namespace.config:
+        reference = pathlib.Path(parser_namespace.FILE)
         if not reference.exists():
             raise exceptions.BadReference(
                 "\n".join(
@@ -135,18 +142,3 @@ def validate_args(*, parser: argparse.Namespace, args: List[str]) -> None:
                     ),
                 ),
             )
-
-
-def parse_args(*, args: List[str]) -> argparse.Namespace:
-    """
-    Parse arguments using argparse.
-
-    Args:
-        args: list of args.
-
-    Returns:
-        A validated instance of a argparse parser instance.
-    """
-    parser = setup_parser(args=args)
-    validate_args(parser=parser, args=args)
-    return parser

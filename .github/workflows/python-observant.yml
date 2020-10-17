@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Python Observant
-        uses: lucasvazq/auto-linter@master
+        uses: lucasvazq/python-observant@master
         with:
           requirements: "pip install -r requirements.txt"
           max_line_length: 199

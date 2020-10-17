@@ -2,5 +2,9 @@
 branch = True
 source = ./
 
+[report]
+exclude_lines =
+	...
+
 [html]
 directory = coverage
