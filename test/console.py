@@ -75,7 +75,7 @@ class TestConsole(unittest.TestCase):
         self.execute_args(args=["-c"], output="Miss FILE", exception_expected=True)
 
         # Inexistent file.
-        reference = self.output_file.parent / "inexistent_file.json"
+        reference = pathlib.Path(__file__).parent / "inexistent_file.json"
         output = (
             f"The file ({reference}) must be referred to a path that exists.\n"
             f"ABSOLUTE PATH: {reference.absolute()}"
@@ -83,7 +83,7 @@ class TestConsole(unittest.TestCase):
         self.execute_args(args=["-c", str(reference)], output=output, exception_expected=True)
 
         # Reference must be a file, not a directory.
-        reference = self.output_file.parent
+        reference = pathlib.Path(__file__).parent
         output = (
             f"The file ({reference}) must be referred to a file path.\n"
             f"ABSOLUTE PATH: {reference.absolute()}"
