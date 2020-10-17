@@ -3,7 +3,9 @@
 Test CLI interactions.
 """
 import io
+import os
 import pathlib
+import shutil
 import unittest
 from contextlib import redirect_stderr
 from typing import List
@@ -25,7 +27,9 @@ class TestConsole(unittest.TestCase):
         """
         Setup common variables.
         """
-        self.output_file = pathlib.Path(__file__).parent / "output/settings.json"
+        self.maxDiff = None
+        self.output_folder = pathlib.Path(__file__).parent / "output"
+        self.output_file = self.output_folder / "settings.json"
 
     def execute_args(self, *, args: List[str], output: str, exception_expected: bool = False) -> None:
         """
@@ -50,18 +54,19 @@ class TestConsole(unittest.TestCase):
                     f"{info.PACKAGE_NAME}: error: {output}\n"
                 ))
 
-    def test_valid_args(self) -> None:
+
+    def test_valid_args1(self) -> None:
         """
         Test valid input args.
         """
         self.execute_args(args=["-d", "-i", str(self.output_file)], output="")
         self.execute_args(args=["-c", str(self.output_file)], output="")
+        shutil.rmtree(self.output_folder.absolute())
 
-    def test_invalid_args(self) -> None:
+    def test_invalid_args2(self) -> None:
         """
         Test invalid args setup.
         """
-
         # Missing arguments.
         self.execute_args(args=[""], output="Miss Required arguments. Use -c or -d. Use -h for help.", exception_expected=True)
 
@@ -83,12 +88,13 @@ class TestConsole(unittest.TestCase):
         self.execute_args(args=["-c", str(reference)], output=output, exception_expected=True)
 
         # Reference must be a file, not a directory.
-        reference = pathlib.Path(__file__).parent
+        os.makedirs(self.output_folder.absolute())
         output = (
-            f"The file ({reference}) must be referred to a file path.\n"
-            f"ABSOLUTE PATH: {reference.absolute()}"
+            f"The file ({self.output_folder}) must be referred to a file path.\n"
+            f"ABSOLUTE PATH: {self.output_folder.absolute()}"
         )
-        self.execute_args(args=["-c", str(reference)], output=output, exception_expected=True)
+        self.execute_args(args=["-c", str(self.output_folder)], output=output, exception_expected=True)
+        shutil.rmtree(self.output_folder.absolute())
 
 
 if __name__ == "__main__":
