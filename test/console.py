@@ -59,22 +59,22 @@ class TestConsole(unittest.TestCase):
 
     def test_invalid_args(self) -> None:
         """
-
+        Test invalid args setup.
         """
 
-        # Missing arguments
+        # Missing arguments.
         self.execute_args(args=[""], output="Miss Required arguments. Use -c or -d. Use -h for help.", exception_expected=True)
 
-        # Invalid combination
+        # Invalid combination.
         self.execute_args(args=["-c", "-d"], output="Can't use -c and -d arguments together.", exception_expected=True)
 
         # Execute optional command without a required arg.
         self.execute_args(args=["-c", "-i"], output="Can't use -i without -d.", exception_expected=True)
 
-        # Missing FILE
+        # Missing FILE.
         self.execute_args(args=["-c"], output="Miss FILE", exception_expected=True)
 
-        # Inexistent file
+        # Inexistent file.
         reference = self.output_file.parent / "inexistent_file.json"
         output = (
             f"The file ({reference}) must be referred to a path that exists.\n"
@@ -82,7 +82,7 @@ class TestConsole(unittest.TestCase):
         )
         self.execute_args(args=["-c", str(reference)], output=output, exception_expected=True)
 
-        # Reference must be a file, not a directory
+        # Reference must be a file, not a directory.
         reference = self.output_file.parent
         output = (
             f"The file ({reference}) must be referred to a file path.\n"
