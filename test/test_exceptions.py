@@ -12,7 +12,8 @@ import unittest
 from typing import List
 
 from src import info
-from src.console import arguments, console
+from src.console import arguments
+from src.console import console
 
 
 class ExecuteArgs(unittest.TestCase):
