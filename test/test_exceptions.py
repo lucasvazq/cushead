@@ -114,9 +114,6 @@ class ZZZZTestConfig(ExecuteArgs):
         doc
         """
         return
-        del self.config["static_url"]
-        self.write_config_file()
-        self.execute_args(args=["-c", str(self.output_file)], output="Missing key: 'static_url'", exception_expected=True)
 
     def atest_invalid_data_type(self) -> None:
         """
@@ -253,14 +250,6 @@ class TestReferences(ExecuteArgs):
         doc
         """
         return
-        reference = self.output_folder / "favicon_ico_16px.ico"
-        shutil.copy(self.output_folder / "favicon_png_2688px.png", reference)
-        output = (
-            f"The favicon_ico reference ({reference}) has a wrong image format.\n"
-            f"Expected ICO, but received PNG\n"
-            f"ABSOLUTE PATH: {reference.absolute()}"
-        )
-        self.execute_args(args=["-c", str(self.output_file)], output=output, exception_expected=True)
 
 
 class TestFileCreation(ExecuteArgs):
