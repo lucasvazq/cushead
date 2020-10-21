@@ -48,7 +48,9 @@ class ExecuteArgs(unittest.TestCase):
     def write_config_file(self) -> None:
         self.output_file.write_text(json.dumps(self.config))
 
-    def execute_args(self, *, args: List[str], output: str = "", exception_expected: bool = False) -> None:
+    def execute_args(
+        self, *, args: List[str], output: str = "", exception_expected: bool = False
+    ) -> None:
         """
         Run the console with the given arguments.
 
@@ -66,10 +68,13 @@ class ExecuteArgs(unittest.TestCase):
                 console.parse_args(args=args)
 
             if output:
-                self.assertEqual(stderr.getvalue(), (
-                    f"usage: {arguments.USAGE}\n"
-                    f"{info.PACKAGE_NAME}: error: {output}\n"
-                ))
+                self.assertEqual(
+                    stderr.getvalue(),
+                    (
+                        f"usage: {arguments.USAGE}\n"
+                        f"{info.PACKAGE_NAME}: error: {output}\n"
+                    ),
+                )
             else:
                 self.assertEqual(stderr.getvalue(), "")
 
@@ -92,20 +97,28 @@ class TestArgs(ExecuteArgs):
         doc
         """
         # Missing arguments.
-        self.execute_args(args=[
-                          ""], output="Miss Required arguments. Use -c or -d. Use -h for help.", exception_expected=True)
+        self.execute_args(
+            args=[""],
+            output="Miss Required arguments. Use -c or -d. Use -h for help.",
+            exception_expected=True,
+        )
 
         # Invalid combination.
-        self.execute_args(args=[
-                          "-c", "-d"], output="Can't use -c and -d arguments together.", exception_expected=True)
+        self.execute_args(
+            args=["-c", "-d"],
+            output="Can't use -c and -d arguments together.",
+            exception_expected=True,
+        )
 
         # Execute optional command without a required arg.
         self.execute_args(
-            args=["-c", "-i"], output="Can't use -i without -d.", exception_expected=True)
+            args=["-c", "-i"],
+            output="Can't use -i without -d.",
+            exception_expected=True,
+        )
 
         # Missing FILE.
-        self.execute_args(args=["-c"], output="Miss FILE",
-                          exception_expected=True)
+        self.execute_args(args=["-c"], output="Miss FILE", exception_expected=True)
 
 
 class ZZZZTestConfig(ExecuteArgs):
@@ -130,8 +143,9 @@ class ZZZZTestConfig(ExecuteArgs):
             "1 should be instance of 'str'"
         )
         self.write_config_file()
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)], output=output, exception_expected=True
+        )
 
     def atest_invalid_key(self) -> None:
         """
@@ -139,8 +153,11 @@ class ZZZZTestConfig(ExecuteArgs):
         """
         self.config["invalid_key"] = ""
         self.write_config_file()
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=f"Wrong key 'invalid_key' in {self.config}", exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)],
+            output=f"Wrong key 'invalid_key' in {self.config}",
+            exception_expected=True,
+        )
 
     def atest_color_related_keys(self) -> None:
         """
@@ -150,20 +167,29 @@ class ZZZZTestConfig(ExecuteArgs):
         self.assertEqual(self.config["main_color"], "#ff0000")
         self.assertEqual(self.config["background_color"], "#ffffff")
         self.write_config_file()
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=f"Wrong key 'invalid_key' in {self.config}", exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)],
+            output=f"Wrong key 'invalid_key' in {self.config}",
+            exception_expected=True,
+        )
 
         self.config = console.get_default_config()
         self.config["main_color"] = "#ffff"
         self.write_config_file()
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output="The key main_color must be a hex color code. If you don't want any value on this key, set the value to null.", exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)],
+            output="The key main_color must be a hex color code. If you don't want any value on this key, set the value to null.",
+            exception_expected=True,
+        )
 
         self.config = console.get_default_config()
         self.config["background_color"] = "#ffff"
         self.write_config_file()
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output="The key background_color must be a hex color code. If you don't want any value on this key, set the value to null.", exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)],
+            output="The key background_color must be a hex color code. If you don't want any value on this key, set the value to null.",
+            exception_expected=True,
+        )
 
     def atest_image_reference_is_not_a_image_file(self) -> None:
         """
@@ -176,8 +202,9 @@ class ZZZZTestConfig(ExecuteArgs):
             f"Can't identify as image the favicon_ico reference ({reference})\n"
             f"Exception: cannot identify image file '{reference.absolute()}'"
         )
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)], output=output, exception_expected=True
+        )
 
 
 class TestReferences(ExecuteArgs):
@@ -194,8 +221,9 @@ class TestReferences(ExecuteArgs):
             f"The file ({reference}) must be referred to a path that exists.\n"
             f"ABSOLUTE PATH: {reference.absolute()}"
         )
-        self.execute_args(args=["-c", str(reference)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(reference)], output=output, exception_expected=True
+        )
 
     def test_config_reference_is_directory(self) -> None:
         """
@@ -205,8 +233,9 @@ class TestReferences(ExecuteArgs):
             f"The file ({self.output_folder}) must be referred to a file path.\n"
             f"ABSOLUTE PATH: {self.output_folder.absolute()}"
         )
-        self.execute_args(args=["-c", str(self.output_folder)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_folder)], output=output, exception_expected=True
+        )
 
     def test_invalid_format(self) -> None:
         """
@@ -218,8 +247,9 @@ class TestReferences(ExecuteArgs):
             f"ABSOLUTE PATH: {self.output_file.absolute()}\n"
             "Exception: Expecting value: line 1 column 1 (char 0)"
         )
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)], output=output, exception_expected=True
+        )
 
     def test_image_does_not_exists(self) -> None:
         """
@@ -231,8 +261,9 @@ class TestReferences(ExecuteArgs):
             f"favicon_ico reference ({reference}) doesn't exists\n"
             f"ABSOLUTE PATH: {reference.absolute()}"
         )
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)], output=output, exception_expected=True
+        )
 
     def test_image_reference_is_directory(self) -> None:
         """
@@ -245,8 +276,9 @@ class TestReferences(ExecuteArgs):
             f"favicon_ico reference ({reference}) must be a file, not a directory\n"
             f"Exception: [Errno 21] Is a directory: '{reference.absolute()}'"
         )
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)], output=output, exception_expected=True
+        )
 
     def test_image_reference_is_not_a_image_file(self) -> None:
         """
@@ -258,8 +290,9 @@ class TestReferences(ExecuteArgs):
             f"Can't identify as image the favicon_ico reference ({reference})\n"
             f"Exception: cannot identify image file '{reference.absolute()}'"
         )
-        self.execute_args(args=["-c", str(self.output_file)],
-                          output=output, exception_expected=True)
+        self.execute_args(
+            args=["-c", str(self.output_file)], output=output, exception_expected=True
+        )
 
     def test_invalid_image_format(self) -> None:
         """
