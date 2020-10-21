@@ -48,9 +48,11 @@ class ExecuteArgs(unittest.TestCase):
     def write_config_file(self) -> None:
         self.output_file.write_text(json.dumps(self.config))
 
-    def execute_args(
-        self, *, args: List[str], output: str = "", exception_expected: bool = False
-    ) -> None:
+    def execute_args(self,
+                     *,
+                     args: List[str],
+                     output: str = "",
+                     exception_expected: bool = False) -> None:
         """
         Run the console with the given arguments.
 
@@ -70,10 +72,8 @@ class ExecuteArgs(unittest.TestCase):
             if output:
                 self.assertEqual(
                     stderr.getvalue(),
-                    (
-                        f"usage: {arguments.USAGE}\n"
-                        f"{info.PACKAGE_NAME}: error: {output}\n"
-                    ),
+                    (f"usage: {arguments.USAGE}\n"
+                     f"{info.PACKAGE_NAME}: error: {output}\n"),
                 )
             else:
                 self.assertEqual(stderr.getvalue(), "")
@@ -118,7 +118,9 @@ class TestArgs(ExecuteArgs):
         )
 
         # Missing FILE.
-        self.execute_args(args=["-c"], output="Miss FILE", exception_expected=True)
+        self.execute_args(args=["-c"],
+                          output="Miss FILE",
+                          exception_expected=True)
 
 
 class ZZZZTestConfig(ExecuteArgs):
@@ -137,15 +139,13 @@ class ZZZZTestConfig(ExecuteArgs):
         doc
         """
         self.config["favicon_ico"] = 1
-        output = (
-            "Key 'favicon_ico' error:\n"
-            "Or(None, <class 'str'>) did not validate 1\n"
-            "1 should be instance of 'str'"
-        )
+        output = ("Key 'favicon_ico' error:\n"
+                  "Or(None, <class 'str'>) did not validate 1\n"
+                  "1 should be instance of 'str'")
         self.write_config_file()
-        self.execute_args(
-            args=["-c", str(self.output_file)], output=output, exception_expected=True
-        )
+        self.execute_args(args=["-c", str(self.output_file)],
+                          output=output,
+                          exception_expected=True)
 
     def atest_invalid_key(self) -> None:
         """
@@ -178,7 +178,8 @@ class ZZZZTestConfig(ExecuteArgs):
         self.write_config_file()
         self.execute_args(
             args=["-c", str(self.output_file)],
-            output="The key main_color must be a hex color code. If you don't want any value on this key, set the value to null.",
+            output=
+            "The key main_color must be a hex color code. If you don't want any value on this key, set the value to null.",
             exception_expected=True,
         )
 
@@ -187,7 +188,8 @@ class ZZZZTestConfig(ExecuteArgs):
         self.write_config_file()
         self.execute_args(
             args=["-c", str(self.output_file)],
-            output="The key background_color must be a hex color code. If you don't want any value on this key, set the value to null.",
+            output=
+            "The key background_color must be a hex color code. If you don't want any value on this key, set the value to null.",
             exception_expected=True,
         )
 
@@ -200,11 +202,10 @@ class ZZZZTestConfig(ExecuteArgs):
         reference.write_bytes(b"")
         output = (
             f"Can't identify as image the favicon_ico reference ({reference})\n"
-            f"Exception: cannot identify image file '{reference.absolute()}'"
-        )
-        self.execute_args(
-            args=["-c", str(self.output_file)], output=output, exception_expected=True
-        )
+            f"Exception: cannot identify image file '{reference.absolute()}'")
+        self.execute_args(args=["-c", str(self.output_file)],
+                          output=output,
+                          exception_expected=True)
 
 
 class TestReferences(ExecuteArgs):
@@ -219,11 +220,10 @@ class TestReferences(ExecuteArgs):
         reference = pathlib.Path(__file__).parent / "inexistent_file.json"
         output = (
             f"The file ({reference}) must be referred to a path that exists.\n"
-            f"ABSOLUTE PATH: {reference.absolute()}"
-        )
-        self.execute_args(
-            args=["-c", str(reference)], output=output, exception_expected=True
-        )
+            f"ABSOLUTE PATH: {reference.absolute()}")
+        self.execute_args(args=["-c", str(reference)],
+                          output=output,
+                          exception_expected=True)
 
     def test_config_reference_is_directory(self) -> None:
         """
@@ -231,25 +231,22 @@ class TestReferences(ExecuteArgs):
         """
         output = (
             f"The file ({self.output_folder}) must be referred to a file path.\n"
-            f"ABSOLUTE PATH: {self.output_folder.absolute()}"
-        )
-        self.execute_args(
-            args=["-c", str(self.output_folder)], output=output, exception_expected=True
-        )
+            f"ABSOLUTE PATH: {self.output_folder.absolute()}")
+        self.execute_args(args=["-c", str(self.output_folder)],
+                          output=output,
+                          exception_expected=True)
 
     def test_invalid_format(self) -> None:
         """
         doc
         """
         self.output_file.write_text("invalid file format")
-        output = (
-            f"Invalid json file format in ({self.output_file})\n"
-            f"ABSOLUTE PATH: {self.output_file.absolute()}\n"
-            "Exception: Expecting value: line 1 column 1 (char 0)"
-        )
-        self.execute_args(
-            args=["-c", str(self.output_file)], output=output, exception_expected=True
-        )
+        output = (f"Invalid json file format in ({self.output_file})\n"
+                  f"ABSOLUTE PATH: {self.output_file.absolute()}\n"
+                  "Exception: Expecting value: line 1 column 1 (char 0)")
+        self.execute_args(args=["-c", str(self.output_file)],
+                          output=output,
+                          exception_expected=True)
 
     def test_image_does_not_exists(self) -> None:
         """
@@ -257,13 +254,11 @@ class TestReferences(ExecuteArgs):
         """
         reference = self.output_folder / "favicon_ico_16px.ico"
         os.remove(reference)
-        output = (
-            f"favicon_ico reference ({reference}) doesn't exists\n"
-            f"ABSOLUTE PATH: {reference.absolute()}"
-        )
-        self.execute_args(
-            args=["-c", str(self.output_file)], output=output, exception_expected=True
-        )
+        output = (f"favicon_ico reference ({reference}) doesn't exists\n"
+                  f"ABSOLUTE PATH: {reference.absolute()}")
+        self.execute_args(args=["-c", str(self.output_file)],
+                          output=output,
+                          exception_expected=True)
 
     def test_image_reference_is_directory(self) -> None:
         """
@@ -274,11 +269,10 @@ class TestReferences(ExecuteArgs):
         os.makedirs(reference)
         output = (
             f"favicon_ico reference ({reference}) must be a file, not a directory\n"
-            f"Exception: [Errno 21] Is a directory: '{reference.absolute()}'"
-        )
-        self.execute_args(
-            args=["-c", str(self.output_file)], output=output, exception_expected=True
-        )
+            f"Exception: [Errno 21] Is a directory: '{reference.absolute()}'")
+        self.execute_args(args=["-c", str(self.output_file)],
+                          output=output,
+                          exception_expected=True)
 
     def test_image_reference_is_not_a_image_file(self) -> None:
         """
@@ -288,11 +282,10 @@ class TestReferences(ExecuteArgs):
         reference.write_bytes(b"")
         output = (
             f"Can't identify as image the favicon_ico reference ({reference})\n"
-            f"Exception: cannot identify image file '{reference.absolute()}'"
-        )
-        self.execute_args(
-            args=["-c", str(self.output_file)], output=output, exception_expected=True
-        )
+            f"Exception: cannot identify image file '{reference.absolute()}'")
+        self.execute_args(args=["-c", str(self.output_file)],
+                          output=output,
+                          exception_expected=True)
 
     def test_invalid_image_format(self) -> None:
         """
