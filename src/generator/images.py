@@ -3,8 +3,8 @@ Handle images generation.
 """
 from __future__ import annotations
 
+import collections
 import io
-from collections import namedtuple
 from typing import List
 from typing import Optional
 from typing import Tuple
@@ -124,7 +124,7 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
     Returns:
         The images list.
     """
-    ImageData = namedtuple("ImageData", "path width height")
+    ImageData = collections.namedtuple("ImageData", "path width height")
     images = []
     images_data: Tuple[ImageData, ...]
 

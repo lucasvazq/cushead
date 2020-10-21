@@ -95,7 +95,7 @@ def generate_default_config_file(*, path: pathlib.Path) -> files.File:
         The file to save.
     """
     default_config = get_default_config()
-    parsed_settings = json.dumps(default_config, indent=4).encode("utf-8")
+    parsed_settings = json.dumps(default_config, indent=4).encode()
     return files.File(path=path, data=parsed_settings)
 
 

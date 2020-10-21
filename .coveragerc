@@ -4,7 +4,8 @@ source = ./
 
 [report]
 exclude_lines =
-	...
+	@overload
+	if __name__ == "__main__":
 
 [html]
 directory = coverage

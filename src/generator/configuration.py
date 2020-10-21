@@ -7,6 +7,7 @@ from typing import Any
 from typing import Literal
 from typing import Optional
 from typing import TypedDict
+from typing import Union
 from typing import overload
 
 import schema
@@ -100,16 +101,16 @@ def validate_config(*, config: Any) -> None:
 
 
 @overload
-def load_binary_image(*, path: pathlib.Path, expected_format: Literal["ICO"]) -> IcoImagePlugin.IcoImageFile:
+def load_binary_image(*, key: Literal["favicon_ico"], path: pathlib.Path, expected_format: Literal["ICO"]) -> IcoImagePlugin.IcoImageFile:
     ...
 
 
 @overload
-def load_binary_image(*, path: pathlib.Path, expected_format: Literal["PNG"]) -> PngImagePlugin.PngImageFile:
+def load_binary_image(*, key: Union[Literal["favicon_png"], Literal["preview_png"]], path: pathlib.Path, expected_format: Literal["PNG"]) -> PngImagePlugin.PngImageFile:
     ...
 
 
-def load_binary_image(*, path, expected_format):
+def load_binary_image(*, key, path, expected_format):
     """
     Load a binary type image.
 
@@ -128,7 +129,7 @@ def load_binary_image(*, path, expected_format):
         raise exceptions.BadReference(
             "\n".join(
                 (
-                    "Image reference doesn't exists",
+                    f"{key} reference ({path}) doesn't exists",
                     f"ABSOLUTE PATH: {path.absolute()}",
                 ),
             ),
@@ -139,9 +140,8 @@ def load_binary_image(*, path, expected_format):
         raise exceptions.BadReference(
             "\n".join(
                 (
-                    "Image reference must be a file, not a directory",
-                    f"ABSOLUTE PATH: {path.absolute()}",
-                    f"Exception: {exception}",
+                    f"{key} reference ({path}) must be a file, not a directory",
+                    f"Exception: {exception}",  # It's include the absolute path
                 ),
             ),
         )
@@ -149,17 +149,19 @@ def load_binary_image(*, path, expected_format):
         raise exceptions.WrongFileFormat(
             "\n".join(
                 (
-                    "Can't identify image file",
-                    f"ABSOLUTE PATH: {path.absolute()}",
-                    f"Exception: {exception}",
+                    f"Can't identify as image the {key} reference ({path})",
+                    f"Exception: {exception}",  # It's include the absolute path
                 ),
             ),
         )
+
     if image.format != expected_format:
+        image.close()
         raise exceptions.WrongFileFormat(
             "\n".join(
                 (
-                    f"Wrong image format. Expected {expected_format}, received {image.format}",
+                    f"The {key} reference ({path}) has a wrong image format.",
+                    f"Expected {expected_format}, but received {image.format}",
                     f"ABSOLUTE PATH: {path.absolute()}",
                 ),
             ),
@@ -184,12 +186,12 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
         A new dict with the parsed config.
     """
     if config.get("favicon_ico"):
-        favicon_ico = load_binary_image(path=path / config["favicon_ico"], expected_format="ICO")
+        favicon_ico = load_binary_image(key="favicon_ico", path=path / config["favicon_ico"], expected_format="ICO")
     else:
         favicon_ico = None
 
     if config.get("favicon_png"):
-        favicon_png = load_binary_image(path=path / config["favicon_png"], expected_format="PNG")
+        favicon_png = load_binary_image(key="favicon_png", path=path / config["favicon_png"], expected_format="PNG")
     else:
         favicon_png = None
 
@@ -199,7 +201,7 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
         favicon_svg = None
 
     if config.get("preview_png"):
-        preview_png = load_binary_image(path=path / config["preview_png"], expected_format="PNG")
+        preview_png = load_binary_image(key="preview_png", path=path / config["preview_png"], expected_format="PNG")
     else:
         preview_png = None
 
