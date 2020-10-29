@@ -6,6 +6,7 @@ source = ./
 exclude_lines =
 	@overload
 	if __name__ == "__main__":
+	def main
 
 [html]
 directory = coverage

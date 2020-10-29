@@ -6,24 +6,29 @@ import pathlib
 
 import setuptools
 
-from src import info
+from cushead import info
+from cushead.console import assets
 
 
 setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
-    scripts=[f"{info.PACKAGE_NAME}.py"],
-    entry_points={"console_scripts": [f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}:main"]},
+    entry_points={"console_scripts": [f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}.console.console:main"]},
     url=info.SOURCE,
     project_urls={
         "Documentation": info.DOCUMENTATION,
         "Source": info.SOURCE,
     },
     python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
-    packages=setuptools.find_packages(),
-    include_package_data=True,
+    packages=setuptools.find_packages(exclude=("tests",)),
+    data_files=[
+        ("", ["requirements.txt", "LICENSE.md", "README.md"]),
+        # assets
+        (f"{info.PACKAGE_NAME}/console/assets", [str(file) for file in pathlib.Path(f"{info.PACKAGE_NAME}/console/assets").iterdir()]),
+        # templates
+        (f"{info.PACKAGE_NAME}/generator/templates/templates", [str(file) for file in pathlib.Path(f"{info.PACKAGE_NAME}/generator/templates/templates").iterdir()]),
+    ],
     install_requires=info.REQUIRED_PACKAGES,
-
     author=info.AUTHOR,
     author_email=info.EMAIL,
     description=info.DESCRIPTION,
@@ -41,6 +46,7 @@ setuptools.setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3 :: Only",
     ],
 )

@@ -29,10 +29,10 @@ with a main focus on **SEO** and **UX**.
 ### Example
 
 1) Generate a default config file with images
-`cushead -d -i example/settings.json`
+`cushead -d -i example/config.json`
 
 2) Read the config file and create all files
-`cushead -c example/settings.json`
+`cushead -c example/config.json`
 
 ### Help
 
@@ -46,7 +46,7 @@ excluding arguments:
 
 optional arguments:
   -i, --images   Use with --default. Generate default images that can be used
-                 by the default settings. This include: favicon_ico_16px.ico,
+                 by the default config file. This include: favicon_ico_16px.ico,
                  favicon_png_2688px.png, favicon_svg_scalable.svg and
                  preview_png_600px.png
 
@@ -60,9 +60,9 @@ positional arguments:
 
 Examples:
 1) Generate default config file with images:
-    cushead -default settings.json --images
+    cushead -d -i config.json
 2) Run that config:
-    cushead -config settings.json
+    cushead -c config.json
 ```
 
 ## License

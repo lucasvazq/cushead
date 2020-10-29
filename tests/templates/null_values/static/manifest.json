@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "version": "0.1.0",
+  "name": "None",
+  "short_name": "None",
+  "description": "None",
+  "dir": "None",
+  "background_color": "None",
+  "theme_color": "None",
+  "start_url": "/",
+  "orientation": "landscape",
+  "scope": "/",
+  "display": "standalone",
+  "platform": "web",
+  "prefer_related_applications": false
+  
+}

@@ -8,5 +8,8 @@ install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
 script:
-  - python -m coverage run -a test/test_exceptions.py
+  - python -m coverage run -a tests/test_exceptions.py
+  - python -m coverage run -a tests/test_configs.py
+  - python -m coverage run -a tests/test_packages.py
+  - python -m coverage run -a tests/test_setup.py
   - codecov -X gcov
