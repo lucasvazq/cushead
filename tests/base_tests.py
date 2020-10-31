@@ -48,8 +48,9 @@ class BaseTests(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.base_folder = pathlib.Path(__file__).parent
         self.templates_folder = self.base_folder / "templates"
-        self.output_folder = self.base_folder / "output"
-        self.config_file = self.output_folder / "config.json"
+        self.config_folder = self.base_folder / "config"
+        self.config_file = self.config_folder / "config.json"
+        self.output_folder = self.config_folder / "output"
         self.usage = arguments.setup_parser().usage
 
     def write_config_file(self) -> None:
@@ -86,15 +87,18 @@ class BaseTests(unittest.TestCase):
         """
         doc
         """
-        os.makedirs(self.output_folder)
+        os.makedirs(self.config_folder)
         self.execute_args(args=["-d", "-i", str(self.config_file)])
+        self.set_default_config()
+    
+    def set_default_config(self) -> None:
         self.config = console.get_default_config()
 
     def tearDown(self) -> None:
         """
         doc
         """
-        shutil.rmtree(self.output_folder.absolute())
+        shutil.rmtree(self.config_folder.absolute())
 
     def assertNotRaises(self, expected_exception, *args, **kwargs):
         """

@@ -18,7 +18,7 @@
 
 ['./dist/'](./dist/.)
 
-`rm -rf ./cushead.egg-info/ ./dist/ ./build/`
+`rm -rf ./cushead.egg-info/ ./dist/`
 
 ## 3 - Build the new package
 

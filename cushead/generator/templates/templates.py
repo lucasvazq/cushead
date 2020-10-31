@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import pathlib
+import re
 from typing import List
 from typing import Union
 
@@ -54,7 +55,10 @@ class TemplateLoader:
         Returns:
             The template in string format.
         """
-        return self.template_parser.get_template(path).render().encode("utf-8")
+        rendered_template = self.template_parser.get_template(path).render()
+        # Eliminar doble lineas repetidas
+        return re.sub("((\n +)+\n)|(\n\n$)", "\n", rendered_template).encode("utf-8")
+        # return "\n".join([line for line in rendered_template.split("\n") if (not line or line.strip())]).encode("utf-8")
 
 
 def generate_template_hash(*, template: bytes) -> str:
@@ -107,18 +111,19 @@ def generate_templates(*, config: configuration.Config) -> List[files.File]:
     ]
 
     if config.get("domain"):
-        templates.extend(
-            (
-                files.File(
-                    path=config["output_folder_path"] / "sitemap.xml",
-                    data=template_loader.render_template(path="sitemap.jinja2"),
-                ),
+        templates.append(
+            files.File(
+                path=config["output_folder_path"] / "sitemap.xml",
+                data=template_loader.render_template(path="sitemap.jinja2"),
+            ),
+        )
+        if config.get("title"):
+            templates.append(
                 files.File(
                     path=config["output_folder_path"] / "static" / "opensearch.xml",
                     data=template_loader.render_template(path="opensearch.jinja2"),
                 ),
             )
-        )
 
     if config.get("favicon_png") or config.get("main_color"):
         templates.append(

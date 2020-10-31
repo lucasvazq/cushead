@@ -18,14 +18,22 @@ class TestConfig(base_tests.BaseTests):
         doc
         """
         template_folder = self.templates_folder / template_folder_name
-        for file in (self.output_folder / "output").rglob("*"):
-            file_path = template_folder / str(file.relative_to(self.output_folder / "output"))
 
-            if file.is_dir():
-                self.assertTrue(file_path.is_dir())
-                continue
+        # Check folders structure
+        self.assertEqual(
+            [str(file.relative_to(self.output_folder)) for file in self.output_folder.rglob("*")],
+            [str(file.relative_to(template_folder)) for file in template_folder.rglob("*")]
+        )
 
-            self.assertEqual(file.read_bytes(), file_path.read_bytes())
+        # Compare files
+        for generated_file in self.output_folder.rglob("*"):
+            template_file = template_folder / str(generated_file.relative_to(self.output_folder))
+            if generated_file.is_dir():
+                self.assertTrue(template_file.is_dir())
+            elif generated_file.suffix in (".png", ".ico"):
+                self.assertEqual(generated_file.read_bytes(), template_file.read_bytes())
+            else:
+                self.assertEqual(generated_file.read_text(), template_file.read_text())
 
     def test_default_config(self) -> None:
         """
@@ -72,7 +80,13 @@ class TestConfig(base_tests.BaseTests):
         del self.config["background_color"]
         self.write_config_file()
         self.execute_args(args=["-c", str(self.config_file)])
-        self.compare_output("custom_config")
+        self.compare_output("custom_config/1")
+
+        self.set_default_config()
+        self.config["static_url"] = "https://cdn.com"
+        self.write_config_file()
+        self.execute_args(args=["-c", str(self.config_file)])
+        self.compare_output("custom_config/2")
 
 
 if __name__ == "__main__":

@@ -194,7 +194,7 @@ def parse_args(*, args: List[str]) -> None:
         )
 
 
-def init(*, args: List["str"]) -> None:
+def init(*, args: List[str]) -> None:
     """
     doc
     """

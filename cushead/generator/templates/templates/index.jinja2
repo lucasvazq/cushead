@@ -44,25 +44,24 @@
     <link rel="icon" sizes="192x192" type="image/png" href="{{ config.static_url }}/favicon-192x192.png">
     <link rel="icon" sizes="194x194" type="image/png" href="{{ config.static_url }}/favicon-194x194.png">
     <link rel="apple-touch-icon" href="{{ config.static_url }}/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ config.static }}/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="{{ config.static }}/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ config.static }}/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ config.static }}/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ config.static }}/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ config.static }}/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="128x128" href="{{ config.static }}/apple-touch-icon-128x128.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="{{ config.static }}/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ config.static }}/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="{{ config.static }}/apple-touch-icon-167x167.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ config.static }}/apple-touch-icon-180x180.png">
-    <link rel="apple-touch-icon" sizes="195x195" href="{{ config.static }}/apple-touch-icon-195x195.png">
-    <link rel="apple-touch-icon" sizes="196x196" href="{{ config.static }}/apple-touch-icon-196x196.png">
-    <link rel="apple-touch-icon" sizes="228x228" href="{{ config.static }}/apple-touch-icon-228x228.png">
-    <link rel="apple-touch-icon" sizes="512x512" href="{{ config.static }}/apple-touch-icon-512x512.png">
-    <link rel="apple-touch-icon" sizes="1024x1024" href="{{ config.static }}/apple-touch-icon-1024x1024.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ config.static_url }}/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ config.static_url }}/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ config.static_url }}/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ config.static_url }}/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ config.static_url }}/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ config.static_url }}/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="{{ config.static_url }}/apple-touch-icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ config.static_url }}/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ config.static_url }}/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="{{ config.static_url }}/apple-touch-icon-167x167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ config.static_url }}/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="195x195" href="{{ config.static_url }}/apple-touch-icon-195x195.png">
+    <link rel="apple-touch-icon" sizes="196x196" href="{{ config.static_url }}/apple-touch-icon-196x196.png">
+    <link rel="apple-touch-icon" sizes="228x228" href="{{ config.static_url }}/apple-touch-icon-228x228.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="{{ config.static_url }}/apple-touch-icon-512x512.png">
+    <link rel="apple-touch-icon" sizes="1024x1024" href="{{ config.static_url }}/apple-touch-icon-1024x1024.png">
     {%- endif %}
     {%+ if config.favicon_png and config.background_color -%}
-    #	Transparent background, 120px, 300kb
     <meta name="yandex-tableau-widget" content="logo={{ config.static_url }}/yandex.png, color={{ config.background_color }}">
     {%- endif %}
 
@@ -132,7 +131,11 @@
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap">
     </noscript>
+
+    {#- Custom styles #}
     <!-- Import here your styles -->
+
+    {#- Custom javascript #}
     <!-- Import here your early load javascripts -->
 
     {#- External Apps definition #}
@@ -170,7 +173,7 @@
     {%+ if config.title -%}
     <meta name="application-name" content="{{ config.title }}">
     {%- endif %}
-    {%+ if config.favicon_png and config.main_color -%}
+    {%+ if config.favicon_png or config.main_color -%}
     <meta name="msapplication-config" content="{{ config.static_url }}/browserconfig.xml">
     {%- endif %}
     {%+ if config.title -%}
@@ -179,7 +182,7 @@
     {%+ if config.favicon_svg -%}
     <link rel="mask-icon" {% if config.main_color %}color="{{ config.main_color }}" {% endif %}href="{{ config.static_url }}/mask-icon.svg">
     {%- endif %}
-    {%+ if config.title -%}
+    {%+ if config.domain and config.title -%}
     <link rel="search" type="application/opensearchdescription+xml" title="{{ config.title }}" href="{{ config.static_url }}/opensearch.xml">
     {%- endif %}
 
@@ -214,7 +217,9 @@
     <meta name="referrer" content="origin-when-crossorigin">
     <meta name="google-site-verification" content=""> <!-- FILL THIS -->
     <meta name="baidu-site-verification" content=""> <!-- FILL THIS -->
+    {%+ if config.author_name or config.author_email -%}
     <meta name="author" content="/humans.txt">
+    {%- endif %}
   </head>
   <body>
 
@@ -231,6 +236,7 @@
     {#- Modernizr.js v2.8.3 #}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 
+    {#- Custom javascript #}
     <!-- Import here your late load javascripts -->
 
     {#- Service worker #}

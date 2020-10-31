@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Sample</ShortName>
+  <LongName>Sample Web Search</LongName>
+  <Description>Search using Sample</Description>
+  <Url method="get" type="text/html" template="https://www.google.com/search?q=site:sample.com {searchTerms}"/>
+  <Image height="16" width="16" type="image/x-icon">https://sample.com/favicon.ico</Image>
+  <Image height="64" width="64" type="image/png">https://cdn.com/opensearch-64x64.png</Image>
+  <Contact>lucas5zvazquez@gmail.com</Contact>
+  <Developer>Author: Lucas Vazquez</Developer>
+</OpenSearchDescription>

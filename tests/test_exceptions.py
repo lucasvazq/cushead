@@ -91,12 +91,12 @@ class TestConfig(BaseExceptionsTests):
         self.write_config_file()
         self.execute_args(args=["-c", str(self.config_file)])
 
-        self.config = console.get_default_config()
+        self.set_default_config()
         self.config["main_color"] = "#ffff"
         self.write_config_file()
         self.execute_args(args=["-c", str(self.config_file)], expected_exception="The key main_color must be a hex color code. If you don't want any value on this key, set the value to null.")
 
-        self.config = console.get_default_config()
+        self.set_default_config()
         self.config["background_color"] = "rgba(255, 255, 255, 0)"
         self.write_config_file()
         self.execute_args(args=["-c", str(self.config_file)], expected_exception="The key background_color must be a hex color code. If you don't want any value on this key, set the value to null.")
@@ -123,10 +123,10 @@ class TestReferences(BaseExceptionsTests):
         doc
         """
         expected_exception = (
-            f"The file ({self.output_folder}) must be referred to a file path.\n"
-            f"ABSOLUTE PATH: {self.output_folder.absolute()}"
+            f"The file ({self.config_folder}) must be referred to a file path.\n"
+            f"ABSOLUTE PATH: {self.config_folder.absolute()}"
         )
-        self.execute_args(args=["-c", str(self.output_folder)], expected_exception=expected_exception)
+        self.execute_args(args=["-c", str(self.config_folder)], expected_exception=expected_exception)
 
     def test_invalid_format(self) -> None:
         """
@@ -145,7 +145,7 @@ class TestReferences(BaseExceptionsTests):
         """
         doc
         """
-        reference = self.output_folder / "favicon_ico_16px.ico"
+        reference = self.config_folder / "favicon_ico_16px.ico"
         os.remove(reference)
         expected_exception = (
             f"favicon_ico reference ({reference}) doesn't exists\n"
@@ -157,7 +157,7 @@ class TestReferences(BaseExceptionsTests):
         """
         doc
         """
-        reference = self.output_folder / "favicon_ico_16px.ico"
+        reference = self.config_folder / "favicon_ico_16px.ico"
         os.remove(reference)
         os.makedirs(reference)
         expected_exception = (
@@ -170,7 +170,7 @@ class TestReferences(BaseExceptionsTests):
         """
         doc
         """
-        reference = self.output_folder / "favicon_ico_16px.ico"
+        reference = self.config_folder / "favicon_ico_16px.ico"
         reference.write_bytes(b"")
         expected_exception = (
             f"Can't identify as image the favicon_ico reference ({reference})\n"
@@ -182,8 +182,8 @@ class TestReferences(BaseExceptionsTests):
         """
         doc
         """
-        reference = self.output_folder / "favicon_ico_16px.ico"
-        shutil.copy(self.output_folder / "favicon_png_2688px.png", reference)
+        reference = self.config_folder / "favicon_ico_16px.ico"
+        shutil.copy(self.config_folder / "favicon_png_2688px.png", reference)
         expected_exception = (
             f"The favicon_ico reference ({reference}) has a wrong image format.\n"
             f"Expected ICO, but received PNG\n"
@@ -201,7 +201,7 @@ class TestFileCreation(BaseExceptionsTests):
         """
         doc
         """
-        reference = self.output_folder / "directory"
+        reference = self.config_folder / "directory"
         os.mkdir(reference)
         self.execute_args(args=["-d", str(reference)])
 

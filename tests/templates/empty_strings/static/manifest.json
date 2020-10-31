@@ -1,15 +1,10 @@
 {
   "manifest_version": 2,
   "version": "0.1.0",
-  
-  
-  
-  
   "start_url": "/",
   "orientation": "landscape",
   "scope": "/",
   "display": "standalone",
   "platform": "web",
   "prefer_related_applications": false
-  
 }
