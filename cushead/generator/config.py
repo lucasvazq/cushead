@@ -1,5 +1,5 @@
 """
-Module where are all things related to the configurations.
+Handle the config.
 """
 import pathlib
 import re
@@ -51,13 +51,13 @@ class Config(TypedDict):
 
 def validate_config(*, config: Any) -> None:
     """
-    Validate a configuration.
+    Validate a config.
 
     Args:
-        config: the configuration.
+        config: the config.
 
     Raises:
-        InvalidConfiguration: when the config isn't valid.
+        InvalidConfig: when the config isn't valid.
     """
     default_schema = schema.Schema(
         {
@@ -92,12 +92,12 @@ def validate_config(*, config: Any) -> None:
         schema.SchemaMissingKeyError,
         schema.SchemaError,
     ) as exception:
-        raise exceptions.InvalidConfiguration(exception)
+        raise exceptions.InvalidConfig(exception)
 
     hex_color = re.compile("^#(?:[0-9a-fA-F]{3}){1,2}$")
     for color_key in ("main_color", "background_color"):
         if config.get(color_key) and not hex_color.match(config[color_key]):
-            raise exceptions.InvalidConfiguration(f"The key {color_key} must be a hex color code. If you don't want any value on this key, set the value to null.")
+            raise exceptions.InvalidConfig(f"The key {color_key} must be a hex color code. If you don't want any value on this key, set the value to null.")
 
 
 @overload
@@ -115,7 +115,7 @@ def load_binary_image(*, key, path, expected_format):
     Load a binary type image.
 
     Args:
-        path: the image path
+        path: the image path.
         expected_format: the expected format of the image.
 
     Returns:
@@ -129,7 +129,7 @@ def load_binary_image(*, key, path, expected_format):
         raise exceptions.BadReference(
             "\n".join(
                 (
-                    f"{key} reference ({path}) doesn't exists",
+                    f"{key} reference ({path}) doesn't exists.",
                     f"ABSOLUTE PATH: {path.absolute()}",
                 ),
             ),
@@ -140,8 +140,8 @@ def load_binary_image(*, key, path, expected_format):
         raise exceptions.BadReference(
             "\n".join(
                 (
-                    f"{key} reference ({path}) must be a file, not a directory",
-                    f"Exception: {exception}",  # It's include the absolute path
+                    f"{key} reference ({path}) must be a file, not a directory.",
+                    f"Exception: {exception}",  # It includes the absolute path
                 ),
             ),
         )
@@ -149,8 +149,8 @@ def load_binary_image(*, key, path, expected_format):
         raise exceptions.WrongFileFormat(
             "\n".join(
                 (
-                    f"Can't identify as image the {key} reference ({path})",
-                    f"Exception: {exception}",  # It's include the absolute path
+                    f"Can't identify as image the {key} reference ({path}).",
+                    f"Exception: {exception}",  # It includes the absolute path
                 ),
             ),
         )
@@ -161,7 +161,7 @@ def load_binary_image(*, key, path, expected_format):
             "\n".join(
                 (
                     f"The {key} reference ({path}) has a wrong image format.",
-                    f"Expected {expected_format}, but received {image.format}",
+                    f"Expected {expected_format}, but received {image.format}.",
                     f"ABSOLUTE PATH: {path.absolute()}",
                 ),
             ),
@@ -179,7 +179,7 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
     Parse a config.
 
     Args:
-        path: config folder path.
+        path: the config file source path.
         config: the config.
 
     Returns:

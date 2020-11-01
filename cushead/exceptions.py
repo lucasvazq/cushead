@@ -1,11 +1,11 @@
 """
-Here is stored all exceptions.
+Exceptions declaration.
 """
 
 
 class MainException(Exception):
     """
-    Base exceptions of all exceptions of this package.
+    Base exception for all exceptions of this package.
     """
 
 
@@ -27,9 +27,9 @@ class BadReference(MainException):
     """
 
 
-class InvalidConfiguration(MainException):
+class InvalidConfig(MainException):
     """
-    When a configuration is invalid.
+    When a config is invalid.
     """
 
 

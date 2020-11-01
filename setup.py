@@ -7,9 +7,10 @@ import pathlib
 import setuptools
 
 from cushead import info
-from cushead.console import assets
 
 
+_ASSETS_PATH = f"{info.PACKAGE_NAME}/console/assets/images"
+_TEMPLATES_PATH = f"{info.PACKAGE_NAME}/generator/templates/templates"
 setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
@@ -23,10 +24,8 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=("tests",)),
     data_files=[
         ("", ["requirements.txt", "LICENSE.md", "README.md"]),
-        # assets
-        (f"{info.PACKAGE_NAME}/console/assets", [str(file) for file in pathlib.Path(f"{info.PACKAGE_NAME}/console/assets").iterdir()]),
-        # templates
-        (f"{info.PACKAGE_NAME}/generator/templates/templates", [str(file) for file in pathlib.Path(f"{info.PACKAGE_NAME}/generator/templates/templates").iterdir()]),
+        (_ASSETS_PATH, [str(file) for file in pathlib.Path(_ASSETS_PATH).iterdir()]),
+        (_TEMPLATES_PATH, [str(file) for file in pathlib.Path(_TEMPLATES_PATH).iterdir()]),
     ],
     install_requires=info.REQUIRED_PACKAGES,
     author=info.AUTHOR,

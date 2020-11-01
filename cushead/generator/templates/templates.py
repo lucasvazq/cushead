@@ -11,23 +11,23 @@ from typing import Union
 
 import jinja2
 
-from cushead.generator import configuration
+from cushead.generator import config
 from cushead.generator import files
 
 
 class TemplateLoader:
     """
-    Handle the jinja template loader.
+    Handle jinja2 templates.
     """
 
-    def __init__(self, *, templates_path: pathlib.Path) -> None:
+    def __init__(self, *, templates_folder: pathlib.Path) -> None:
         """
         Create a template loader of jinja2.
 
         Args:
-            templates_path: the path where the templates are stored.
+            templates_folder: the path where the templates are stored.
         """
-        template_loader = jinja2.FileSystemLoader(searchpath=str(templates_path))
+        template_loader = jinja2.FileSystemLoader(searchpath=str(templates_folder))
         self.template_parser = jinja2.Environment(
             loader=template_loader,
             lstrip_blocks=True,
@@ -35,13 +35,13 @@ class TemplateLoader:
             extensions=["cushead.generator.templates.jinja_extension.OneLineExtension"],
         )
 
-    def add_template_variable(self, name: str, value: Union[configuration.Config, str]) -> None:
+    def add_template_variable(self, *, name: str, value: Union[config.Config, str]) -> None:
         """
-        Add variable to the template loader.
+        Add a variable to the template loader context.
 
         Args:
-            name: variable name.
-            value: variable value.
+            name: the variable name.
+            value: the variable value.
         """
         self.template_parser.globals.update({name: value})
 
@@ -50,23 +50,22 @@ class TemplateLoader:
         Render a template.
 
         Args:
-            path: template path.
+            path: the template path, relative to the templates_folder instance attribute.
 
         Returns:
-            The template in string format.
+            The template rendered in UTF-8 format.
         """
         rendered_template = self.template_parser.get_template(path).render()
-        # Eliminar doble lineas repetidas
-        return re.sub("((\n +)+\n)|(\n\n$)", "\n", rendered_template).encode("utf-8")
-        # return "\n".join([line for line in rendered_template.split("\n") if (not line or line.strip())]).encode("utf-8")
+        cleaned_template = re.sub("((\n +)+\n)|(\n\n$)", "\n", rendered_template)
+        return cleaned_template.encode()
 
 
-def generate_template_hash(*, template: bytes) -> str:
+def get_template_hash(*, template: bytes) -> str:
     """
-    Generate a hash of a template.
+    Get a hash of a template.
 
     Args:
-        template: the template in string format.
+        template: the template in UTF-8 format.
 
     Returns:
         The hash.
@@ -74,21 +73,21 @@ def generate_template_hash(*, template: bytes) -> str:
     return hashlib.sha256(template).hexdigest()[0:6]
 
 
-def generate_templates(*, config: configuration.Config) -> List[files.File]:
+def generate_templates(*, config: config.Config) -> List[files.File]:
     """
-    Get templates ready to be created.
+    Get templates ready to create.
 
     Args:
-        config: the configuration.
+        config: the config used in the templates context.
 
     Returns:
-        The templates list.
+        The templates.
     """
-    templates_path = pathlib.Path(__file__).parent / "templates"
-    template_loader = TemplateLoader(templates_path=templates_path)
+    templates_folder = pathlib.Path(__file__).parent / "templates"
+    template_loader = TemplateLoader(templates_folder=templates_folder)
     template_loader.add_template_variable(name="config", value=config)
     index_template = template_loader.render_template(path="index.jinja2")
-    index_hash = generate_template_hash(template=index_template)
+    index_hash = get_template_hash(template=index_template)
     template_loader.add_template_variable(name="index_hash", value=index_hash)
 
     templates = [

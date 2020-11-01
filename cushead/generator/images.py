@@ -17,13 +17,13 @@ from PIL import ImageColor
 from PIL import PngImagePlugin
 from resizeimage import resizeimage
 
-from cushead.generator import configuration
+from cushead.generator import config
 from cushead.generator import files
 
 
 class ImageData(NamedTuple):
     """
-    doc
+    Store data about an image to create.
     """
 
     path: pathlib.Path
@@ -32,23 +32,23 @@ class ImageData(NamedTuple):
 
 
 @overload
-def resize_image(*, image: None, width: int, height: int) -> None:
+def get_resized_image(*, image: None, width: int, height: int) -> None:
     ...
 
 
 @overload
-def resize_image(*, image: IcoImagePlugin.IcoImageFile, width: int, height: int) -> IcoImagePlugin.IcoImageFile:
+def get_resized_image(*, image: IcoImagePlugin.IcoImageFile, width: int, height: int) -> IcoImagePlugin.IcoImageFile:
     ...
 
 
 @overload
-def resize_image(*, image: PngImagePlugin.PngImageFile, width: int, height: int) -> PngImagePlugin.PngImageFile:
+def get_resized_image(*, image: PngImagePlugin.PngImageFile, width: int, height: int) -> PngImagePlugin.PngImageFile:
     ...
 
 
-def resize_image(*, image, width, height):
+def get_resized_image(*, image, width, height):
     """
-    Return a image resized.
+    Get a resized version of an image.
 
     Args:
         image: a PIL image instance.
@@ -56,7 +56,7 @@ def resize_image(*, image, width, height):
         height : the height.
 
     Returns:
-        A new image resized.
+        A new image instance.
     """
     if image is None:
         return None
@@ -67,25 +67,25 @@ def resize_image(*, image, width, height):
 
 
 @overload
-def remove_transparency(*, image: None, background_color: str) -> None:
+def get_opaque_image(*, image: None, background_color: str) -> None:
     ...
 
 
 @overload
-def remove_transparency(*, image: PngImagePlugin.PngImageFile, background_color: str) -> PngImagePlugin.PngImageFile:
+def get_opaque_image(*, image: PngImagePlugin.PngImageFile, background_color: str) -> PngImagePlugin.PngImageFile:
     ...
 
 
-def remove_transparency(*, image, background_color):
+def get_opaque_image(*, image, background_color):
     """
-    Remove the transparency of png images.
+    Get an opaque version of an image.
 
     Args:
         image: a PIL image instance.
         background_color: the background color used to replace the transparency.
 
     Returns:
-        A PIL image instance.
+        A new image instance.
     """
     if image is None:
         return None
@@ -98,15 +98,15 @@ def remove_transparency(*, image, background_color):
     return new_image
 
 
-def read_image_bytes(image: Optional[Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]]) -> bytes:
+def get_image_bytes(*, image: Optional[Union[IcoImagePlugin.IcoImageFile, PngImagePlugin.PngImageFile]]) -> bytes:
     """
-    Read the bytes of a image.
+    Get the bytes of an image.
 
     Args:
-        image: a PIL image instance
+        image: a PIL image instance.
 
     Returns:
-        The bytes data.
+        The bytes.
     """
     if image is None:
         return bytes()
@@ -116,37 +116,37 @@ def read_image_bytes(image: Optional[Union[IcoImagePlugin.IcoImageFile, PngImage
     return io_file.getvalue()
 
 
-def generate_images(*, config: configuration.Config) -> List[files.File]:
+def generate_images(*, config: config.Config) -> List[files.File]:
     """
-    Get images ready to be created.
+    Get the images ready to create.
 
     Args:
         config: the config.
 
     Returns:
-        The images list.
+        The images.
     """
     images = []
     images_data: Tuple[ImageData, ...]
 
     if config.get("favicon_ico"):
         images.append(
-            # favicon ico version, used for most browsers and opensearch
+            # favicon ICO version, used by most browsers and OpenSearch.
             files.File(
                 path=config["output_folder_path"] / "favicon.ico",
-                data=read_image_bytes(config["favicon_ico"]),
+                data=get_image_bytes(image=config["favicon_ico"]),
             )
         )
 
     if config.get("favicon_png"):
         images_data = (
-            # favicon png version, used for most browsers
+            # favicon PNG version, used by most browsers.
             ImageData(path=config["output_folder_path"] / "static" / "favicon-16x16.png", width=16, height=16),
             ImageData(path=config["output_folder_path"] / "static" / "favicon-32x32.png", width=32, height=32),
             ImageData(path=config["output_folder_path"] / "static" / "favicon-96x96.png", width=96, height=96),
             ImageData(path=config["output_folder_path"] / "static" / "favicon-192x192.png", width=192, height=192),
             ImageData(path=config["output_folder_path"] / "static" / "favicon-194x194.png", width=194, height=194),
-            # apple icon
+            # Apple icon.
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-icon-57x57.png", width=57, height=57),
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-icon-60x60.png", width=60, height=60),
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-icon-72x72.png", width=72, height=72),
@@ -163,7 +163,7 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-icon-228x228.png", width=228, height=228),
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-icon-512x512.png", width=512, height=512),
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-icon-1024x1024.png", width=1024, height=1024),
-            # browserconfig
+            # browserconfig.
             ImageData(path=config["output_folder_path"] / "static" / "browserconfig-30x30.png", width=30, height=30),
             ImageData(path=config["output_folder_path"] / "static" / "browserconfig-44x44.png", width=44, height=44),
             ImageData(path=config["output_folder_path"] / "static" / "browserconfig-70x70.png", width=70, height=70),
@@ -171,12 +171,12 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
             ImageData(path=config["output_folder_path"] / "static" / "browserconfig-310x150.png", width=310, height=150),
             ImageData(path=config["output_folder_path"] / "static" / "browserconfig-310x310.png", width=310, height=310),
             ImageData(path=config["output_folder_path"] / "static" / "browserconfig-144x144.png", width=144, height=144),
-            # manifest
+            # manifest.
             ImageData(path=config["output_folder_path"] / "static" / "manifest-192x192.png", width=192, height=192),
             ImageData(path=config["output_folder_path"] / "static" / "manifest-512x512.png", width=512, height=512),
-            # opensearch
+            # OpenSearch.
             ImageData(path=config["output_folder_path"] / "static" / "opensearch-16x16.png", width=16, height=16),
-            # apple startup image
+            # Apple startup image.
             # Source: https://github.com/onderceylan/pwa-asset-generator
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-1024x1024.png", width=1024, height=1024),
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-2048x2732.png", width=2048, height=2732),
@@ -203,19 +203,19 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
         images.extend(
             files.File(
                 path=image.path,
-                data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
+                data=get_image_bytes(image=get_resized_image(image=config["favicon_png"], width=image.width, height=image.height)),
             )
             for image in images_data
         )
 
-        # yandex
+        # Yandex.
         image = ImageData(path=config["output_folder_path"] / "static" / "yandex.png", width=120, height=120)
-        resized_image = resize_image(image=config["favicon_png"], width=image.width, height=image.height)
+        resized_image = get_resized_image(image=config["favicon_png"], width=image.width, height=image.height)
         if config.get("background_color"):
-            parsed_image = remove_transparency(image=resized_image, background_color=str(config["background_color"]))
+            parsed_image = get_opaque_image(image=resized_image, background_color=str(config["background_color"]))
         else:
             parsed_image = resized_image
-        images.append(files.File(data=read_image_bytes(parsed_image), path=image.path))
+        images.append(files.File(data=get_image_bytes(image=parsed_image), path=image.path))
 
     if config["favicon_svg"]:
         images.append(
@@ -227,18 +227,18 @@ def generate_images(*, config: configuration.Config) -> List[files.File]:
 
     if config.get("preview_png"):
         images_data = (
-            # og
+            # Open Graph
             ImageData(path=config["output_folder_path"] / "static" / "preview-600x600.png", width=600, height=600),
             ImageData(path=config["output_folder_path"] / "static" / "preview-1080x1080.png", width=1080, height=1080),
-            # twitter
+            # Twitter Cards
             ImageData(path=config["output_folder_path"] / "static" / "preview-600x600.png", width=600, height=600),
-            # microdata
+            # JSON-LD.
             ImageData(path=config["output_folder_path"] / "static" / "preview-600x600.png", width=600, height=600),
         )
         images.extend(
             files.File(
                 path=image.path,
-                data=read_image_bytes(resize_image(image=config["favicon_png"], width=image.width, height=image.height)),
+                data=get_image_bytes(image=get_resized_image(image=config["favicon_png"], width=image.width, height=image.height)),
             )
             for image in images_data
         )

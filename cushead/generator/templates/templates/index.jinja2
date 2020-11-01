@@ -4,11 +4,11 @@
 <html {% if config.language %}{% if config.language and config.territory %}lang="{{ config.language }}-{{ config.territory }}" {% else %}lang="{{ config.language }}" {% endif %}{% endif %}class="no-js"{% if config.text_dir %} dir="{{ config.text_dir }}"{% endif %}>
   <head>
 
-    {#- Here we include charset and X-UA-Compatible for IE first as most important metatags for the correct format and process of the page. #}
+    {#- Here include charset and X-UA-Compatible for IE first as the most important metatags for the correct formatting and processing of the page. #}
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="ie=edge"><![endif]-->
 
-    {#- Google Tag Manager. We include at top, after the most important tags, to capture the user interaction as soon as possible. #}
+    {#- Google Tag Manager. Include at the top, after the most important tags, to capture the user interaction as soon as possible. #}
     {%+ if config.google_tag_manager -%}
     {% oneline %}
     <script>
@@ -21,7 +21,7 @@
     {% endoneline %}
     {%- endif %}
 
-    {#- Here we add some tags that impact in the first impresion that the user can we have of the site. They are the viewport, the title and the display format and the color of the browser #}
+    {#- Here add some tags that impact the first impression that the user can have of the site. These are the viewport, the title, the display format, and the color of the browser. #}
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     {%+ if config.title -%}
     <title>{{ config.title }}</title>
@@ -33,7 +33,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
 
-    {#- Here define icons for the browsers. Its include the classic favicon, and some special icons with different sizes for android and apple. #}
+    {#- Here define the browser icons. This includes the classic favicon and some special icons for Android and Apple. #}
     {%+ if config.favicon_ico -%}
       <link rel="icon" type="image/x-icon" href="/favicon.ico">
     {%- endif %}
@@ -65,7 +65,7 @@
     <meta name="yandex-tableau-widget" content="logo={{ config.static_url }}/yandex.png, color={{ config.background_color }}">
     {%- endif %}
 
-    {#- Opengraph #}
+    {#- Open Graph. #}
     {%+ if config.language -%}
     <meta property="og:locale" {% if config.language and config.territory %}content="{{ config.language }}_{{ config.territory }}"{% else %}content="{{ config.language }}"{% endif %}>
     {%- endif %}
@@ -99,7 +99,7 @@
     {%- endif %}
     {%- endif %}
 
-    {#- Twitter cards #}
+    {#- Twitter Cards. #}
     <meta name="twitter:card" content="summary">
     {%+ if config.twitter_username -%}
     <meta name="twitter:site" content="@{{ config.twitter_username }}">
@@ -132,13 +132,13 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap">
     </noscript>
 
-    {#- Custom styles #}
+    {#- Custom styles. #}
     <!-- Import here your styles -->
 
-    {#- Custom javascript #}
+    {#- Custom, early load, javascripts. #}
     <!-- Import here your early load javascripts -->
 
-    {#- External Apps definition #}
+    {#- External Apps definition. #}
     {%+ if config.facebook_app_id -%}
     <meta porperty="fb:app_id" content="{{ config.facebook_app_id }}">
     {%- endif %}
@@ -146,7 +146,7 @@
     <meta name="apple-itunes-app" content="app-id={{ config.itunes_app_id }}, {% if config.itunes_affiliate_data %}affiliate-data={{ config.itunes_affiliate_data }}, {% endif %}app-argument=/">
     {%- endif %}
 
-    {#- Here define all configuration that are used when the website is thrated as app in someway #}
+    {#- Here define all configurations that are used when the website is treated as an app. #}
     {%+ if config.favicon_png -%}
     <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-2048x2732.png">
     <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2732x2048.png">
@@ -186,7 +186,7 @@
     <link rel="search" type="application/opensearchdescription+xml" title="{{ config.title }}" href="{{ config.static_url }}/opensearch.xml">
     {%- endif %}
 
-    {#- Here define SEO tags, that dont require to be loaded as fast as can. It's include the description and subject metatags, and JSON-LD microdata. #}
+    {#- Here define tags that don't require to be loaded as fast as can. It includes the description and subject metatags, the JSON-LD microdata, and some miscellaneous tags. #}
     {%+ if config.description -%}
     <meta name="description" content="{{ config.description }}">
     {%- endif %}
@@ -211,8 +211,6 @@
         {%- endif %}
       }
     </script>
-
-    {#- Miscellaneous #}
     <meta name="robots" content="index, follow">
     <meta name="referrer" content="origin-when-crossorigin">
     <meta name="google-site-verification" content=""> <!-- FILL THIS -->
@@ -223,23 +221,23 @@
   </head>
   <body>
 
-    {#- Google Tag Manager noscript version #}
+    {#- Google Tag Manager noscript version. #}
     {%+ if config.google_tag_manager -%}
     <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id={{ config.google_tag_manager }}" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     {%- endif %}
 
-    {#- Body main content #}
-    <h1>Hello World</h1>
+    {#- Main body content. #}
+    <h1>Hello World!</h1>
 
     {#- Modernizr.js v2.8.3 #}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 
-    {#- Custom javascript #}
+    {#- Custom, late load, javascripts. #}
     <!-- Import here your late load javascripts -->
 
-    {#- Service worker #}
+    {#- Service worker. #}
     <script>
       if ("serviceWorker" in navigator && !navigator.serviceWorker.controller) {
         navigator.serviceWorker.register("{{ config.static_url }}/sw.js", { scope: "/" });

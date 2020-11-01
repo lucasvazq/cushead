@@ -13,7 +13,7 @@ workbox.setConfig({
   clientsClaim: true,
 });
 
-// Cache images
+// Cache images.
 registerRoute(
   /\.(?:png|gif|jpg|jpeg|webp|svg|ico)$/,
   new CacheFirst({
@@ -27,7 +27,7 @@ registerRoute(
   })
 );
 
-// Cache Google Fonts stylesheets
+// Cache Google Fonts stylesheets.
 registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
   new StaleWhileRevalidate({
@@ -35,7 +35,7 @@ registerRoute(
   })
 );
 
-// Cache Google Fonts webfont files
+// Cache Google Fonts webfont files.
 registerRoute(
   /^https:\/\/fonts\.gstatic\.com/,
   new CacheFirst({
@@ -51,15 +51,15 @@ registerRoute(
   })
 );
 
-// Cache js and css
+// Cache js and css files.
 registerRoute(/\.(?:js|css)$/, new StaleWhileRevalidate());
 
-// Cache urls
+// Cache URLs.
 precacheAndRoute(
   [
     {
       url: "/index.html",
-      revision: "e1e320",
+      revision: "86c7d0",
     },
   ],
   {

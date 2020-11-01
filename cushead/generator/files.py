@@ -5,29 +5,29 @@ import pathlib
 from typing import NamedTuple
 from typing import Tuple
 
-from cushead.generator import configuration
+from cushead.generator import config
 from cushead.generator import images
 from cushead.generator.templates import templates
 
 
 class File(NamedTuple):
     """
-    Used to store data about a file that want to create.
+    Store data about a file to create.
     """
 
     path: pathlib.Path
     data: bytes
 
 
-def generate_files(*, config: configuration.Config) -> Tuple[File, ...]:
+def generate_files(*, config: config.Config) -> Tuple[File, ...]:
     """
     Get the images and templates to create.
 
     Args:
-        config: the configuration.
+        config: the config.
 
     Returns:
-        The list of images and templates.
+        The images and templates.
     """
     return (
         *images.generate_images(config=config),
