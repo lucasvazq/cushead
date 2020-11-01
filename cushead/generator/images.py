@@ -174,8 +174,6 @@ def generate_images(*, config: config.Config) -> List[files.File]:
             # manifest.
             ImageData(path=config["output_folder_path"] / "static" / "manifest-192x192.png", width=192, height=192),
             ImageData(path=config["output_folder_path"] / "static" / "manifest-512x512.png", width=512, height=512),
-            # OpenSearch.
-            ImageData(path=config["output_folder_path"] / "static" / "opensearch-16x16.png", width=16, height=16),
             # Apple startup image.
             # Source: https://github.com/onderceylan/pwa-asset-generator
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-1024x1024.png", width=1024, height=1024),
@@ -200,6 +198,15 @@ def generate_images(*, config: config.Config) -> List[files.File]:
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-640x1136.png", width=640, height=1136),
             ImageData(path=config["output_folder_path"] / "static" / "apple-touch-startup-image-1136x640.png", width=1136, height=640),
         )
+        if config.get("domain") and config.get("title"):
+            # OpenSearch.
+            images.append(
+                files.File(
+                    path=config["output_folder_path"] / "static" / "opensearch-16x16.png",
+                    data=get_image_bytes(image=get_resized_image(image=config["favicon_png"], width=16, height=16)),
+                ),
+            )
+
         images.extend(
             files.File(
                 path=image.path,

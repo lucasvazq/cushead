@@ -87,7 +87,7 @@
     <meta property="og:image:height" content="600">
     <meta property="og:image:type" content="image/png">
     {%+ if config.title or config.description -%}
-    <meta property="og:image:alt" content="{{ config.title }}{% if config.title and config.description %} - {% endif %}{{ config.description }}">
+    <meta property="og:image:alt" content="{% if config.title %}{{ config.title }}{% endif %}{% if config.title and config.description %} - {% endif %}{% if config.description %}{{ config.description }}{% endif %}">
     {%- endif %}
     <meta property="og:image" content="{{ config.static_url }}/preview-1080x1080.png">
     <meta property="og:image:secure_url" content="{{ config.static_url }}/preview-1080x1080.png">
@@ -95,7 +95,7 @@
     <meta property="og:image:height" content="1080">
     <meta property="og:image:type" content="image/png">
     {%+ if config.title or config.description -%}
-    <meta property="og:image:alt" content="{{ config.title }}{% if config.title and config.description %} - {% endif %}{{ config.description }}">
+    <meta property="og:image:alt" content="{% if config.title %}{{ config.title }}{% endif %}{% if config.title and config.description %} - {% endif %}{% if config.description %}{{ config.description }}{% endif %}">
     {%- endif %}
     {%- endif %}
 
@@ -116,7 +116,7 @@
     {%+ if config.preview_png -%}
     <meta name="twitter:image" content="{{ config.static_url }}/preview-600x600.png">
     {%+ if config.title or config.description -%}
-    <meta name="twitter:image:alt" content="{{ config.title }}{% if config.title and config.description %} - {% endif %}{{ config.description }}">
+    <meta name="twitter:image:alt" content="{% if config.title %}{{ config.title }}{% endif %}{% if config.title and config.description %} - {% endif %}{% if config.description %}{{ config.description }}{% endif %}">
     {%- endif %}
     {%- endif %}
     {%+ if config.twitter_username -%}

@@ -94,6 +94,12 @@ class BaseTests(unittest.TestCase):
         """
         self.config_file.write_text(json.dumps(self.config))
 
+    def remove_output_folder(self) -> None:
+        """
+        Remove the output folder.
+        """
+        shutil.rmtree(self.config_folder.absolute())
+
     def setUp(self) -> None:
         """
         A method that is called immediately before calling the test method.
@@ -110,7 +116,7 @@ class BaseTests(unittest.TestCase):
 
         It removes all the files created by the test and setUp methods.
         """
-        shutil.rmtree(self.config_folder.absolute())
+        self.remove_output_folder()
 
     def assertNotRaises(self, expected_exception, *args, **kwargs):
         """

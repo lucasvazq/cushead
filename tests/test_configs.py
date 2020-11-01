@@ -84,14 +84,25 @@ class TestConfig(base_tests.BaseTests):
         del self.config["background_color"]
         self.write_config_file()
         self.execute_the_CLI(args=["-c", str(self.config_file)])
-        self.compare_output(template_folder_path=pathlib.Path("custom_config/1"))
+        self.compare_output(template_folder_path=pathlib.Path("custom_key_values/background_color"))
+
+        self.tearDown()
+        self.setUp()
+
+        # Without title key.
+        del self.config["title"]
+        self.write_config_file()
+        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.compare_output(template_folder_path=pathlib.Path("custom_key_values/title"))
+
+        self.tearDown()
+        self.setUp()
 
         # Using an URL instead of a path for the static files.
-        self.set_default_config()
         self.config["static_url"] = "https://cdn.com"
         self.write_config_file()
         self.execute_the_CLI(args=["-c", str(self.config_file)])
-        self.compare_output(template_folder_path=pathlib.Path("custom_config/2"))
+        self.compare_output(template_folder_path=pathlib.Path("custom_key_values/static_url"))
 
 
 if __name__ == "__main__":
