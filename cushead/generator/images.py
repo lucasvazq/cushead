@@ -234,10 +234,10 @@ def generate_images(*, config: config.Config) -> List[files.File]:
 
     if config.get("preview_png"):
         images_data = (
-            # Open Graph
+            # Open Graph.
             ImageData(path=config["output_folder_path"] / "static" / "preview-600x600.png", width=600, height=600),
             ImageData(path=config["output_folder_path"] / "static" / "preview-1080x1080.png", width=1080, height=1080),
-            # Twitter Cards
+            # Twitter Cards.
             ImageData(path=config["output_folder_path"] / "static" / "preview-600x600.png", width=600, height=600),
             # JSON-LD.
             ImageData(path=config["output_folder_path"] / "static" / "preview-600x600.png", width=600, height=600),

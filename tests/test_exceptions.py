@@ -78,8 +78,8 @@ class TestConfig(base_tests.BaseTests):
         self.write_config_file()
         self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception="The key main_color must be a hex color code. If you don't want any value on this key, set the value to null.")
 
-        self.setUp()
         self.tearDown()
+        self.setUp()
 
         self.config["background_color"] = "rgba(255, 255, 255, 0)"
         self.write_config_file()
