@@ -3,10 +3,17 @@ Handle the config.
 """
 import pathlib
 import re
-from typing import Any, Literal, Optional, TypedDict, Union, overload
+from typing import Any
+from typing import Literal
+from typing import Optional
+from typing import overload
+from typing import TypedDict
+from typing import Union
 
 import schema
-from PIL import IcoImagePlugin, Image, PngImagePlugin
+from PIL import IcoImagePlugin
+from PIL import Image
+from PIL import PngImagePlugin
 
 from cushead import exceptions
 

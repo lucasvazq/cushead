@@ -5,7 +5,8 @@ import argparse
 import pathlib
 from typing import List
 
-from cushead import exceptions, info
+from cushead import exceptions
+from cushead import info
 from cushead.console.assets import assets
 
 

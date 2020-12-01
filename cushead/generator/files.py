@@ -2,7 +2,8 @@
 Handle files generation.
 """
 import pathlib
-from typing import NamedTuple, Tuple
+from typing import NamedTuple
+from typing import Tuple
 
 from cushead.generator import config as generator_config
 from cushead.generator import images
