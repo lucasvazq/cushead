@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      {%+ if config.favicon_png -%}
+      <square30x30logo src="{{ config.static_url }}/browserconfig-30x30.png"/>
+      <square44x44logo src="{{ config.static_url }}/browserconfig-44x44.png"/>
+      <square70x70logo src="{{ config.static_url }}/browserconfig-70x70.png"/>
+      <square150x150logo src="{{ config.static_url }}/browserconfig-150x150.png"/>
+      <square310x310logo src="{{ config.static_url }}/browserconfig-310x310.png"/>
+      <wide310x150logo src="{{ config.static_url }}/browserconfig-310x150.png"/>
+      <TileImage src="{{ config.static_url }}/browserconfig-144x144.png"/>
+      {%- endif %}
+      {%+ if config.main_color -%}
+      <TileColor>{{ config.main_color }}</TileColor>
+      {%- endif %}
+    </tile>
+  </msapplication>
+</browserconfig>

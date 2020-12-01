@@ -1,49 +1,40 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""Setup script"""
-import sys
+#!/usr/bin/env python3
+"""
+Setup script.
+"""
+import pathlib
 
 import setuptools
 
-import src.info
-import src.support
+from cushead import info
 
-# Check python version
-try:
-    _INFO = src.info.get_info()
-    src.support.Support(_INFO).check_for_installation()
-except src.support.Unsupported as exception:
-    sys.stdout.write(exception)
-    sys.exit()
-
-with open("README.md", "r") as fh:
-    _LONG_DESCRIPTION = fh.read()
-_PYTHON_REQUIRES = ">={}.{}, <{}.{}"
-_PYTHON_REQUIRES = _PYTHON_REQUIRES.format(*(_INFO["python_min_version"] +
-                                             _INFO["python_max_version"]))
+_ASSETS_PATH = f"{info.PACKAGE_NAME}/console/assets/images"
+_TEMPLATES_PATH = f"{info.PACKAGE_NAME}/generator/templates/templates"
 setuptools.setup(
-    name=_INFO["package_name"],
-    version=_INFO["package_version"],
-    scripts=[f"{_INFO['package_name']}.py"],
-    entry_points={
-        "console_scripts": ["{0}={0}:main".format(_INFO["package_name"])]
-    },
-    url=_INFO["source"],
+    name=info.PACKAGE_NAME,
+    version=info.PACKAGE_VERSION,
+    entry_points={"console_scripts": [f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}.console.console:main"]},
+    url=info.SOURCE,
     project_urls={
-        "Documentation": _INFO["documentation"],
-        "Source": _INFO["source"],
+        "Documentation": info.DOCUMENTATION,
+        "Source": info.SOURCE,
     },
-    python_requires=_PYTHON_REQUIRES,
-    packages=setuptools.find_packages(),
-    include_package_data=True,
-    install_requires=_INFO["required_packages"],
-    author=_INFO["author"],
-    author_email=_INFO["email"],
-    description=_INFO["description"],
-    long_description=_LONG_DESCRIPTION,
+    python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
+    packages=setuptools.find_packages(exclude=("tests",)),
+    data_files=[
+        ("", ["requirements.txt", "LICENSE.md", "README.md"]),
+        (_ASSETS_PATH, [str(file) for file in pathlib.Path(_ASSETS_PATH).iterdir()]),
+        (_TEMPLATES_PATH, [str(file) for file in pathlib.Path(_TEMPLATES_PATH).iterdir()]),
+    ],
+    zip_safe=False,
+    install_requires=info.REQUIRED_PACKAGES,
+    author=info.AUTHOR,
+    author_email=info.EMAIL,
+    description=info.DESCRIPTION,
+    long_description=pathlib.Path("README.md").read_text(),
     long_description_content_type="text/markdown",
-    license=_INFO["license"],
-    keywords=_INFO["keywords"],
+    license=info.PACKAGE_LICENSE,
+    keywords=info.KEYWORDS,
     platforms="any",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -53,9 +44,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3 :: Only",
     ],
 )
