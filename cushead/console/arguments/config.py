@@ -88,7 +88,9 @@ def generate_default_config_file(*, path: pathlib.Path) -> files.File:
     Returns:
         The file to create.
     """
-    return files.File(path=path, data=json.dumps(get_default_config(), indent=4).encode())
+    return files.File(
+        path=path, data=json.dumps(get_default_config(), indent=4).encode()
+    )
 
 
 def read_config_file(*, path: pathlib.Path) -> Any:
@@ -133,5 +135,6 @@ def parse_config_file(*, path: pathlib.Path) -> Tuple[files.File, ...]:
     config_file = read_config_file(path=path)
     config.validate_config(config=config_file)
     parsed_config = config.parse_config(
-        path=pathlib.Path(path).parent, config=config_file)
+        path=pathlib.Path(path).parent, config=config_file
+    )
     return files.generate_files(config=parsed_config)

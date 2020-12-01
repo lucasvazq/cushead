@@ -76,8 +76,7 @@ def create_node(*, node_items: List[files.File]) -> Node:
     """
     base_path = Node(name="")
     for file in node_items:
-        base_path.add_child(parts=pathlib.Path(
-            file.path).parts, data=file.data)
+        base_path.add_child(parts=pathlib.Path(file.path).parts, data=file.data)
     return base_path
 
 
@@ -105,7 +104,10 @@ def parse_node(*, node: Node, base_path: pathlib.Path) -> Tuple[bool, List[Error
                 destination_path.write_bytes(subnode.data or bytes())
             except OSError as exception:
                 errors.append(
-                    Error(error=str(exception.__class__.__name__), path=destination_path))
+                    Error(
+                        error=str(exception.__class__.__name__), path=destination_path
+                    )
+                )
             else:
                 file_has_been_created = True
                 logs.show_created_file(path=destination_path)
@@ -115,7 +117,8 @@ def parse_node(*, node: Node, base_path: pathlib.Path) -> Tuple[bool, List[Error
             if not destination_path.exists():
                 destination_path.mkdir()
             sub_node_created_files, sub_node_errors = parse_node(
-                node=subnode, base_path=destination_path)
+                node=subnode, base_path=destination_path
+            )
             file_has_been_created = file_has_been_created or sub_node_created_files
             errors.extend(sub_node_errors)
 

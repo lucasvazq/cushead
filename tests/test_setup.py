@@ -22,7 +22,9 @@ class TestSetup(base_tests.BaseTests):
         Test the setup with arguments.
         """
         # Test that no exceptions occur
-        with io.StringIO() as buffer, contextlib.redirect_stdout(buffer), contextlib.redirect_stderr(buffer):
+        with io.StringIO() as buffer, contextlib.redirect_stdout(
+            buffer
+        ), contextlib.redirect_stderr(buffer):
             with patch.object(sys, "argv", ["sdist", "bdist_wheel"]):
                 import setup
             with patch.object(sys, "argv", ["install"]):

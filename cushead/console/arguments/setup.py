@@ -103,25 +103,28 @@ def validate_args(*, parser_namespace: argparse.Namespace, args: List[str]) -> N
     """
     if not (parser_namespace.config or parser_namespace.default):
         raise exceptions.MissRequired(
-            "Missing a required argument. Use --config, --default or --help.")
+            "Missing a required argument. Use --config, --default or --help."
+        )
 
     if parser_namespace.config and parser_namespace.default:
         config_arg = "-c" if "-c" in args else "--config"
         default_arg = "-d" if "-d" in args else "--default"
         raise exceptions.InvalidCombination(
-            f"Can't use {config_arg} and {default_arg} arguments together.")
+            f"Can't use {config_arg} and {default_arg} arguments together."
+        )
 
     if parser_namespace.images and not parser_namespace.default:
         images_arg = "-i" if "-i" in args else "--images"
         raise exceptions.InvalidCombination(
-            f"Can't use {images_arg} argument without --default.")
+            f"Can't use {images_arg} argument without --default."
+        )
 
     if not parser_namespace.FILE:
         if parser_namespace.config:
-            raise exceptions.MissRequired(
-                "The path to the config file is missing.")
+            raise exceptions.MissRequired("The path to the config file is missing.")
         raise exceptions.MissRequired(
-            "The destination path for the default config file is missing.")
+            "The destination path for the default config file is missing."
+        )
 
     if parser_namespace.config:
         reference = pathlib.Path(parser_namespace.FILE)

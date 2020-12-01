@@ -79,4 +79,6 @@ def show_created_file_errors(errors: List[files_creator.Error]) -> None:
 
     print("\nErrors:")
     for error in errors:
-        print(f" - {colorama.Fore.RED}{error.error}{colorama.Fore.RESET}: {error.path.parent}/{colorama.Fore.YELLOW}{error.path.name}{colorama.Fore.RESET}")
+        print(
+            f" - {colorama.Fore.RED}{error.error}{colorama.Fore.RESET}: {error.path.parent}/{colorama.Fore.YELLOW}{error.path.name}{colorama.Fore.RESET}"
+        )
