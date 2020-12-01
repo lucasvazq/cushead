@@ -16,8 +16,7 @@ def show_presentation() -> None:
     """
     Print the presentation message.
     """
-    presentation_message = textwrap.dedent(
-        f"""\
+    presentation_message = textwrap.dedent(f"""\
           ____  _   _  ____   _   _  _____     _     ____     ____ __   __
          / ___|| | | |/ ___| | | | || ____|   / \\   |  _ \\   |  _ \\\\ \\ / /
         | |    | | | |\\___ \\ | |_| ||  _|    / _ \\  | | | |  | |_) |\\ V /
@@ -39,12 +38,12 @@ def show_presentation() -> None:
         Source: {info.SOURCE}
         Documentation: {info.DOCUMENTATION}
         For help run: {info.PACKAGE_NAME} -h
-        """
-    )
+        """)
     print(f"{colorama.Fore.BLUE}{presentation_message}{colorama.Fore.RESET}")
 
 
-def get_exception_message(*, parser: argparse.ArgumentParser, message: str) -> str:
+def get_exception_message(*, parser: argparse.ArgumentParser,
+                          message: str) -> str:
     """
     Generate exception message with argparse format.
 
@@ -55,19 +54,19 @@ def get_exception_message(*, parser: argparse.ArgumentParser, message: str) -> s
     Returns:
         The message.
     """
-    return "\n".join(
-        (
-            f"usage: {parser.usage}",
-            f"{info.PACKAGE_NAME}: error: {message}",
-        ),
-    )
+    return "\n".join((
+        f"usage: {parser.usage}",
+        f"{info.PACKAGE_NAME}: error: {message}",
+    ), )
 
 
 def show_created_file(path: pathlib.Path) -> None:
     """
     Print a created file message.
     """
-    print(f" - {path.parent}/{colorama.Fore.YELLOW}{path.name}{colorama.Fore.RESET}")
+    print(
+        f" - {path.parent}/{colorama.Fore.YELLOW}{path.name}{colorama.Fore.RESET}"
+    )
 
 
 def show_created_file_errors(errors: List[files_creator.Error]) -> None:

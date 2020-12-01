@@ -59,38 +59,58 @@ def validate_config(*, config: Any) -> None:
     Raises:
         InvalidConfig: when the config isn't valid.
     """
-    default_schema = schema.Schema(
-        {
-            "static_url": str,
-            schema.Optional("favicon_ico"): schema.Or(None, str),
-            schema.Optional("favicon_png"): schema.Or(None, str),
-            schema.Optional("favicon_svg"): schema.Or(None, str),
-            schema.Optional("preview_png"): schema.Or(None, str),
-            schema.Optional("google_tag_manager"): schema.Or(None, str),
-            schema.Optional("language"): schema.Or(None, str),
-            schema.Optional("territory"): schema.Or(None, str),
-            schema.Optional("domain"): schema.Or(None, str),
-            schema.Optional("text_dir"): schema.Or(None, str),
-            schema.Optional("title"): schema.Or(None, str),
-            schema.Optional("description"): schema.Or(None, str),
-            schema.Optional("subject"): schema.Or(None, str),
-            schema.Optional("main_color"): schema.Or(None, str),
-            schema.Optional("background_color"): schema.Or(None, str),
-            schema.Optional("author_name"): schema.Or(None, str),
-            schema.Optional("author_email"): schema.Or(None, str),
-            schema.Optional("facebook_app_id"): schema.Or(None, str),
-            schema.Optional("twitter_username"): schema.Or(None, str),
-            schema.Optional("twitter_user_id"): schema.Or(None, str),
-            schema.Optional("itunes_app_id"): schema.Or(None, str),
-            schema.Optional("itunes_affiliate_data"): schema.Or(None, str),
-        }
-    )
+    default_schema = schema.Schema({
+        "static_url":
+        str,
+        schema.Optional("favicon_ico"):
+        schema.Or(None, str),
+        schema.Optional("favicon_png"):
+        schema.Or(None, str),
+        schema.Optional("favicon_svg"):
+        schema.Or(None, str),
+        schema.Optional("preview_png"):
+        schema.Or(None, str),
+        schema.Optional("google_tag_manager"):
+        schema.Or(None, str),
+        schema.Optional("language"):
+        schema.Or(None, str),
+        schema.Optional("territory"):
+        schema.Or(None, str),
+        schema.Optional("domain"):
+        schema.Or(None, str),
+        schema.Optional("text_dir"):
+        schema.Or(None, str),
+        schema.Optional("title"):
+        schema.Or(None, str),
+        schema.Optional("description"):
+        schema.Or(None, str),
+        schema.Optional("subject"):
+        schema.Or(None, str),
+        schema.Optional("main_color"):
+        schema.Or(None, str),
+        schema.Optional("background_color"):
+        schema.Or(None, str),
+        schema.Optional("author_name"):
+        schema.Or(None, str),
+        schema.Optional("author_email"):
+        schema.Or(None, str),
+        schema.Optional("facebook_app_id"):
+        schema.Or(None, str),
+        schema.Optional("twitter_username"):
+        schema.Or(None, str),
+        schema.Optional("twitter_user_id"):
+        schema.Or(None, str),
+        schema.Optional("itunes_app_id"):
+        schema.Or(None, str),
+        schema.Optional("itunes_affiliate_data"):
+        schema.Or(None, str),
+    })
     try:
         default_schema.validate(config)
     except (
-        schema.SchemaWrongKeyError,
-        schema.SchemaMissingKeyError,
-        schema.SchemaError,
+            schema.SchemaWrongKeyError,
+            schema.SchemaMissingKeyError,
+            schema.SchemaError,
     ) as exception:
         raise exceptions.InvalidConfig(exception)
 
@@ -103,18 +123,18 @@ def validate_config(*, config: Any) -> None:
 
 
 @overload
-def load_binary_image(
-    *, key: Literal["favicon_ico"], path: pathlib.Path, expected_format: Literal["ICO"]
-) -> IcoImagePlugin.IcoImageFile:
+def load_binary_image(*, key: Literal["favicon_ico"], path: pathlib.Path,
+                      expected_format: Literal["ICO"]
+                      ) -> IcoImagePlugin.IcoImageFile:
     ...
 
 
 @overload
 def load_binary_image(
-    *,
-    key: Union[Literal["favicon_png"], Literal["preview_png"]],
-    path: pathlib.Path,
-    expected_format: Literal["PNG"],
+        *,
+        key: Union[Literal["favicon_png"], Literal["preview_png"]],
+        path: pathlib.Path,
+        expected_format: Literal["PNG"],
 ) -> PngImagePlugin.PngImageFile:
     ...
 
@@ -136,13 +156,10 @@ def load_binary_image(*, key, path, expected_format):
     """
     if not path.exists():
         raise exceptions.BadReference(
-            "\n".join(
-                (
-                    f"{key} reference ({path}) doesn't exists.",
-                    f"ABSOLUTE PATH: {path.absolute()}",
-                ),
-            ),
-        )
+            "\n".join((
+                f"{key} reference ({path}) doesn't exists.",
+                f"ABSOLUTE PATH: {path.absolute()}",
+            ), ), )
     try:
         image = Image.open(path)
     except IsADirectoryError as exception:
@@ -151,30 +168,23 @@ def load_binary_image(*, key, path, expected_format):
                 (
                     f"{key} reference ({path}) must be a file, not a directory.",
                     f"Exception: {exception}",  # It includes the absolute path
-                ),
-            ),
-        )
+                ), ), )
     except Image.UnidentifiedImageError as exception:
         raise exceptions.WrongFileFormat(
             "\n".join(
                 (
                     f"Can't identify as image the {key} reference ({path}).",
                     f"Exception: {exception}",  # It includes the absolute path
-                ),
-            ),
-        )
+                ), ), )
 
     if image.format != expected_format:
         image.close()
         raise exceptions.WrongFileFormat(
-            "\n".join(
-                (
-                    f"The {key} reference ({path}) has a wrong image format.",
-                    f"Expected {expected_format}, but received {image.format}.",
-                    f"ABSOLUTE PATH: {path.absolute()}",
-                ),
-            ),
-        )
+            "\n".join((
+                f"The {key} reference ({path}) has a wrong image format.",
+                f"Expected {expected_format}, but received {image.format}.",
+                f"ABSOLUTE PATH: {path.absolute()}",
+            ), ), )
 
     # Verify the image. After this, need to close it.
     image.verify()
@@ -195,16 +205,16 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
         A new dict with the parsed config.
     """
     if config.get("favicon_ico"):
-        favicon_ico = load_binary_image(
-            key="favicon_ico", path=path / config["favicon_ico"], expected_format="ICO"
-        )
+        favicon_ico = load_binary_image(key="favicon_ico",
+                                        path=path / config["favicon_ico"],
+                                        expected_format="ICO")
     else:
         favicon_ico = None
 
     if config.get("favicon_png"):
-        favicon_png = load_binary_image(
-            key="favicon_png", path=path / config["favicon_png"], expected_format="PNG"
-        )
+        favicon_png = load_binary_image(key="favicon_png",
+                                        path=path / config["favicon_png"],
+                                        expected_format="PNG")
     else:
         favicon_png = None
 
@@ -214,9 +224,9 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
         favicon_svg = None
 
     if config.get("preview_png"):
-        preview_png = load_binary_image(
-            key="preview_png", path=path / config["preview_png"], expected_format="PNG"
-        )
+        preview_png = load_binary_image(key="preview_png",
+                                        path=path / config["preview_png"],
+                                        expected_format="PNG")
     else:
         preview_png = None
 

@@ -14,20 +14,21 @@ setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
     entry_points={
-        "console_scripts": [
-            f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}.console.console:main"
-        ]
+        "console_scripts":
+        [f"{info.PACKAGE_NAME}={info.PACKAGE_NAME}.console.console:main"]
     },
     url=info.SOURCE,
     project_urls={
         "Documentation": info.DOCUMENTATION,
         "Source": info.SOURCE,
     },
-    python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
-    packages=setuptools.find_packages(exclude=("tests",)),
+    python_requires=
+    f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
+    packages=setuptools.find_packages(exclude=("tests", )),
     data_files=[
         ("", ["requirements.txt", "LICENSE.md", "README.md"]),
-        (_ASSETS_PATH, [str(file) for file in pathlib.Path(_ASSETS_PATH).iterdir()]),
+        (_ASSETS_PATH,
+         [str(file) for file in pathlib.Path(_ASSETS_PATH).iterdir()]),
         (
             _TEMPLATES_PATH,
             [str(file) for file in pathlib.Path(_TEMPLATES_PATH).iterdir()],

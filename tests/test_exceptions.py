@@ -22,7 +22,8 @@ class TestArgs(base_tests.BaseTests):
         # Miss a required argument.
         self.execute_cli(
             args=[""],
-            expected_exception="Missing a required argument. Use --config, --default or --help.",
+            expected_exception=
+            "Missing a required argument. Use --config, --default or --help.",
         )
 
         # Invalid arguments combination.
@@ -39,11 +40,12 @@ class TestArgs(base_tests.BaseTests):
 
         # Miss the file.
         self.execute_cli(
-            args=["-c"], expected_exception="The path to the config file is missing."
-        )
+            args=["-c"],
+            expected_exception="The path to the config file is missing.")
         self.execute_cli(
             args=["-d"],
-            expected_exception="The destination path for the default config file is missing.",
+            expected_exception=
+            "The destination path for the default config file is missing.",
         )
 
 
@@ -68,17 +70,14 @@ class TestConfig(base_tests.BaseTests):
         Invalid value type.
         """
         self.config["favicon_ico"] = 1
-        expected_exception = "\n".join(
-            (
-                "Key 'favicon_ico' error:",
-                "Or(None, <class 'str'>) did not validate 1",
-                "1 should be instance of 'str'",
-            ),
-        )
+        expected_exception = "\n".join((
+            "Key 'favicon_ico' error:",
+            "Or(None, <class 'str'>) did not validate 1",
+            "1 should be instance of 'str'",
+        ), )
         self.write_config_file()
-        self.execute_cli(
-            args=["-c", str(self.config_file)], expected_exception=expected_exception
-        )
+        self.execute_cli(args=["-c", str(self.config_file)],
+                         expected_exception=expected_exception)
 
     def test_invalid_key(self) -> None:
         """
@@ -125,45 +124,36 @@ class TestReferences(base_tests.BaseTests):
         The reference doesn't exists.
         """
         reference = pathlib.Path(__file__).parent / "inexistent_file.json"
-        expected_exception = "\n".join(
-            (
-                f"The file ({reference}) must be a reference to a path that exists.",
-                f"ABSOLUTE PATH: {reference.absolute()}",
-            ),
-        )
-        self.execute_cli(
-            args=["-c", str(reference)], expected_exception=expected_exception
-        )
+        expected_exception = "\n".join((
+            f"The file ({reference}) must be a reference to a path that exists.",
+            f"ABSOLUTE PATH: {reference.absolute()}",
+        ), )
+        self.execute_cli(args=["-c", str(reference)],
+                         expected_exception=expected_exception)
 
     def test_config_reference_is_directory(self) -> None:
         """
         The reference is a directory but a file is expected.
         """
-        expected_exception = "\n".join(
-            (
-                f"The file ({self.config_folder}) must be a reference to a file.",
-                f"ABSOLUTE PATH: {self.config_folder.absolute()}",
-            ),
-        )
-        self.execute_cli(
-            args=["-c", str(self.config_folder)], expected_exception=expected_exception
-        )
+        expected_exception = "\n".join((
+            f"The file ({self.config_folder}) must be a reference to a file.",
+            f"ABSOLUTE PATH: {self.config_folder.absolute()}",
+        ), )
+        self.execute_cli(args=["-c", str(self.config_folder)],
+                         expected_exception=expected_exception)
 
     def test_invalid_format(self) -> None:
         """
         The config file isn't in a valid JSON format.
         """
         self.config_file.write_text("invalid file format")
-        expected_exception = "\n".join(
-            (
-                f"Invalid json file format in ({self.config_file})",
-                f"ABSOLUTE PATH: {self.config_file.absolute()}",
-                "Exception: Expecting value: line 1 column 1 (char 0)",
-            ),
-        )
-        self.execute_cli(
-            args=["-c", str(self.config_file)], expected_exception=expected_exception
-        )
+        expected_exception = "\n".join((
+            f"Invalid json file format in ({self.config_file})",
+            f"ABSOLUTE PATH: {self.config_file.absolute()}",
+            "Exception: Expecting value: line 1 column 1 (char 0)",
+        ), )
+        self.execute_cli(args=["-c", str(self.config_file)],
+                         expected_exception=expected_exception)
 
     def test_image_does_not_exists(self) -> None:
         """
@@ -171,15 +161,12 @@ class TestReferences(base_tests.BaseTests):
         """
         reference = self.config_folder / "favicon_ico_16px.ico"
         os.remove(reference)
-        expected_exception = "\n".join(
-            (
-                f"favicon_ico reference ({reference}) doesn't exists.",
-                f"ABSOLUTE PATH: {reference.absolute()}",
-            ),
-        )
-        self.execute_cli(
-            args=["-c", str(self.config_file)], expected_exception=expected_exception
-        )
+        expected_exception = "\n".join((
+            f"favicon_ico reference ({reference}) doesn't exists.",
+            f"ABSOLUTE PATH: {reference.absolute()}",
+        ), )
+        self.execute_cli(args=["-c", str(self.config_file)],
+                         expected_exception=expected_exception)
 
     def test_image_reference_is_directory(self) -> None:
         """
@@ -188,15 +175,12 @@ class TestReferences(base_tests.BaseTests):
         reference = self.config_folder / "favicon_ico_16px.ico"
         os.remove(reference)
         os.makedirs(reference)
-        expected_exception = "\n".join(
-            (
-                f"favicon_ico reference ({reference}) must be a file, not a directory.",
-                f"Exception: [Errno 21] Is a directory: '{reference.absolute()}'",
-            ),
-        )
-        self.execute_cli(
-            args=["-c", str(self.config_file)], expected_exception=expected_exception
-        )
+        expected_exception = "\n".join((
+            f"favicon_ico reference ({reference}) must be a file, not a directory.",
+            f"Exception: [Errno 21] Is a directory: '{reference.absolute()}'",
+        ), )
+        self.execute_cli(args=["-c", str(self.config_file)],
+                         expected_exception=expected_exception)
 
     def test_image_reference_is_not_a_image_file(self) -> None:
         """
@@ -204,15 +188,12 @@ class TestReferences(base_tests.BaseTests):
         """
         reference = self.config_folder / "favicon_ico_16px.ico"
         reference.write_bytes(b"")
-        expected_exception = "\n".join(
-            (
-                f"Can't identify as image the favicon_ico reference ({reference}).",
-                f"Exception: cannot identify image file '{reference.absolute()}'",
-            ),
-        )
-        self.execute_cli(
-            args=["-c", str(self.config_file)], expected_exception=expected_exception
-        )
+        expected_exception = "\n".join((
+            f"Can't identify as image the favicon_ico reference ({reference}).",
+            f"Exception: cannot identify image file '{reference.absolute()}'",
+        ), )
+        self.execute_cli(args=["-c", str(self.config_file)],
+                         expected_exception=expected_exception)
 
     def test_invalid_image_format(self) -> None:
         """
@@ -220,16 +201,13 @@ class TestReferences(base_tests.BaseTests):
         """
         reference = self.config_folder / "favicon_ico_16px.ico"
         shutil.copy(self.config_folder / "favicon_png_2688px.png", reference)
-        expected_exception = "\n".join(
-            (
-                f"The favicon_ico reference ({reference}) has a wrong image format.",
-                "Expected ICO, but received PNG.",
-                f"ABSOLUTE PATH: {reference.absolute()}",
-            ),
-        )
-        self.execute_cli(
-            args=["-c", str(self.config_file)], expected_exception=expected_exception
-        )
+        expected_exception = "\n".join((
+            f"The favicon_ico reference ({reference}) has a wrong image format.",
+            "Expected ICO, but received PNG.",
+            f"ABSOLUTE PATH: {reference.absolute()}",
+        ), )
+        self.execute_cli(args=["-c", str(self.config_file)],
+                         expected_exception=expected_exception)
 
 
 class TestFileCreation(base_tests.BaseTests):
