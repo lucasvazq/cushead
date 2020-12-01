@@ -13,14 +13,14 @@
 
 **Python Versions:** _>=3.8_
 
-**Package Version**: _*_
+**Package Version**: _\*_
 
 **Status:** _Development_
 
 ## Description
 
-Generates a basic structure of the files of a static website,
-with a main focus on **SEO** and **UX**.
+Generates a basic structure of the files of a static website, with a main focus
+on **SEO** and **UX**.
 
 [View example](./docs/example/)
 
@@ -28,11 +28,10 @@ with a main focus on **SEO** and **UX**.
 
 ### Example
 
-1) Generate a default config file with images
-`cushead -d -i example/config.json`
+1. Generate a default config file with images
+   `cushead -d -i example/config.json`
 
-2) Read the config file and create all files
-`cushead -c example/config.json`
+2. Read the config file and create all files `cushead -c example/config.json`
 
 ### Help
 
@@ -67,4 +66,5 @@ Examples:
 
 ## License
 
-**cushead** © 2019 Lucas Vazquez. Released under the [MIT](http://mit-license.org/) License.
+**cushead** © 2019 Lucas Vazquez. Released under the
+[MIT](http://mit-license.org/) License.
