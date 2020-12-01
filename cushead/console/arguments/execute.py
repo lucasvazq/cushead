@@ -4,14 +4,11 @@ Interpret the arguments and execute the actions related to each one.
 import argparse
 import pathlib
 import sys
-from typing import List
-from typing import Tuple
+from typing import List, Tuple
 
 from cushead import exceptions
 from cushead.console import logs
-from cushead.console.arguments import config
-from cushead.console.arguments import files_creator
-from cushead.console.arguments import setup
+from cushead.console.arguments import config, files_creator, setup
 from cushead.console.assets import assets
 from cushead.generator import files
 

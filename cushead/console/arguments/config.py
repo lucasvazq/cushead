@@ -4,15 +4,11 @@ Handle the config file.
 import json
 import pathlib
 from json import decoder
-from typing import Any
-from typing import Tuple
-from typing import TypedDict
+from typing import Any, Tuple, TypedDict
 
-from cushead import exceptions
-from cushead import info
+from cushead import exceptions, info
 from cushead.console.assets import assets
-from cushead.generator import config
-from cushead.generator import files
+from cushead.generator import config, files
 
 
 class DefaultConfig(TypedDict):

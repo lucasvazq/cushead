@@ -6,8 +6,7 @@ from __future__ import annotations
 import hashlib
 import pathlib
 import re
-from typing import List
-from typing import Union
+from typing import List, Union
 
 import jinja2
 

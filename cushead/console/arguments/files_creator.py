@@ -4,11 +4,7 @@ Handle the files creation.
 from __future__ import annotations
 
 import pathlib
-from typing import Dict
-from typing import List
-from typing import NamedTuple
-from typing import Optional
-from typing import Tuple
+from typing import Dict, List, NamedTuple, Optional, Tuple
 
 from cushead.console import logs
 from cushead.generator import files

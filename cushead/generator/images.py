@@ -5,17 +5,9 @@ from __future__ import annotations
 
 import io
 import pathlib
-from typing import List
-from typing import NamedTuple
-from typing import Optional
-from typing import Tuple
-from typing import Union
-from typing import overload
+from typing import List, NamedTuple, Optional, Tuple, Union, overload
 
-from PIL import IcoImagePlugin
-from PIL import Image
-from PIL import ImageColor
-from PIL import PngImagePlugin
+from PIL import IcoImagePlugin, Image, ImageColor, PngImagePlugin
 from resizeimage import resizeimage
 
 from cushead.generator import config as generator_config
