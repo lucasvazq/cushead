@@ -97,7 +97,8 @@ def validate_config(*, config: Any) -> None:
     hex_color = re.compile("^#(?:[0-9a-fA-F]{3}){1,2}$")
     for color_key in ("main_color", "background_color"):
         if config.get(color_key) and not hex_color.match(config[color_key]):
-            raise exceptions.InvalidConfig(f"The key {color_key} must be a hex color code. If you don't want any value on this key, set the value to null.")
+            raise exceptions.InvalidConfig(
+                f"The key {color_key} must be a hex color code. If you don't want any value on this key, set the value to null.")
 
 
 @overload
@@ -186,12 +187,14 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
         A new dict with the parsed config.
     """
     if config.get("favicon_ico"):
-        favicon_ico = load_binary_image(key="favicon_ico", path=path / config["favicon_ico"], expected_format="ICO")
+        favicon_ico = load_binary_image(
+            key="favicon_ico", path=path / config["favicon_ico"], expected_format="ICO")
     else:
         favicon_ico = None
 
     if config.get("favicon_png"):
-        favicon_png = load_binary_image(key="favicon_png", path=path / config["favicon_png"], expected_format="PNG")
+        favicon_png = load_binary_image(
+            key="favicon_png", path=path / config["favicon_png"], expected_format="PNG")
     else:
         favicon_png = None
 
@@ -201,7 +204,8 @@ def parse_config(*, path: pathlib.Path, config: Any) -> Config:
         favicon_svg = None
 
     if config.get("preview_png"):
-        preview_png = load_binary_image(key="preview_png", path=path / config["preview_png"], expected_format="PNG")
+        preview_png = load_binary_image(
+            key="preview_png", path=path / config["preview_png"], expected_format="PNG")
     else:
         preview_png = None
 

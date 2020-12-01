@@ -17,8 +17,10 @@ class TestPackages(base_tests.BaseTests):
         """
         Test functions of 'cushead.generator.images'.
         """
-        self.assertIsNone(images.get_resized_image(image=None, width=0, height=0))
-        self.assertIsNone(images.get_opaque_image(image=None, background_color=""))
+        self.assertIsNone(images.get_resized_image(
+            image=None, width=0, height=0))
+        self.assertIsNone(images.get_opaque_image(
+            image=None, background_color=""))
         self.assertEqual(images.get_image_bytes(image=None), b"")
 
 

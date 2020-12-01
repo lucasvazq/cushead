@@ -27,7 +27,8 @@ class OneLineExtension(ext.Extension):
         next(parser.stream)
         lineno = parser.stream.current.lineno
 
-        body = parser.parse_statements([f"name:end{tagname}" for tagname in self.tags], True)
+        body = parser.parse_statements(
+            [f"name:end{tagname}" for tagname in self.tags], True)
 
         method = self.call_method("strip_spaces")
         call_block = nodes.CallBlock(method, [], [], body)

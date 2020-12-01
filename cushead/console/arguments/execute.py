@@ -28,10 +28,14 @@ def generate_images(*, path: pathlib.Path) -> Tuple[files.File, ...]:
     """
     images = assets.get_images()
     return (
-        files.File(path=path / images.favicon_ico.name, data=images.favicon_ico.data),
-        files.File(path=path / images.favicon_png.name, data=images.favicon_png.data),
-        files.File(path=path / images.favicon_svg.name, data=images.favicon_svg.data),
-        files.File(path=path / images.preview_png.name, data=images.preview_png.data),
+        files.File(path=path / images.favicon_ico.name,
+                   data=images.favicon_ico.data),
+        files.File(path=path / images.favicon_png.name,
+                   data=images.favicon_png.data),
+        files.File(path=path / images.favicon_svg.name,
+                   data=images.favicon_svg.data),
+        files.File(path=path / images.preview_png.name,
+                   data=images.preview_png.data),
     )
 
 
@@ -70,4 +74,5 @@ def parse_args(*, args: List[str]) -> None:
         files_to_create = handle_args(parser_namespace=parser_namespace)
         files_creator.create_files(files_to_create=files_to_create)
     except (KeyboardInterrupt, exceptions.MainException) as exception:
-        sys.exit(logs.get_exception_message(parser=parser, message=str(exception)))
+        sys.exit(logs.get_exception_message(
+            parser=parser, message=str(exception)))
