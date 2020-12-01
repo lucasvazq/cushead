@@ -107,7 +107,7 @@ def read_config_file(*, path: pathlib.Path) -> Any:
     with open(path, "r") as file:
         file_string = file.read()
     try:
-        config = json.loads(file_string)
+        return json.loads(file_string)
     except decoder.JSONDecodeError as exception:
         raise exceptions.WrongFileFormat(
             "\n".join(
@@ -118,7 +118,6 @@ def read_config_file(*, path: pathlib.Path) -> Any:
                 ),
             ),
         )
-    return config
 
 
 def parse_config_file(*, path: pathlib.Path) -> Tuple[files.File, ...]:

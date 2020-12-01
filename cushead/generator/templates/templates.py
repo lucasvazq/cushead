@@ -11,7 +11,7 @@ from typing import Union
 
 import jinja2
 
-from cushead.generator import config
+from cushead.generator import config as generator_config
 from cushead.generator import files
 
 
@@ -35,7 +35,7 @@ class TemplateLoader:
             extensions=["cushead.generator.templates.jinja_extension.OneLineExtension"],
         )
 
-    def add_template_variable(self, *, name: str, value: Union[config.Config, str]) -> None:
+    def add_template_variable(self, *, name: str, value: Union[generator_config.Config, str]) -> None:
         """
         Add a variable to the template loader context.
 
@@ -73,7 +73,7 @@ def get_template_hash(*, template: bytes) -> str:
     return hashlib.sha256(template).hexdigest()[0:6]
 
 
-def generate_templates(*, config: config.Config) -> List[files.File]:
+def generate_templates(*, config: generator_config.Config) -> List[files.File]:
     """
     Get templates ready to create.
 

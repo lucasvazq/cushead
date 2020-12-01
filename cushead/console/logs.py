@@ -44,7 +44,7 @@ def show_presentation() -> None:
     print(f"{colorama.Fore.BLUE}{presentation_message}{colorama.Fore.RESET}")
 
 
-def get_exception_message(*, parser: argparse.Namespace, message: str) -> str:
+def get_exception_message(*, parser: argparse.ArgumentParser, message: str) -> str:
     """
     Generate exception message with argparse format.
 
@@ -72,7 +72,7 @@ def show_created_file(path: pathlib.Path) -> None:
 
 def show_created_file_errors(errors: List[files_creator.Error]) -> None:
     """
-    Prints error messages for the files with errors at creation time.
+    Print error messages for the files with errors at creation time.
     """
     if not errors:
         return

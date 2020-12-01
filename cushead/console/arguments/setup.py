@@ -10,9 +10,9 @@ from cushead import info
 from cushead.console.assets import assets
 
 
-def setup_parser() -> argparse.ArgumentParser:
+def get_parser() -> argparse.ArgumentParser:
     """
-    Setup an argparse instance.
+    Return the argparse instance.
 
     Returns:
         An argparse parser instance.
@@ -113,11 +113,10 @@ def validate_args(*, parser_namespace: argparse.Namespace, args: List[str]) -> N
         images_arg = "-i" if "-i" in args else "--images"
         raise exceptions.InvalidCombination(f"Can't use {images_arg} argument without --default.")
 
-    if not (parser_namespace.FILE):
+    if not parser_namespace.FILE:
         if parser_namespace.config:
             raise exceptions.MissRequired("The path to the config file is missing.")
-        else:
-            raise exceptions.MissRequired("The destination path for the default config file is missing.")
+        raise exceptions.MissRequired("The destination path for the default config file is missing.")
 
     if parser_namespace.config:
         reference = pathlib.Path(parser_namespace.FILE)

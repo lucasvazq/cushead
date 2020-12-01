@@ -63,7 +63,7 @@ def parse_args(*, args: List[str]) -> None:
     Args:
         args: the list of arguments.
     """
-    parser = setup.setup_parser()
+    parser = setup.get_parser()
     try:
         parser_namespace = parser.parse_args(args=args)
         setup.validate_args(parser_namespace=parser_namespace, args=args)

@@ -25,7 +25,7 @@ class TestConfig(base_tests.BaseTests):
         # Compare the folders structure.
         self.assertEqual(
             [str(file.relative_to(self.output_folder)) for file in self.output_folder.rglob("*")],
-            [str(file.relative_to(template_folder)) for file in template_folder.rglob("*")]
+            [str(file.relative_to(template_folder)) for file in template_folder.rglob("*")],
         )
 
         # Compare the files.
@@ -42,16 +42,16 @@ class TestConfig(base_tests.BaseTests):
         """
         Test the default config.
         """
-        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("default_config"))
 
     def test_missing_keys(self) -> None:
         """
         Test a config without any non-required field.
         """
-        self.config = {'static_url': self.config['static_url']}
+        self.config = {"static_url": self.config["static_url"]}
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("missing_keys"))
 
     def test_empty_strings(self) -> None:
@@ -61,7 +61,7 @@ class TestConfig(base_tests.BaseTests):
         for key in self.config:
             self.config[key] = ""
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("empty_strings"))
 
     def test_null_values(self) -> None:
@@ -73,7 +73,7 @@ class TestConfig(base_tests.BaseTests):
                 continue
             self.config[key] = None
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("null_values"))
 
     def test_custom_key_values(self) -> None:
@@ -83,7 +83,7 @@ class TestConfig(base_tests.BaseTests):
         # Without background_color key.
         del self.config["background_color"]
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("custom_key_values/background_color"))
 
         self.tearDown()
@@ -92,7 +92,7 @@ class TestConfig(base_tests.BaseTests):
         # Without title key.
         del self.config["title"]
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("custom_key_values/title"))
 
         self.tearDown()
@@ -101,7 +101,7 @@ class TestConfig(base_tests.BaseTests):
         # Using an URL instead of a path for the static files.
         self.config["static_url"] = "https://cdn.com"
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)])
+        self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("custom_key_values/static_url"))
 
 

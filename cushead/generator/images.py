@@ -4,6 +4,7 @@ Handle images generation.
 from __future__ import annotations
 
 import io
+import pathlib
 from typing import List
 from typing import NamedTuple
 from typing import Optional
@@ -17,7 +18,7 @@ from PIL import ImageColor
 from PIL import PngImagePlugin
 from resizeimage import resizeimage
 
-from cushead.generator import config
+from cushead.generator import config as generator_config
 from cushead.generator import files
 
 
@@ -116,7 +117,7 @@ def get_image_bytes(*, image: Optional[Union[IcoImagePlugin.IcoImageFile, PngIma
     return io_file.getvalue()
 
 
-def generate_images(*, config: config.Config) -> List[files.File]:
+def generate_images(*, config: generator_config.Config) -> List[files.File]:
     """
     Get the images ready to create.
 

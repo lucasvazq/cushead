@@ -7,7 +7,6 @@ import pathlib
 import shutil
 import unittest
 
-from cushead.console import console
 from tests import base_tests
 
 
@@ -21,17 +20,17 @@ class TestArgs(base_tests.BaseTests):
         Test invalid arguments.
         """
         # Miss a required argument.
-        self.execute_the_CLI(args=[""], expected_exception="Missing a required argument. Use --config, --default or --help.")
+        self.execute_cli(args=[""], expected_exception="Missing a required argument. Use --config, --default or --help.")
 
         # Invalid arguments combination.
-        self.execute_the_CLI(args=["-c", "-d"], expected_exception="Can't use -c and -d arguments together.")
+        self.execute_cli(args=["-c", "-d"], expected_exception="Can't use -c and -d arguments together.")
 
         # Pass optional argument without a required ones.
-        self.execute_the_CLI(args=["-c", "-i"], expected_exception="Can't use -i argument without --default.")
+        self.execute_cli(args=["-c", "-i"], expected_exception="Can't use -i argument without --default.")
 
         # Miss the file.
-        self.execute_the_CLI(args=["-c"], expected_exception="The path to the config file is missing.")
-        self.execute_the_CLI(args=["-d"], expected_exception="The destination path for the default config file is missing.")
+        self.execute_cli(args=["-c"], expected_exception="The path to the config file is missing.")
+        self.execute_cli(args=["-d"], expected_exception="The destination path for the default config file is missing.")
 
 
 class TestConfig(base_tests.BaseTests):
@@ -45,7 +44,7 @@ class TestConfig(base_tests.BaseTests):
         """
         del self.config["static_url"]
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception="Missing key: 'static_url'")
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception="Missing key: 'static_url'")
 
     def test_invalid_data_type(self) -> None:
         """
@@ -60,7 +59,7 @@ class TestConfig(base_tests.BaseTests):
             ),
         )
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=expected_exception)
 
     def test_invalid_key(self) -> None:
         """
@@ -68,22 +67,24 @@ class TestConfig(base_tests.BaseTests):
         """
         self.config["invalid_key"] = ""
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception=f"Wrong key 'invalid_key' in {self.config}")
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=f"Wrong key 'invalid_key' in {self.config}")
 
     def test_color_related_keys(self) -> None:
         """
         Test the hex color verification.
         """
+        exception = "The key {key} must be a hex color code. If you don't want any value on this key, set the value to null."
+
         self.config["main_color"] = "#ffff"
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception="The key main_color must be a hex color code. If you don't want any value on this key, set the value to null.")
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=exception.format(key="main_color"))
 
         self.tearDown()
         self.setUp()
 
         self.config["background_color"] = "rgba(255, 255, 255, 0)"
         self.write_config_file()
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception="The key background_color must be a hex color code. If you don't want any value on this key, set the value to null.")
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=exception.format(key="background_color"))
 
 
 class TestReferences(base_tests.BaseTests):
@@ -102,7 +103,7 @@ class TestReferences(base_tests.BaseTests):
                 f"ABSOLUTE PATH: {reference.absolute()}",
             ),
         )
-        self.execute_the_CLI(args=["-c", str(reference)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(reference)], expected_exception=expected_exception)
 
     def test_config_reference_is_directory(self) -> None:
         """
@@ -114,7 +115,7 @@ class TestReferences(base_tests.BaseTests):
                 f"ABSOLUTE PATH: {self.config_folder.absolute()}",
             ),
         )
-        self.execute_the_CLI(args=["-c", str(self.config_folder)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(self.config_folder)], expected_exception=expected_exception)
 
     def test_invalid_format(self) -> None:
         """
@@ -128,7 +129,7 @@ class TestReferences(base_tests.BaseTests):
                 "Exception: Expecting value: line 1 column 1 (char 0)",
             ),
         )
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=expected_exception)
 
     def test_image_does_not_exists(self) -> None:
         """
@@ -142,7 +143,7 @@ class TestReferences(base_tests.BaseTests):
                 f"ABSOLUTE PATH: {reference.absolute()}",
             ),
         )
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=expected_exception)
 
     def test_image_reference_is_directory(self) -> None:
         """
@@ -157,7 +158,7 @@ class TestReferences(base_tests.BaseTests):
                 f"Exception: [Errno 21] Is a directory: '{reference.absolute()}'",
             ),
         )
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=expected_exception)
 
     def test_image_reference_is_not_a_image_file(self) -> None:
         """
@@ -171,7 +172,7 @@ class TestReferences(base_tests.BaseTests):
                 f"Exception: cannot identify image file '{reference.absolute()}'",
             ),
         )
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=expected_exception)
 
     def test_invalid_image_format(self) -> None:
         """
@@ -182,11 +183,11 @@ class TestReferences(base_tests.BaseTests):
         expected_exception = "\n".join(
             (
                 f"The favicon_ico reference ({reference}) has a wrong image format.",
-                f"Expected ICO, but received PNG.",
+                "Expected ICO, but received PNG.",
                 f"ABSOLUTE PATH: {reference.absolute()}",
             ),
         )
-        self.execute_the_CLI(args=["-c", str(self.config_file)], expected_exception=expected_exception)
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception=expected_exception)
 
 
 class TestFileCreation(base_tests.BaseTests):
@@ -200,7 +201,7 @@ class TestFileCreation(base_tests.BaseTests):
         """
         reference = self.config_folder / "directory"
         os.mkdir(reference)
-        self.execute_the_CLI(args=["-d", str(reference)])
+        self.execute_cli(args=["-d", str(reference)])
 
 
 if __name__ == "__main__":

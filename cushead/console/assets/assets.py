@@ -1,5 +1,5 @@
 """
-Get assets files
+Get assets files.
 """
 import pathlib
 from typing import NamedTuple

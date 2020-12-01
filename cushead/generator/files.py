@@ -5,7 +5,7 @@ import pathlib
 from typing import NamedTuple
 from typing import Tuple
 
-from cushead.generator import config
+from cushead.generator import config as generator_config
 from cushead.generator import images
 from cushead.generator.templates import templates
 
@@ -19,7 +19,7 @@ class File(NamedTuple):
     data: bytes
 
 
-def generate_files(*, config: config.Config) -> Tuple[File, ...]:
+def generate_files(*, config: generator_config.Config) -> Tuple[File, ...]:
     """
     Get the images and templates to create.
 
