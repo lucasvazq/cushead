@@ -9,18 +9,18 @@
 
 # CUSHEAD
 
-**Improve the SEO and the UX of your website.**
+**Generates a basic website template with a focus on _SEO_ and _UX_.**
 
 **Python Versions:** _>=3.8_
 
-**Package Version**: _*_
+**Package Version**: _4.0_
 
-**Status:** _Development_
+**Status:** _Production/Stable_
 
 ## Description
 
-Generates a basic structure of the files of a static website,
-with a main focus on **SEO** and **UX**.
+This is a small script that allows you to generate a basic template of a website through a configuration file.
+In this file, you can define different variables that will produce a different template in each case.
 
 [View example](./docs/example/)
 
@@ -28,11 +28,11 @@ with a main focus on **SEO** and **UX**.
 
 ### Example
 
-1) Generate a default config file with images
-`cushead -d -i example/config.json`
+1. Generate a default config file with images
+  `cushead -d -i example/config.json`
 
-2) Read the config file and create all files
-`cushead -c example/config.json`
+2. Read the config file and create all files
+  `cushead -c example/config.json`
 
 ### Help
 
@@ -41,30 +41,36 @@ usage: cushead { --help | { --config | --default [ --images ] } FILE }
 
 excluding arguments:
   -h, --help     Show this help message and exit.
-  -c, --config   Read a config file and create the main files based on it.
+  -c, --config   Read a config file and create the website template based on it.
   -d, --default  Generate a default config. Can be used with --images.
 
 optional arguments:
-  -i, --images   Use with --default. Generate default images that can be used
-                 by the default config file. This include: favicon_ico_16px.ico,
-                 favicon_png_2688px.png, favicon_svg_scalable.svg and
-                 preview_png_600px.png
+  -i, --images   Use with --default. Generate default images that can be used by the default config file.
+                 This include: favicon_ico_16px.ico, favicon_png_2688px.png, favicon_svg_scalable.svg and preview_png_600px.png
 
 positional arguments:
-  FILE           Input or output file used by --config or --default args.
-                 For --config it must be a path to a config file in JSON
-                 format. For --default it must be the filename that want to
-                 create and add there the default config. If the --images args
-                 is setted, the images would be created in the directory of
-                 that file.
+  FILE           Input or output file used by the --config or --default arguments.
+                 For --config it must be a path to a config file in JSON format.
+                 For --default it must be the destination path where to want to create the default config.
+                 If the --images argument is set, the images would be created in the directory of that file.
 
 Examples:
 1) Generate default config file with images:
-    cushead -d -i config.json
+    cushead --default --images config.json
 2) Run that config:
-    cushead -c config.json
+    cushead --config config.json
 ```
+
+## Recomendation
+
+Web development is an area that is very evolved today. It has grown a lot over the years and, like everything that proliferates, it has become more complex.
+This little package only solves a small part of all the problems that exist in the field of web development. If you want to take a closer look, here is an interactive website that shows a lot of things to consider when working in this area: [andreasbm/web-skills]
+My advice is don't get stuck with so much information, the sites will work anyway. Only if the expense is justified, it is always good to face all these things with a team and try to use already created tools that are kept up to date.
+
+[andreasbm/web-skills]: https://andreasbm.github.io/web-skills/
 
 ## License
 
-**cushead** © 2019 Lucas Vazquez. Released under the [MIT](http://mit-license.org/) License.
+**cushead** © 2019 Lucas Vazquez. Released under the [MIT] License.
+
+[MIT]: http://mit-license.org/
