@@ -19,8 +19,10 @@
 
 ## Description
 
-This is a small script that allows you to generate a basic template of a website through a configuration file.\
-In this file, you can define different variables that will produce a different template in each case.
+This is a small script that allows you to generate a basic template of a website
+through a configuration file.\
+In this file, you can define different variables that will produce a different template
+in each case.
 
 [View example](./docs/example/)
 
@@ -53,9 +55,15 @@ Examples:
 
 ## Recomendation
 
-Web development is an area that is very evolved today. It has grown a lot over the years and, like everything that proliferates, it has become more complex.
-This little package only solves a small part of all the problems that exist in the field of web development. If you want to take a closer look, here is an interactive website that shows a lot of things to consider when working in this area: [andreasbm/web-skills]\
-My advice is don't get stuck with so much information, the sites will work anyway. Only if the expense is justified, it is always good to face all these things with a team and try to use already created tools that are kept up to date.
+Web development is an area that is very evolved today. It has grown a lot over
+the years and, like everything that proliferates, it has become more complex.
+This little package only solves a small part of all the problems that exist in
+the field of web development. If you want to take a closer look, here is an
+interactive website that shows a lot of things to consider when working in this
+area: [andreasbm/web-skills]\
+My advice is don't get stuck with so much information, the sites will work anyway.
+Only if the expense is justified, it is always good to face all these things with
+a team and try to use already created tools that are kept up to date.
 
 [andreasbm/web-skills]: https://andreasbm.github.io/web-skills/
 
@@ -63,4 +71,4 @@ My advice is don't get stuck with so much information, the sites will work anywa
 
 cushead © 2019 Lucas Vazquez. Released under the [MIT] License.
 
-[MIT]: http://mit-license.org/
+[mit]: http://mit-license.org/
