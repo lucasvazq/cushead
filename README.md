@@ -26,16 +26,6 @@ In this file, you can define different variables that will produce a different t
 
 ## Usage
 
-### Example
-
-1. Generate a default config file with images
-  `cushead -d -i example/config.json`
-
-2. Read the config file and create all files
-  `cushead -c example/config.json`
-
-### Help
-
 ```
 usage: cushead { --help | { --config | --default [ --images ] } FILE }
 
