@@ -27,17 +27,20 @@ class TemplateLoader:
         Args:
             templates_folder: the path where the templates are stored.
         """
-        template_loader = jinja2.FileSystemLoader(searchpath=str(templates_folder))
+        template_loader = jinja2.FileSystemLoader(
+            searchpath=str(templates_folder))
         self.template_parser = jinja2.Environment(
             loader=template_loader,
             lstrip_blocks=True,
             autoescape=True,
-            extensions=["cushead.generator.templates.jinja_extension.OneLineExtension"],
+            extensions=[
+                "cushead.generator.templates.jinja_extension.OneLineExtension"
+            ],
         )
 
-    def add_template_variable(
-        self, *, name: str, value: Union[generator_config.Config, str]
-    ) -> None:
+    def add_template_variable(self, *, name: str,
+                              value: Union[generator_config.Config, str]
+                              ) -> None:
         """
         Add a variable to the template loader context.
 
@@ -58,7 +61,8 @@ class TemplateLoader:
             The template rendered in UTF-8 format.
         """
         rendered_template = self.template_parser.get_template(path).render()
-        cleaned_template = re.sub("((\n +)+\n)|(\n\n$)", "\n", rendered_template)
+        cleaned_template = re.sub("((\n +)+\n)|(\n\n$)", "\n",
+                                  rendered_template)
         return cleaned_template.encode()
 
 
@@ -128,38 +132,37 @@ def generate_templates(*, config: generator_config.Config) -> List[files.File]:
             files.File(
                 path=config["output_folder_path"] / "sitemap.xml",
                 data=template_loader.render_template(path="sitemap.jinja2"),
-            ),
-        )
+            ), )
         if config.get("title"):
             templates.append(
                 files.File(
-                    path=config["output_folder_path"] / "static" / "opensearch.xml",
-                    data=template_loader.render_template(path="opensearch.jinja2"),
-                ),
-            )
+                    path=config["output_folder_path"] / "static" /
+                    "opensearch.xml",
+                    data=template_loader.render_template(
+                        path="opensearch.jinja2"),
+                ), )
 
     if config.get("favicon_png") or config.get("main_color"):
         templates.append(
             files.File(
-                path=config["output_folder_path"] / "static" / "browserconfig.xml",
-                data=template_loader.render_template(path="browserconfig.jinja2"),
-            )
-        )
+                path=config["output_folder_path"] / "static" /
+                "browserconfig.xml",
+                data=template_loader.render_template(
+                    path="browserconfig.jinja2"),
+            ))
 
     if config.get("author_email"):
         templates.append(
             files.File(
                 path=config["output_folder_path"] / ".well-known" / "security",
                 data=template_loader.render_template(path="security.jinja2"),
-            )
-        )
+            ))
 
     if config.get("author_name") or config.get("author_email"):
         templates.append(
             files.File(
                 path=config["output_folder_path"] / "humans.txt",
                 data=template_loader.render_template(path="humans.jinja2"),
-            )
-        )
+            ))
 
     return templates

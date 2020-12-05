@@ -44,13 +44,13 @@ class BaseTests(unittest.TestCase):
             args: the args.
         """
         with io.StringIO() as buffer, contextlib.redirect_stdout(
-            buffer
-        ), contextlib.redirect_stderr(buffer):
+                buffer), contextlib.redirect_stderr(buffer):
             console.init(args=args)
 
-    def execute_cli(
-        self, *, args: List[str], expected_exception: Optional[str] = None
-    ) -> None:
+    def execute_cli(self,
+                    *,
+                    args: List[str],
+                    expected_exception: Optional[str] = None) -> None:
         """
         Execute the CLI and check if it behaves as expected.
 
@@ -66,12 +66,10 @@ class BaseTests(unittest.TestCase):
             self.assertIsInstance(exception.exception, SystemExit)
             self.assertEqual(
                 str(exception.exception),
-                "\n".join(
-                    (
-                        f"usage: {self.usage}",
-                        f"{info.PACKAGE_NAME}: error: {expected_exception}",
-                    ),
-                ),
+                "\n".join((
+                    f"usage: {self.usage}",
+                    f"{info.PACKAGE_NAME}: error: {expected_exception}",
+                ), ),
             )
 
     def set_default_config(self) -> None:
