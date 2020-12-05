@@ -1,13 +1,13 @@
 module.exports = {
-  ci : {
-    collect : {
-      staticDistDir : "docs/example/dist",
-      settings : {
-        skipAudits : [ "redirects-http" ],
+  ci: {
+    collect: {
+      staticDistDir: "docs/example/dist",
+      settings: {
+        skipAudits: ["redirects-http"],
       },
     },
-    upload : {
-      target : "temporary-public-storage",
+    upload: {
+      target: "temporary-public-storage",
     },
   },
 };
