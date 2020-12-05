@@ -6,6 +6,9 @@ module.exports = {
             skipAudits: ["redirects-http"],
         },
     },
+    assert: {
+      preset: "lighthouse:all",
+    },
     upload: {
       target: "temporary-public-storage",
     },
