@@ -1,6 +1,3 @@
-<!-- The title of your PR must follow the format "PR: Issue <issue number>: <issue title>" -->
-<!-- If your PR isn't related to an issue, use this format: "PR: <short description>" -->
-
 Related to: <!-- Source link -->
 
 ## Description <!-- (Remove this section if there is nothing to comment on.) -->

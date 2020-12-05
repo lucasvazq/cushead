@@ -22,3 +22,5 @@ jobs:
         run: npm i -g @lhci/cli
       - name: Run Lighthouse CI
         run: lhci --config docs/example/.lighthouserc.js autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
