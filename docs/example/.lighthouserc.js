@@ -1,9 +1,9 @@
 module.exports = {
-  ci: {
-    collect: {
-      staticDistDir: "docs/example/dist",
-      settings: {
-        skipAudits: ["redirects-http"],
+  ci : {
+    collect : {
+      staticDistDir : "docs/example/dist",
+      settings : {
+        skipAudits : [ "redirects-http" ],
       },
     },
     assert: {
