@@ -1,4 +1,4 @@
-name: Lighthouse
+name: Lighthouse CI
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Node
         uses: actions/setup-node@v1
-      - name: Install lhci
+      - name: Install Lighthouse CI
         run: npm i -g @lhci/cli
-      - name: Run lhci
+      - name: Run Lighthouse CI
         run: lhci --config docs/example/.lighthouserc.js autorun
