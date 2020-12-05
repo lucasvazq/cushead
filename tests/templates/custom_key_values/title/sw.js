@@ -1,5 +1,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js");
 
+workbox.setConfig({
+  skipWaiting: true,
+  clientsClaim: true,
+});
+
 var CacheFirst = workbox.strategies.CacheFirst;
 var StaleWhileRevalidate = workbox.strategies.StaleWhileRevalidate;
 var CacheableResponse = workbox.cacheableResponse.CacheableResponse;
@@ -8,12 +13,7 @@ var ExpirationPlugin = workbox.expiration.ExpirationPlugin;
 var precacheAndRoute = workbox.precaching.precacheAndRoute;
 var CacheableResponsePlugin = workbox.cacheableResponse.CacheableResponsePlugin;
 
-workbox.setConfig({
-  skipWaiting: true,
-  clientsClaim: true,
-});
-
-// Cache images
+// Cache images.
 registerRoute(
   /\.(?:png|gif|jpg|jpeg|webp|svg|ico)$/,
   new CacheFirst({
@@ -27,7 +27,7 @@ registerRoute(
   })
 );
 
-// Cache Google Fonts stylesheets
+// Cache Google Fonts stylesheets.
 registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
   new StaleWhileRevalidate({
@@ -35,7 +35,7 @@ registerRoute(
   })
 );
 
-// Cache Google Fonts webfont files
+// Cache Google Fonts webfont files.
 registerRoute(
   /^https:\/\/fonts\.gstatic\.com/,
   new CacheFirst({
@@ -51,15 +51,15 @@ registerRoute(
   })
 );
 
-// Cache js and css
+// Cache js and css files.
 registerRoute(/\.(?:js|css)$/, new StaleWhileRevalidate());
 
-// Cache urls
+// Cache URLs.
 precacheAndRoute(
   [
     {
       url: "/index.html",
-      revision: "15a904",
+      revision: "8fcdf9",
     },
   ],
   {

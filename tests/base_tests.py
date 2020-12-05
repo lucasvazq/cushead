@@ -28,8 +28,8 @@ class BaseTests(unittest.TestCase):
         Initialize the class and define useful attributes.
         """
         super().__init__(*args, **kwargs)
+        self.maxDiff = None
         self.base_folder = pathlib.Path(__file__).parent
-        self.templates_folder = self.base_folder / "templates"
         self.config_folder = self.base_folder / "config"
         self.config_file = self.config_folder / "config.json"
         self.output_folder = self.config_folder / "output"

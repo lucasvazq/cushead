@@ -12,11 +12,11 @@
     {%+ if config.google_tag_manager -%}
     {% oneline %}
     <script>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','{{ config.google_tag_manager }}');
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":
+      new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
+      "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,"script","dataLayer","{{ config.google_tag_manager }}");
     </script>
     {% endoneline %}
     {%- endif %}
@@ -132,11 +132,25 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap">
     </noscript>
 
-    {#- Custom styles. #}
-    <!-- Import here your styles -->
+    {#- Normalize.css #}
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous">
+    <noscript>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous">
+    </noscript>
 
-    {#- Custom, early load, javascripts. #}
-    <!-- Import here your early load javascripts -->
+    {#- Modernizr.js, include before custom styles and scripts. #}
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" as="script" integrity="sha512-3n19xznO0ubPpSwYCRRBgHh63DrV+bdZfHK52b1esvId4GsfwStQNPJFjeQos2h3JwCmZl0/LgLxSKMAI55hgw==" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha512-3n19xznO0ubPpSwYCRRBgHh63DrV+bdZfHK52b1esvId4GsfwStQNPJFjeQos2h3JwCmZl0/LgLxSKMAI55hgw==" crossorigin="anonymous"></script>
+
+    {#- Custom styles. #}
+    <link rel="preload" href="{{ config.static_url }}/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="{{ config.static_url }}/styles.css">
+    </noscript>
+
+    {#- Custom, early load, scripts. #}
+    <link rel="preload" href="{{ config.static_url }}/early_script.js" as="script">
+    <script src="{{ config.static_url }}/early_script.js"></script>
 
     {#- External Apps definition. #}
     {%+ if config.facebook_app_id -%}
@@ -231,16 +245,13 @@
     {#- Main body content. #}
     <h1>Hello World!</h1>
 
-    {#- Modernizr.js v2.8.3 #}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-
-    {#- Custom, late load, javascripts. #}
-    <!-- Import here your late load javascripts -->
+    {#- Custom, late load, scripts. #}
+    <script async src="{{ config.static_url }}/late_script.js"></script>
 
     {#- Service worker. #}
     <script>
       if ("serviceWorker" in navigator && !navigator.serviceWorker.controller) {
-        navigator.serviceWorker.register("{{ config.static_url }}/sw.js", { scope: "/" });
+        navigator.serviceWorker.register("/sw.js", { scope: "/" });
       }
     </script>
   </body>

@@ -20,7 +20,7 @@ class TestConfig(base_tests.BaseTests):
         Args:
             template_folder_path: the path, relative to the templates_folder instance attribute, that has the expected files.
         """
-        template_folder = self.templates_folder / template_folder_path
+        template_folder = self.base_folder / "templates" / template_folder_path
 
         # Compare the folders structure.
         self.assertEqual(
@@ -103,6 +103,15 @@ class TestConfig(base_tests.BaseTests):
         self.write_config_file()
         self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("custom_key_values/static_url"))
+
+    def test_exmaple_config(self) -> None:
+        """
+        Test the example saved in docs.
+        """
+        self.config["google_tag_manager"] = "GTM-NGGH6LK"
+        self.write_config_file()
+        self.execute_cli(args=["-c", str(self.config_file)])
+        self.compare_output(template_folder_path=pathlib.Path("../../docs/example/dist"))
 
 
 if __name__ == "__main__":
