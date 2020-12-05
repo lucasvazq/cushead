@@ -45,4 +45,4 @@ class OneLineExtension(ext.Extension):
         Returns:
             The parsed template section.
         """
-        return "".join(caller().split())
+        return "".join(line.strip() for line in caller().split("\n"))

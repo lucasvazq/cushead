@@ -100,12 +100,24 @@ def generate_templates(*, config: generator_config.Config) -> List[files.File]:
             data=template_loader.render_template(path="robots.jinja2"),
         ),
         files.File(
+            path=config["output_folder_path"] / "sw.js",
+            data=template_loader.render_template(path="sw.jinja2"),
+        ),
+        files.File(
             path=config["output_folder_path"] / "static" / "manifest.json",
             data=template_loader.render_template(path="manifest.jinja2"),
         ),
         files.File(
-            path=config["output_folder_path"] / "static" / "sw.js",
-            data=template_loader.render_template(path="service_worker.jinja2"),
+            path=config["output_folder_path"] / "static" / "early_script.js",
+            data=template_loader.render_template(path="early_script.jinja2"),
+        ),
+        files.File(
+            path=config["output_folder_path"] / "static" / "late_script.js",
+            data=template_loader.render_template(path="late_script.jinja2"),
+        ),
+        files.File(
+            path=config["output_folder_path"] / "static" / "styles.css",
+            data=template_loader.render_template(path="styles.jinja2"),
         ),
     ]
 

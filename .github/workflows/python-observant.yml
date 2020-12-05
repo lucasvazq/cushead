@@ -12,13 +12,11 @@ on:
 
 jobs:
   Python-Observant:
-    name: Python Observant
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-
-      - name: Python Observant
+      - name: Run Python Observant
         uses: lucasvazq/python-observant@master
         with:
           requirements: "pip install -r requirements.txt"
