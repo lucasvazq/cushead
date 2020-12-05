@@ -8,14 +8,11 @@ import os
 import pathlib
 import shutil
 import unittest
-from typing import Any
-from typing import List
-from typing import Optional
+from typing import Any, List, Optional
 
 from cushead import info
 from cushead.console import console
-from cushead.console.arguments import config
-from cushead.console.arguments import setup
+from cushead.console.arguments import config, setup
 
 
 class BaseTests(unittest.TestCase):

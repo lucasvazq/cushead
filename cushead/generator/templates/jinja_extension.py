@@ -1,8 +1,7 @@
 """
 Handle jinja2 extensions.
 """
-from jinja2 import ext
-from jinja2 import nodes
+from jinja2 import ext, nodes
 from jinja2 import parser as jinja2_parser
 from jinja2 import runtime
 
