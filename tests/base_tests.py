@@ -43,10 +43,14 @@ class BaseTests(unittest.TestCase):
         Args:
             args: the args.
         """
-        with io.StringIO() as buffer, contextlib.redirect_stdout(buffer), contextlib.redirect_stderr(buffer):
+        with io.StringIO() as buffer, contextlib.redirect_stdout(
+            buffer
+        ), contextlib.redirect_stderr(buffer):
             console.init(args=args)
 
-    def execute_cli(self, *, args: List[str], expected_exception: Optional[str] = None) -> None:
+    def execute_cli(
+        self, *, args: List[str], expected_exception: Optional[str] = None
+    ) -> None:
         """
         Execute the CLI and check if it behaves as expected.
 
