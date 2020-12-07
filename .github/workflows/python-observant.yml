@@ -1,14 +1,6 @@
 name: Python Observant
 
-on:
-  push:
-    branches:
-      - develop
-      - master
-  pull_request:
-    branches:
-      - develop
-      - master
+on: [push, pull_request]
 
 jobs:
   Python-Observant:
