@@ -94,10 +94,10 @@ def validate_config(*, config: Any) -> None:
     ) as exception:
         raise exceptions.InvalidConfig(exception)
 
-    if not re.match("^((https?:\/\/|\/).*)?$", config["static_url"]):
-        raise exceptions.InvalidConfig(f"The key static_url must starts with a slash, http://, https:// or be an empty string.")
+    if not re.match("^((https?://|/).*)?$", config["static_url"]):
+        raise exceptions.InvalidConfig("The key static_url must starts with a slash, http://, https:// or be an empty string.")
     if config["static_url"].endswith("/"):
-        raise exceptions.InvalidConfig(f"The key static_url can't end with a slash.")
+        raise exceptions.InvalidConfig("The key static_url can't end with a slash.")
 
     hex_color = re.compile("^#(?:[0-9A-Fa-f]{3}){1,2}$")
     for color_key in ("main_color", "background_color"):

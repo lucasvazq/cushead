@@ -49,7 +49,8 @@ class TestConfig(base_tests.BaseTests):
         """
         Test a config without any non-required field.
         """
-        self.config = {"static_url": self.config["static_url"]}
+        self.config.clear()
+        self.config["static_url"] = self.config["static_url"]
         self.write_config_file()
         self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("missing_keys"))
