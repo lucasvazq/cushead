@@ -1,12 +1,22 @@
 {# ⚠️ Important consideration: order of the tags matters. -#}
 
 <!doctype html>
-<html {% if config.language %}{% if config.language and config.territory %}lang="{{ config.language }}-{{ config.territory }}" {% else %}lang="{{ config.language }}" {% endif %}{% endif %}class="no-js"{% if config.text_dir %} dir="{{ config.text_dir }}"{% endif %}>
+<html class="no-js"{% if config.language %}{% if config.language and config.territory %} lang="{{ config.language }}-{{ config.territory }}"{% else %} lang="{{ config.language }}"{% endif %}{% endif %}{% if config.text_dir %} dir="{{ config.text_dir }}"{% endif %}>
   <head>
 
     {#- Here include charset and X-UA-Compatible for IE first as the most important metatags for the correct formatting and processing of the page. #}
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="ie=edge"><![endif]-->
+
+    {#- Preconnect and configure connections to resources. #}
+    <meta name="referrer" content="origin-when-crossorigin">
+    <link rel="preconnect" href="https://storage.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
+    {%+ if config.static_url and not config.static_url.startswith("/") %}
+    <link rel="preconnect" href="{{ config.static_url.split("/")[:3] | join("/") }}" crossorigin="anonymous">
+    {%- endif %}
 
     {#- Google Tag Manager. Include at the top, after the most important tags, to capture the user interaction as soon as possible. #}
     {%+ if config.google_tag_manager -%}
@@ -126,12 +136,6 @@
     <meta property="twitter:creator:id" content="{{ config.twitter_user_id }}">
     {%- endif %}
 
-    {#- Preconnect to external resources. #}
-    <link rel="preconnect" href="https://storage.googleapis.com" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
-
     {#- Load Google Fonts asynchronously. #}
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
     <noscript>
@@ -149,14 +153,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha512-3n19xznO0ubPpSwYCRRBgHh63DrV+bdZfHK52b1esvId4GsfwStQNPJFjeQos2h3JwCmZl0/LgLxSKMAI55hgw==" crossorigin="anonymous"></script>
 
     {#- Custom styles. #}
-    <link rel="preload" href="{{ config.static_url }}/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{{ config.static_url }}/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"{% if config.static_url and not config.static_url.startswith("/") %} crossorigin="anonymous"{% endif %}>
     <noscript>
-      <link rel="stylesheet" href="{{ config.static_url }}/styles.css">
+      <link rel="stylesheet" href="{{ config.static_url }}/styles.css"{% if config.static_url and not config.static_url.startswith("/") %} crossorigin="anonymous"{% endif %}>
     </noscript>
 
     {#- Custom, early load, scripts. #}
-    <link rel="preload" href="{{ config.static_url }}/early_script.js" as="script">
-    <script src="{{ config.static_url }}/early_script.js"></script>
+    <link rel="preload" href="{{ config.static_url }}/early_script.js" as="script"{% if config.static_url and not config.static_url.startswith("/") %} crossorigin="anonymous"{% endif %}>
+    <script src="{{ config.static_url }}/early_script.js"{% if config.static_url and not config.static_url.startswith("/") %} crossorigin="anonymous"{% endif %}></script>
 
     {#- External Apps definition. #}
     {%+ if config.facebook_app_id -%}
@@ -232,7 +236,6 @@
       }
     </script>
     <meta name="robots" content="index, follow">
-    <meta name="referrer" content="origin-when-crossorigin">
     <meta name="google-site-verification" content=""> <!-- FILL THIS -->
     {%+ if config.author_name or config.author_email -%}
     <meta name="author" content="/humans.txt">
@@ -251,7 +254,7 @@
     <h1>Hello World!</h1>
 
     {#- Custom, late load, scripts. #}
-    <script async src="{{ config.static_url }}/late_script.js"></script>
+    <script async src="{{ config.static_url }}/late_script.js"{% if config.static_url and not config.static_url.startswith("/") %} crossorigin="anonymous"{% endif %}></script>
 
     {#- Service worker. #}
     <script>

@@ -99,7 +99,7 @@ class TestConfig(base_tests.BaseTests):
         self.setUp()
 
         # Using an URL instead of a path for the static files.
-        self.config["static_url"] = "https://cdn.com"
+        self.config["static_url"] = "https://cdn.com/instance"
         self.write_config_file()
         self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("custom_key_values/static_url"))
