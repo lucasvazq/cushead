@@ -71,7 +71,7 @@ class TestConfig(base_tests.BaseTests):
 
     def test_color_wrong_values(self) -> None:
         """
-        Test if the values accomplish with the requisites
+        Test if the values accomplish with the requisites.
         """
         self.config["static_url"] = "static"
         self.write_config_file()
