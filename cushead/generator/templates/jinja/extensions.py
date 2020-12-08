@@ -1,5 +1,5 @@
 """
-Handle jinja2 extensions.
+Handle jinja extensions.
 """
 from jinja2 import ext
 from jinja2 import nodes
@@ -19,7 +19,7 @@ class OneLineExtension(ext.Extension):
         Get a node that implements the extension logic and can be used by the AST.
 
         Args:
-            parser: the jinja2 parser.
+            parser: the jinja parser.
 
         Returns:
             The node.

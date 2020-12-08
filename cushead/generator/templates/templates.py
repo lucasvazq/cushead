@@ -13,16 +13,17 @@ import jinja2
 
 from cushead.generator import config as generator_config
 from cushead.generator import files
+from cushead.generator.templates.jinja import filters
 
 
 class TemplateLoader:
     """
-    Handle jinja2 templates.
+    Handle jinja templates.
     """
 
     def __init__(self, *, templates_folder: pathlib.Path) -> None:
         """
-        Create a template loader of jinja2.
+        Initialize a jinja template loader.
 
         Args:
             templates_folder: the path where the templates are stored.
@@ -32,8 +33,9 @@ class TemplateLoader:
             loader=template_loader,
             lstrip_blocks=True,
             autoescape=True,
-            extensions=["cushead.generator.templates.jinja_extension.OneLineExtension"],
+            extensions=["cushead.generator.templates.jinja.extensions.OneLineExtension"],
         )
+        self.template_parser.filters["generate_sri"] = filters.generate_sri
 
     def add_template_variable(self, *, name: str, value: Union[generator_config.Config, str]) -> None:
         """
@@ -83,7 +85,7 @@ def generate_templates(*, config: generator_config.Config) -> List[files.File]:
     Returns:
         The templates.
     """
-    templates_folder = pathlib.Path(__file__).parent / "templates"
+    templates_folder = pathlib.Path(__file__).parent / "jinja/templates"
     template_loader = TemplateLoader(templates_folder=templates_folder)
     template_loader.add_template_variable(name="config", value=config)
     index_template = template_loader.render_template(path="index.jinja2")

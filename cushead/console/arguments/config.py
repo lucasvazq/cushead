@@ -104,10 +104,10 @@ def read_config_file(*, path: pathlib.Path) -> Any:
     Raises:
         WrongFileFormat: when the config file isn't in a valid JSON format.
     """
-    with open(path, "r") as file:
-        file_string = file.read()
+    with open(path) as file:
+        data = file.read()
     try:
-        return json.loads(file_string)
+        return json.loads(data)
     except decoder.JSONDecodeError as exception:
         raise exceptions.WrongFileFormat(
             "\n".join(
