@@ -1,7 +1,8 @@
 module.exports = {
   ci: {
     collect: {
-      staticDistDir: "docs/example/dist",
+      url: ["http://localhost:3000/"],
+      startServerCommand: "node docs/examples/crossorigin_static_url/app.js",
       settings: {
         skipAudits: ["redirects-http"],
       },

@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import pathlib
 import re
+from typing import Any
 from typing import List
 from typing import Union
 
@@ -21,31 +22,17 @@ class TemplateLoader:
     Handle jinja templates.
     """
 
-    def __init__(self, *, templates_folder: pathlib.Path) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         """
         Initialize a jinja template loader.
-
-        Args:
-            templates_folder: the path where the templates are stored.
         """
-        template_loader = jinja2.FileSystemLoader(searchpath=str(templates_folder))
+        template_loader = jinja2.FileSystemLoader(searchpath=str(pathlib.Path(__file__).parent / "jinja/templates"))
         self.template_parser = jinja2.Environment(
             loader=template_loader,
             lstrip_blocks=True,
             autoescape=True,
-            extensions=["cushead.generator.templates.jinja.extensions.OneLineExtension"],
+            **kwargs,
         )
-        self.template_parser.filters["generate_sri"] = filters.generate_sri
-
-    def add_template_variable(self, *, name: str, value: Union[generator_config.Config, str]) -> None:
-        """
-        Add a variable to the template loader context.
-
-        Args:
-            name: the variable name.
-            value: the variable value.
-        """
-        self.template_parser.globals.update({name: value})
 
     def render_template(self, *, path: str) -> bytes:
         """
@@ -85,12 +72,12 @@ def generate_templates(*, config: generator_config.Config) -> List[files.File]:
     Returns:
         The templates.
     """
-    templates_folder = pathlib.Path(__file__).parent / "jinja/templates"
-    template_loader = TemplateLoader(templates_folder=templates_folder)
-    template_loader.add_template_variable(name="config", value=config)
+    template_loader = TemplateLoader(extensions=["cushead.generator.templates.jinja.extensions.OneLineExtension"])
+    template_loader.template_parser.globals["config"] = config
+    template_loader.template_parser.filters["generate_sri"] = filters.generate_sri
     index_template = template_loader.render_template(path="index.jinja2")
     index_hash = get_template_hash(template=index_template)
-    template_loader.add_template_variable(name="index_hash", value=index_hash)
+    template_loader.template_parser.globals["index_hash"] = index_hash
 
     templates = [
         files.File(

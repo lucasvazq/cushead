@@ -22,7 +22,7 @@
 This is a small script that allows you to generate a basic template of a website through a configuration file.\
 In this file, you can define different variables that will produce a different template in each case.
 
-[View example](./docs/example/)
+[View example](./docs/examples/relative_static_url/example/output/)
 
 ## Usage
 

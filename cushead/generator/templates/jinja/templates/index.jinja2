@@ -153,14 +153,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha512-3n19xznO0ubPpSwYCRRBgHh63DrV+bdZfHK52b1esvId4GsfwStQNPJFjeQos2h3JwCmZl0/LgLxSKMAI55hgw==" crossorigin="anonymous"></script>
 
     {#- Custom styles. #}
-    <link rel="preload" href="{{ config.static_url }}/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "cushead/generator/templates/jinja/templates/styles.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
+    <link rel="preload" href="{{ config.static_url }}/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "styles.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
     <noscript>
-      <link rel="stylesheet" href="{{ config.static_url }}/styles.css"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "cushead/generator/templates/jinja/templates/styles.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
+      <link rel="stylesheet" href="{{ config.static_url }}/styles.css"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "styles.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
     </noscript>
 
     {#- Custom, early load, scripts. #}
-    <link rel="preload" href="{{ config.static_url }}/early_script.js" as="script"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "cushead/generator/templates/jinja/templates/early_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
-    <script src="{{ config.static_url }}/early_script.js"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "cushead/generator/templates/jinja/templates/early_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}></script>
+    <link rel="preload" href="{{ config.static_url }}/early_script.js" as="script"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "early_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
+    <script src="{{ config.static_url }}/early_script.js"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "early_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}></script>
 
     {#- External Apps definition. #}
     {%+ if config.facebook_app_id -%}
@@ -254,7 +254,7 @@
     <h1>Hello World!</h1>
 
     {#- Custom, late load, scripts. #}
-    <script async src="{{ config.static_url }}/late_script.js"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "cushead/generator/templates/jinja/templates/late_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}></script>
+    <script async src="{{ config.static_url }}/late_script.js"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "late_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}></script>
 
     {#- Service worker. #}
     <script>
