@@ -11,7 +11,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
       - name: Install and run Lighthouse CI
-        run: npm i @lhci/cli
+        run: npm i -g @lhci/cli
       - name: Run Lighthouse CI
         run: |
           lhci --config docs/examples/crossorigin_static_url/.lighthouserc.js autorun
