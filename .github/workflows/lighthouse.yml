@@ -10,7 +10,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Node
         uses: actions/setup-node@v1
-        run: npm init -y
       - name: Install and run Lighthouse CI
         run: npm i @lhci/cli
       - name: Run Lighthouse CI
