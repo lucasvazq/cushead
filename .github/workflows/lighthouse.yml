@@ -13,7 +13,8 @@ jobs:
       - name: Install and run Lighthouse CI
         run: npm i @lhci/cli
       - name: Run Lighthouse CI
-        run: lhci --config docs/examples/crossorigin_static_url/.lighthouserc.js autorun
-        run: lhci --config docs/examples/relative_static_url/.lighthouserc.js autorun
+        run: |
+          lhci --config docs/examples/crossorigin_static_url/.lighthouserc.js autorun
+          lhci --config docs/examples/relative_static_url/.lighthouserc.js autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
