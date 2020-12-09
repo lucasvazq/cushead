@@ -85,16 +85,16 @@ def generate_templates(*, config: generator_config.Config) -> List[files.File]:
             data=index_template,
         ),
         files.File(
+            path=config["output_folder_path"] / "manifest.json",
+            data=template_loader.render_template(path="manifest.jinja2"),
+        ),
+        files.File(
             path=config["output_folder_path"] / "robots.txt",
             data=template_loader.render_template(path="robots.jinja2"),
         ),
         files.File(
             path=config["output_folder_path"] / "sw.js",
             data=template_loader.render_template(path="sw.jinja2"),
-        ),
-        files.File(
-            path=config["output_folder_path"] / "static" / "manifest.json",
-            data=template_loader.render_template(path="manifest.jinja2"),
         ),
         files.File(
             path=config["output_folder_path"] / "static" / "early_script.js",

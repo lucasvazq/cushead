@@ -1,5 +1,5 @@
 """
-Handle jinja functions.
+Handle jinja filters.
 """
 import base64
 import hashlib

@@ -109,7 +109,7 @@ class TestConfig(base_tests.BaseTests):
         Test the example saved in docs.
         """
         self.config.update({
-            "static_url": "http://localhost:3001/static",
+            "static_url": "https://lucasvazq.github.io/cushead/static",
             "google_tag_manager": "GTM-NGGH6LK",
         })
         self.write_config_file()

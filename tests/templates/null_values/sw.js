@@ -59,7 +59,7 @@ precacheAndRoute(
   [
     {
       url: "/index.html",
-      revision: "32d778",
+      revision: "b12f72",
     },
   ],
   {

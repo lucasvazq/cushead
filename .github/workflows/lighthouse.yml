@@ -11,8 +11,6 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         run: npm init -y
-      - name: Install Express
-        run: npm i express
       - name: Install and run Lighthouse CI
         run: npm i @lhci/cli
       - name: Run Lighthouse CI

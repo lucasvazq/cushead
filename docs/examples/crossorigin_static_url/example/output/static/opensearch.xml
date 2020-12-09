@@ -5,7 +5,7 @@
   <Description>Search using Sample</Description>
   <Url method="get" type="text/html" template="https://www.google.com/search?q=site:sample.com {searchTerms}"/>
   <Image height="16" width="16" type="image/x-icon">https://sample.com/favicon.ico</Image>
-  <Image height="64" width="64" type="image/png">http://localhost:3001/static/opensearch-64x64.png</Image>
+  <Image height="64" width="64" type="image/png">https://lucasvazq.github.io/cushead/static/opensearch-64x64.png</Image>
   <Contact>lucas5zvazquez@gmail.com</Contact>
   <Developer>Author: Lucas Vazquez</Developer>
 </OpenSearchDescription>

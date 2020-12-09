@@ -2,13 +2,13 @@
 <browserconfig>
   <msapplication>
     <tile>
-      <square30x30logo src="http://localhost:3001/static/browserconfig-30x30.png"/>
-      <square44x44logo src="http://localhost:3001/static/browserconfig-44x44.png"/>
-      <square70x70logo src="http://localhost:3001/static/browserconfig-70x70.png"/>
-      <square150x150logo src="http://localhost:3001/static/browserconfig-150x150.png"/>
-      <square310x310logo src="http://localhost:3001/static/browserconfig-310x310.png"/>
-      <wide310x150logo src="http://localhost:3001/static/browserconfig-310x150.png"/>
-      <TileImage src="http://localhost:3001/static/browserconfig-144x144.png"/>
+      <square30x30logo src="https://lucasvazq.github.io/cushead/static/browserconfig-30x30.png"/>
+      <square44x44logo src="https://lucasvazq.github.io/cushead/static/browserconfig-44x44.png"/>
+      <square70x70logo src="https://lucasvazq.github.io/cushead/static/browserconfig-70x70.png"/>
+      <square150x150logo src="https://lucasvazq.github.io/cushead/static/browserconfig-150x150.png"/>
+      <square310x310logo src="https://lucasvazq.github.io/cushead/static/browserconfig-310x310.png"/>
+      <wide310x150logo src="https://lucasvazq.github.io/cushead/static/browserconfig-310x150.png"/>
+      <TileImage src="https://lucasvazq.github.io/cushead/static/browserconfig-144x144.png"/>
       <TileColor>#ff0000</TileColor>
     </tile>
   </msapplication>
