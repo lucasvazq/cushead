@@ -108,10 +108,12 @@ class TestConfig(base_tests.BaseTests):
         """
         Test the example saved in docs.
         """
-        self.config.update({
-            "static_url": "https://lucasvazq.github.io/cushead/static",
-            "google_tag_manager": "GTM-NGGH6LK",
-        })
+        self.config.update(
+            {
+                "static_url": "https://lucasvazq.github.io/cushead/static",
+                "google_tag_manager": "GTM-NGGH6LK",
+            },
+        )
         self.write_config_file()
         self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("../../docs/examples/crossorigin_static_url/example/output"))

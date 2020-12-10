@@ -33,6 +33,7 @@ class BaseTests(unittest.TestCase):
         self.config_file = self.config_folder / "config.json"
         self.output_folder = self.config_folder / "output"
         self.usage = setup.get_parser().usage
+        self.config = {}
 
     @staticmethod
     def _execute_cli_silently(*, args: List[str]) -> None:
