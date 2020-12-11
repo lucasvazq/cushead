@@ -9,6 +9,7 @@ import pathlib
 import shutil
 import unittest
 from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 
@@ -33,7 +34,7 @@ class BaseTests(unittest.TestCase):
         self.config_file = self.config_folder / "config.json"
         self.output_folder = self.config_folder / "output"
         self.usage = setup.get_parser().usage
-        self.config = {}
+        self.config: Dict[Any, Any] = {}
 
     @staticmethod
     def _execute_cli_silently(*, args: List[str]) -> None:
