@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  {%+ if config.title -%}
+  <ShortName>{{ config.title }}</ShortName>
+  <LongName>{{ config.title }} Web Search</LongName>
+  <Description>Search using {{ config.title }}</Description>
+  {%- endif %}
+  {%+ if config.domain -%}
+  <Url method="get" type="text/html" template="https://www.google.com/search?q=site:{{ config.domain }} {searchTerms}"/>
+  {%- endif %}
+  <Image height="16" width="16" type="image/x-icon">https://{{ config.domain }}/favicon.ico</Image>
+  {%+ if config.static_url and not config.static_url.startswith("/") %}
+  <Image height="64" width="64" type="image/png">{{ config.static_url }}/opensearch-64x64.png</Image>
+  {%- else -%}
+  <Image height="64" width="64" type="image/png">https://{{ config.domain }}{{ config.static_url }}/opensearch-64x64.png</Image>
+  {%- endif %}
+  {%+ if config.author_email -%}
+  <Contact>{{ config.author_email }}</Contact>
+  {%- endif %}
+  {%+ if config.author_name -%}
+  <Developer>Author: {{ config.author_name }}</Developer>
+  {%- endif %}
+</OpenSearchDescription>

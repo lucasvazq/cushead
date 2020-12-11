@@ -1,3 +1,0 @@
-[console_scripts]
-cushead = cushead.console.console:main
-

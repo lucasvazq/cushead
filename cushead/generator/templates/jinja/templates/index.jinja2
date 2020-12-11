@@ -1,0 +1,266 @@
+{# ⚠️ Important consideration: order of the tags matters. -#}
+
+<!doctype html>
+<html class="no-js"{% if config.language %}{% if config.language and config.territory %} lang="{{ config.language }}-{{ config.territory }}"{% else %} lang="{{ config.language }}"{% endif %}{% endif %}{% if config.text_dir %} dir="{{ config.text_dir }}"{% endif %}>
+  <head>
+
+    {#- Here include charset and X-UA-Compatible for IE first as the most important metatags for the correct formatting and processing of the page. #}
+    <meta charset="utf-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="ie=edge"><![endif]-->
+
+    {#- Preconnect and configure connections to resources. #}
+    <meta name="referrer" content="origin-when-crossorigin">
+    <link rel="preconnect" href="https://storage.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
+    {%+ if config.static_url and not config.static_url.startswith("/") %}
+    <link rel="preconnect" href="{{ config.static_url.split("/")[:3] | join("/") }}" crossorigin="anonymous">
+    {%- endif %}
+
+    {#- Google Tag Manager. Include at the top, after the most important tags, to capture the user interaction as soon as possible. #}
+    {%+ if config.google_tag_manager -%}
+    {% oneline %}
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":
+      new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
+      "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,"script","dataLayer","{{ config.google_tag_manager }}");
+    </script>
+    {% endoneline %}
+    {%- endif %}
+
+    {#- Here add some tags that impact the first impression that the user can have of the site. These are the viewport, the title, the display format, and the color of the browser. #}
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    {%+ if config.title -%}
+    <title>{{ config.title }}</title>
+    {%- endif %}
+    {%+ if config.background_color -%}
+    <meta name="theme-color" content="{{ config.background_color }}">
+    {%- endif %}
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    {#- Here define the browser icons. This includes the classic favicon and some special icons for Android and Apple. #}
+    {%+ if config.favicon_ico -%}
+      <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    {%- endif %}
+    {%+ if config.favicon_png -%}
+    <link rel="icon" sizes="16x16" type="image/png" href="{{ config.static_url }}/favicon-16x16.png">
+    <link rel="icon" sizes="32x32" type="image/png" href="{{ config.static_url }}/favicon-32x32.png">
+    <link rel="icon" sizes="96x96" type="image/png" href="{{ config.static_url }}/favicon-96x96.png">
+    <link rel="icon" sizes="192x192" type="image/png" href="{{ config.static_url }}/favicon-192x192.png">
+    <link rel="icon" sizes="194x194" type="image/png" href="{{ config.static_url }}/favicon-194x194.png">
+    <link rel="apple-touch-icon" href="{{ config.static_url }}/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ config.static_url }}/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ config.static_url }}/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ config.static_url }}/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ config.static_url }}/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ config.static_url }}/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ config.static_url }}/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="{{ config.static_url }}/apple-touch-icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ config.static_url }}/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ config.static_url }}/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="{{ config.static_url }}/apple-touch-icon-167x167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ config.static_url }}/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="195x195" href="{{ config.static_url }}/apple-touch-icon-195x195.png">
+    <link rel="apple-touch-icon" sizes="196x196" href="{{ config.static_url }}/apple-touch-icon-196x196.png">
+    <link rel="apple-touch-icon" sizes="228x228" href="{{ config.static_url }}/apple-touch-icon-228x228.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="{{ config.static_url }}/apple-touch-icon-512x512.png">
+    <link rel="apple-touch-icon" sizes="1024x1024" href="{{ config.static_url }}/apple-touch-icon-1024x1024.png">
+    {%- endif %}
+    {%+ if config.favicon_png and config.background_color -%}
+    <meta name="yandex-tableau-widget" content="logo={{ config.static_url }}/yandex.png, color={{ config.background_color }}">
+    {%- endif %}
+
+    {#- Open Graph. #}
+    {%+ if config.language -%}
+    <meta property="og:locale" {% if config.language and config.territory %}content="{{ config.language }}_{{ config.territory }}"{% else %}content="{{ config.language }}"{% endif %}>
+    {%- endif %}
+    <meta property="og:type" content="website">
+    {%+ if config.domain -%}
+    <meta property="og:url" content="https://{{ config.domain }}">
+    {%- endif %}
+    {%+ if config.title -%}
+    <meta property="og:site_name" content="{{ config.title }}">
+    <meta property="og:title" content="{{ config.title }}">
+    {%- endif %}
+    {%+ if config.description -%}
+    <meta property="og:description" content="{{ config.description }}">
+    {%- endif %}
+    {%+ if config.preview_png -%}
+    <meta property="og:image" content="{{ config.static_url }}/preview-600x600.png">
+    <meta property="og:image:secure_url" content="{{ config.static_url }}/preview-600x600.png">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="600">
+    <meta property="og:image:type" content="image/png">
+    {%+ if config.title or config.description -%}
+    <meta property="og:image:alt" content="{% if config.title %}{{ config.title }}{% endif %}{% if config.title and config.description %} - {% endif %}{% if config.description %}{{ config.description }}{% endif %}">
+    {%- endif %}
+    <meta property="og:image" content="{{ config.static_url }}/preview-1080x1080.png">
+    <meta property="og:image:secure_url" content="{{ config.static_url }}/preview-1080x1080.png">
+    <meta property="og:image:width" content="1080">
+    <meta property="og:image:height" content="1080">
+    <meta property="og:image:type" content="image/png">
+    {%+ if config.title or config.description -%}
+    <meta property="og:image:alt" content="{% if config.title %}{{ config.title }}{% endif %}{% if config.title and config.description %} - {% endif %}{% if config.description %}{{ config.description }}{% endif %}">
+    {%- endif %}
+    {%- endif %}
+
+    {#- Twitter Cards. #}
+    <meta name="twitter:card" content="summary">
+    {%+ if config.twitter_username -%}
+    <meta name="twitter:site" content="@{{ config.twitter_username }}">
+    {%- endif %}
+    {%+ if config.twitter_user_id -%}
+    <meta name="twitter:site:id" content="{{ config.twitter_user_id }}">
+    {%- endif %}
+    {%+ if config.title -%}
+    <meta name="twitter:title" content="{{ config.title }}">
+    {%- endif %}
+    {%+ if config.description -%}
+    <meta name="twitter:description" content="{{ config.description }}">
+    {%- endif %}
+    {%+ if config.preview_png -%}
+    <meta name="twitter:image" content="{{ config.static_url }}/preview-600x600.png">
+    {%+ if config.title or config.description -%}
+    <meta name="twitter:image:alt" content="{% if config.title %}{{ config.title }}{% endif %}{% if config.title and config.description %} - {% endif %}{% if config.description %}{{ config.description }}{% endif %}">
+    {%- endif %}
+    {%- endif %}
+    {%+ if config.twitter_username -%}
+    <meta name="twitter:creator" content="@{{ config.twitter_username }}">
+    {%- endif %}
+    {%+ if config.twitter_user_id -%}
+    <meta property="twitter:creator:id" content="{{ config.twitter_user_id }}">
+    {%- endif %}
+
+    {#- Load Google Fonts asynchronously. #}
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" crossorigin="anonymous">
+    </noscript>
+
+    {#- Normalize.css #}
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous">
+    <noscript>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous">
+    </noscript>
+
+    {#- Modernizr.js #}
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" as="script" integrity="sha512-3n19xznO0ubPpSwYCRRBgHh63DrV+bdZfHK52b1esvId4GsfwStQNPJFjeQos2h3JwCmZl0/LgLxSKMAI55hgw==" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha512-3n19xznO0ubPpSwYCRRBgHh63DrV+bdZfHK52b1esvId4GsfwStQNPJFjeQos2h3JwCmZl0/LgLxSKMAI55hgw==" crossorigin="anonymous"></script>
+
+    {#- Custom styles. #}
+    <link rel="preload" href="{{ config.static_url }}/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "styles.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
+    <noscript>
+      <link rel="stylesheet" href="{{ config.static_url }}/styles.css"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "styles.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
+    </noscript>
+
+    {#- Custom, early load, scripts. #}
+    <link rel="preload" href="{{ config.static_url }}/early_script.js" as="script"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "early_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}>
+    <script src="{{ config.static_url }}/early_script.js"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "early_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}></script>
+
+    {#- External Apps definition. #}
+    {%+ if config.facebook_app_id -%}
+    <meta porperty="fb:app_id" content="{{ config.facebook_app_id }}">
+    {%- endif %}
+    {%+ if config.itunes_app_id -%}
+    <meta name="apple-itunes-app" content="app-id={{ config.itunes_app_id }}, {% if config.itunes_affiliate_data %}affiliate-data={{ config.itunes_affiliate_data }}, {% endif %}app-argument=/">
+    {%- endif %}
+
+    {#- Here define all configurations that are used when the website is treated as an app. #}
+    {%+ if config.favicon_png -%}
+    <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-2048x2732.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2732x2048.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-1668x2388.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2388x1668.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-1668x2224.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2224x1668.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-1536x2048.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2048x1536.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-1242x2688.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2688x1242.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-1125x2436.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2436x1125.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-828x1792.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-1792x828.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-1242x2208.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-2208x1242.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-750x1334.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-1334x750.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portarit)" href="{{ config.static_url }}/apple-touch-startup-image-640x1136.png">
+    <link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="{{ config.static_url }}/apple-touch-startup-image-1136x640.png">
+    {%- endif %}
+    <link rel="manifest" href="/manifest.json">
+    {%+ if config.title -%}
+    <meta name="application-name" content="{{ config.title }}">
+    {%- endif %}
+    {%+ if config.favicon_png or config.main_color -%}
+    <meta name="msapplication-config" content="{{ config.static_url }}/browserconfig.xml">
+    {%- endif %}
+    {%+ if config.title -%}
+    <meta name="apple-mobile-web-app-title" content="{{ config.title }}">
+    {%- endif %}
+    {%+ if config.favicon_svg -%}
+    <link rel="mask-icon" {% if config.main_color %}color="{{ config.main_color }}" {% endif %}href="{{ config.static_url }}/mask-icon.svg">
+    {%- endif %}
+    {%+ if config.domain and config.title -%}
+    <link rel="search" type="application/opensearchdescription+xml" title="{{ config.title }}" href="{{ config.static_url }}/opensearch.xml">
+    {%- endif %}
+
+    {#- Here define tags that don't require to be loaded as fast as can. It includes the description and subject metatags, the JSON-LD microdata, and some miscellaneous tags. #}
+    {%+ if config.description -%}
+    <meta name="description" content="{{ config.description }}">
+    {%- endif %}
+    {%+ if config.subject -%}
+    <meta name="subject" content="{{ config.subject }}">
+    {%- endif %}
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@type": "Organization"{% if config.domain or config.description or config.preview_png %},{% endif %}
+        {%+ if config.domain -%}
+        "@id": "https://{{ config.domain }}",
+        "url": "https://{{ config.domain }}"{% if config.description or config.preview_png %},{% endif %}
+        {%- endif %}
+        {%+ if config.description -%}
+        "slogan": "{{ config.description }}",
+        "description": "{{ config.description }}"{% if config.preview_png %},{% endif %}
+        {%- endif %}
+        {%+ if config.preview_png -%}
+        "logo": "{{ config.static_url }}/preview-600x600.png",
+        "image": "{{ config.static_url }}/preview-600x600.png"
+        {%- endif %}
+      }
+    </script>
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content=""> <!-- FILL THIS -->
+    {%+ if config.author_name or config.author_email -%}
+    <meta name="author" content="/humans.txt">
+    {%- endif %}
+  </head>
+  <body>
+
+    {#- Google Tag Manager noscript version. #}
+    {%+ if config.google_tag_manager -%}
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id={{ config.google_tag_manager }}" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    {%- endif %}
+
+    {#- Main body content. #}
+    <h1>Hello World!</h1>
+
+    {#- Custom, late load, scripts. #}
+    <script async src="{{ config.static_url }}/late_script.js"{% if config.static_url and not config.static_url.startswith("/") %} integrity="{{ "late_script.jinja2" | generate_sri }}" crossorigin="anonymous"{% endif %}></script>
+
+    {#- Service worker. #}
+    <script>
+      if ("serviceWorker" in navigator && !navigator.serviceWorker.controller) {
+        navigator.serviceWorker.register("/sw.js", { scope: "/" });
+      }
+    </script>
+  </body>
+</html>

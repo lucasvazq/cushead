@@ -9,6 +9,7 @@ import pathlib
 import shutil
 import unittest
 from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 
@@ -28,12 +29,12 @@ class BaseTests(unittest.TestCase):
         Initialize the class and define useful attributes.
         """
         super().__init__(*args, **kwargs)
-        self.maxDiff = None
         self.base_folder = pathlib.Path(__file__).parent
         self.config_folder = self.base_folder / "config"
         self.config_file = self.config_folder / "config.json"
         self.output_folder = self.config_folder / "output"
         self.usage = setup.get_parser().usage
+        self.config: Dict[Any, Any] = {}
 
     @staticmethod
     def _execute_cli_silently(*, args: List[str]) -> None:

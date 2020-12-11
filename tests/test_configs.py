@@ -99,19 +99,32 @@ class TestConfig(base_tests.BaseTests):
         self.setUp()
 
         # Using an URL instead of a path for the static files.
-        self.config["static_url"] = "https://cdn.com"
+        self.config["static_url"] = "https://cdn.com/instance"
         self.write_config_file()
         self.execute_cli(args=["-c", str(self.config_file)])
         self.compare_output(template_folder_path=pathlib.Path("custom_key_values/static_url"))
 
-    def test_exmaple_config(self) -> None:
+    def test_examples(self) -> None:
         """
         Test the example saved in docs.
         """
+        self.config.update(
+            {
+                "static_url": "https://lucasvazq.github.io/cushead/static",
+                "google_tag_manager": "GTM-NGGH6LK",
+            },
+        )
+        self.write_config_file()
+        self.execute_cli(args=["-c", str(self.config_file)])
+        self.compare_output(template_folder_path=pathlib.Path("../../docs/examples/crossorigin_static_url/example/output"))
+
+        self.tearDown()
+        self.setUp()
+
         self.config["google_tag_manager"] = "GTM-NGGH6LK"
         self.write_config_file()
         self.execute_cli(args=["-c", str(self.config_file)])
-        self.compare_output(template_folder_path=pathlib.Path("../../docs/example/dist"))
+        self.compare_output(template_folder_path=pathlib.Path("../../docs/examples/relative_static_url/example/output"))
 
 
 if __name__ == "__main__":

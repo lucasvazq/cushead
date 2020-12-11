@@ -48,7 +48,7 @@ class TestConfig(base_tests.BaseTests):
 
     def test_invalid_data_type(self) -> None:
         """
-        Invalid value type.
+        Test the data type of the values.
         """
         self.config["favicon_ico"] = 1
         expected_exception = "\n".join(
@@ -69,10 +69,24 @@ class TestConfig(base_tests.BaseTests):
         self.write_config_file()
         self.execute_cli(args=["-c", str(self.config_file)], expected_exception=f"Wrong key 'invalid_key' in {self.config}")
 
-    def test_color_related_keys(self) -> None:
+    def test_color_wrong_values(self) -> None:
         """
-        Test the hex color verification.
+        Test if the values accomplish with the requisites.
         """
+        self.config["static_url"] = "static"
+        self.write_config_file()
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception="The key static_url must starts with a slash, http://, https:// or be an empty string.")
+
+        self.tearDown()
+        self.setUp()
+
+        self.config["static_url"] = "/static/"
+        self.write_config_file()
+        self.execute_cli(args=["-c", str(self.config_file)], expected_exception="The key static_url can't end with a slash.")
+
+        self.tearDown()
+        self.setUp()
+
         exception = "The key {key} must be a hex color code. If you don't want any value on this key, set the value to null."
 
         self.config["main_color"] = "#ffff"

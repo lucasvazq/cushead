@@ -22,7 +22,8 @@
 This is a small script that allows you to generate a basic template of a website through a configuration file.\
 In this file, you can define different variables that will produce a different template in each case.
 
-[View example](./docs/example/)
+[View live example](https://lucasvazq.github.io/cushead/)
+[View example of generated files](./docs/examples/relative_static_url/example/output/)
 
 ## Usage
 

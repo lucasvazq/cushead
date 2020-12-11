@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "version": "0.1.0",
+  "name": "Sample",
+  "short_name": "Sample",
+  "description": "We do things",
+  "dir": "ltr",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "start_url": "/",
+  "orientation": "landscape",
+  "scope": "/",
+  "display": "standalone",
+  "platform": "web",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "https://lucasvazq.github.io/cushead/static/manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://lucasvazq.github.io/cushead/static/manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

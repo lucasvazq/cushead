@@ -9,7 +9,7 @@ import setuptools
 from cushead import info
 
 _ASSETS_PATH = f"{info.PACKAGE_NAME}/console/assets/images"
-_TEMPLATES_PATH = f"{info.PACKAGE_NAME}/generator/templates/templates"
+_TEMPLATES_PATH = f"{info.PACKAGE_NAME}/generator/templates/jinja/templates"
 setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
