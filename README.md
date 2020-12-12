@@ -46,9 +46,9 @@ positional arguments:
 
 Examples:
 1) Generate default config file with images:
-    cushead --default --images config.json
+  cushead --default --images config.json
 2) Run that config:
-    cushead --config config.json
+  cushead --config config.json
 ```
 
 ## Recomendation
