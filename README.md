@@ -10,12 +10,6 @@
 
 **Generates a basic website template with a focus on _SEO_ and _UX_.**
 
-**Python Versions:** _>=3.8_
-
-**Package Version**: _4.0_
-
-**Status:** _Production/Stable_
-
 ## Description
 
 This is a small script that allows you to generate a basic template of a website through a configuration file.\
