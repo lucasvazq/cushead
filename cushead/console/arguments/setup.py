@@ -27,9 +27,9 @@ def get_parser() -> argparse.ArgumentParser:
             (
                 "Example:",
                 "1) Generate default config file with images:",
-                f"    {info.PACKAGE_NAME} --default --images config.json",
+                f"  {info.PACKAGE_NAME} --default --images config.json",
                 "2) Run that config:",
-                f"    {info.PACKAGE_NAME} --config config.json",
+                f"  {info.PACKAGE_NAME} --config config.json",
             ),
         ),
     )

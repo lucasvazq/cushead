@@ -1,5 +1,4 @@
 [![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce412113e4144c9f9739a99a0d0b77f5)](https://app.codacy.com/app/lucasvazq/cushead?utm_source=github.com&utm_medium=referral&utm_content=lucasvazq/cushead&utm_campaign=Badge_Grade_Dashboard)
 [![codecov](https://codecov.io/gh/lucasvazq/cushead/branch/master/graph/badge.svg)](https://codecov.io/gh/lucasvazq/cushead)
 [![PyPI version](https://badge.fury.io/py/cushead.svg)](https://badge.fury.io/py/cushead)
 
@@ -11,18 +10,12 @@
 
 **Generates a basic website template with a focus on _SEO_ and _UX_.**
 
-**Python Versions:** _>=3.8_
-
-**Package Version**: _4.0_
-
-**Status:** _Production/Stable_
-
 ## Description
 
 This is a small script that allows you to generate a basic template of a website through a configuration file.\
 In this file, you can define different variables that will produce a different template in each case.
 
-[View live example](https://lucasvazq.github.io/cushead/)
+[View live example](https://lucasvazq.github.io/cushead/)\
 [View example of generated files](./docs/examples/relative_static_url/example/output/)
 
 ## Usage
@@ -47,21 +40,21 @@ positional arguments:
 
 Examples:
 1) Generate default config file with images:
-    cushead --default --images config.json
+  cushead --default --images config.json
 2) Run that config:
-    cushead --config config.json
+  cushead --config config.json
 ```
 
 ## Recomendation
 
 Web development is an area that is very evolved today. It has grown a lot over the years and, like everything that proliferates, it has become more complex.
-This little package only solves a small part of all the problems that exist in the field of web development. If you want to take a closer look, here is an interactive website that shows a lot of things to consider when working in this area: [andreasbm/web-skills]\
+This little package only solves a small part of all the problems that exist in the field of web development. If you want to take a closer look, here is an interactive website that shows a lot of things to consider when working in this area: [andreasbm/web-skills][web-skills]\
 My advice is don't get stuck with so much information, the sites will work anyway. Only if the expense is justified, it is always good to face all these things with a team and try to use already created tools that are kept up to date.
 
-[andreasbm/web-skills]: https://andreasbm.github.io/web-skills/
+[web-skills]: https://andreasbm.github.io/web-skills/
 
 ## License
 
-cushead © 2019 Lucas Vazquez. Released under the [MIT] License.
+cushead © 2019 Lucas Vazquez. Released under the [MIT][license] License.
 
-[MIT]: http://mit-license.org/
+[license]: http://mit-license.org/
