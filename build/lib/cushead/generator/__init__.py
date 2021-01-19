@@ -1,3 +1,0 @@
-"""
-Handle the files generation.
-"""

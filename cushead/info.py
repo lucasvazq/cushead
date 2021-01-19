@@ -1,14 +1,18 @@
 """
 Store package information.
 """
-import pathlib
-
 PACKAGE_NAME = "cushead"
 PACKAGE_VERSION = "4.0.0"
 PYTHON_MIN_VERSION = (3, 8)
 SOURCE = f"https://github.com/lucasvazq/{PACKAGE_NAME}"
 DOCUMENTATION = f"https://github.com/lucasvazq/{PACKAGE_NAME}/blob/master/README.md"
-REQUIRED_PACKAGES = (pathlib.Path(__file__).parent.parent / "requirements.txt").read_text().split()
+REQUIRED_PACKAGES = (
+    "colorama==0.4.4",
+    "Jinja2==2.11.2",
+    "Pillow==8.1.0",
+    "python-resize-image==1.1.19",
+    "schema==0.7.3",
+)
 AUTHOR = "Lucas Vazquez"
 EMAIL = "lucas5zvazquez@gmail.com"
 DESCRIPTION = "CLI that help you to improve the SEO and UX of your websites."

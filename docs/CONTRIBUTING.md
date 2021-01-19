@@ -30,6 +30,14 @@ Below is listed the development process that is most commonly used in this repos
 5. Merge:
   When the PR is approved, the changes are applied so they will be included in the next version of the package.
 
+## Local build
+
+1. Make the build:
+`python setup.py sdist bdist_wheel`
+
+2. Install:
+`python setup.py install`
+
 ## Standars:
 
 - Commits style: [gitmoji][gitmoji]

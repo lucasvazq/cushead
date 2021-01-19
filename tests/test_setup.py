@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from tests import base_tests
+import setup
 
 
 class TestSetup(base_tests.BaseTests):
@@ -23,10 +24,8 @@ class TestSetup(base_tests.BaseTests):
         """
         # Test that no exceptions occur
         with io.StringIO() as buffer, contextlib.redirect_stdout(buffer), contextlib.redirect_stderr(buffer):
-            with patch.object(sys, "argv", ["sdist", "bdist_wheel"]):
-                import setup
-            with patch.object(sys, "argv", ["install"]):
-                import setup
+            with patch.object(sys, "argv", ["sdist", "bdist_wheel", "install"]):
+                setup.setup()
 
 
 if __name__ == "__main__":
