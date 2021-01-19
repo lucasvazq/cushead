@@ -8,8 +8,10 @@ import setuptools
 
 from cushead import info
 
-_ASSETS_PATH = f"{info.PACKAGE_NAME}/console/assets/images"
-_TEMPLATES_PATH = f"{info.PACKAGE_NAME}/generator/templates/jinja/templates"
+_ASSETS_PATH = pathlib.Path(f"{info.PACKAGE_NAME}") / "console" / "assets" / "images"
+_TEMPLATES_PATH = pathlib.Path(f"{info.PACKAGE_NAME}") / "generator" / "templates" / "jinja" / "templates"
+_DOCS_PATH = pathlib.Path("docs")
+
 setuptools.setup(
     name=info.PACKAGE_NAME,
     version=info.PACKAGE_VERSION,
@@ -23,6 +25,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=("tests",)),
     data_files=[
         ("", ["requirements.txt", "LICENSE.md", "README.md"]),
+        (_DOCS_PATH, [str(_DOCS_PATH / "logo.png")]),
         (_ASSETS_PATH, [str(file) for file in pathlib.Path(_ASSETS_PATH).iterdir()]),
         (_TEMPLATES_PATH, [str(file) for file in pathlib.Path(_TEMPLATES_PATH).iterdir()]),
     ],
