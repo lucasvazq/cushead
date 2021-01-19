@@ -1,0 +1,27 @@
+name: Python observant
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  Python observant:
+    name: Python observant
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Python observant
+        uses: lucasvazq/auto-linter@master
+        with:
+          requirements: "Pillow Jinja2 python-resize-image schema"
+          max_line_length: 199
+          repo_is_package: true
