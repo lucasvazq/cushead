@@ -8,8 +8,6 @@
 
 # CUSHEAD
 
-_In development_
-
 **Generates a basic website template with a focus on _SEO_ and _UX_.**
 
 ## Description
@@ -19,6 +17,12 @@ In this file, you can define different variables that will produce a different t
 
 [View live example](https://lucasvazq.github.io/cushead/)\
 [View example of generated files](./docs/examples/relative_static_url/example/output/)
+
+## Installation
+
+`pip install cushead`
+
+_Required python version >= 3.8_
 
 ## Usage
 
