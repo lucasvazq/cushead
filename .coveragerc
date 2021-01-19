@@ -1,15 +1,12 @@
 [run]
 branch = True
 source = ./
-omit =
-    *__init__*
-    cushead.py
-    setup.py
-    src/support.py
 
 [report]
 exclude_lines =
-	pragma: no cover
+	@overload
+	if __name__ == "__main__":
+	def main
 
 [html]
-directory = coverage_html_report
+directory = coverage

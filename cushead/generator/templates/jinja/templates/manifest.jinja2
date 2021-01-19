@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "version": "0.1.0",
+  {%+ if config.title -%}
+  "name": "{{ config.title }}",
+  "short_name": "{{ config.title }}",
+  {%- endif %}
+  {%+ if config.description -%}
+  "description": "{{ config.description }}",
+  {%- endif %}
+  {%+ if config.text_dir -%}
+  "dir": "{{ config.text_dir }}",
+  {%- endif %}
+  {%+ if config.background_color -%}
+  "background_color": "{{ config.background_color }}",
+  "theme_color": "{{ config.background_color }}",
+  {%- endif %}
+  "start_url": "/",
+  "orientation": "landscape",
+  "scope": "/",
+  "display": "standalone",
+  "platform": "web",
+  "prefer_related_applications": false{% if config.favicon_png %},{% endif %}
+  {%+ if config.favicon_png -%}
+  "icons": [
+    {
+      "src": "{{ config.static_url }}/manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "{{ config.static_url }}/manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+  {%- endif %}
+}

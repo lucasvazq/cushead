@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+{%+ if config.domain -%}
+Sitemap: https://{{ config.domain }}/sitemap.xml
+{%- endif %}
