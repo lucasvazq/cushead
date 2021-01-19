@@ -25,6 +25,7 @@ def setup():
         },
         python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
         packages=setuptools.find_packages(exclude=("tests",)),
+        include_package_data=True,
         data_files=[
             ("", ["requirements.txt", "LICENSE.md", "README.md"]),
             (docs_path, [str(docs_path / "logo.png")]),
