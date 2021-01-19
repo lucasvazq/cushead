@@ -55,6 +55,7 @@ class TestConfig(base_tests.BaseTests):
             (
                 "Key 'favicon_ico' error:",
                 "Or(None, <class 'str'>) did not validate 1",
+                "None does not match 1",
                 "1 should be instance of 'str'",
             ),
         )
