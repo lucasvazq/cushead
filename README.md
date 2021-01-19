@@ -8,6 +8,8 @@
 
 # CUSHEAD
 
+_In development_
+
 **Generates a basic website template with a focus on _SEO_ and _UX_.**
 
 ## Description
