@@ -8,8 +8,8 @@ import setuptools
 
 from cushead import info
 
-_ASSETS_PATH = pathlib.Path(f"{info.PACKAGE_NAME}") / "console" / "assets" / "images"
-_TEMPLATES_PATH = pathlib.Path(f"{info.PACKAGE_NAME}") / "generator" / "templates" / "jinja" / "templates"
+_ASSETS_PATH = pathlib.Path(info.PACKAGE_NAME) / "console" / "assets" / "images"
+_TEMPLATES_PATH = pathlib.Path(info.PACKAGE_NAME) / "generator" / "templates" / "jinja" / "templates"
 _DOCS_PATH = pathlib.Path("docs")
 
 setuptools.setup(
@@ -24,8 +24,9 @@ setuptools.setup(
     python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
     packages=setuptools.find_packages(exclude=("tests",)),
     include_package_data=True,
+    # package_data = ()
     data_files=[
-        ("", ["requirements.txt", "LICENSE.md", "README.md"]),
+        (info.PACKAGE_NAME, ["requirements.txt", "LICENSE.md", "README.md"]),
         (_DOCS_PATH, [str(_DOCS_PATH / "logo.png")]),
         (_ASSETS_PATH, [str(file) for file in pathlib.Path(_ASSETS_PATH).iterdir()]),
         (_TEMPLATES_PATH, [str(file) for file in pathlib.Path(_TEMPLATES_PATH).iterdir()]),
@@ -51,5 +52,13 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Utilities",
+        "Topic :: Software Development",
+        "Topic :: Software Development :: Code Generators",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Software Development :: User Interfaces",
     ],
 )
+
+# setuptools.setup(**setup_params) # only keywords args
