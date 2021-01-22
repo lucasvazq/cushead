@@ -1,9 +1,9 @@
-[![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?branch=master)](https://travis-ci.org/lucasvazq/cushead)
-[![codecov](https://codecov.io/gh/lucasvazq/cushead/branch/master/graph/badge.svg)](https://codecov.io/gh/lucasvazq/cushead)
+[![Build Status](https://api.travis-ci.org/lucasvazq/cushead.svg?branch=main)](https://travis-ci.org/lucasvazq/cushead)
+[![codecov](https://codecov.io/gh/lucasvazq/cushead/branch/main/graph/badge.svg)](https://codecov.io/gh/lucasvazq/cushead)
 [![PyPI version](https://badge.fury.io/py/cushead.svg)](https://badge.fury.io/py/cushead)
 
 <div align="center">
-  <img src="https://github.com/lucasvazq/cushead/raw/master/docs/logo.png" alt="cushead logo">
+  <img src="https://github.com/lucasvazq/cushead/raw/main/docs/logo.png" alt="cushead logo">
 </div>
 
 # CUSHEAD
@@ -16,7 +16,7 @@ This is a small script that allows you to generate a basic template of a website
 In this file, you can define different variables that will produce a different template in each case.
 
 [View live example](https://lucasvazq.github.io/cushead/)\
-[View example of generated files](https://github.com/lucasvazq/cushead/blob/master/docs/examples/relative_static_url/example/output)
+[View example of generated files](https://github.com/lucasvazq/cushead/blob/main/docs/examples/relative_static_url/example/output)
 
 ## Installation
 

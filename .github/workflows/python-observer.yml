@@ -3,7 +3,7 @@ name: Python Observer
 on: [push, pull_request]
 
 jobs:
-  Python-Observer:
+  Python Observer:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code

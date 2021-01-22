@@ -9,7 +9,7 @@ import setuptools
 from cushead import info
 
 
-def setup():
+def setup() -> None:
     """
     Execute the setup.
     """
@@ -26,7 +26,7 @@ def setup():
             "Source": info.SOURCE,
         },
         python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
-        packages=setuptools.find_packages(exclude=(file.name for file in pathlib.Path("").iterdir() if file.name != info.PACKAGE_NAME)),
+        packages=setuptools.find_packages(exclude=(str(file) for file in pathlib.Path("").iterdir() if str(file) != info.PACKAGE_NAME)),
         include_package_data=True,
         data_files=[
             ("", ["requirements.txt", "LICENSE.md", "README.md"]),

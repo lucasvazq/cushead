@@ -30,7 +30,7 @@ class TestConfig(base_tests.BaseTests):
 
         # Compare the files.
         for generated_file in self.output_folder.rglob("*"):
-            template_file = template_folder / str(generated_file.relative_to(self.output_folder))
+            template_file = template_folder / generated_file.relative_to(self.output_folder)
             if generated_file.is_dir():
                 self.assertTrue(template_file.is_dir())
             elif generated_file.suffix in (".png", ".ico"):
