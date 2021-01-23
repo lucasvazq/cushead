@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Check if Merge
         if: github.event.pull_request.merged == true
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup 🐍
         uses: actions/setup-python@v2

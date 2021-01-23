@@ -3,10 +3,10 @@ name: Python Observer
 on: [push, pull_request]
 
 jobs:
-  Python Observer:
+  Analyze:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v2
       - name: Run Python Observer
         uses: lucasvazq/python-observer@master
