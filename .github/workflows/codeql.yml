@@ -9,14 +9,14 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  analyze:
-    name: Analyze
+  CodeQL:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         language: ['javascript', 'python']
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
