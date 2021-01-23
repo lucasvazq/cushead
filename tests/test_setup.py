@@ -8,9 +8,8 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from tests import base_tests
-
 import setup
+from tests import base_tests
 
 
 class TestSetup(base_tests.BaseTests):

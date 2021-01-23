@@ -66,6 +66,9 @@ def get_exception_message(*, parser: argparse.ArgumentParser, message: str) -> s
 def show_created_file(path: pathlib.Path) -> None:
     """
     Print a created file message.
+
+    Args:
+        path: the file path.
     """
     print(f" - {path.parent}/{colorama.Fore.YELLOW}{path}{colorama.Fore.RESET}")
 
@@ -73,6 +76,9 @@ def show_created_file(path: pathlib.Path) -> None:
 def show_created_file_errors(errors: List[files_creator.Error]) -> None:
     """
     Print error messages for the files with errors at creation time.
+
+    Args:
+        errors: a list of errors to print.
     """
     if not errors:
         return

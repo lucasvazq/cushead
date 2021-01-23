@@ -8,7 +8,6 @@ import pathlib
 import re
 from typing import Any
 from typing import List
-from typing import Union
 
 import jinja2
 
@@ -25,6 +24,9 @@ class TemplateLoader:
     def __init__(self, **kwargs: Any) -> None:
         """
         Initialize a jinja template loader.
+
+        Args:
+            kwargs: kwargs passed directly to jinja2.Environment initialization.
         """
         template_loader = jinja2.FileSystemLoader(searchpath=str(pathlib.Path(__file__).parent / "jinja" / "templates"))
         self.template_parser = jinja2.Environment(
