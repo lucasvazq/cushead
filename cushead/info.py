@@ -4,7 +4,7 @@ Store package information.
 import pathlib
 
 PACKAGE_NAME = "cushead"
-PACKAGE_VERSION = "4.0.5"
+PACKAGE_VERSION = "4.0.6"
 PYTHON_MIN_VERSION = (3, 8)
 SOURCE = f"https://github.com/lucasvazq/{PACKAGE_NAME}"
 DOCUMENTATION = f"https://github.com/lucasvazq/{PACKAGE_NAME}/blob/main/README.md"
