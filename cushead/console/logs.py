@@ -67,7 +67,7 @@ def show_created_file(path: pathlib.Path) -> None:
     """
     Print a created file message.
     """
-    print(f" - {path.parent}/{colorama.Fore.YELLOW}{path.name}{colorama.Fore.RESET}")
+    print(f" - {path.parent}/{colorama.Fore.YELLOW}{path}{colorama.Fore.RESET}")
 
 
 def show_created_file_errors(errors: List[files_creator.Error]) -> None:
@@ -79,4 +79,4 @@ def show_created_file_errors(errors: List[files_creator.Error]) -> None:
 
     print("\nErrors:")
     for error in errors:
-        print(f" - {colorama.Fore.RED}{error.error}{colorama.Fore.RESET}: {error.path.parent}/{colorama.Fore.YELLOW}{error.path.name}{colorama.Fore.RESET}")
+        print(f" - {colorama.Fore.RED}{error.error}{colorama.Fore.RESET}: {error.path.parent}/{colorama.Fore.YELLOW}{error.path}{colorama.Fore.RESET}")
