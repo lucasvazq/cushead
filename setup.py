@@ -13,8 +13,8 @@ def setup() -> None:
     """
     Execute the setup.
     """
-    assets_path = pathlib.Path(info.PACKAGE_NAME) / "console" / "assets" / "images"
-    templates_path = pathlib.Path(info.PACKAGE_NAME) / "generator" / "templates" / "jinja" / "templates"
+    assets_path = pathlib.Path(info.PACKAGE_NAME, "console", "assets", "images")
+    templates_path = pathlib.Path(info.PACKAGE_NAME, "generator", "templates", "jinja", "templates")
 
     setuptools.setup(
         name=info.PACKAGE_NAME,
@@ -26,7 +26,7 @@ def setup() -> None:
             "Source": info.SOURCE,
         },
         python_requires=f">={info.PYTHON_MIN_VERSION[0]}.{info.PYTHON_MIN_VERSION[1]}",
-        packages=setuptools.find_packages(exclude=(str(file) for file in pathlib.Path("").iterdir() if str(file) != info.PACKAGE_NAME)),
+        packages=setuptools.find_packages(exclude=(str(file) for file in pathlib.Path().iterdir() if str(file) != info.PACKAGE_NAME)),
         include_package_data=True,
         data_files=[
             ("", ["requirements.txt", "LICENSE.md", "README.md"]),

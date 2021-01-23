@@ -129,7 +129,7 @@ def create_files(*, files_to_create: List[files.File]) -> None:
     node = create_node(node_items=files_to_create)
 
     print("Created files:")
-    created_files, errors = parse_node(node=node, base_path=pathlib.Path(""))
+    created_files, errors = parse_node(node=node, base_path=pathlib.Path())
     if not created_files:
         print(" * No one file has been created.")
     logs.show_created_file_errors(errors=errors)
