@@ -26,7 +26,7 @@ class TemplateLoader:
         """
         Initialize a jinja template loader.
         """
-        template_loader = jinja2.FileSystemLoader(searchpath=str(pathlib.Path(__file__).parent / "jinja/templates"))
+        template_loader = jinja2.FileSystemLoader(searchpath=str(pathlib.Path(__file__).parent / "jinja" / "templates"))
         self.template_parser = jinja2.Environment(
             loader=template_loader,
             lstrip_blocks=True,
