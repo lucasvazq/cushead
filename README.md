@@ -22,7 +22,7 @@ In this file, you can define different variables that will produce a different t
 
 `pip install cushead`
 
-_Required python version >= 3.8_
+_Requires 🐍 >= 3.8_
 
 ## Usage
 

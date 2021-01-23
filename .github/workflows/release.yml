@@ -8,10 +8,9 @@ on:
 
 jobs:
   Publish:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Check if Merge
-        if: github.event.pull_request.merged == true
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup 🐍
