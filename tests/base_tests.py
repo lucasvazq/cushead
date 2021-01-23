@@ -24,9 +24,13 @@ class BaseTests(unittest.TestCase):
     Base class for all tests classes.
     """
 
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
         Initialize the class and define useful attributes.
+
+        Args:
+            args: args passed directly to unittest.TestCase initialization.
+            kwargs: kwargs passed directly to unittest.TestCase initialization.
         """
         super().__init__(*args, **kwargs)
         self.maxDiff = None

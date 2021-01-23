@@ -120,6 +120,7 @@ def load_binary_image(*, key, path, expected_format):
     Load a binary type image.
 
     Args:
+        key: the name used to refer to the image in the config file.
         path: the image path.
         expected_format: the expected format of the image.
 

@@ -1,0 +1,17 @@
+name: OSSAR
+
+on: [pull_request]
+
+jobs:
+  Analyze:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Run OSSAR
+        uses: github/ossar-action@v1
+        id: ossar
+      - name: Upload OSSAR results
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: ${{ steps.ossar.outputs.sarifFile }}

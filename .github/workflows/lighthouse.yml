@@ -3,10 +3,10 @@ name: Lighthouse CI
 on: [pull_request]
 
 jobs:
-  Lighthouse:
+  Analyze:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup Node
         uses: actions/setup-node@v1

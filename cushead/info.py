@@ -1,8 +1,6 @@
 """
 Store package information.
 """
-import pathlib
-
 PACKAGE_NAME = "cushead"
 PACKAGE_VERSION = "4.0.6"
 PYTHON_MIN_VERSION = (3, 8)
