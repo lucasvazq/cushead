@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Setup Node
+      - name: Install and Setup Node
         uses: actions/setup-node@v1
       - name: Install and run Lighthouse CI
         run: npm i -g @lhci/cli
