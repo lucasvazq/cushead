@@ -1,0 +1,16 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "09:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: pillow
+    versions:
+    - 8.1.1
+    - 8.2.0
+  - dependency-name: coverage
+    versions:
+    - "5.5"
