@@ -1,2 +1,2 @@
-coverage==5.5
+coverage==6.4
 codecov==2.1.12
